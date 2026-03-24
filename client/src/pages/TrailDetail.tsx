@@ -278,9 +278,25 @@ export default function TrailDetail() {
             "name": `Qual a melhor época para fazer a Trilha ${trail.name}?`,
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": trail.bestSeason 
+              "text": trail.bestSeason
                 ? `A melhor época para fazer a Trilha ${trail.name} é ${trail.bestSeason}. Nesse período, as condições climáticas são mais favoráveis para a prática de trekking na região.`
                 : `A Trilha ${trail.name} pode ser feita durante todo o ano, mas recomendamos evitar períodos de chuvas intensas. Consulte a previsão do tempo antes de sua visita.`
+            }
+          },
+          {
+            "@type": "Question",
+            "name": `O que levar na mochila para a Trilha ${trail.name}?`,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": `Para a Trilha ${trail.name}, leve: água (mínimo 2 litros por pessoa), calçado com solado antiderrapante, protetor solar e chapéu, lanches energéticos, capa de chuva leve, kit básico de primeiros socorros, repelente de insetos e um mapa ou GPS offline.${trail.estimatedTime ? ` Como a duração estimada é de ${trail.estimatedTime}, ajuste a quantidade de suprimentos ao tempo planejado.` : ''}`
+            }
+          },
+          {
+            "@type": "Question",
+            "name": `Como chegar à Trilha ${trail.name}?`,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": `A Trilha ${trail.name} está localizada em ${trail.city}, ${trail.uf}${trail.park ? `, dentro do ${trail.park}` : ''}. Recomendamos chegar cedo (antes das 8h) e usar aplicativos de navegação buscando por "${trail.park || `Trilha ${trail.name}`}, ${trail.city}". Verifique as condições das estradas de acesso, especialmente em períodos de chuva.`
             }
           }
         ]
@@ -541,6 +557,52 @@ export default function TrailDetail() {
                   <p className="text-muted-foreground leading-relaxed whitespace-pre-line">
                     {trail.description || `A Trilha ${trail.name} é um destino imperdível para os amantes de trekking e ecoturismo. Com paisagens deslumbrantes e contato direto com a natureza, oferece uma experiência única para quem busca aventura e contemplação.`}
                   </p>
+                </CardContent>
+              </Card>
+
+              {/* H2: História e Preservação */}
+              <Card>
+                <CardContent className="p-6">
+                  <h2 className="font-heading text-2xl font-semibold mb-4 flex items-center gap-2">
+                    <Navigation className="w-6 h-6 text-forest" />
+                    História e preservação da área
+                  </h2>
+                  <div className="space-y-3 text-muted-foreground leading-relaxed">
+                    <p>
+                      A Trilha {trail.name}, localizada em <strong>{trail.city}</strong> ({trail.uf}), é parte
+                      do patrimônio natural do Brasil e se consolidou como um dos principais destinos de
+                      ecoturismo{trail.region ? ` da região ${trail.region}` : ` do estado`}. O turismo
+                      responsável em trilhas como essa contribui diretamente para a geração de renda nas
+                      comunidades locais e incentiva práticas de conservação ambiental de longo prazo,
+                      criando um ciclo virtuoso entre visitação e preservação.
+                    </p>
+                    {trail.park ? (
+                      <p>
+                        Por estar inserida no <strong>{trail.park}</strong>, a trilha conta com o apoio de
+                        uma estrutura de conservação estabelecida. A unidade de conservação abriga espécies
+                        endêmicas da flora e fauna brasileira, e cada visita é uma oportunidade única de
+                        imersão nesses ecossistemas. A administração local trabalha ativamente para manter
+                        os trilhos sinalizados, controlar o impacto ambiental e garantir uma experiência de
+                        qualidade e segurança para todos os visitantes ao longo do ano.
+                      </p>
+                    ) : (
+                      <p>
+                        A área que abriga a Trilha {trail.name} é parte de um ecossistema valioso que
+                        merece atenção e cuidado coletivo. O acesso responsável e o respeito às normas de
+                        uso garantem que gerações futuras também possam desfrutar dessas paisagens. O
+                        crescimento do ecoturismo na região tem gerado consciência ambiental e recursos
+                        para a manutenção dessas áreas naturais únicas.
+                      </p>
+                    )}
+                    <p>
+                      Para contribuir com a preservação da Trilha {trail.name}: não descarte resíduos no
+                      caminho (pack in, pack out), respeite a fauna e flora nativas, mantenha-se nos
+                      caminhos sinalizados e evite colher plantas ou perturbar animais silvestres.
+                      Fotografe e aprecie, mas não altere o ambiente. Pequenas ações de cada visitante
+                      fazem grande diferença na conservação desses ecossistemas únicos para o Brasil
+                      e para o mundo.
+                    </p>
+                  </div>
                 </CardContent>
               </Card>
 
@@ -835,6 +897,44 @@ export default function TrailDetail() {
                 </CardContent>
               </Card>
 
+              {/* H2: O que levar */}
+              <Card>
+                <CardContent className="p-6">
+                  <h2 className="font-heading text-2xl font-semibold mb-4 flex items-center gap-2">
+                    <Compass className="w-6 h-6 text-forest" />
+                    O que levar na Trilha {trail.name}
+                  </h2>
+                  <p className="text-muted-foreground leading-relaxed mb-4">
+                    O equipamento certo faz toda a diferença na segurança e no aproveitamento da Trilha {trail.name}.
+                    {trail.difficulty === 'easy'
+                      ? ' Por ser uma trilha de nível fácil, não é necessário equipamento técnico especializado, mas os itens básicos de segurança são sempre indispensáveis.'
+                      : trail.difficulty === 'moderate'
+                      ? ' Com nível moderado, alguns itens extras de segurança e conforto tornam a experiência muito mais agradável e segura.'
+                      : ' Por ser uma trilha de nível avançado, o planejamento cuidadoso do equipamento é parte essencial da preparação.'}
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {[
+                      { item: "Água (mínimo 2 litros por pessoa)", note: "Fundamental para hidratação ao longo do percurso" },
+                      { item: "Calçado de trilha com boa aderência", note: "Botas ou tênis específicos para terreno natural" },
+                      { item: "Protetor solar e chapéu ou boné", note: "Proteção contra o sol nas áreas abertas da trilha" },
+                      { item: "Lanches energéticos", note: "Barras de cereal, frutas secas e mix de castanhas" },
+                      { item: "Kit básico de primeiros socorros", note: "Band-aids, antisséptico, esparadrapo e analgésico" },
+                      { item: "Capa de chuva leve ou poncho", note: "Para chuvas rápidas e variações climáticas imprevistas" },
+                      { item: "Repelente de insetos", note: "Essencial em áreas de mata e durante estações chuvosas" },
+                      { item: "Mapa offline ou GPS", note: "Para navegação segura mesmo sem sinal de celular" },
+                    ].map((eq, idx) => (
+                      <div key={idx} className="flex items-start gap-3 p-3 bg-muted/50 rounded-lg">
+                        <span className="w-2 h-2 bg-forest rounded-full mt-2 flex-shrink-0" />
+                        <div>
+                          <p className="text-sm font-medium">{eq.item}</p>
+                          <p className="text-xs text-muted-foreground">{eq.note}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
               {/* H2: FAQ Section - Critical for SGE */}
               <Card>
                 <CardContent className="p-6">
@@ -879,13 +979,26 @@ export default function TrailDetail() {
                         A Trilha {trail.name} é considerada segura quando realizada com preparo adequado. Recomendamos: levar água suficiente, usar calçados apropriados, informar alguém sobre seu roteiro, verificar condições climáticas e respeitar seus limites físicos.
                       </p>
                     </div>
-                    <div>
+                    <div className="border-b pb-4">
                       <h3 className="font-semibold mb-2">Qual a melhor época para fazer a Trilha {trail.name}?</h3>
                       <p className="text-muted-foreground text-sm leading-relaxed">
-                        {trail.bestSeason 
+                        {trail.bestSeason
                           ? `A melhor época para fazer a Trilha ${trail.name} é ${trail.bestSeason}. Nesse período, as condições climáticas são mais favoráveis para a prática de trekking.`
                           : `A Trilha ${trail.name} pode ser feita durante todo o ano, mas recomendamos evitar períodos de chuvas intensas.`
                         }
+                      </p>
+                    </div>
+                    <div className="border-b pb-4">
+                      <h3 className="font-semibold mb-2">O que levar na mochila para a Trilha {trail.name}?</h3>
+                      <p className="text-muted-foreground text-sm leading-relaxed">
+                        Para a Trilha {trail.name}, os itens essenciais são: água (mínimo 2 litros por pessoa), calçado com solado antiderrapante, protetor solar e chapéu, lanches energéticos, capa de chuva leve, kit básico de primeiros socorros, repelente de insetos e um mapa ou GPS offline.
+                        {trail.estimatedTime ? ` Como a duração estimada é de ${trail.estimatedTime}, ajuste a quantidade de suprimentos ao tempo de trilha planejado.` : ' Sempre ajuste a quantidade de suprimentos à duração e dificuldade do percurso.'}
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="font-semibold mb-2">Como chegar à Trilha {trail.name}?</h3>
+                      <p className="text-muted-foreground text-sm leading-relaxed">
+                        A Trilha {trail.name} está localizada em <strong>{trail.city}</strong>, {trail.uf}{trail.park ? `, dentro do ${trail.park}` : ''}. Recomendamos chegar cedo pela manhã (preferencialmente antes das 8h) para aproveitar as melhores condições de luz, temperatura e para garantir vagas de estacionamento. Utilize aplicativos de navegação buscando por "{trail.park || `Trilha ${trail.name}`}, {trail.city}" e verifique as condições das estradas de acesso, especialmente em períodos de chuva.
                       </p>
                     </div>
                   </div>
