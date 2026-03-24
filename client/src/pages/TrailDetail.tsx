@@ -5,6 +5,7 @@ import ImageLightbox from "@/components/ImageLightbox";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ReviewsList } from "@/components/ReviewsList";
+import { AdUnit, AD_SLOTS } from "@/components/AdUnit";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -470,11 +471,16 @@ export default function TrailDetail() {
           <div className="container">
             <p className="text-lg md:text-xl text-center max-w-4xl mx-auto leading-relaxed">
               A Trilha {trail.name} é uma das trilhas mais conhecidas do Brasil, localizada em {trail.city}, {trail.uf}
-              {trail.park && ` (${trail.park})`}. Possui cerca de {trail.distanceKm || 'N/A'} km, 
-              nível {getDifficultyLabel(trail.difficulty).toLowerCase()} e é indicada para {getDifficultyProfile(trail.difficulty)}. 
+              {trail.park && ` (${trail.park})`}. Possui cerca de {trail.distanceKm || 'N/A'} km,
+              nível {getDifficultyLabel(trail.difficulty).toLowerCase()} e é indicada para {getDifficultyProfile(trail.difficulty)}.
               Veja abaixo o guia completo com mapa, dicas e informações atualizadas.
             </p>
           </div>
+        </div>
+
+        {/* Ad unit 1 — after intro paragraph */}
+        <div className="container py-2">
+          <AdUnit slot={AD_SLOTS.TRAIL_AFTER_INTRO} />
         </div>
 
         <div className="container py-8">
@@ -885,6 +891,9 @@ export default function TrailDetail() {
                   </div>
                 </CardContent>
               </Card>
+
+              {/* Ad unit 2 — between logistics sections and photo gallery */}
+              <AdUnit slot={AD_SLOTS.TRAIL_BEFORE_GALLERY} className="my-2" />
 
               {/* Image Gallery Thumbnails */}
               {images.length > 1 && (
