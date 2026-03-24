@@ -6,6 +6,16 @@ import path from "path";
 import { createServer as createViteServer } from "vite";
 import viteConfig from "../../vite.config";
 
+const ROBOTS_CONTENT = `User-agent: *
+Disallow: /perfil
+Disallow: /checkout
+Disallow: /reservas
+Disallow: /admin
+Disallow: /api/
+
+Sitemap: https://trekko.com.br/sitemap.xml
+`;
+
 export async function setupVite(app: Express, server: Server) {
   const serverOptions = {
     middlewareMode: true,
@@ -33,6 +43,18 @@ export async function setupVite(app: Express, server: Server) {
       res.setHeader('Content-Type', 'text/plain; charset=utf-8');
       res.setHeader('Cache-Control', 'public, max-age=86400');
       res.send('google.com, pub-2482023752745520, DIRECT, f08c47fec0942fa0\n');
+    }
+  });
+
+  // Serve robots.txt (development mode)
+  app.get('/robots.txt', (_req, res) => {
+    const robotsPath = path.resolve(publicPath, 'robots.txt');
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=86400');
+    if (fs.existsSync(robotsPath)) {
+      res.sendFile(robotsPath);
+    } else {
+      res.send(ROBOTS_CONTENT);
     }
   });
 
@@ -86,6 +108,18 @@ export function serveStatic(app: Express) {
       res.setHeader('Content-Type', 'text/plain; charset=utf-8');
       res.setHeader('Cache-Control', 'public, max-age=86400');
       res.send('google.com, pub-2482023752745520, DIRECT, f08c47fec0942fa0\n');
+    }
+  });
+
+  // Serve robots.txt
+  app.get('/robots.txt', (_req, res) => {
+    const robotsPath = path.resolve(distPath, 'robots.txt');
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=86400');
+    if (fs.existsSync(robotsPath)) {
+      res.sendFile(robotsPath);
+    } else {
+      res.send(ROBOTS_CONTENT);
     }
   });
 
