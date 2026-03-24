@@ -4,6 +4,7 @@ import { lazy, Suspense } from "react";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { PageSkeleton } from "./components/PageSkeleton";
+import { AdSenseLoader } from "./components/AdSenseLoader";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { HelmetProvider } from "react-helmet-async";
 
@@ -27,7 +28,9 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 
 function Router() {
   return (
-    <Suspense fallback={<PageSkeleton />}>
+    <>
+      <AdSenseLoader />
+      <Suspense fallback={<PageSkeleton />}>
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/trilhas" component={Trails} />
@@ -49,6 +52,7 @@ function Router() {
         <Route component={NotFound} />
       </Switch>
     </Suspense>
+    </>
   );
 }
 
