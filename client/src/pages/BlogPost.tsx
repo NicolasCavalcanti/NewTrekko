@@ -1,4 +1,5 @@
 import { useParams, Link } from "wouter";
+import { Helmet } from "react-helmet-async";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -175,8 +176,31 @@ export default function BlogPost() {
     });
   };
 
+  const canonicalUrl = `https://trekko.com.br/blog/${post.slug}`;
+  const metaTitle = `${post.title} — Trekko`;
+  const metaDescription = post.excerpt || post.title;
+  const ogImage = post.imageUrl || "https://trekko.com.br/og-image.jpg";
+
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>{metaTitle}</title>
+        <meta name="description" content={metaDescription} />
+        <link rel="canonical" href={canonicalUrl} />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={metaTitle} />
+        <meta property="og:description" content={metaDescription} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:site_name" content="Trekko" />
+        <meta property="og:locale" content="pt_BR" />
+        {post.publishedAt && <meta property="article:published_time" content={new Date(post.publishedAt).toISOString()} />}
+        {post.updatedAt && <meta property="article:modified_time" content={new Date(post.updatedAt).toISOString()} />}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={metaTitle} />
+        <meta name="twitter:description" content={metaDescription} />
+        <meta name="twitter:image" content={ogImage} />
+      </Helmet>
       {/* Back Button */}
       <div className="container py-4">
         <Link href="/blog">
