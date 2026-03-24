@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
 import { eq } from "drizzle-orm";
 import { getDb } from "../db";
-import { trails, blogPosts } from "../../drizzle/schema";
+import { trails, blogPosts, guideProfiles } from "../../drizzle/schema";
 
 const router = Router();
 
@@ -41,7 +41,7 @@ router.get("/sitemap.xml", async (_req: Request, res: Response) => {
     const db = await getDb();
 
     if (db) {
-      const [publishedTrails, publishedPosts] = await Promise.all([
+      const [publishedTrails, publishedPosts, allGuides] = await Promise.all([
         db
           .select({ id: trails.id, updatedAt: trails.updatedAt })
           .from(trails)
@@ -50,6 +50,9 @@ router.get("/sitemap.xml", async (_req: Request, res: Response) => {
           .select({ slug: blogPosts.slug, updatedAt: blogPosts.updatedAt })
           .from(blogPosts)
           .where(eq(blogPosts.status, "published")),
+        db
+          .select({ id: guideProfiles.id, updatedAt: guideProfiles.updatedAt })
+          .from(guideProfiles),
       ]);
 
       for (const trail of publishedTrails) {
@@ -73,6 +76,17 @@ router.get("/sitemap.xml", async (_req: Request, res: Response) => {
           )
         );
       }
+
+      for (const guide of allGuides) {
+        dynamicEntries.push(
+          urlEntry(
+            `${BASE_URL}/guia/${guide.id}`,
+            toW3CDate(guide.updatedAt),
+            "monthly",
+            "0.6"
+          )
+        );
+      }
     }
   } catch (err) {
     console.error("[sitemap] DB error:", err);
@@ -81,7 +95,7 @@ router.get("/sitemap.xml", async (_req: Request, res: Response) => {
 
   const xml = [
     '<?xml version="1.0" encoding="UTF-8"?>',
-    '<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
     ...staticRoutes,
     ...dynamicEntries,
     "</urlset>",

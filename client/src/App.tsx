@@ -6,7 +6,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { PageSkeleton } from "./components/PageSkeleton";
 import { AdSenseLoader } from "./components/AdSenseLoader";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import { HelmetProvider } from "react-helmet-async";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 const Home = lazy(() => import("./pages/Home"));
 const Trails = lazy(() => import("./pages/Trails"));
@@ -56,10 +56,17 @@ function Router() {
   );
 }
 
+const GSC_TOKEN = import.meta.env.VITE_GOOGLE_SITE_VERIFICATION as string | undefined;
+
 function App() {
   return (
     <ErrorBoundary>
       <HelmetProvider>
+        {GSC_TOKEN && (
+          <Helmet>
+            <meta name="google-site-verification" content={GSC_TOKEN} />
+          </Helmet>
+        )}
         <ThemeProvider defaultTheme="light">
           <TooltipProvider>
             <Toaster />
