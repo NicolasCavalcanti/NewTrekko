@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "wouter";
+import { Helmet } from "react-helmet-async";
 import { trpc } from "@/lib/trpc";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -42,6 +43,22 @@ export default function Blog() {
 
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Blog de Trilhas e Aventuras — Trekko</title>
+        <meta name="description" content="Dicas de trilhas, guias práticos, planejamento, equipamentos e histórias de aventura na natureza brasileira. Conteúdo para trilheiros de todos os níveis." />
+        <link rel="canonical" href="https://trekko.com.br/blog" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Blog de Trilhas e Aventuras — Trekko" />
+        <meta property="og:description" content="Dicas de trilhas, guias práticos, planejamento e histórias de aventura na natureza brasileira." />
+        <meta property="og:url" content="https://trekko.com.br/blog" />
+        <meta property="og:image" content="https://trekko.com.br/og-image.jpg" />
+        <meta property="og:site_name" content="Trekko" />
+        <meta property="og:locale" content="pt_BR" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Blog de Trilhas e Aventuras — Trekko" />
+        <meta name="twitter:description" content="Dicas de trilhas, guias práticos e histórias de aventura na natureza brasileira." />
+        <meta name="twitter:image" content="https://trekko.com.br/og-image.jpg" />
+      </Helmet>
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-green-800 via-green-700 to-green-600 text-white py-16 md:py-24">
         <div className="absolute inset-0 bg-[url('/images/blog-hero.jpg')] bg-cover bg-center opacity-20" />
