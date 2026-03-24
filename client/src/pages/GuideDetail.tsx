@@ -1,4 +1,5 @@
 import { useParams, useLocation } from "wouter";
+import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ReviewsList } from "@/components/ReviewsList";
@@ -47,8 +48,31 @@ export default function GuideDetail() {
 
   const { guide, expeditions } = data;
 
+  const canonicalUrl = `https://trekko.com.br/guia/${guide.cadasturNumber}`;
+  const metaTitle = `${guide.name || "Guia"} — Guia Certificado CADASTUR | Trekko`;
+  const metaDescription = guide.bio
+    ? guide.bio.slice(0, 160)
+    : `${guide.name || "Guia"} é um guia de trilha certificado pelo CADASTUR${guide.uf ? ` no ${guide.uf}` : ""}. Veja expedições disponíveis e agende sua aventura.`;
+  const ogImage = guide.photoUrl || "https://trekko.com.br/og-image.jpg";
+
   return (
     <div className="min-h-screen flex flex-col">
+      <Helmet>
+        <title>{metaTitle}</title>
+        <meta name="description" content={metaDescription} />
+        <link rel="canonical" href={canonicalUrl} />
+        <meta property="og:type" content="profile" />
+        <meta property="og:title" content={metaTitle} />
+        <meta property="og:description" content={metaDescription} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:site_name" content="Trekko" />
+        <meta property="og:locale" content="pt_BR" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={metaTitle} />
+        <meta name="twitter:description" content={metaDescription} />
+        <meta name="twitter:image" content={ogImage} />
+      </Helmet>
       <Header />
 
       <main className="flex-1 bg-muted/30">

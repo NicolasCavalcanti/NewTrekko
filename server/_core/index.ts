@@ -6,6 +6,7 @@ import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { registerOAuthRoutes } from "./oauth";
 import mercadopagoWebhook from "../webhooks/mercadopago";
 import { offlineMapRouter } from "../routes/offline-map";
+import { sitemapRouter } from "../routes/sitemap";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
@@ -38,6 +39,9 @@ async function startServer() {
   // Mercado Pago webhook
   app.use('/api/webhooks/mercadopago', mercadopagoWebhook);
   
+  // Sitemap
+  app.use(sitemapRouter);
+
   // Offline map download route
   app.use('/api/trilhas', offlineMapRouter);
   
