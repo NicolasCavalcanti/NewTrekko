@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
+import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -50,6 +51,22 @@ export default function Guides() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <Helmet>
+        <title>Guias de Trilha Certificados CADASTUR — Trekko</title>
+        <meta name="description" content="Encontre guias de trilha certificados pelo CADASTUR em todo o Brasil. Profissionais verificados para garantir segurança e qualidade na sua experiência na natureza." />
+        <link rel="canonical" href="https://trekko.com.br/guias" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Guias de Trilha Certificados CADASTUR — Trekko" />
+        <meta property="og:description" content="Encontre guias de trilha certificados pelo CADASTUR em todo o Brasil." />
+        <meta property="og:url" content="https://trekko.com.br/guias" />
+        <meta property="og:image" content="https://trekko.com.br/og-image.jpg" />
+        <meta property="og:site_name" content="Trekko" />
+        <meta property="og:locale" content="pt_BR" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Guias de Trilha Certificados CADASTUR — Trekko" />
+        <meta name="twitter:description" content="Encontre guias de trilha certificados pelo CADASTUR em todo o Brasil." />
+        <meta name="twitter:image" content="https://trekko.com.br/og-image.jpg" />
+      </Helmet>
       <Header />
 
       <main className="flex-1 bg-muted/30">

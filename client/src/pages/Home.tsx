@@ -81,10 +81,17 @@ export default function Home() {
         <title>Trekko - Trilhas, Guias e Aventuras no Brasil</title>
         <meta name="description" content="Descubra as melhores trilhas do Brasil. Encontre trilhas incríveis, conecte-se com guias certificados CADASTUR e viva aventuras inesquecíveis na natureza brasileira." />
         <link rel="canonical" href="https://trekko.com.br" />
+        <meta property="og:type" content="website" />
         <meta property="og:title" content="Trekko - Trilhas, Guias e Aventuras no Brasil" />
         <meta property="og:description" content="Descubra as melhores trilhas do Brasil. Encontre trilhas incríveis, conecte-se com guias certificados CADASTUR e viva aventuras inesquecíveis na natureza." />
-        <meta property="og:type" content="website" />
         <meta property="og:url" content="https://trekko.com.br" />
+        <meta property="og:image" content="https://trekko.com.br/og-image.jpg" />
+        <meta property="og:site_name" content="Trekko" />
+        <meta property="og:locale" content="pt_BR" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Trekko - Trilhas, Guias e Aventuras no Brasil" />
+        <meta name="twitter:description" content="Descubra as melhores trilhas do Brasil. Conecte-se com guias certificados CADASTUR e viva aventuras inesquecíveis na natureza." />
+        <meta name="twitter:image" content="https://trekko.com.br/og-image.jpg" />
         <script type="application/ld+json">{JSON.stringify(organizationSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(websiteSchema)}</script>
       </Helmet>
