@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
+import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { useDebounce } from "@/_core/hooks/useDebounce";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -23,23 +25,38 @@ export default function Guides() {
   const [selectedCity, setSelectedCity] = useState("");
   const [page, setPage] = useState(1);
 
+  // Debounced values used for the API query — prevents a request on every keystroke.
+  // The raw state values still drive the input display so the UI stays responsive.
+  const debouncedSearch = useDebounce(searchText, 300);
+  const debouncedCadasturCode = useDebounce(cadasturCode, 300);
+
   // Fetch cities based on selected UF
   const { data: cities, isLoading: citiesLoading } = trpc.guides.getCities.useQuery({
     uf: selectedUF && selectedUF !== "all" ? selectedUF : undefined,
   });
 
-  // Reset city when UF changes
+  // Reset city and page when UF changes
   useEffect(() => {
     setSelectedCity("");
+    setPage(1);
   }, [selectedUF]);
 
+  // Reset page when debounced search terms settle
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearch, debouncedCadasturCode]);
+
   const { data, isLoading } = trpc.guides.list.useQuery({
-    search: searchText || undefined,
-    cadasturCode: cadasturCode || undefined,
+    search: debouncedSearch || undefined,
+    cadasturCode: debouncedCadasturCode || undefined,
     uf: selectedUF && selectedUF !== "all" ? selectedUF : undefined,
     city: selectedCity && selectedCity !== "all" ? selectedCity : undefined,
     page,
     limit: 12,
+  }, {
+    // Cache results for 60 s — avoids re-fetching when the user re-types the
+    // same query or paginates back to a page they already visited.
+    staleTime: 60_000,
   });
 
   const totalPages = Math.ceil((data?.total || 0) / 12);
@@ -50,6 +67,22 @@ export default function Guides() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <Helmet>
+        <title>Guias de Trilha Certificados CADASTUR — Trekko</title>
+        <meta name="description" content="Encontre guias de trilha certificados pelo CADASTUR em todo o Brasil. Profissionais verificados para garantir segurança e qualidade na sua experiência na natureza." />
+        <link rel="canonical" href="https://trekko.com.br/guias" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Guias de Trilha Certificados CADASTUR — Trekko" />
+        <meta property="og:description" content="Encontre guias de trilha certificados pelo CADASTUR em todo o Brasil." />
+        <meta property="og:url" content="https://trekko.com.br/guias" />
+        <meta property="og:image" content="https://trekko.com.br/og-image.jpg" />
+        <meta property="og:site_name" content="Trekko" />
+        <meta property="og:locale" content="pt_BR" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Guias de Trilha Certificados CADASTUR — Trekko" />
+        <meta name="twitter:description" content="Encontre guias de trilha certificados pelo CADASTUR em todo o Brasil." />
+        <meta name="twitter:image" content="https://trekko.com.br/og-image.jpg" />
+      </Helmet>
       <Header />
 
       <main className="flex-1 bg-muted/30">
