@@ -1,9 +1,11 @@
+import React from "react";
 import { useParams, Link } from "wouter";
 import { Helmet } from "react-helmet-async";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AdUnit, AD_SLOTS } from "@/components/AdUnit";
 import { 
   ArrowLeft, 
   Clock, 
@@ -106,74 +108,93 @@ export default function BlogPost() {
       })
     : null;
 
-  // Parse content to render with proper formatting
+  // Parse content to render with proper formatting.
+  // Injects a mid-article ad unit after the second paragraph.
   const renderContent = (content: string) => {
-    // Split by double newlines to get paragraphs
     const sections = content.split(/\n\n+/);
-    
-    return sections.map((section, index) => {
+    const elements: React.ReactNode[] = [];
+    let paragraphCount = 0;
+
+    sections.forEach((section, index) => {
       const trimmed = section.trim();
-      
+      let isParagraph = false;
+
       // Check if it's a heading (starts with emoji or specific patterns)
       if (trimmed.match(/^[🎯👥🧱🧭⚠️🔎🎨🧩✅⛰️🌿]/)) {
-        return (
+        elements.push(
           <h2 key={index} className="text-2xl font-bold mt-8 mb-4 text-green-800">
             {trimmed}
           </h2>
         );
-      }
-      
-      // Check if it's a subheading
-      if (trimmed.match(/^(A montanha|Onde fica|Um marco|Beleza que|A importância|Não é sobre|Por que|Serra Fina não)/)) {
-        return (
+      } else if (trimmed.match(/^(A montanha|Onde fica|Um marco|Beleza que|A importância|Não é sobre|Por que|Serra Fina não)/)) {
+        // Subheading
+        elements.push(
           <h2 key={index} className="text-2xl font-bold mt-8 mb-4 text-green-800">
             {trimmed}
           </h2>
         );
-      }
-      
-      // Check if it's a list
-      if (trimmed.includes('\n') && trimmed.split('\n').every(line => line.trim().match(/^[-•]/))) {
+      } else if (trimmed.includes('\n') && trimmed.split('\n').every(line => line.trim().match(/^[-•]/))) {
+        // Explicit bullet list
         const items = trimmed.split('\n').filter(line => line.trim());
-        return (
+        elements.push(
           <ul key={index} className="list-disc list-inside space-y-2 my-4 text-muted-foreground">
             {items.map((item, i) => (
               <li key={i}>{item.replace(/^[-•]\s*/, '')}</li>
             ))}
           </ul>
         );
-      }
-      
-      // Check if it looks like a list (multiple short lines)
-      if (trimmed.includes('\n')) {
+      } else if (trimmed.includes('\n')) {
+        // Multiple short lines — treat as list
         const lines = trimmed.split('\n').filter(line => line.trim());
         if (lines.length > 1 && lines.every(line => line.length < 100)) {
-          return (
+          elements.push(
             <ul key={index} className="list-disc list-inside space-y-2 my-4 text-muted-foreground">
               {lines.map((line, i) => (
                 <li key={i}>{line.trim()}</li>
               ))}
             </ul>
           );
+        } else {
+          isParagraph = true;
+          elements.push(
+            <p key={index} className="text-muted-foreground leading-relaxed mb-4">
+              {trimmed}
+            </p>
+          );
         }
-      }
-      
-      // Quote-like content (short, impactful statements)
-      if (trimmed.length < 150 && !trimmed.includes('.') && trimmed.split('\n').length === 1) {
-        return (
+      } else if (trimmed.length < 150 && !trimmed.includes('.') && trimmed.split('\n').length === 1) {
+        // Quote-like content
+        elements.push(
           <blockquote key={index} className="border-l-4 border-green-600 pl-4 my-6 italic text-lg text-green-800">
             {trimmed}
           </blockquote>
         );
+      } else {
+        // Regular paragraph
+        isParagraph = true;
+        elements.push(
+          <p key={index} className="text-muted-foreground leading-relaxed mb-4">
+            {trimmed}
+          </p>
+        );
       }
-      
-      // Regular paragraph
-      return (
-        <p key={index} className="text-muted-foreground leading-relaxed mb-4">
-          {trimmed}
-        </p>
-      );
+
+      // Inject mid-article ad after the second paragraph
+      if (isParagraph) {
+        paragraphCount++;
+        if (paragraphCount === 2) {
+          elements.push(
+            <AdUnit
+              key="blog-mid-article"
+              slot={AD_SLOTS.BLOG_MID_ARTICLE}
+              className="my-6"
+            />
+          );
+        }
+      }
     });
+
+    return elements;
   };
 
   const canonicalUrl = `https://trekko.com.br/blog/${post.slug}`;
@@ -283,6 +304,9 @@ export default function BlogPost() {
           <div className="prose prose-lg max-w-none">
             {renderContent(post.content)}
           </div>
+
+          {/* Ad unit 2 — end of article */}
+          <AdUnit slot={AD_SLOTS.BLOG_END_ARTICLE} className="my-8" />
 
           {/* Tags */}
           {post.tags && post.tags.length > 0 && (
