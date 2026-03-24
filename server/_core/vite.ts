@@ -5,6 +5,7 @@ import { nanoid } from "nanoid";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 import viteConfig from "../../vite.config";
+import { registerSSRRoutes } from "../routes/ssr";
 
 const ROBOTS_CONTENT = `User-agent: *
 Disallow: /perfil
@@ -59,6 +60,10 @@ export async function setupVite(app: Express, server: Server) {
   });
 
   app.use(vite.middlewares);
+
+  // SSR for SEO-critical pages (trail, blog, guide detail)
+  registerSSRRoutes(app, vite);
+
   app.use("*", async (req, res, next) => {
     const url = req.originalUrl;
 
@@ -124,6 +129,9 @@ export function serveStatic(app: Express) {
   });
 
   app.use(express.static(distPath));
+
+  // SSR for SEO-critical pages (trail, blog, guide detail)
+  registerSSRRoutes(app);
 
   // fall through to index.html if the file doesn't exist
   app.use("*", (_req, res) => {
