@@ -3,6 +3,7 @@ import { useLocation } from "wouter";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { useDebounce } from "@/_core/hooks/useDebounce";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -24,23 +25,38 @@ export default function Guides() {
   const [selectedCity, setSelectedCity] = useState("");
   const [page, setPage] = useState(1);
 
+  // Debounced values used for the API query — prevents a request on every keystroke.
+  // The raw state values still drive the input display so the UI stays responsive.
+  const debouncedSearch = useDebounce(searchText, 300);
+  const debouncedCadasturCode = useDebounce(cadasturCode, 300);
+
   // Fetch cities based on selected UF
   const { data: cities, isLoading: citiesLoading } = trpc.guides.getCities.useQuery({
     uf: selectedUF && selectedUF !== "all" ? selectedUF : undefined,
   });
 
-  // Reset city when UF changes
+  // Reset city and page when UF changes
   useEffect(() => {
     setSelectedCity("");
+    setPage(1);
   }, [selectedUF]);
 
+  // Reset page when debounced search terms settle
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearch, debouncedCadasturCode]);
+
   const { data, isLoading } = trpc.guides.list.useQuery({
-    search: searchText || undefined,
-    cadasturCode: cadasturCode || undefined,
+    search: debouncedSearch || undefined,
+    cadasturCode: debouncedCadasturCode || undefined,
     uf: selectedUF && selectedUF !== "all" ? selectedUF : undefined,
     city: selectedCity && selectedCity !== "all" ? selectedCity : undefined,
     page,
     limit: 12,
+  }, {
+    // Cache results for 60 s — avoids re-fetching when the user re-types the
+    // same query or paginates back to a page they already visited.
+    staleTime: 60_000,
   });
 
   const totalPages = Math.ceil((data?.total || 0) / 12);
