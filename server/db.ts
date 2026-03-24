@@ -188,26 +188,32 @@ export async function getGuides(filters?: { uf?: string; city?: string; search?:
   const conditions = [];
   
   if (filters?.search) {
-    // Case-insensitive and accent-insensitive search using MySQL COLLATE
-    const searchTerm = `%${filters.search}%`;
+    // Prefix match (term%) so MySQL can use the idx_cadastur_fullname /
+    // idx_cadastur_uf_fullname B-tree indexes.  The column collation
+    // (utf8mb4_unicode_ci or utf8mb4_0900_ai_ci) makes the comparison
+    // case- and accent-insensitive without an extra COLLATE clause, which
+    // would otherwise prevent the optimizer from using the index.
+    const searchTerm = `${filters.search}%`;
     conditions.push(
-      sql`${cadasturRegistry.fullName} COLLATE utf8mb4_unicode_ci LIKE ${searchTerm}`
+      sql`${cadasturRegistry.fullName} LIKE ${searchTerm}`
     );
   }
-  
+
   if (filters?.cadasturCode) {
-    // Search by CADASTUR certificate number (exact or partial match)
-    conditions.push(like(cadasturRegistry.certificateNumber, `%${filters.cadasturCode}%`));
+    // Prefix match on the certificate number (unique index covers this).
+    conditions.push(sql`${cadasturRegistry.certificateNumber} LIKE ${filters.cadasturCode + '%'}`);
   }
-  
+
   if (filters?.uf) {
+    // Exact match — idx_cadastur_uf covers this.
     conditions.push(eq(cadasturRegistry.uf, filters.uf.toUpperCase()));
   }
-  
+
   if (filters?.city) {
-    // Case-insensitive city search using MySQL COLLATE
+    // Exact match (no wildcards) — idx_cadastur_city covers this.
+    // The column collation handles case-insensitivity.
     conditions.push(
-      sql`${cadasturRegistry.city} COLLATE utf8mb4_unicode_ci LIKE ${filters.city}`
+      sql`${cadasturRegistry.city} LIKE ${filters.city}`
     );
   }
 
