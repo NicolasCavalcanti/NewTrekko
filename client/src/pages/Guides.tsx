@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { trpc } from "@/lib/trpc";
+import { useGuidesList, useGuideCities } from "@/hooks/useGuides";
 import { Search, Users, Shield, Loader2, ChevronLeft, ChevronRight, MapPin, Phone, Mail, Globe, CheckCircle2, Building2 } from "lucide-react";
 
 const BRAZILIAN_STATES = [
@@ -31,9 +31,9 @@ export default function Guides() {
   const debouncedCadasturCode = useDebounce(cadasturCode, 300);
 
   // Fetch cities based on selected UF
-  const { data: cities, isLoading: citiesLoading } = trpc.guides.getCities.useQuery({
-    uf: selectedUF && selectedUF !== "all" ? selectedUF : undefined,
-  });
+  const { data: cities, isLoading: citiesLoading } = useGuideCities(
+    selectedUF && selectedUF !== "all" ? selectedUF : undefined,
+  );
 
   // Reset city and page when UF changes
   useEffect(() => {
@@ -46,17 +46,13 @@ export default function Guides() {
     setPage(1);
   }, [debouncedSearch, debouncedCadasturCode]);
 
-  const { data, isLoading } = trpc.guides.list.useQuery({
+  const { data, isLoading } = useGuidesList({
     search: debouncedSearch || undefined,
     cadasturCode: debouncedCadasturCode || undefined,
     uf: selectedUF && selectedUF !== "all" ? selectedUF : undefined,
     city: selectedCity && selectedCity !== "all" ? selectedCity : undefined,
     page,
     limit: 12,
-  }, {
-    // Cache results for 60 s — avoids re-fetching when the user re-types the
-    // same query or paginates back to a page they already visited.
-    staleTime: 60_000,
   });
 
   const totalPages = Math.ceil((data?.total || 0) / 12);
