@@ -26,10 +26,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Export guides static data
-        run: pnpm tsx scripts/export-guides-static.ts
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      - name: Generate guides static data from CADASTUR Excel
+        run: node scripts/generate-guides-from-xlsx.cjs
 
       - name: Build frontend
         run: pnpm vite build --base=/NewTrekko/

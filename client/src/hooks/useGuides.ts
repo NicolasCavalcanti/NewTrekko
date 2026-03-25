@@ -22,9 +22,7 @@ type StaticGuide = {
   phone: string | null;
   email: string | null;
   website: string | null;
-  languages: string[] | null;
   categories: string[] | null;
-  segments: string[] | null;
   validUntil: string | null;
   isVerified: boolean;
   isDriverGuide: boolean;
