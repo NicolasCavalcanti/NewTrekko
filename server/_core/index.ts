@@ -1,5 +1,5 @@
 import "dotenv/config";
-import express from "express";
+import express, { Request, Response } from "express";
 import { createServer } from "http";
 import net from "net";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
@@ -10,6 +10,8 @@ import { sitemapRouter } from "../routes/sitemap";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
+import { getDb, getRawPool, getNearbyTrails } from "../db";
+import { viewCounter } from "../lib/viewCounter";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -36,15 +38,47 @@ async function startServer() {
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
+
+  // DB-PERF-06: Health check endpoint — required for Railway/Render liveness probes.
+  // Returns 200 when the DB pool is reachable, 503 otherwise.
+  app.get("/health", async (_req: Request, res: Response) => {
+    try {
+      const pool = getRawPool();
+      if (!pool) {
+        return res.status(503).json({ status: "error", db: "pool not initialised" });
+      }
+      await pool.query("SELECT 1");
+      return res.json({ status: "ok", db: "connected" });
+    } catch (err) {
+      return res.status(503).json({ status: "error", db: "unreachable" });
+    }
+  });
+
+  // DB-ARCH-02: Nearby trails API — GET /api/trilhas/nearby?lat=X&lng=Y&radiusKm=50
+  app.get("/api/trilhas/nearby", async (req: Request, res: Response) => {
+    const lat = parseFloat(req.query.lat as string);
+    const lng = parseFloat(req.query.lng as string);
+    const radiusKm = parseFloat(req.query.radiusKm as string) || 50;
+    if (isNaN(lat) || isNaN(lng)) {
+      return res.status(400).json({ error: "lat and lng query parameters are required" });
+    }
+    try {
+      const nearby = await getNearbyTrails(lat, lng, radiusKm);
+      return res.json({ trails: nearby });
+    } catch (err) {
+      return res.status(500).json({ error: "Failed to query nearby trails" });
+    }
+  });
+
   // Mercado Pago webhook
   app.use('/api/webhooks/mercadopago', mercadopagoWebhook);
-  
+
   // Sitemap
   app.use(sitemapRouter);
 
   // Offline map download route
   app.use('/api/trilhas', offlineMapRouter);
-  
+
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
   // tRPC API
@@ -71,6 +105,9 @@ async function startServer() {
 
   server.listen(port, () => {
     console.log(`Server running on http://localhost:${port}/`);
+    // DB-PERF-05: Start the buffered view-count flush loop.
+    // Flushes every 5 min; also registers SIGTERM handler to flush before exit.
+    viewCounter.start(getDb);
   });
 }
 
