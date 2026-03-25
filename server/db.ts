@@ -1,7 +1,8 @@
-import { eq, and, like, or, gte, lte, sql, desc, asc, inArray } from "drizzle-orm";
+import { eq, and, like, or, gte, lte, sql, desc, asc, inArray, isNull } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { 
-  InsertUser, users, 
+import mysql from "mysql2/promise";
+import {
+  InsertUser, users,
   trails, Trail, InsertTrail,
   expeditions, Expedition, InsertExpedition,
   favorites, Favorite, InsertFavorite,
@@ -14,13 +15,42 @@ import {
   ratingStats, RatingStats, InsertRatingStats
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
+import { encrypt, decrypt } from './lib/crypto';
+
+// ---------------------------------------------------------------------------
+// DB-PERF-06: Connection pool — replaces single createConnection() calls.
+// One pool instance is shared across all requests in the process.
+// ---------------------------------------------------------------------------
+let _pool: mysql.Pool | null = null;
+
+function getPool(): mysql.Pool {
+  if (!_pool) {
+    if (!process.env.DATABASE_URL) {
+      throw new Error("DATABASE_URL is required");
+    }
+    _pool = mysql.createPool({
+      uri: process.env.DATABASE_URL,
+      connectionLimit: 10,      // max concurrent connections from this process
+      queueLimit: 50,           // max queued requests before rejecting with ECONNREFUSED
+      waitForConnections: true,
+      enableKeepAlive: true,
+      keepAliveInitialDelay: 10000,
+    });
+  }
+  return _pool;
+}
+
+/** Exported so server/_core/index.ts can pass it to viewCounter.start(). */
+export function getRawPool(): mysql.Pool | null {
+  return _pool;
+}
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
 export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
-      _db = drizzle(process.env.DATABASE_URL);
+      _db = drizzle(getPool());
     } catch (error) {
       console.warn("[Database] Failed to connect:", error);
       _db = null;
@@ -180,7 +210,13 @@ function removeAccents(str: string): string {
   return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
-export async function getGuides(filters?: { uf?: string; city?: string; search?: string; cadasturCode?: string }, page = 1, limit = 12) {
+export async function getGuides(
+  filters?: { uf?: string; city?: string; search?: string; cadasturCode?: string },
+  page = 1,
+  limit = 12,
+  /** DB-SEC-03: Pass true only for authenticated guide viewing own profile or admin. */
+  exposeFullPii = false
+) {
   const db = await getDb();
   if (!db) return { guides: [], total: 0 };
 
@@ -242,15 +278,16 @@ export async function getGuides(filters?: { uf?: string; city?: string; search?:
   
   const registeredCadasturNumbers = new Set(registeredGuides.map(g => g.cadasturNumber));
 
-  // Map CADASTUR guides with verification status
+  // DB-SEC-03: Map CADASTUR guides — expose full PII only to authorised callers.
   const guides = cadasturGuidesResult.map(cadastur => ({
     id: cadastur.id,
     name: cadastur.fullName,
     cadasturNumber: cadastur.certificateNumber,
     uf: cadastur.uf,
     city: cadastur.city,
-    phone: cadastur.phone,
-    email: cadastur.email,
+    // Full contact details only for authenticated + authorised requests
+    phone: exposeFullPii ? cadastur.phone : (cadastur.phoneMasked ?? null),
+    email: exposeFullPii ? cadastur.email : (cadastur.emailMasked ?? null),
     website: cadastur.website,
     languages: cadastur.languages,
     categories: cadastur.categories,
@@ -513,72 +550,86 @@ export async function getExpeditionParticipants(expeditionId: number) {
 }
 
 // Enroll user in expedition
+// DB-PERF-04: Uses SELECT … FOR UPDATE transaction to prevent capacity race conditions.
+// enrolledCount is derived from reservations — never stored as a column.
 export async function enrollInExpedition(expeditionId: number, userId: number) {
-  const db = await getDb();
-  if (!db) return { success: false, error: 'Database not available' };
-  
-  // Check if already enrolled
-  const existing = await db.select()
-    .from(expeditionParticipants)
-    .where(and(
-      eq(expeditionParticipants.expeditionId, expeditionId),
-      eq(expeditionParticipants.userId, userId)
-    ))
-    .limit(1);
-  
-  if (existing.length > 0) {
-    return { success: false, error: 'Já inscrito nesta expedição' };
+  const pool = getPool();
+  const conn = await pool.getConnection();
+  try {
+    await conn.beginTransaction();
+
+    // Lock the expedition row for the duration of this transaction
+    const [expRows] = await conn.execute(
+      `SELECT id, capacity, status FROM expeditions WHERE id = ? FOR UPDATE`,
+      [expeditionId]
+    ) as any[];
+
+    const exp = (expRows as any[])[0];
+    if (!exp) {
+      await conn.rollback();
+      return { success: false, error: 'Expedição não encontrada' };
+    }
+
+    if (exp.status !== 'active') {
+      await conn.rollback();
+      return { success: false, error: 'Expedição não está disponível para inscrições' };
+    }
+
+    // Count current confirmed participants (derived — DB-PERF-04)
+    const [countRows] = await conn.execute(
+      `SELECT COUNT(*) AS enrolledCount
+       FROM expedition_participants
+       WHERE expeditionId = ? AND status = 'confirmed'`,
+      [expeditionId]
+    ) as any[];
+    const enrolledCount = Number((countRows as any[])[0]?.enrolledCount ?? 0);
+    const capacity = exp.capacity ?? 10;
+
+    if (enrolledCount >= capacity) {
+      await conn.rollback();
+      return { success: false, error: 'Expedição lotada' };
+    }
+
+    // Check if already enrolled
+    const [existingRows] = await conn.execute(
+      `SELECT id FROM expedition_participants WHERE expeditionId = ? AND userId = ? LIMIT 1`,
+      [expeditionId, userId]
+    ) as any[];
+
+    if ((existingRows as any[]).length > 0) {
+      await conn.rollback();
+      return { success: false, error: 'Já inscrito nesta expedição' };
+    }
+
+    // Enroll
+    await conn.execute(
+      `INSERT INTO expedition_participants (expeditionId, userId, status) VALUES (?, ?, 'confirmed')`,
+      [expeditionId, userId]
+    );
+
+    const newCount = enrolledCount + 1;
+    const newStatus = newCount >= capacity ? 'full' : 'active';
+    await conn.execute(
+      `UPDATE expeditions SET status = ?, updatedAt = NOW() WHERE id = ?`,
+      [newStatus, expeditionId]
+    );
+
+    await conn.commit();
+    return { success: true, enrolledCount: newCount };
+  } catch (err) {
+    await conn.rollback();
+    throw err;
+  } finally {
+    conn.release();
   }
-  
-  // Get expedition to check capacity
-  const expedition = await db.select()
-    .from(expeditions)
-    .where(eq(expeditions.id, expeditionId))
-    .limit(1);
-  
-  if (!expedition[0]) {
-    return { success: false, error: 'Expedição não encontrada' };
-  }
-  
-  const exp = expedition[0];
-  const enrolledCount = exp.enrolledCount || 0;
-  const capacity = exp.capacity || 10;
-  
-  if (enrolledCount >= capacity) {
-    return { success: false, error: 'Expedição lotada' };
-  }
-  
-  if (exp.status !== 'active') {
-    return { success: false, error: 'Expedição não está disponível para inscrições' };
-  }
-  
-  // Enroll user
-  await db.insert(expeditionParticipants).values({
-    expeditionId,
-    userId,
-    status: 'confirmed',
-  });
-  
-  // Update enrolled count
-  const newEnrolledCount = enrolledCount + 1;
-  const newStatus = newEnrolledCount >= capacity ? 'full' : 'active';
-  
-  await db.update(expeditions)
-    .set({ 
-      enrolledCount: newEnrolledCount,
-      status: newStatus,
-      updatedAt: new Date()
-    })
-    .where(eq(expeditions.id, expeditionId));
-  
-  return { success: true, enrolledCount: newEnrolledCount };
 }
 
 // Cancel enrollment
+// DB-PERF-04: status derived from participant count — no enrolledCount column to decrement.
 export async function cancelEnrollment(expeditionId: number, userId: number) {
   const db = await getDb();
   if (!db) return { success: false, error: 'Database not available' };
-  
+
   // Check if enrolled
   const existing = await db.select()
     .from(expeditionParticipants)
@@ -588,11 +639,11 @@ export async function cancelEnrollment(expeditionId: number, userId: number) {
       eq(expeditionParticipants.status, 'confirmed')
     ))
     .limit(1);
-  
+
   if (existing.length === 0) {
     return { success: false, error: 'Não está inscrito nesta expedição' };
   }
-  
+
   // Update status to cancelled
   await db.update(expeditionParticipants)
     .set({ status: 'cancelled', updatedAt: new Date() })
@@ -601,25 +652,21 @@ export async function cancelEnrollment(expeditionId: number, userId: number) {
       eq(expeditionParticipants.userId, userId)
     ));
   
-  // Update enrolled count
-  const expedition = await db.select()
-    .from(expeditions)
-    .where(eq(expeditions.id, expeditionId))
-    .limit(1);
-  
-  if (expedition[0]) {
-    const newEnrolledCount = Math.max(0, (expedition[0].enrolledCount || 0) - 1);
-    const newStatus = expedition[0].status === 'full' ? 'active' : expedition[0].status;
-    
+  // DB-PERF-04: re-derive the live count and reopen if no longer full
+  const [countRows] = await db.execute(sql`
+    SELECT COUNT(*) AS cnt
+    FROM expedition_participants
+    WHERE expeditionId = ${expeditionId} AND status = 'confirmed'
+  `);
+  const remaining = Number((countRows as any)?.[0]?.cnt ?? 0);
+  const [expRows] = await db.execute(sql`SELECT capacity, status FROM expeditions WHERE id = ${expeditionId}`);
+  const exp = (expRows as any)?.[0];
+  if (exp && exp.status === 'full' && remaining < (exp.capacity ?? 10)) {
     await db.update(expeditions)
-      .set({ 
-        enrolledCount: newEnrolledCount,
-        status: newStatus,
-        updatedAt: new Date()
-      })
+      .set({ status: 'active', updatedAt: new Date() })
       .where(eq(expeditions.id, expeditionId));
   }
-  
+
   return { success: true };
 }
 
@@ -990,12 +1037,14 @@ export async function updateBlogPost(id: number, data: Partial<InsertBlogPost>) 
   await db.update(blogPosts).set({ ...data, updatedAt: new Date() }).where(eq(blogPosts.id, id));
 }
 
-export async function incrementBlogPostViews(id: number) {
-  const db = await getDb();
-  if (!db) return;
-  await db.update(blogPosts)
-    .set({ viewCount: sql`${blogPosts.viewCount} + 1` })
-    .where(eq(blogPosts.id, id));
+/**
+ * DB-PERF-05: Track a blog post view via the in-memory buffer.
+ * The buffer is flushed to the DB every 5 minutes (see server/lib/viewCounter.ts).
+ * Call viewCounter.start(getDb) once at server startup.
+ */
+export async function trackBlogPostView(id: number): Promise<void> {
+  const { viewCounter } = await import('./lib/viewCounter');
+  viewCounter.track(id);
 }
 
 export async function getRelatedBlogPosts(postId: number, category: string, limit = 3) {
@@ -1065,26 +1114,47 @@ export async function saveGuidePixData(userId: number, data: {
 }) {
   const db = await getDb();
   if (!db) throw new Error('Database not available');
-  
-  // Check if verification record exists
+
+  // DB-SEC-01: encrypt sensitive PII before writing to the database
+  const encryptedData = {
+    ...data,
+    documentNumber: encrypt(data.documentNumber) ?? data.documentNumber,
+    pixKey:         encrypt(data.pixKey)         ?? data.pixKey,
+    pixKeyDocument: encrypt(data.pixKeyDocument) ?? data.pixKeyDocument,
+  };
+
   const existing = await getGuideVerification(userId);
-  
+
   if (existing) {
-    // Update existing record
     await db.update(guideVerification).set({
-      ...data,
-      pixKeyVerified: 1, // Mark as verified since we validated
+      ...encryptedData,
+      pixKeyVerified: 1,
       updatedAt: new Date(),
     }).where(eq(guideVerification.userId, userId));
   } else {
-    // Create new record
     await db.insert(guideVerification).values({
       userId,
       status: 'pending',
-      ...data,
+      ...encryptedData,
       pixKeyVerified: 1,
     });
   }
+}
+
+/**
+ * DB-SEC-01: Return a guide verification record with encrypted fields decrypted.
+ * Use this instead of calling getGuideVerification() when the plaintext values
+ * are needed (e.g. to initiate a payout).
+ */
+export async function getGuideVerificationDecrypted(userId: number) {
+  const record = await getGuideVerification(userId);
+  if (!record) return undefined;
+  return {
+    ...record,
+    documentNumber: decrypt(record.documentNumber),
+    pixKey:         decrypt(record.pixKey),
+    pixKeyDocument: decrypt(record.pixKeyDocument),
+  };
 }
 
 export async function listPendingGuideVerifications(): Promise<GuideVerification[]> {
@@ -1351,11 +1421,47 @@ export async function getScheduledPayouts(): Promise<Payout[]> {
   );
 }
 
+// ---------------------------------------------------------------------------
+// DB-SEC-04: Audit log payload sanitizer
+// Strips any keys not in the allowlist and truncates to 4096 chars.
+// ---------------------------------------------------------------------------
+const AUDIT_PAYLOAD_ALLOWLIST = new Set([
+  "event_type", "payment_id", "status", "amount", "date_created",
+]);
+const AUDIT_PAYLOAD_MAX_LENGTH = 4096;
+
+export function sanitizeAuditPayload(raw: unknown): string | null {
+  if (raw == null) return null;
+  try {
+    const obj = typeof raw === "string" ? JSON.parse(raw) : raw;
+    const filtered: Record<string, unknown> = {};
+    if (typeof obj === "object" && obj !== null) {
+      for (const key of AUDIT_PAYLOAD_ALLOWLIST) {
+        if (key in (obj as Record<string, unknown>)) {
+          filtered[key] = (obj as Record<string, unknown>)[key];
+        }
+      }
+    }
+    const serialized = JSON.stringify(filtered);
+    return serialized.length > AUDIT_PAYLOAD_MAX_LENGTH
+      ? serialized.slice(0, AUDIT_PAYLOAD_MAX_LENGTH)
+      : serialized;
+  } catch {
+    return null;
+  }
+}
+
 // Audit Log Functions
-export async function createAuditLog(data: InsertPaymentAuditLog): Promise<number> {
+export async function createAuditLog(
+  data: Omit<InsertPaymentAuditLog, "payload"> & { payload?: unknown; source?: string }
+): Promise<number> {
   const db = await getDb();
   if (!db) throw new Error('Database not available');
-  const result = await db.insert(paymentAuditLog).values(data);
+  const result = await db.insert(paymentAuditLog).values({
+    ...data,
+    payload: sanitizeAuditPayload(data.payload),
+    source: data.source ?? "system",
+  } as any);
   return result[0].insertId;
 }
 
@@ -1722,4 +1828,67 @@ export async function getPublicStats(): Promise<{ trailsCount: number; guidesCou
     trailsCount: Number(trailsResult[0]?.count || 0),
     guidesCount: Number(guidesResult[0]?.count || 0)
   };
+}
+
+// ============ DB-ARCH-01: SOFT DELETE HELPERS ============
+
+/** Soft-delete a reservation (sets deletedAt). Never physically removes the row. */
+export async function softDeleteReservation(id: number): Promise<void> {
+  const db = await getDb();
+  if (!db) return;
+  await db.update(reservations)
+    .set({ deletedAt: new Date(), updatedAt: new Date() })
+    .where(and(eq(reservations.id, id), isNull(reservations.deletedAt)));
+}
+
+/** Soft-delete a payout record. */
+export async function softDeletePayout(id: number): Promise<void> {
+  const db = await getDb();
+  if (!db) return;
+  await db.update(payouts)
+    .set({ deletedAt: new Date(), updatedAt: new Date() })
+    .where(and(eq(payouts.id, id), isNull(payouts.deletedAt)));
+}
+
+/** Archive a user account instead of hard-deleting. */
+export async function archiveUser(userId: number): Promise<void> {
+  const db = await getDb();
+  if (!db) return;
+  await db.update(users)
+    .set({ archivedAt: new Date(), updatedAt: new Date() })
+    .where(eq(users.id, userId));
+}
+
+// ============ DB-ARCH-02: NEARBY TRAILS (HAVERSINE) ============
+
+/**
+ * Find published trails within a radius using the Haversine formula.
+ * Requires latitude/longitude columns populated from the DB-ARCH-02 migration.
+ */
+export async function getNearbyTrails(
+  lat: number,
+  lng: number,
+  radiusKm: number,
+  limit = 20
+): Promise<(Trail & { distanceKm: number })[]> {
+  const db = await getDb();
+  if (!db) return [];
+
+  const result = await db.execute(sql`
+    SELECT *,
+      (6371 * acos(
+        cos(radians(${lat})) * cos(radians(latitude)) *
+        cos(radians(longitude) - radians(${lng})) +
+        sin(radians(${lat})) * sin(radians(latitude))
+      )) AS distanceKm
+    FROM trails
+    WHERE status = 'published'
+      AND latitude IS NOT NULL
+      AND longitude IS NOT NULL
+    HAVING distanceKm < ${radiusKm}
+    ORDER BY distanceKm ASC
+    LIMIT ${limit}
+  `);
+
+  return ((result as any)[0] ?? []) as (Trail & { distanceKm: number })[];
 }
