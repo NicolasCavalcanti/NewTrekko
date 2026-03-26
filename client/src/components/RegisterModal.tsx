@@ -78,8 +78,7 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
       await utils.auth.me.invalidate();
       onOpenChange(false);
       resetForm();
-      // Force page reload to ensure auth state is fully updated
-      window.location.href = "/perfil";
+      navigate("/perfil");
     },
     onError: (error) => {
       if (error.message.includes("E-mail")) {
