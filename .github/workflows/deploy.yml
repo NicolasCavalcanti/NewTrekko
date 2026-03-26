@@ -34,6 +34,7 @@ jobs:
         env:
           NODE_ENV: production
           VITE_STATIC_MODE: "true"
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
       - name: Copy index.html to 404.html (SPA routing)
         run: cp dist/public/index.html dist/public/404.html

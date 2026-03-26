@@ -43,10 +43,14 @@ queryClient.getMutationCache().subscribe(event => {
   }
 });
 
+// Allow a deployed backend URL to be injected at build time so that the
+// static GitHub Pages frontend can reach the API server.
+const apiBase = (import.meta.env.VITE_API_URL ?? "").replace(/\/$/, "");
+
 const trpcClient = trpc.createClient({
   links: [
     httpBatchLink({
-      url: "/api/trpc",
+      url: `${apiBase}/api/trpc`,
       transformer: superjson,
       fetch(input, init) {
         return globalThis.fetch(input, {
