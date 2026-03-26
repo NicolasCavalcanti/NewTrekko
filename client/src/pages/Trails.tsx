@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { trpc } from "@/lib/trpc";
+import { useTrailsList } from "@/hooks/useTrails";
 import { Search, Mountain, MapPin, Calendar, Users, Loader2, ChevronLeft, ChevronRight, User, DollarSign, CheckCircle2, XCircle, Clock, AlertCircle } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -53,7 +54,7 @@ export default function Trails() {
   const [expEndDate, setExpEndDate] = useState("");
   const [expPage, setExpPage] = useState(1);
 
-  const { data: trailsData, isLoading: trailsLoading } = trpc.trails.list.useQuery({
+  const { data: trailsData, isLoading: trailsLoading } = useTrailsList({
     search: searchText || undefined,
     uf: selectedUF && selectedUF !== "all" ? selectedUF : undefined,
     difficulty: selectedDifficulty && selectedDifficulty !== "all" ? selectedDifficulty : undefined,
