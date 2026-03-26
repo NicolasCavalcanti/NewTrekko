@@ -1,7 +1,7 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { lazy, Suspense } from "react";
-import { Route, Switch } from "wouter";
+import { Router, Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { PageSkeleton } from "./components/PageSkeleton";
 import { AdSenseLoader } from "./components/AdSenseLoader";
@@ -26,7 +26,10 @@ const EditorialPolicy = lazy(() => import("./pages/EditorialPolicy"));
 const Contact = lazy(() => import("./pages/Contact"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
-function Router() {
+// Strip trailing slash so Wouter base works correctly (e.g. "/NewTrekko/" → "/NewTrekko")
+const routerBase = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+function AppRoutes() {
   return (
     <>
       <AdSenseLoader />
@@ -70,7 +73,9 @@ function App() {
         <ThemeProvider defaultTheme="light">
           <TooltipProvider>
             <Toaster />
-            <Router />
+            <Router base={routerBase}>
+              <AppRoutes />
+            </Router>
           </TooltipProvider>
         </ThemeProvider>
       </HelmetProvider>
