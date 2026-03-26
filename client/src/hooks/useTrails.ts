@@ -51,6 +51,22 @@ function normalize(str: string) {
     .toLowerCase();
 }
 
+// Prepend BASE_URL to absolute asset paths so images load correctly on
+// GitHub Pages (base=/NewTrekko/) and on local dev (base=/).
+const basePrefix = BASE.endsWith('/') ? BASE.slice(0, -1) : BASE;
+function withBase(url: string | null | undefined): string | null {
+  if (!url) return null;
+  if (!url.startsWith('/') || url.startsWith('//') || url.startsWith('http')) return url;
+  return `${basePrefix}${url}`;
+}
+function resolveImages(trail: StaticTrail): StaticTrail {
+  return {
+    ...trail,
+    imageUrl: withBase(trail.imageUrl),
+    images: trail.images?.map((u) => withBase(u) as string) ?? null,
+  };
+}
+
 function useAllStaticTrails() {
   return useQuery<StaticTrail[]>({
     queryKey: ['static-trails'],
@@ -108,7 +124,7 @@ export function useTrailsList(params: {
     }
 
     const total = result.length;
-    const paged = result.slice((page - 1) * limit, page * limit);
+    const paged = result.slice((page - 1) * limit, page * limit).map(resolveImages);
     return { trails: paged, total };
   }, [staticQuery.data, params.search, params.uf, params.difficulty, params.maxDistance, page, limit]);
 
@@ -138,7 +154,7 @@ export function useTrailById(id: number) {
   const staticTrail = useMemo(() => {
     if (!STATIC_MODE || !staticQuery.data) return undefined;
     const trail = staticQuery.data.find((t) => t.id === id);
-    return trail ? { trail, relatedExpeditions: [] } : undefined;
+    return trail ? { trail: resolveImages(trail), relatedExpeditions: [] } : undefined;
   }, [staticQuery.data, id]);
 
   const trpcQuery = trpc.trails.getById.useQuery(
