@@ -57,8 +57,8 @@ function useAllStaticTrails() {
     queryFn: async () => {
       const url = `${BASE}data/trails.json`.replace('//', '/');
       const res = await fetch(url);
-      if (!res.ok) throw new Error(`Failed to load trails.json: ${res.status}`);
-      return res.json();
+      if (!res.ok) return [] as StaticTrail[];
+      return res.json() as Promise<StaticTrail[]>;
     },
     enabled: STATIC_MODE,
     staleTime: Infinity,

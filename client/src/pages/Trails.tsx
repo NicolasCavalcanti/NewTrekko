@@ -173,7 +173,7 @@ export default function Trails() {
                 <div className="flex items-center justify-center py-12">
                   <Loader2 className="w-8 h-8 animate-spin text-primary" />
                 </div>
-              ) : trailsData?.trails.length === 0 ? (
+              ) : !trailsData || trailsData.trails.length === 0 ? (
                 <div className="text-center py-12">
                   <Mountain className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
                   <h3 className="font-heading text-xl font-semibold mb-2">Nenhuma trilha encontrada</h3>
