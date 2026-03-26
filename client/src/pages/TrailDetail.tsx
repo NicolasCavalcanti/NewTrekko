@@ -1,5 +1,5 @@
 import { useParams, useLocation } from "wouter";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import ImageLightbox from "@/components/ImageLightbox";
 import Header from "@/components/Header";
@@ -30,6 +30,7 @@ export default function TrailDetail() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
+  const touchStartX = useRef<number | null>(null);
 
   const { data, isLoading, error } = useTrailById(trailId);
   const { data: isFavorite, refetch: refetchFavorite } = trpc.favorites.check.useQuery(
@@ -389,11 +390,20 @@ export default function TrailDetail() {
         </nav>
 
         {/* Hero with Image Gallery */}
-        <div className="relative h-[50vh] md:h-[60vh] bg-gradient-to-br from-forest/30 to-forest-light/30">
+        <div
+          className="relative h-[50vh] md:h-[60vh] bg-gradient-to-br from-forest/30 to-forest-light/30"
+          onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
+          onTouchEnd={(e) => {
+            if (touchStartX.current === null || images.length <= 1) return;
+            const dx = e.changedTouches[0].clientX - touchStartX.current;
+            if (Math.abs(dx) > 50) dx < 0 ? nextImage() : prevImage();
+            touchStartX.current = null;
+          }}
+        >
           {images.length > 0 ? (
             <>
-              <img 
-                src={images[currentImageIndex]} 
+              <img
+                src={images[currentImageIndex]}
                 alt={`Trilha ${trail.name} - ${trail.city}, ${trail.uf}`}
                 className="absolute inset-0 w-full h-full object-cover cursor-pointer"
                 onClick={() => setIsLightboxOpen(true)}
@@ -401,28 +411,28 @@ export default function TrailDetail() {
               {/* Expand button */}
               <button
                 onClick={() => setIsLightboxOpen(true)}
-                className="absolute top-4 right-4 z-10 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+                className="absolute top-4 right-4 z-20 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
                 aria-label="Expandir imagem"
               >
                 <Expand className="w-5 h-5" />
               </button>
               {images.length > 1 && (
                 <>
-                  <button 
+                  <button
                     onClick={prevImage}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
                     aria-label="Imagem anterior"
                   >
                     <ChevronLeft className="w-6 h-6" />
                   </button>
-                  <button 
+                  <button
                     onClick={nextImage}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+                    className="absolute right-14 top-1/2 -translate-y-1/2 z-20 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
                     aria-label="Próxima imagem"
                   >
                     <ChevronRight className="w-6 h-6" />
                   </button>
-                  <div className="absolute bottom-24 left-1/2 -translate-x-1/2 flex gap-2">
+                  <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-20 flex gap-2">
                     {images.map((_, idx) => (
                       <button
                         key={idx}
