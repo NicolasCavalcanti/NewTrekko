@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { trpc } from "@/lib/trpc";
+import { useTrailById } from "@/hooks/useTrails";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { 
   Mountain, MapPin, ArrowLeft, Heart, Calendar, Users, Loader2, Shield,
@@ -30,7 +31,7 @@ export default function TrailDetail() {
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
 
-  const { data, isLoading, error } = trpc.trails.getById.useQuery({ id: trailId });
+  const { data, isLoading, error } = useTrailById(trailId);
   const { data: isFavorite, refetch: refetchFavorite } = trpc.favorites.check.useQuery(
     { trailId },
     { enabled: isAuthenticated }
