@@ -60,12 +60,16 @@ function makeStaticErrorResponse(url: string | URL | Request): Response {
     typeof url === "string" ? url : url instanceof URL ? url.href : url.url;
   const path = href.split("/api/trpc/")[1]?.split("?")[0] ?? "";
   const batchSize = path ? path.split(",").length : 1;
+  // Wrap in superjson format: tRPC's transformResult calls
+  // transformer.deserialize(item.error), which expects { json, meta? }.
   const body = JSON.stringify(
     Array.from({ length: batchSize }, () => ({
       error: {
-        message: "Servidor não disponível nesta versão estática",
-        code: -32603,
-        data: { code: "INTERNAL_SERVER_ERROR", httpStatus: 503 },
+        json: {
+          message: "Servidor não disponível nesta versão estática",
+          code: -32603,
+          data: { code: "INTERNAL_SERVER_ERROR", httpStatus: 503 },
+        },
       },
     }))
   );
