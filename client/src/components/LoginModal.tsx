@@ -9,6 +9,9 @@ import { useLocation } from "wouter";
 import { Loader2, Eye, EyeOff } from "lucide-react";
 import { getLoginUrl } from "@/const";
 
+const STATIC_NO_API =
+  import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
+
 interface LoginModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -86,6 +89,12 @@ export default function LoginModal({ open, onOpenChange, onSwitchToRegister }: L
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {STATIC_NO_API && (
+            <div className="p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-sm">
+              Esta é uma versão de demonstração estática. O login não está disponível aqui — acesse a versão completa em{" "}
+              <a href="https://trekko.com.br" className="font-medium underline">trekko.com.br</a>.
+            </div>
+          )}
           {errors.general && (
             <div className="p-3 rounded-lg bg-destructive/10 text-destructive text-sm">
               {errors.general}
@@ -136,7 +145,7 @@ export default function LoginModal({ open, onOpenChange, onSwitchToRegister }: L
           <Button
             type="submit"
             className="w-full"
-            disabled={loginMutation.isPending}
+            disabled={loginMutation.isPending || STATIC_NO_API}
           >
             {loginMutation.isPending ? (
               <>
