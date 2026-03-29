@@ -43,16 +43,50 @@ queryClient.getMutationCache().subscribe(event => {
   }
 });
 
+// Allow a deployed backend URL to be injected at build time so that the
+// static GitHub Pages frontend can reach the API server.
+const apiBase = (import.meta.env.VITE_API_URL ?? "").replace(/\/$/, "");
+
+// True when deployed as a static site with no backend configured.
+// In this state every tRPC call must be intercepted so we return a proper
+// JSON error instead of letting GitHub Pages serve its HTML 404 page,
+// which causes "Unexpected token '<'" parse crashes.
+const STATIC_NO_API =
+  import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
+
+/** Returns a well-formed tRPC batch error response for N operations. */
+function makeStaticErrorResponse(url: string | URL | Request): Response {
+  const href =
+    typeof url === "string" ? url : url instanceof URL ? url.href : url.url;
+  const path = href.split("/api/trpc/")[1]?.split("?")[0] ?? "";
+  const batchSize = path ? path.split(",").length : 1;
+  // Wrap in superjson format: tRPC's transformResult calls
+  // transformer.deserialize(item.error), which expects { json, meta? }.
+  const body = JSON.stringify(
+    Array.from({ length: batchSize }, () => ({
+      error: {
+        json: {
+          message: "Servidor não disponível nesta versão estática",
+          code: -32603,
+          data: { code: "INTERNAL_SERVER_ERROR", httpStatus: 503 },
+        },
+      },
+    }))
+  );
+  return new Response(body, {
+    status: 200,
+    headers: { "Content-Type": "application/json" },
+  });
+}
+
 const trpcClient = trpc.createClient({
   links: [
     httpBatchLink({
-      url: "/api/trpc",
+      url: `${apiBase}/api/trpc`,
       transformer: superjson,
       fetch(input, init) {
-        return globalThis.fetch(input, {
-          ...(init ?? {}),
-          credentials: "include",
-        });
+        if (STATIC_NO_API) return Promise.resolve(makeStaticErrorResponse(input));
+        return globalThis.fetch(input, { ...(init ?? {}), credentials: "include" });
       },
     }),
   ],
