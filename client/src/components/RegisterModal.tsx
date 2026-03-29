@@ -214,6 +214,7 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
         email: email.trim().toLowerCase(),
         password,
         userType: userType as "trekker" | "guide",
+        cadasturNumber: userType === "guide" ? cadasturNumber : undefined,
       });
       if ("error" in result) {
         if (result.error.includes("e-mail") || result.error.includes("cadastrado")) {
