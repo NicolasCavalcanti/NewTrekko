@@ -2,6 +2,7 @@ import React from "react";
 import { useParams, Link } from "wouter";
 import { Helmet } from "react-helmet-async";
 import { trpc } from "@/lib/trpc";
+import { useBlogPostBySlug, useBlogRelated } from "@/hooks/useBlog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -31,15 +32,9 @@ export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
   
 
-  const { data: post, isLoading, error } = trpc.blog.getBySlug.useQuery(
-    { slug: slug || "" },
-    { enabled: !!slug }
-  );
+  const { data: post, isLoading, error } = useBlogPostBySlug(slug || "");
 
-  const { data: relatedPosts } = trpc.blog.getRelated.useQuery(
-    { postId: post?.id || 0, category: post?.category || "" },
-    { enabled: !!post?.id && !!post?.category }
-  );
+  const { data: relatedPosts } = useBlogRelated(post?.id, post?.category ?? undefined);
 
   const handleShare = async () => {
     const url = window.location.href;
