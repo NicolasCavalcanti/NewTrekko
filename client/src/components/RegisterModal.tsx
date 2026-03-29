@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+
+const STATIC_NO_API =
+  import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -282,6 +285,12 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
   // Render Trekker registration form
   const renderTrekkerForm = () => (
     <form onSubmit={handleSubmit} className="space-y-4 w-full overflow-visible">
+      {STATIC_NO_API && (
+        <div className="p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-sm">
+          Esta é uma versão de demonstração estática. O cadastro não está disponível aqui — acesse a versão completa em{" "}
+          <a href="https://trekko.com.br" className="font-medium underline">trekko.com.br</a>.
+        </div>
+      )}
       <div className="space-y-2">
         <Label htmlFor="name">Nome completo</Label>
         <Input
@@ -394,7 +403,7 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
         </Button>
         <Button
           type="submit"
-          disabled={!isTrekkerFormValid() || registerMutation.isPending}
+          disabled={!isTrekkerFormValid() || registerMutation.isPending || STATIC_NO_API}
           className="flex-1"
         >
           {registerMutation.isPending ? (
@@ -511,6 +520,12 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
   // Render Guide Step 2 - Account details
   const renderGuideStep2 = () => (
     <form onSubmit={handleSubmit} className="space-y-4 w-full overflow-visible">
+      {STATIC_NO_API && (
+        <div className="p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-sm">
+          Esta é uma versão de demonstração estática. O cadastro não está disponível aqui — acesse a versão completa em{" "}
+          <a href="https://trekko.com.br" className="font-medium underline">trekko.com.br</a>.
+        </div>
+      )}
       <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/10 text-primary mb-4">
         <CheckCircle className="w-5 h-5" />
         <span className="font-medium">CADASTUR: {cadasturNumber}</span>
@@ -646,7 +661,7 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
         </Button>
         <Button
           type="submit"
-          disabled={!isGuideStep2Valid() || registerMutation.isPending}
+          disabled={!isGuideStep2Valid() || registerMutation.isPending || STATIC_NO_API}
           className="flex-1"
         >
           {registerMutation.isPending ? (
