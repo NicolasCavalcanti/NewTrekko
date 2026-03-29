@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { staticRegister } from "@/lib/staticAuth";
 
 const STATIC_NO_API =
   import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
@@ -207,6 +208,28 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
       return;
     }
 
+    if (STATIC_NO_API) {
+      const result = staticRegister({
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        password,
+        userType: userType as "trekker" | "guide",
+      });
+      if ("error" in result) {
+        if (result.error.includes("e-mail") || result.error.includes("cadastrado")) {
+          setErrors({ email: result.error });
+        } else {
+          toast.error(result.error);
+        }
+        return;
+      }
+      toast.success("Conta criada com sucesso!");
+      onOpenChange(false);
+      resetForm();
+      window.location.href = `${import.meta.env.BASE_URL}perfil`;
+      return;
+    }
+
     registerMutation.mutate({
       name: name.trim(),
       email: email.trim().toLowerCase(),
@@ -285,12 +308,6 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
   // Render Trekker registration form
   const renderTrekkerForm = () => (
     <form onSubmit={handleSubmit} className="space-y-4 w-full overflow-visible">
-      {STATIC_NO_API && (
-        <div className="p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-sm">
-          Esta é uma versão de demonstração estática. O cadastro não está disponível aqui — acesse a versão completa em{" "}
-          <a href="https://trekko.com.br" className="font-medium underline">trekko.com.br</a>.
-        </div>
-      )}
       <div className="space-y-2">
         <Label htmlFor="name">Nome completo</Label>
         <Input
@@ -403,7 +420,7 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
         </Button>
         <Button
           type="submit"
-          disabled={!isTrekkerFormValid() || registerMutation.isPending || STATIC_NO_API}
+          disabled={!isTrekkerFormValid() || registerMutation.isPending}
           className="flex-1"
         >
           {registerMutation.isPending ? (
@@ -520,12 +537,6 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
   // Render Guide Step 2 - Account details
   const renderGuideStep2 = () => (
     <form onSubmit={handleSubmit} className="space-y-4 w-full overflow-visible">
-      {STATIC_NO_API && (
-        <div className="p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-sm">
-          Esta é uma versão de demonstração estática. O cadastro não está disponível aqui — acesse a versão completa em{" "}
-          <a href="https://trekko.com.br" className="font-medium underline">trekko.com.br</a>.
-        </div>
-      )}
       <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/10 text-primary mb-4">
         <CheckCircle className="w-5 h-5" />
         <span className="font-medium">CADASTUR: {cadasturNumber}</span>
@@ -661,7 +672,7 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
         </Button>
         <Button
           type="submit"
-          disabled={!isGuideStep2Valid() || registerMutation.isPending || STATIC_NO_API}
+          disabled={!isGuideStep2Valid() || registerMutation.isPending}
           className="flex-1"
         >
           {registerMutation.isPending ? (

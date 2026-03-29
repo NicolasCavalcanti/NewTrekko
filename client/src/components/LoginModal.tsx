@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { trpc } from "@/lib/trpc";
+import { staticLogin } from "@/lib/staticAuth";
 import { toast } from "sonner";
 import { useLocation } from "wouter";
 import { Loader2, Eye, EyeOff } from "lucide-react";
@@ -65,6 +66,19 @@ export default function LoginModal({ open, onOpenChange, onSwitchToRegister }: L
       return;
     }
 
+    if (STATIC_NO_API) {
+      const result = staticLogin(email.trim().toLowerCase(), password);
+      if ("error" in result) {
+        setErrors({ general: result.error });
+        return;
+      }
+      toast.success("Login realizado com sucesso!");
+      onOpenChange(false);
+      resetForm();
+      window.location.href = import.meta.env.BASE_URL;
+      return;
+    }
+
     loginMutation.mutate({
       email: email.trim().toLowerCase(),
       password,
@@ -89,12 +103,6 @@ export default function LoginModal({ open, onOpenChange, onSwitchToRegister }: L
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {STATIC_NO_API && (
-            <div className="p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-sm">
-              Esta é uma versão de demonstração estática. O login não está disponível aqui — acesse a versão completa em{" "}
-              <a href="https://trekko.com.br" className="font-medium underline">trekko.com.br</a>.
-            </div>
-          )}
           {errors.general && (
             <div className="p-3 rounded-lg bg-destructive/10 text-destructive text-sm">
               {errors.general}
@@ -145,7 +153,7 @@ export default function LoginModal({ open, onOpenChange, onSwitchToRegister }: L
           <Button
             type="submit"
             className="w-full"
-            disabled={loginMutation.isPending || STATIC_NO_API}
+            disabled={loginMutation.isPending}
           >
             {loginMutation.isPending ? (
               <>
