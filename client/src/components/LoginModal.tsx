@@ -165,24 +165,6 @@ export default function LoginModal({ open, onOpenChange, onSwitchToRegister }: L
             )}
           </Button>
 
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">ou</span>
-            </div>
-          </div>
-
-          <Button
-            type="button"
-            variant="outline"
-            className="w-full"
-            onClick={handleOAuthLogin}
-          >
-            Entrar com Manus
-          </Button>
-
           {onSwitchToRegister && (
             <p className="text-center text-sm text-muted-foreground">
               Não tem uma conta?{" "}
