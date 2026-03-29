@@ -30,8 +30,7 @@ export default function LoginModal({ open, onOpenChange, onSwitchToRegister }: L
       await utils.auth.me.invalidate();
       onOpenChange(false);
       resetForm();
-      // Force page reload to ensure auth state is fully updated
-      window.location.href = "/";
+      navigate("/");
     },
     onError: (error) => {
       setErrors({ general: error.message });
