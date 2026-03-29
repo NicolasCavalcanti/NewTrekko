@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { Helmet } from "react-helmet-async";
-import { trpc } from "@/lib/trpc";
+import { useBlogList } from "@/hooks/useBlog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -32,7 +32,7 @@ export default function Blog() {
   const [category, setCategory] = useState("");
   const [page, setPage] = useState(1);
 
-  const { data, isLoading } = trpc.blog.list.useQuery({
+  const { data, isLoading } = useBlogList({
     search: search || undefined,
     category: category || undefined,
     page,
