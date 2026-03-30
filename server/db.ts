@@ -211,7 +211,7 @@ function removeAccents(str: string): string {
 }
 
 export async function getGuides(
-  filters?: { uf?: string; city?: string; search?: string; cadasturCode?: string },
+  filters?: { uf?: string; city?: string; search?: string; cadasturCode?: string; sortBy?: 'recent' | 'name' },
   page = 1,
   limit = 12,
   /** DB-SEC-03: Pass true only for authenticated guide viewing own profile or admin. */
@@ -268,15 +268,19 @@ export async function getGuides(
     .from(cadasturRegistry)
     .where(whereClause);
 
-  // Get list of CADASTUR numbers that are registered on Trekko
-  const registeredGuides = await db.select({ cadasturNumber: users.cadasturNumber })
+  // Get list of CADASTUR numbers that are registered on Trekko (with lastSignedIn for recent sort)
+  const registeredGuides = await db.select({
+    cadasturNumber: users.cadasturNumber,
+    lastSignedIn: users.lastSignedIn,
+  })
     .from(users)
     .where(and(
       eq(users.userType, "guide"),
       sql`${users.cadasturNumber} IS NOT NULL`
     ));
-  
-  const registeredCadasturNumbers = new Set(registeredGuides.map(g => g.cadasturNumber));
+
+  const registeredMap = new Map(registeredGuides.map(g => [g.cadasturNumber, g.lastSignedIn]));
+  const registeredCadasturNumbers = new Set(registeredMap.keys());
 
   // DB-SEC-03: Map CADASTUR guides — expose full PII only to authorised callers.
   const guides = cadasturGuidesResult.map(cadastur => ({
@@ -297,15 +301,25 @@ export async function getGuides(
     isDriverGuide: cadastur.isDriverGuide === 1,
   }));
 
-  // Sort guides: verified first, then by name alphabetically
-  guides.sort((a, b) => {
-    // Primary sort: verified guides first
-    if (a.isVerified !== b.isVerified) {
-      return a.isVerified ? -1 : 1;
-    }
-    // Secondary sort: alphabetically by name
-    return (a.name || '').localeCompare(b.name || '', 'pt-BR');
-  });
+  if (filters?.sortBy === 'recent') {
+    // Sort by most recently active on Trekko: verified with lastSignedIn first, then by date desc
+    guides.sort((a, b) => {
+      const aDate = registeredMap.get(a.cadasturNumber);
+      const bDate = registeredMap.get(b.cadasturNumber);
+      if (aDate && !bDate) return -1;
+      if (!aDate && bDate) return 1;
+      if (aDate && bDate) return new Date(bDate).getTime() - new Date(aDate).getTime();
+      return (a.name || '').localeCompare(b.name || '', 'pt-BR');
+    });
+  } else {
+    // Default sort: verified first, then by name alphabetically
+    guides.sort((a, b) => {
+      if (a.isVerified !== b.isVerified) {
+        return a.isVerified ? -1 : 1;
+      }
+      return (a.name || '').localeCompare(b.name || '', 'pt-BR');
+    });
+  }
 
   return {
     guides,
@@ -342,6 +356,7 @@ export async function getTrails(filters?: {
   uf?: string;
   difficulty?: string;
   maxDistance?: number;
+  sortBy?: 'views' | 'name';
 }, page = 1, limit = 12) {
   const db = await getDb();
   if (!db) return { trails: [], total: 0 };
@@ -378,7 +393,7 @@ export async function getTrails(filters?: {
     .where(whereClause)
     .limit(limit)
     .offset(offset)
-    .orderBy(asc(trails.name));
+    .orderBy(filters?.sortBy === 'views' ? desc(trails.viewCount) : asc(trails.name));
 
   const countResult = await db.select({ count: sql<number>`count(*)` })
     .from(trails)

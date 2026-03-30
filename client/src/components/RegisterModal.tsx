@@ -1,5 +1,9 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { staticRegister } from "@/lib/staticAuth";
+
+const STATIC_NO_API =
+  import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -201,6 +205,29 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
+      return;
+    }
+
+    if (STATIC_NO_API) {
+      const result = staticRegister({
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        password,
+        userType: userType as "trekker" | "guide",
+        cadasturNumber: userType === "guide" ? cadasturNumber : undefined,
+      });
+      if ("error" in result) {
+        if (result.error.includes("e-mail") || result.error.includes("cadastrado")) {
+          setErrors({ email: result.error });
+        } else {
+          toast.error(result.error);
+        }
+        return;
+      }
+      toast.success("Conta criada com sucesso!");
+      onOpenChange(false);
+      resetForm();
+      window.location.href = `${import.meta.env.BASE_URL}perfil`;
       return;
     }
 

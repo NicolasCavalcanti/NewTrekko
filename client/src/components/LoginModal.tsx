@@ -4,10 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { trpc } from "@/lib/trpc";
+import { staticLogin } from "@/lib/staticAuth";
 import { toast } from "sonner";
 import { useLocation } from "wouter";
 import { Loader2, Eye, EyeOff } from "lucide-react";
 import { getLoginUrl } from "@/const";
+
+const STATIC_NO_API =
+  import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
 
 interface LoginModalProps {
   open: boolean;
@@ -59,6 +63,19 @@ export default function LoginModal({ open, onOpenChange, onSwitchToRegister }: L
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
+      return;
+    }
+
+    if (STATIC_NO_API) {
+      const result = staticLogin(email.trim().toLowerCase(), password);
+      if ("error" in result) {
+        setErrors({ general: result.error });
+        return;
+      }
+      toast.success("Login realizado com sucesso!");
+      onOpenChange(false);
+      resetForm();
+      window.location.href = import.meta.env.BASE_URL;
       return;
     }
 
@@ -146,24 +163,6 @@ export default function LoginModal({ open, onOpenChange, onSwitchToRegister }: L
             ) : (
               "Entrar"
             )}
-          </Button>
-
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">ou</span>
-            </div>
-          </div>
-
-          <Button
-            type="button"
-            variant="outline"
-            className="w-full"
-            onClick={handleOAuthLogin}
-          >
-            Entrar com Manus
           </Button>
 
           {onSwitchToRegister && (

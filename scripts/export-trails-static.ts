@@ -9,7 +9,7 @@
 
 import 'dotenv/config';
 import { drizzle } from 'drizzle-orm/mysql2';
-import { eq, asc } from 'drizzle-orm';
+import { eq, desc } from 'drizzle-orm';
 import { trails } from '../drizzle/schema.js';
 import { writeFileSync, mkdirSync } from 'fs';
 import { join } from 'path';
@@ -28,7 +28,7 @@ const allTrails = await db
   .select()
   .from(trails)
   .where(eq(trails.status, 'published'))
-  .orderBy(asc(trails.name));
+  .orderBy(desc(trails.viewCount));
 
 const output = allTrails.map((t) => ({
   id: t.id,
@@ -58,6 +58,7 @@ const output = allTrails.map((t) => ({
   highlights: t.highlights ?? null,
   wiklocUrl: t.wiklocUrl ?? null,
   wiklocGpxUrl: t.wiklocGpxUrl ?? null,
+  viewCount: t.viewCount ?? 0,
   status: t.status,
 }));
 
