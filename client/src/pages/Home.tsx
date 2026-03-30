@@ -10,6 +10,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { trpc } from "@/lib/trpc";
 import { Search, Mountain, Users, Calendar, MapPin, ArrowRight, Shield, Star, Compass, CheckCircle2 } from "lucide-react";
 
+const STATIC_NO_API =
+  import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
+
 const BRAZILIAN_STATES = [
   "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG",
   "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"
@@ -27,9 +30,36 @@ export default function Home() {
   const [searchText, setSearchText] = useState("");
   const [selectedUF, setSelectedUF] = useState("");
   const [selectedDifficulty, setSelectedDifficulty] = useState("");
+  const [staticTrails, setStaticTrails] = useState<any[]>([]);
+  const [staticGuides, setStaticGuides] = useState<any[]>([]);
 
   useEffect(() => {
     document.title = "Trekko - Trilhas, Guias e Aventuras no Brasil";
+  }, []);
+
+  useEffect(() => {
+    if (!STATIC_NO_API) return;
+    fetch(`${import.meta.env.BASE_URL}data/trails.json`)
+      .then((r) => r.json())
+      .then((data: any[]) => {
+        const sorted = [...data].sort((a, b) => (b.viewCount ?? 0) - (a.viewCount ?? 0));
+        setStaticTrails(sorted.slice(0, 10));
+      })
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (!STATIC_NO_API) return;
+    fetch(`${import.meta.env.BASE_URL}data/guides.json`)
+      .then((r) => r.json())
+      .then((data: any[]) => {
+        const sorted = [...data].sort((a, b) => {
+          if (a.isVerified !== b.isVerified) return a.isVerified ? -1 : 1;
+          return 0;
+        });
+        setStaticGuides(sorted.slice(0, 10));
+      })
+      .catch(() => {});
   }, []);
 
   const handleSearch = () => {
@@ -40,8 +70,17 @@ export default function Home() {
     navigate(`/trilhas?${params.toString()}`);
   };
 
-  const { data: trailsData } = trpc.trails.list.useQuery({ limit: 6 });
-  const { data: guidesData } = trpc.guides.list.useQuery({ limit: 4 });
+  const { data: trailsData } = trpc.trails.list.useQuery(
+    { limit: 10, sortBy: "views" },
+    { enabled: !STATIC_NO_API },
+  );
+  const { data: guidesData } = trpc.guides.list.useQuery(
+    { limit: 10, sortBy: "recent" },
+    { enabled: !STATIC_NO_API },
+  );
+
+  const displayTrails = STATIC_NO_API ? staticTrails : (trailsData?.trails ?? []);
+  const displayGuides = STATIC_NO_API ? staticGuides : (guidesData?.guides ?? []);
 
   const organizationSchema = {
     "@context": "https://schema.org",
@@ -230,7 +269,7 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {trailsData?.trails.map((trail) => (
+            {displayTrails.map((trail) => (
               <Card 
                 key={trail.id} 
                 className="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow group"
@@ -323,7 +362,7 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {guidesData?.guides.map((guide) => (
+            {displayGuides.map((guide) => (
               <Card 
                 key={guide.id} 
                 className="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
