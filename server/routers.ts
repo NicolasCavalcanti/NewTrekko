@@ -341,6 +341,7 @@ export const appRouter = router({
         maxDistance: z.number().optional(),
         page: z.number().default(1),
         limit: z.number().default(12),
+        sortBy: z.enum(['views', 'name']).optional(),
       }))
       .query(async ({ input }) => {
         return await db.getTrails(input, input.page, input.limit);
@@ -505,6 +506,7 @@ export const appRouter = router({
         city: z.string().optional(),
         page: z.number().default(1),
         limit: z.number().default(12),
+        sortBy: z.enum(['recent', 'name']).optional(),
       }))
       .query(async ({ input }) => {
         return await db.getGuides(input, input.page, input.limit);
