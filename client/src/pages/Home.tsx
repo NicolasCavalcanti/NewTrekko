@@ -43,7 +43,7 @@ export default function Home() {
       .then((r) => r.json())
       .then((data: any[]) => {
         const sorted = [...data].sort((a, b) => (b.viewCount ?? 0) - (a.viewCount ?? 0));
-        setStaticTrails(sorted.slice(0, 10));
+        setStaticTrails(sorted.slice(0, 11));
       })
       .catch(() => {});
   }, []);
@@ -57,7 +57,7 @@ export default function Home() {
           if (a.isVerified !== b.isVerified) return a.isVerified ? -1 : 1;
           return 0;
         });
-        setStaticGuides(sorted.slice(0, 10));
+        setStaticGuides(sorted.slice(0, 12));
       })
       .catch(() => {});
   }, []);
@@ -71,11 +71,11 @@ export default function Home() {
   };
 
   const { data: trailsData } = trpc.trails.list.useQuery(
-    { limit: 10, sortBy: "views" },
+    { limit: 11, sortBy: "views" },
     { enabled: !STATIC_NO_API },
   );
   const { data: guidesData } = trpc.guides.list.useQuery(
-    { limit: 10, sortBy: "recent" },
+    { limit: 12, sortBy: "recent" },
     { enabled: !STATIC_NO_API },
   );
 
