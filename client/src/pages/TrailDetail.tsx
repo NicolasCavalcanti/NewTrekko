@@ -725,49 +725,27 @@ export default function TrailDetail() {
                       </p>
                     </>
                   ) : (
-                    <>
-                      {/* Location map via Google Maps (no API key needed) */}
-                      <div className="relative w-full rounded-lg overflow-hidden border border-muted mb-4">
-                        <iframe
-                          src={`https://maps.google.com/maps?q=${encodeURIComponent(`${trail.name} ${trail.city} ${trail.uf} Brasil`)}&output=embed`}
-                          className="w-full h-[300px] md:h-[400px]"
-                          loading="lazy"
-                          title={`Localização da Trilha ${trail.name}`}
-                          allowFullScreen
-                        />
+                    <div className="rounded-lg border border-orange-200 bg-orange-50 p-6 text-center">
+                      <div className="flex items-center justify-center gap-2 mb-2">
+                        <Map className="w-6 h-6 text-orange-500" />
+                        <span className="font-semibold text-orange-800">
+                          Mapa GPX disponível no Wikiloc
+                        </span>
                       </div>
-
-                      <div className="flex flex-wrap gap-3 mb-4">
-                        <Button variant="outline" asChild>
-                          <a
-                            href={`https://www.wikiloc.com/trails/hiking/br?q=${encodeURIComponent(trail.name)}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <ExternalLink className="w-4 h-4 mr-2" />
-                            Ver trilha no Wikiloc
-                          </a>
-                        </Button>
-                        {wiklocGpxUrl && (
-                          <Button
-                            onClick={handleDownloadOfflineMap}
-                            disabled={isDownloading}
-                            className="bg-forest hover:bg-forest-light"
-                          >
-                            {isDownloading ? (
-                              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                            ) : (
-                              <Download className="w-4 h-4 mr-2" />
-                            )}
-                            Baixar GPX
-                          </Button>
-                        )}
-                      </div>
-
-                      <p className="text-xs text-muted-foreground">
-                        Mapa de localização. Para o traçado detalhado com GPX, visite o Wikiloc.
+                      <p className="text-sm text-muted-foreground mb-5">
+                        O traçado completo e o arquivo GPX para download desta trilha estão disponíveis no Wikiloc.
                       </p>
-                    </>
+                      <Button asChild className="bg-orange-500 hover:bg-orange-600 text-white">
+                        <a
+                          href={`https://pt.wikiloc.com/pesquisar/trilhas?q=${encodeURIComponent(trail.name)}&act=trekking`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <ExternalLink className="w-4 h-4 mr-2" />
+                          Ver mapa no Wikiloc
+                        </a>
+                      </Button>
+                    </div>
                   )}
                 </CardContent>
               </Card>
