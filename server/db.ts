@@ -1,6 +1,7 @@
 import { eq, and, like, or, gte, lte, sql, desc, asc, inArray, isNull } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import mysql from "mysql2/promise";
+import { GUIDES_BLOCKLIST } from "./lib/guides-blocklist";
 import {
   InsertUser, users,
   trails, Trail, InsertTrail,
@@ -321,8 +322,10 @@ export async function getGuides(
     });
   }
 
+  const filtered = guides.filter((g) => !GUIDES_BLOCKLIST.has(g.cadasturNumber));
+
   return {
-    guides,
+    guides: filtered,
     total: Number(countResult[0]?.count || 0)
   };
 }
@@ -879,11 +882,12 @@ import { cadasturRegistry, CadasturRegistry } from "../drizzle/schema";
 export async function getCadasturByCertificate(certificateNumber: string): Promise<CadasturRegistry | undefined> {
   const db = await getDb();
   if (!db) return undefined;
-  
+
   // Normalize the certificate number - remove ALL non-numeric characters
   // This handles inputs like "27.298.769.48-8" -> "27298769488"
   const normalizedCert = normalizeIdentifier(certificateNumber);
   if (!normalizedCert) return undefined;
+  if (GUIDES_BLOCKLIST.has(normalizedCert)) return undefined;
   
   const result = await db.select()
     .from(cadasturRegistry)
