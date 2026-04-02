@@ -4,7 +4,11 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { StarRating } from './StarRating';
 import { trpc } from '@/lib/trpc';
+import { useAuth } from '@/_core/hooks/useAuth';
 import { cn } from '@/lib/utils';
+
+const STATIC_NO_API =
+  import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
 
 interface ReviewFormProps {
   targetType: 'trail' | 'guide';
@@ -24,6 +28,7 @@ export function ReviewForm({ targetType, targetId, onSuccess, onCancel }: Review
   const [images, setImages] = useState<ImagePreview[]>([]);
   const [error, setError] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { user } = useAuth();
 
   const utils = trpc.useUtils();
   const createReview = trpc.reviews.create.useMutation({
@@ -99,6 +104,25 @@ export function ReviewForm({ targetType, targetId, onSuccess, onCancel }: Review
     }
     if (comment.length > 1000) {
       setError('Comentário deve ter no máximo 1000 caracteres');
+      return;
+    }
+
+    // Static mode: save to localStorage
+    if (STATIC_NO_API) {
+      const key = `trekko_reviews_${targetType}_${targetId}`;
+      const existing = (() => { try { return JSON.parse(localStorage.getItem(key) ?? '[]'); } catch { return []; } })();
+      existing.unshift({
+        id: Date.now(),
+        userId: user?.id ?? 0,
+        rating,
+        comment,
+        userName: user?.name ?? 'Você',
+        userPhotoUrl: (user as any)?.photoUrl ?? null,
+        createdAt: new Date().toISOString(),
+        images: [],
+      });
+      localStorage.setItem(key, JSON.stringify(existing));
+      onSuccess?.();
       return;
     }
 
