@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { trpc } from "@/lib/trpc";
+import { useGuideDetail } from "@/hooks/useGuides";
 import { ArrowLeft, Shield, Mail, Phone, Globe, Calendar, Users, MapPin, Loader2, CheckCircle2, Car } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -16,7 +17,7 @@ export default function GuideDetail() {
   const [, navigate] = useLocation();
   const cadasturNumber = id || "";
 
-  const { data, isLoading, error } = trpc.guides.getById.useQuery({ cadasturNumber });
+  const { data, isLoading, error } = useGuideDetail(cadasturNumber);
 
   if (isLoading) {
     return (

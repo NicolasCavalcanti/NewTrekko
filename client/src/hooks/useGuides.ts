@@ -110,6 +110,31 @@ export function useGuidesList(params: {
   return { data: trpcQuery.data, isLoading: trpcQuery.isLoading };
 }
 
+export function useGuideDetail(cadasturNumber: string) {
+  const staticQuery = useAllStaticGuides();
+  const trpcQuery = trpc.guides.getById.useQuery(
+    { cadasturNumber },
+    { enabled: !STATIC_MODE },
+  );
+
+  if (STATIC_MODE) {
+    const guide = staticQuery.data?.find((g) => g.cadasturNumber === cadasturNumber);
+    const data = guide
+      ? {
+          guide: { ...guide, photoUrl: null as string | null, bio: null as string | null },
+          expeditions: [] as any[],
+        }
+      : undefined;
+    const notFound = !staticQuery.isLoading && staticQuery.data && !guide;
+    return {
+      data,
+      isLoading: staticQuery.isLoading,
+      error: notFound ? new Error('not found') : null,
+    };
+  }
+  return { data: trpcQuery.data, isLoading: trpcQuery.isLoading, error: trpcQuery.error };
+}
+
 export function useGuideCities(uf?: string) {
   const staticQuery = useAllStaticGuides();
   const trpcQuery = trpc.guides.getCities.useQuery(
