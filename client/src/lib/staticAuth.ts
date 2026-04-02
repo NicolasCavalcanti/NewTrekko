@@ -108,3 +108,48 @@ export function staticGetCurrentUser(): DemoUser | null {
 export function staticLogout(): void {
   localStorage.removeItem(SESSION_KEY);
 }
+
+export function staticUpdateProfile(data: {
+  name: string;
+  email: string;
+  bio: string;
+  cadasturNumber?: string;
+}): DemoUser | null {
+  const session = staticGetCurrentUser();
+  if (!session) return null;
+  const updated: DemoUser = {
+    ...session,
+    name: data.name,
+    email: data.email,
+    bio: data.bio || null,
+    cadasturNumber: data.cadasturNumber ?? session.cadasturNumber,
+  };
+  localStorage.setItem(SESSION_KEY, JSON.stringify(updated));
+  const stored = getUsers();
+  const idx = stored.findIndex((u) => u.id === session.id);
+  if (idx !== -1) {
+    stored[idx] = {
+      ...stored[idx],
+      name: data.name,
+      email: data.email,
+      cadasturNumber: data.cadasturNumber ?? null,
+    };
+    localStorage.setItem(USERS_KEY, JSON.stringify(stored));
+  }
+  window.dispatchEvent(new Event("staticAuthUpdated"));
+  return updated;
+}
+
+export function staticSetPhoto(dataUrl: string): void {
+  const session = staticGetCurrentUser();
+  if (!session) return;
+  localStorage.setItem(SESSION_KEY, JSON.stringify({ ...session, photoUrl: dataUrl }));
+  window.dispatchEvent(new Event("staticAuthUpdated"));
+}
+
+export function staticRemovePhoto(): void {
+  const session = staticGetCurrentUser();
+  if (!session) return;
+  localStorage.setItem(SESSION_KEY, JSON.stringify({ ...session, photoUrl: null }));
+  window.dispatchEvent(new Event("staticAuthUpdated"));
+}

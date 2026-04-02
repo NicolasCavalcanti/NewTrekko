@@ -11,6 +11,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Label } from "@/components/ui/label";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
+import { staticUpdateProfile, staticSetPhoto, staticRemovePhoto } from "@/lib/staticAuth";
+
+const STATIC_NO_API =
+  import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
 import { getLoginUrl } from "@/const";
 import { User, Heart, Star, Calendar, Plus, Edit, Trash2, Shield, Mountain, MapPin, Loader2, Upload, X, Wallet, Receipt } from "lucide-react";
 import GuideFinancialPanel from "@/components/GuideFinancialPanel";
@@ -212,6 +216,8 @@ function EditProfileForm({ onClose }: { onClose: () => void }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const utils = trpc.useUtils();
+  const [uploading, setUploading] = useState(false);
+
   const updateMutation = trpc.user.updateProfile.useMutation({
     onSuccess: () => {
       utils.auth.me.invalidate();
@@ -254,6 +260,18 @@ function EditProfileForm({ onClose }: { onClose: () => void }) {
       return;
     }
 
+    if (STATIC_NO_API) {
+      setUploading(true);
+      const reader = new FileReader();
+      reader.onload = () => {
+        staticSetPhoto(reader.result as string);
+        toast.success("Foto atualizada!");
+        setUploading(false);
+      };
+      reader.readAsDataURL(file);
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = () => {
       const base64 = (reader.result as string).split(',')[1];
@@ -265,8 +283,23 @@ function EditProfileForm({ onClose }: { onClose: () => void }) {
     reader.readAsDataURL(file);
   };
 
+  const handleRemovePhoto = () => {
+    if (STATIC_NO_API) {
+      staticRemovePhoto();
+      toast.success("Foto removida!");
+      return;
+    }
+    removeMutation.mutate();
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (STATIC_NO_API) {
+      staticUpdateProfile({ name, email, bio, cadasturNumber: cadasturNumber || undefined });
+      toast.success("Perfil atualizado!");
+      onClose();
+      return;
+    }
     updateMutation.mutate({ name, email, bio, cadasturNumber: cadasturNumber || undefined });
   };
 
@@ -296,9 +329,9 @@ function EditProfileForm({ onClose }: { onClose: () => void }) {
             variant="outline"
             size="sm"
             onClick={() => fileInputRef.current?.click()}
-            disabled={uploadMutation.isPending}
+            disabled={uploadMutation.isPending || uploading}
           >
-            {uploadMutation.isPending ? (
+            {(uploadMutation.isPending || uploading) ? (
               <Loader2 className="w-4 h-4 animate-spin mr-2" />
             ) : (
               <Upload className="w-4 h-4 mr-2" />
@@ -311,7 +344,7 @@ function EditProfileForm({ onClose }: { onClose: () => void }) {
               variant="ghost"
               size="sm"
               className="ml-2 text-destructive"
-              onClick={() => removeMutation.mutate()}
+              onClick={handleRemovePhoto}
               disabled={removeMutation.isPending}
             >
               <X className="w-4 h-4 mr-1" />
