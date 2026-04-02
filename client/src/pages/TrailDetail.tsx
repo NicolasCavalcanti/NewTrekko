@@ -104,8 +104,9 @@ export default function TrailDetail() {
   const handleDownloadOfflineMap = async () => {
     if (!wiklocGpxUrl) return;
     setIsDownloading(true);
+    const apiBase = import.meta.env.VITE_API_URL ?? '';
     try {
-      const response = await fetch(`/api/trilhas/${trailId}/mapa-offline`);
+      const response = await fetch(`${apiBase}/api/trilhas/${trailId}/mapa-offline`);
       if (!response.ok) {
         const error = await response.json();
         throw new Error(error.error || 'Erro ao baixar mapa');
@@ -724,15 +725,49 @@ export default function TrailDetail() {
                       </p>
                     </>
                   ) : (
-                    <div className="bg-muted/50 rounded-lg p-6 text-center">
-                      <Map className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
-                      <p className="text-muted-foreground">
-                        Mapa offline indisponível para esta trilha.
+                    <>
+                      {/* Location map via Google Maps (no API key needed) */}
+                      <div className="relative w-full rounded-lg overflow-hidden border border-muted mb-4">
+                        <iframe
+                          src={`https://maps.google.com/maps?q=${encodeURIComponent(`${trail.name} ${trail.city} ${trail.uf} Brasil`)}&output=embed`}
+                          className="w-full h-[300px] md:h-[400px]"
+                          loading="lazy"
+                          title={`Localização da Trilha ${trail.name}`}
+                          allowFullScreen
+                        />
+                      </div>
+
+                      <div className="flex flex-wrap gap-3 mb-4">
+                        <Button variant="outline" asChild>
+                          <a
+                            href={`https://www.wikiloc.com/trails/hiking/br?q=${encodeURIComponent(trail.name)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <ExternalLink className="w-4 h-4 mr-2" />
+                            Ver trilha no Wikiloc
+                          </a>
+                        </Button>
+                        {wiklocGpxUrl && (
+                          <Button
+                            onClick={handleDownloadOfflineMap}
+                            disabled={isDownloading}
+                            className="bg-forest hover:bg-forest-light"
+                          >
+                            {isDownloading ? (
+                              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            ) : (
+                              <Download className="w-4 h-4 mr-2" />
+                            )}
+                            Baixar GPX
+                          </Button>
+                        )}
+                      </div>
+
+                      <p className="text-xs text-muted-foreground">
+                        Mapa de localização. Para o traçado detalhado com GPX, visite o Wikiloc.
                       </p>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        Estamos trabalhando para adicionar mapas a todas as trilhas.
-                      </p>
-                    </div>
+                    </>
                   )}
                 </CardContent>
               </Card>
