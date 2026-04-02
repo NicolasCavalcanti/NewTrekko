@@ -2,7 +2,7 @@ import { getLoginUrl } from "@/const";
 import { staticGetCurrentUser, staticLogout } from "@/lib/staticAuth";
 import { trpc } from "@/lib/trpc";
 import { TRPCClientError } from "@trpc/client";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 const STATIC_NO_API =
   import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
@@ -51,6 +51,14 @@ export function useAuth(options?: UseAuthOptions) {
     }
   }, [logoutMutation, utils]);
 
+  const [staticTick, setStaticTick] = useState(0);
+  useEffect(() => {
+    if (!STATIC_NO_API) return;
+    const handler = () => setStaticTick((t) => t + 1);
+    window.addEventListener("staticAuthUpdated", handler);
+    return () => window.removeEventListener("staticAuthUpdated", handler);
+  }, []);
+
   const staticUser = STATIC_NO_API ? staticGetCurrentUser() : null;
 
   const state = useMemo(() => {
@@ -65,6 +73,7 @@ export function useAuth(options?: UseAuthOptions) {
       isAuthenticated: Boolean(user),
     };
   }, [
+    staticTick,
     staticUser,
     meQuery.data,
     meQuery.error,
