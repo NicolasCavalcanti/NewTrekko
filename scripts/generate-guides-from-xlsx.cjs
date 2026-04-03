@@ -11,6 +11,11 @@ const XLSX = require('../node_modules/xlsx/xlsx.js');
 const fs = require('fs');
 const path = require('path');
 
+const blocklistPath = path.join(__dirname, 'guides-blocklist.json');
+const blocklist = new Set(
+  fs.existsSync(blocklistPath) ? JSON.parse(fs.readFileSync(blocklistPath, 'utf8')) : []
+);
+
 const xlsxPath = path.join(__dirname, '..', 'guia-de-turismo-pf.xlsx');
 if (!fs.existsSync(xlsxPath)) {
   console.error('[generate-guides] guia-de-turismo-pf.xlsx not found — skipping.');
@@ -31,6 +36,7 @@ for (let i = 1; i < rows.length; i++) {
 
   const certStr = String(certNum).trim();
   if (!certStr || certStr === '-') continue;
+  if (blocklist.has(certStr)) continue;
 
   // Excel serial date → ISO string
   let validUntilISO = null;

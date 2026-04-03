@@ -7,6 +7,7 @@ import { TRPCError } from "@trpc/server";
 import * as db from "./db";
 import { storagePut } from "./storage";
 import { nanoid } from "nanoid";
+import { searchWikiloc } from "./lib/wikiloc-search";
 import { MercadoPagoConfig, Preference, Payment } from "mercadopago";
 
 // Helper function to add business days (excluding weekends)
@@ -365,6 +366,36 @@ export const appRouter = router({
     getCities: publicProcedure.query(async () => {
       return await db.getCitiesWithTrails();
     }),
+
+    resolveWiklocMap: publicProcedure
+      .input(z.object({ trailId: z.number() }))
+      .query(async ({ input }) => {
+        const trail = await db.getTrailById(input.trailId);
+        if (!trail) throw new TRPCError({ code: 'NOT_FOUND', message: 'Trail not found' });
+
+        const existingUrl = (trail as any).wiklocUrl as string | null;
+        if (existingUrl) {
+          const match = existingUrl.match(/-(\d+)$/);
+          return {
+            wiklocId: match?.[1] ?? null,
+            wiklocUrl: existingUrl,
+            gpxUrl: (trail as any).wiklocGpxUrl ?? null,
+          };
+        }
+
+        const result = await searchWikiloc({
+          name: trail.name,
+          city: trail.city ?? null,
+          uf: trail.uf ?? null,
+          distanceKm: trail.distanceKm ? parseFloat(String(trail.distanceKm)) : null,
+        });
+
+        if (result) {
+          await db.updateTrailWiklocUrls(input.trailId, result.wiklocUrl, result.gpxUrl);
+        }
+
+        return result ?? { wiklocId: null, wiklocUrl: null, gpxUrl: null };
+      }),
   }),
 
   // Public stats endpoint for About page
