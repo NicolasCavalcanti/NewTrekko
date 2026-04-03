@@ -1,6 +1,7 @@
 import { eq, and, like, or, gte, lte, sql, desc, asc, inArray, isNull } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import mysql from "mysql2/promise";
+import { GUIDES_BLOCKLIST } from "./lib/guides-blocklist";
 import {
   InsertUser, users,
   trails, Trail, InsertTrail,
@@ -321,8 +322,10 @@ export async function getGuides(
     });
   }
 
+  const filtered = guides.filter((g) => !GUIDES_BLOCKLIST.has(g.cadasturNumber));
+
   return {
-    guides,
+    guides: filtered,
     total: Number(countResult[0]?.count || 0)
   };
 }
@@ -410,6 +413,19 @@ export async function getTrailById(id: number) {
   if (!db) return undefined;
   const result = await db.select().from(trails).where(eq(trails.id, id)).limit(1);
   return result.length > 0 ? result[0] : undefined;
+}
+
+export async function updateTrailWiklocUrls(
+  id: number,
+  wiklocUrl: string,
+  wiklocGpxUrl: string,
+): Promise<void> {
+  const db = await getDb();
+  if (!db) return;
+  await db
+    .update(trails)
+    .set({ wiklocUrl, wiklocGpxUrl } as any)
+    .where(eq(trails.id, id));
 }
 
 export async function createTrail(data: InsertTrail) {
@@ -879,11 +895,12 @@ import { cadasturRegistry, CadasturRegistry } from "../drizzle/schema";
 export async function getCadasturByCertificate(certificateNumber: string): Promise<CadasturRegistry | undefined> {
   const db = await getDb();
   if (!db) return undefined;
-  
+
   // Normalize the certificate number - remove ALL non-numeric characters
   // This handles inputs like "27.298.769.48-8" -> "27298769488"
   const normalizedCert = normalizeIdentifier(certificateNumber);
   if (!normalizedCert) return undefined;
+  if (GUIDES_BLOCKLIST.has(normalizedCert)) return undefined;
   
   const result = await db.select()
     .from(cadasturRegistry)

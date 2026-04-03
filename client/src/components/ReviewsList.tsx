@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { trpc } from '@/lib/trpc';
+import { useAuth } from '@/_core/hooks/useAuth';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -22,6 +23,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+
+const STATIC_NO_API =
+  import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
 
 interface ReviewsListProps {
   targetType: 'trail' | 'guide';
@@ -36,29 +40,34 @@ export function ReviewsList({ targetType, targetId, targetName }: ReviewsListPro
   const [withPhotos, setWithPhotos] = useState<boolean | undefined>(undefined);
   const [showForm, setShowForm] = useState(false);
   const [deleteReviewId, setDeleteReviewId] = useState<number | null>(null);
+  const [staticReviewKey, setStaticReviewKey] = useState(0);
 
+  const { user } = useAuth();
   const utils = trpc.useUtils();
-  const { data: user } = trpc.auth.me.useQuery();
-  
-  const { data: stats, isLoading: statsLoading } = trpc.reviews.getStats.useQuery({
-    targetType,
-    targetId,
-  });
 
-  const { data: reviewsData, isLoading: reviewsLoading } = trpc.reviews.list.useQuery({
-    targetType,
-    targetId,
-    page,
-    limit: 10,
-    sortBy,
-    filterStars,
-    withPhotos,
-  });
+  const staticStorageKey = `trekko_reviews_${targetType}_${targetId}`;
+  const staticReviews: any[] = STATIC_NO_API
+    ? (() => { try { return JSON.parse(localStorage.getItem(staticStorageKey) ?? '[]'); } catch { return []; } })()
+    : [];
+  // re-read when staticReviewKey changes (after submit)
+  void staticReviewKey;
+
+  const { data: stats, isLoading: statsLoading } = trpc.reviews.getStats.useQuery(
+    { targetType, targetId },
+    { enabled: !STATIC_NO_API },
+  );
+
+  const { data: reviewsData, isLoading: reviewsLoading } = trpc.reviews.list.useQuery(
+    { targetType, targetId, page, limit: 10, sortBy, filterStars, withPhotos },
+    { enabled: !STATIC_NO_API },
+  );
 
   const { data: hasReviewedData } = trpc.reviews.hasReviewed.useQuery(
     { targetType, targetId },
-    { enabled: !!user }
+    { enabled: !!user && !STATIC_NO_API },
   );
+
+  const staticHasReviewed = STATIC_NO_API && staticReviews.length > 0;
 
   const deleteReview = trpc.reviews.delete.useMutation({
     onSuccess: () => {
@@ -72,6 +81,7 @@ export function ReviewsList({ targetType, targetId, targetName }: ReviewsListPro
   const handleFormSuccess = () => {
     setShowForm(false);
     setPage(1);
+    setStaticReviewKey((k) => k + 1);
   };
 
   const handleDelete = (reviewId: number) => {
@@ -84,7 +94,9 @@ export function ReviewsList({ targetType, targetId, targetName }: ReviewsListPro
     }
   };
 
-  const canReview = user && !hasReviewedData?.hasReviewed;
+  const hasReviewed = STATIC_NO_API ? staticHasReviewed : !!hasReviewedData?.hasReviewed;
+  const canReview = !!user && !hasReviewed;
+  const displayReviews = STATIC_NO_API ? staticReviews : (reviewsData?.reviews ?? []);
 
   return (
     <div className="space-y-6">
@@ -120,7 +132,7 @@ export function ReviewsList({ targetType, targetId, targetName }: ReviewsListPro
       )}
 
       {/* User's existing review notice */}
-      {hasReviewedData?.hasReviewed && !showForm && (
+      {hasReviewed && !showForm && (
         <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-green-800">
           Você já avaliou {targetType === 'trail' ? 'esta trilha' : 'este guia'}.
         </div>
@@ -193,9 +205,9 @@ export function ReviewsList({ targetType, targetId, targetName }: ReviewsListPro
         <div className="flex justify-center py-8">
           <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
         </div>
-      ) : reviewsData && reviewsData.reviews.length > 0 ? (
+      ) : displayReviews.length > 0 ? (
         <div className="space-y-4">
-          {reviewsData.reviews.map((review: any) => (
+          {displayReviews.map((review: any) => (
             <ReviewCard
               key={review.id}
               review={review}
@@ -205,7 +217,7 @@ export function ReviewsList({ targetType, targetId, targetName }: ReviewsListPro
           ))}
 
           {/* Load More */}
-          {reviewsData.page < reviewsData.totalPages && (
+          {reviewsData && reviewsData.page < reviewsData.totalPages && (
             <div className="flex justify-center pt-4">
               <Button
                 variant="outline"
