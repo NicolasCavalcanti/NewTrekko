@@ -5,6 +5,7 @@ import ImageLightbox from "@/components/ImageLightbox";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ReviewsList } from "@/components/ReviewsList";
+import { TrailMap } from "@/components/TrailMap";
 import { AdUnit, AD_SLOTS } from "@/components/AdUnit";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -16,7 +17,7 @@ import {
   Mountain, MapPin, ArrowLeft, Heart, Calendar, Users, Loader2, Shield,
   Clock, TrendingUp, Droplets, Tent, Sun, AlertTriangle, ChevronLeft, ChevronRight,
   Route, DollarSign, Compass, Expand, ChevronRight as ChevronRightIcon, HelpCircle,
-  Navigation, Map, ThermometerSun, Info, Download, ExternalLink
+  Navigation, Map, ThermometerSun, Info
 } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -29,7 +30,6 @@ export default function TrailDetail() {
   const trailId = parseInt(id || "0");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
-  const [isDownloading, setIsDownloading] = useState(false);
   const touchStartX = useRef<number | null>(null);
 
   const { data, isLoading, error } = useTrailById(trailId);
@@ -97,49 +97,8 @@ export default function TrailDetail() {
   const waterPoints = (trail.waterPoints as string[]) || [];
   const campingPoints = (trail.campingPoints as string[]) || [];
   const highlights = (trail.highlights as string[]) || [];
-  const wiklocUrl = (trail as any).wiklocUrl as string | undefined;
-  const wiklocGpxUrl = (trail as any).wiklocGpxUrl as string | undefined;
-  
-  // Handle offline map download
-  const handleDownloadOfflineMap = async () => {
-    if (!wiklocGpxUrl) return;
-    setIsDownloading(true);
-    const apiBase = import.meta.env.VITE_API_URL ?? '';
-    try {
-      const response = await fetch(`${apiBase}/api/trilhas/${trailId}/mapa-offline`);
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Erro ao baixar mapa');
-      }
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = response.headers.get('Content-Disposition')?.split('filename="')[1]?.replace('"', '') || `trekko-mapa-offline-${trail.name}.gpx`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-      toast.success('Mapa offline baixado com sucesso!');
-    } catch (error: any) {
-      toast.error(error.message || 'Erro ao baixar mapa offline');
-    } finally {
-      setIsDownloading(false);
-    }
-  };
-  
-  // Extract Wikiloc trail ID for embed
-  const getWiklocEmbedUrl = (url: string | undefined): string | null => {
-    if (!url) return null;
-    // Extract trail ID from URL like https://www.wikiloc.com/hiking-trails/trilha-xxx-12345678
-    const match = url.match(/-(\d+)$/);
-    if (match) {
-      return `https://www.wikiloc.com/wikiloc/embedv2.do?id=${match[1]}`;
-    }
-    return null;
-  };
-  
-  const wiklocEmbedUrl = getWiklocEmbedUrl(wiklocUrl);
+  const wiklocUrl = (trail as any).wiklocUrl as string | null | undefined;
+  const wiklocGpxUrl = (trail as any).wiklocGpxUrl as string | null | undefined;
 
   const getDifficultyLabel = (difficulty: string | null) => {
     switch (difficulty) {
@@ -675,78 +634,12 @@ export default function TrailDetail() {
                     <Map className="w-6 h-6 text-forest" />
                     Mapa da trilha
                   </h2>
-                  
-                  {wiklocEmbedUrl ? (
-                    <>
-                      {/* Wikiloc Map Embed */}
-                      <div className="relative w-full rounded-lg overflow-hidden border border-muted mb-4">
-                        <iframe
-                          src={wiklocEmbedUrl}
-                          className="w-full h-[300px] md:h-[400px]"
-                          loading="lazy"
-                          title={`Mapa da Trilha ${trail.name}`}
-                          allowFullScreen
-                        />
-                      </div>
-                      
-                      {/* Download Button */}
-                      {wiklocGpxUrl && (
-                        <div className="bg-forest/5 rounded-lg p-4 mb-4">
-                          <Button
-                            onClick={handleDownloadOfflineMap}
-                            disabled={isDownloading}
-                            className="w-full sm:w-auto bg-forest hover:bg-forest-light"
-                          >
-                            {isDownloading ? (
-                              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                            ) : (
-                              <Download className="w-4 h-4 mr-2" />
-                            )}
-                            Baixar mapa offline
-                          </Button>
-                          <p className="text-sm text-muted-foreground mt-2">
-                            Baixe o arquivo para usar a trilha mesmo sem internet.
-                          </p>
-                        </div>
-                      )}
-                      
-                      {/* Wikiloc Attribution */}
-                      <p className="text-xs text-muted-foreground flex items-center gap-1">
-                        Traçado e mapa offline baseados em trilha do{" "}
-                        <a
-                          href={wiklocUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-forest hover:text-forest-light inline-flex items-center gap-1"
-                        >
-                          Wikiloc
-                          <ExternalLink className="w-3 h-3" />
-                        </a>
-                      </p>
-                    </>
-                  ) : (
-                    <div className="rounded-lg border border-orange-200 bg-orange-50 p-6 text-center">
-                      <div className="flex items-center justify-center gap-2 mb-2">
-                        <Map className="w-6 h-6 text-orange-500" />
-                        <span className="font-semibold text-orange-800">
-                          Mapa GPX disponível no Wikiloc
-                        </span>
-                      </div>
-                      <p className="text-sm text-muted-foreground mb-5">
-                        O traçado completo e o arquivo GPX para download desta trilha estão disponíveis no Wikiloc.
-                      </p>
-                      <Button asChild className="bg-orange-500 hover:bg-orange-600 text-white">
-                        <a
-                          href={`https://pt.wikiloc.com/pesquisar/trilhas?q=${encodeURIComponent(trail.name)}&act=trekking`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <ExternalLink className="w-4 h-4 mr-2" />
-                          Ver mapa no Wikiloc
-                        </a>
-                      </Button>
-                    </div>
-                  )}
+                  <TrailMap
+                    trailId={trailId}
+                    trailName={trail.name}
+                    wiklocUrl={wiklocUrl}
+                    gpxUrl={wiklocGpxUrl}
+                  />
                 </CardContent>
               </Card>
 
