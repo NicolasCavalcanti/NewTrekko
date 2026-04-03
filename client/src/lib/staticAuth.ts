@@ -28,7 +28,7 @@ type DemoUser = {
 };
 
 type StoredUser = Omit<DemoUser,
-  | "role" | "photoUrl" | "bio" | "cadasturValidated"
+  | "role" | "cadasturValidated"
   | "openId" | "loginMethod" | "passwordHash"
   | "createdAt" | "updatedAt" | "lastSignedIn"
 > & { password: string };
@@ -37,8 +37,8 @@ function defaultDemoUser(stored: StoredUser): DemoUser {
   return {
     ...stored,
     role: "user",
-    photoUrl: null,
-    bio: null,
+    photoUrl: stored.photoUrl ?? null,
+    bio: stored.bio ?? null,
     cadasturNumber: stored.cadasturNumber ?? null,
     cadasturValidated: 0,
     openId: null,
@@ -132,6 +132,7 @@ export function staticUpdateProfile(data: {
       ...stored[idx],
       name: data.name,
       email: data.email,
+      bio: data.bio || null,
       cadasturNumber: data.cadasturNumber ?? null,
     };
     localStorage.setItem(USERS_KEY, JSON.stringify(stored));
@@ -144,6 +145,12 @@ export function staticSetPhoto(dataUrl: string): void {
   const session = staticGetCurrentUser();
   if (!session) return;
   localStorage.setItem(SESSION_KEY, JSON.stringify({ ...session, photoUrl: dataUrl }));
+  const stored = getUsers();
+  const idx = stored.findIndex((u) => u.id === session.id);
+  if (idx !== -1) {
+    stored[idx] = { ...stored[idx], photoUrl: dataUrl };
+    localStorage.setItem(USERS_KEY, JSON.stringify(stored));
+  }
   window.dispatchEvent(new Event("staticAuthUpdated"));
 }
 
@@ -151,5 +158,11 @@ export function staticRemovePhoto(): void {
   const session = staticGetCurrentUser();
   if (!session) return;
   localStorage.setItem(SESSION_KEY, JSON.stringify({ ...session, photoUrl: null }));
+  const stored = getUsers();
+  const idx = stored.findIndex((u) => u.id === session.id);
+  if (idx !== -1) {
+    stored[idx] = { ...stored[idx], photoUrl: null };
+    localStorage.setItem(USERS_KEY, JSON.stringify(stored));
+  }
   window.dispatchEvent(new Event("staticAuthUpdated"));
 }
