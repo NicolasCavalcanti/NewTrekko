@@ -415,6 +415,19 @@ export async function getTrailById(id: number) {
   return result.length > 0 ? result[0] : undefined;
 }
 
+export async function updateTrailWiklocUrls(
+  id: number,
+  wiklocUrl: string,
+  wiklocGpxUrl: string,
+): Promise<void> {
+  const db = await getDb();
+  if (!db) return;
+  await db
+    .update(trails)
+    .set({ wiklocUrl, wiklocGpxUrl } as any)
+    .where(eq(trails.id, id));
+}
+
 export async function createTrail(data: InsertTrail) {
   const db = await getDb();
   if (!db) return undefined;
