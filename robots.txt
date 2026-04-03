@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /perfil
+Disallow: /checkout
+Disallow: /reservas
+Disallow: /admin
+Disallow: /api/
+
+Sitemap: https://trekko.com.br/sitemap.xml
