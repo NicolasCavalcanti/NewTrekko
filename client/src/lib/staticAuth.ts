@@ -6,6 +6,7 @@
 
 const USERS_KEY = "trekko_demo_users";
 const SESSION_KEY = "trekko_demo_session";
+const PHOTO_KEY = "trekko_demo_photo"; // separate key to avoid embedding large base64 in user objects
 
 // Must be a superset of every user field accessed in the frontend so
 // that the TypeScript union (DemoUser | BackendUser) resolves cleanly.
@@ -28,7 +29,7 @@ type DemoUser = {
 };
 
 type StoredUser = Omit<DemoUser,
-  | "role" | "cadasturValidated"
+  | "role" | "photoUrl" | "cadasturValidated"
   | "openId" | "loginMethod" | "passwordHash"
   | "createdAt" | "updatedAt" | "lastSignedIn"
 > & { password: string };
@@ -37,7 +38,8 @@ function defaultDemoUser(stored: StoredUser): DemoUser {
   return {
     ...stored,
     role: "user",
-    photoUrl: stored.photoUrl ?? null,
+    // photoUrl is intentionally omitted here — staticGetCurrentUser merges it from PHOTO_KEY.
+    photoUrl: null,
     bio: stored.bio ?? null,
     cadasturNumber: stored.cadasturNumber ?? null,
     cadasturValidated: 0,
@@ -99,7 +101,11 @@ export function staticRegister(data: {
 export function staticGetCurrentUser(): DemoUser | null {
   try {
     const raw = localStorage.getItem(SESSION_KEY);
-    return raw ? (JSON.parse(raw) as DemoUser) : null;
+    if (!raw) return null;
+    const user = JSON.parse(raw) as DemoUser;
+    // Photo is stored separately to keep SESSION_KEY small (avoids QuotaExceededError).
+    const photo = localStorage.getItem(PHOTO_KEY);
+    return { ...user, photoUrl: photo ?? null };
   } catch {
     return null;
   }
@@ -123,6 +129,7 @@ export function staticUpdateProfile(data: {
     email: data.email,
     bio: data.bio || null,
     cadasturNumber: data.cadasturNumber ?? session.cadasturNumber,
+    photoUrl: null, // photo lives in PHOTO_KEY, not SESSION_KEY
   };
   localStorage.setItem(SESSION_KEY, JSON.stringify(updated));
   const stored = getUsers();
@@ -142,27 +149,20 @@ export function staticUpdateProfile(data: {
 }
 
 export function staticSetPhoto(dataUrl: string): void {
-  const session = staticGetCurrentUser();
-  if (!session) return;
-  localStorage.setItem(SESSION_KEY, JSON.stringify({ ...session, photoUrl: dataUrl }));
-  const stored = getUsers();
-  const idx = stored.findIndex((u) => u.id === session.id);
-  if (idx !== -1) {
-    stored[idx] = { ...stored[idx], photoUrl: dataUrl };
-    localStorage.setItem(USERS_KEY, JSON.stringify(stored));
+  if (!staticGetCurrentUser()) return;
+  // Store photo in its own key so user objects in SESSION_KEY/USERS_KEY stay small.
+  try {
+    localStorage.setItem(PHOTO_KEY, dataUrl);
+  } catch {
+    // Quota exceeded — photo too large to store.
+    console.warn("Trekko: foto muito grande para armazenar localmente.");
+    return;
   }
   window.dispatchEvent(new Event("staticAuthUpdated"));
 }
 
 export function staticRemovePhoto(): void {
-  const session = staticGetCurrentUser();
-  if (!session) return;
-  localStorage.setItem(SESSION_KEY, JSON.stringify({ ...session, photoUrl: null }));
-  const stored = getUsers();
-  const idx = stored.findIndex((u) => u.id === session.id);
-  if (idx !== -1) {
-    stored[idx] = { ...stored[idx], photoUrl: null };
-    localStorage.setItem(USERS_KEY, JSON.stringify(stored));
-  }
+  if (!staticGetCurrentUser()) return;
+  localStorage.removeItem(PHOTO_KEY);
   window.dispatchEvent(new Event("staticAuthUpdated"));
 }
