@@ -1,8 +1,16 @@
 User-agent: *
+Allow: /
+
 Disallow: /perfil
 Disallow: /checkout
 Disallow: /reservas
 Disallow: /admin
 Disallow: /api/
+
+# Crawl priority for SEO pages
+Allow: /trilha/
+Allow: /trilhas/
+Allow: /perto-de/
+Allow: /guias/
 
 Sitemap: https://trekko.com.br/sitemap.xml
