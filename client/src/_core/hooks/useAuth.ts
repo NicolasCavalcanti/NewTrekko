@@ -64,7 +64,13 @@ export function useAuth(options?: UseAuthOptions) {
   const state = useMemo(() => {
     const user = STATIC_NO_API ? staticUser : (meQuery.data ?? null);
     if (typeof localStorage !== "undefined") {
-      localStorage.setItem("manus-runtime-user-info", JSON.stringify(user));
+      // Strip photoUrl (may be a large base64 data URL) to avoid QuotaExceededError.
+      const { photoUrl: _photo, ...userInfo } = (user ?? {}) as any;
+      try {
+        localStorage.setItem("manus-runtime-user-info", JSON.stringify(userInfo));
+      } catch {
+        // Quota exceeded — non-critical, ignore.
+      }
     }
     return {
       user,
