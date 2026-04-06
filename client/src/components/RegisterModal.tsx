@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { staticRegister } from "@/lib/staticAuth";
+import { USE_SUPABASE, supabaseRegister } from "@/lib/supabaseAuth";
 
 const STATIC_NO_API =
   import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
@@ -247,6 +248,30 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
+      return;
+    }
+
+    if (USE_SUPABASE) {
+      supabaseRegister({
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        password,
+        userType: userType as "trekker" | "guide",
+        cadasturNumber: userType === "guide" ? cadasturNumber : undefined,
+      }).then((result) => {
+        if ("error" in result) {
+          if (result.error.includes("e-mail") || result.error.includes("cadastrado")) {
+            setErrors({ email: result.error });
+          } else {
+            toast.error(result.error);
+          }
+          return;
+        }
+        toast.success("Conta criada com sucesso!");
+        onOpenChange(false);
+        resetForm();
+        window.location.reload();
+      });
       return;
     }
 
