@@ -1,7 +1,7 @@
 import { getLoginUrl } from "@/const";
 import { staticGetCurrentUser, staticLogout } from "@/lib/staticAuth";
+import { USE_SUPABASE } from "@/lib/supabase";
 import {
-  USE_SUPABASE,
   supabaseGetCurrentUser,
   supabaseOnAuthChange,
   supabaseSignOut,
