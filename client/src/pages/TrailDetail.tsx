@@ -34,9 +34,6 @@ export default function TrailDetail() {
 
   const STATIC_NO_API =
     import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
-  // User data (favorites, reviews) always uses localStorage in static mode
-  // regardless of whether VITE_API_URL is set — backend sessions don't exist for static users.
-  const STATIC_USERS = import.meta.env.VITE_STATIC_MODE === "true";
 
   // Static mode favorites — stored per-user in localStorage
   const favoritesKey = `trekko_favorites_${user?.id ?? "guest"}`;
@@ -44,16 +41,16 @@ export default function TrailDetail() {
     try { return JSON.parse(localStorage.getItem(favoritesKey) ?? "[]"); } catch { return []; }
   };
   const [staticFavorite, setStaticFavorite] = useState<boolean>(() =>
-    STATIC_USERS ? getStaticFavorites().includes(trailId) : false
+    STATIC_NO_API ? getStaticFavorites().includes(trailId) : false
   );
 
   const { data, isLoading, error } = useTrailById(trailId);
   const { data: isFavoriteData, refetch: refetchFavorite } = trpc.favorites.check.useQuery(
     { trailId },
-    { enabled: !STATIC_USERS && isAuthenticated }
+    { enabled: !STATIC_NO_API && isAuthenticated }
   );
 
-  const isFavorite = STATIC_USERS ? staticFavorite : isFavoriteData;
+  const isFavorite = STATIC_NO_API ? staticFavorite : isFavoriteData;
 
   const addFavoriteMutation = trpc.favorites.add.useMutation({
     onSuccess: () => {
@@ -74,7 +71,7 @@ export default function TrailDetail() {
       toast.error("Faça login para favoritar trilhas");
       return;
     }
-    if (STATIC_USERS) {
+    if (STATIC_NO_API) {
       const favs = getStaticFavorites();
       if (staticFavorite) {
         const updated = favs.filter((f) => f !== trailId);

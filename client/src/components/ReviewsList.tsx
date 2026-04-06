@@ -24,7 +24,8 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 
-const STATIC_USERS = import.meta.env.VITE_STATIC_MODE === "true";
+const STATIC_NO_API =
+  import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
 
 interface ReviewsListProps {
   targetType: 'trail' | 'guide';
@@ -45,7 +46,7 @@ export function ReviewsList({ targetType, targetId, targetName }: ReviewsListPro
   const utils = trpc.useUtils();
 
   const staticStorageKey = `trekko_reviews_${targetType}_${targetId}`;
-  const staticReviews: any[] = STATIC_USERS
+  const staticReviews: any[] = STATIC_NO_API
     ? (() => { try { return JSON.parse(localStorage.getItem(staticStorageKey) ?? '[]'); } catch { return []; } })()
     : [];
   // re-read when staticReviewKey changes (after submit)
@@ -53,20 +54,20 @@ export function ReviewsList({ targetType, targetId, targetName }: ReviewsListPro
 
   const { data: stats, isLoading: statsLoading } = trpc.reviews.getStats.useQuery(
     { targetType, targetId },
-    { enabled: !STATIC_USERS },
+    { enabled: !STATIC_NO_API },
   );
 
   const { data: reviewsData, isLoading: reviewsLoading } = trpc.reviews.list.useQuery(
     { targetType, targetId, page, limit: 10, sortBy, filterStars, withPhotos },
-    { enabled: !STATIC_USERS },
+    { enabled: !STATIC_NO_API },
   );
 
   const { data: hasReviewedData } = trpc.reviews.hasReviewed.useQuery(
     { targetType, targetId },
-    { enabled: !!user && !STATIC_USERS },
+    { enabled: !!user && !STATIC_NO_API },
   );
 
-  const staticHasReviewed = STATIC_USERS && staticReviews.length > 0;
+  const staticHasReviewed = STATIC_NO_API && staticReviews.length > 0;
 
   const deleteReview = trpc.reviews.delete.useMutation({
     onSuccess: () => {
@@ -93,9 +94,9 @@ export function ReviewsList({ targetType, targetId, targetName }: ReviewsListPro
     }
   };
 
-  const hasReviewed = STATIC_USERS ? staticHasReviewed : !!hasReviewedData?.hasReviewed;
+  const hasReviewed = STATIC_NO_API ? staticHasReviewed : !!hasReviewedData?.hasReviewed;
   const canReview = !!user && !hasReviewed;
-  const displayReviews = STATIC_USERS ? staticReviews : (reviewsData?.reviews ?? []);
+  const displayReviews = STATIC_NO_API ? staticReviews : (reviewsData?.reviews ?? []);
 
   return (
     <div className="space-y-6">

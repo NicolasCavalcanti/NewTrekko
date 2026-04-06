@@ -15,9 +15,6 @@ import { staticUpdateProfile, staticSetPhoto, staticRemovePhoto } from "@/lib/st
 
 const STATIC_NO_API =
   import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
-// User data always uses localStorage when VITE_STATIC_MODE is set,
-// even if VITE_API_URL is also configured (backend sessions don't exist for static users).
-const STATIC_USERS = import.meta.env.VITE_STATIC_MODE === "true";
 import { getLoginUrl } from "@/const";
 import { useTrailsList, useTrailById } from "@/hooks/useTrails";
 import { User, Heart, Star, Calendar, Plus, Edit, Trash2, Shield, Mountain, MapPin, Loader2, Upload, X, Wallet, Receipt } from "lucide-react";
@@ -264,7 +261,7 @@ function EditProfileForm({ onClose }: { onClose: () => void }) {
       return;
     }
 
-    if (STATIC_USERS) {
+    if (STATIC_NO_API) {
       setUploading(true);
       const reader = new FileReader();
       reader.onload = () => {
@@ -288,7 +285,7 @@ function EditProfileForm({ onClose }: { onClose: () => void }) {
   };
 
   const handleRemovePhoto = () => {
-    if (STATIC_USERS) {
+    if (STATIC_NO_API) {
       staticRemovePhoto();
       toast.success("Foto removida!");
       return;
@@ -298,7 +295,7 @@ function EditProfileForm({ onClose }: { onClose: () => void }) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (STATIC_USERS) {
+    if (STATIC_NO_API) {
       staticUpdateProfile({ name, email, bio, cadasturNumber: cadasturNumber || undefined });
       toast.success("Perfil atualizado!");
       onClose();
@@ -396,15 +393,15 @@ function FavoritesList() {
   // Backend mode
   const { data: favorites, isLoading } = trpc.favorites.list.useQuery(
     undefined,
-    { enabled: !STATIC_USERS }
+    { enabled: !STATIC_NO_API }
   );
 
   // Static mode: load IDs from localStorage then resolve full trail objects
   const [staticFavorites, setStaticFavorites] = useState<any[]>([]);
-  const [staticLoading, setStaticLoading] = useState(STATIC_USERS);
+  const [staticLoading, setStaticLoading] = useState(STATIC_NO_API);
 
   const loadStaticFavorites = useCallback(async () => {
-    if (!STATIC_USERS) return;
+    if (!STATIC_NO_API) return;
     setStaticLoading(true);
     try {
       const ids: number[] = JSON.parse(localStorage.getItem(FAVORITES_KEY) ?? "[]");
@@ -426,8 +423,8 @@ function FavoritesList() {
     return () => window.removeEventListener("staticFavoritesUpdated", loadStaticFavorites);
   }, [loadStaticFavorites]);
 
-  const displayFavorites = STATIC_USERS ? staticFavorites : favorites;
-  const loading = STATIC_USERS ? staticLoading : isLoading;
+  const displayFavorites = STATIC_NO_API ? staticFavorites : favorites;
+  const loading = STATIC_NO_API ? staticLoading : isLoading;
 
   if (loading) {
     return (
@@ -485,13 +482,13 @@ function GuideExpeditions() {
   const expeditionsKey = `trekko_expeditions_${user?.id ?? "guest"}`;
 
   const [staticExpeditions, setStaticExpeditions] = useState<any[]>(() => {
-    if (!STATIC_USERS) return [];
+    if (!STATIC_NO_API) return [];
     try { return JSON.parse(localStorage.getItem(`trekko_expeditions_${(user as any)?.id ?? "guest"}`) ?? "[]"); }
     catch { return []; }
   });
 
   useEffect(() => {
-    if (!STATIC_USERS) return;
+    if (!STATIC_NO_API) return;
     const load = () => {
       try { setStaticExpeditions(JSON.parse(localStorage.getItem(expeditionsKey) ?? "[]")); }
       catch { setStaticExpeditions([]); }
@@ -501,10 +498,10 @@ function GuideExpeditions() {
     return () => window.removeEventListener("staticExpeditionsUpdated", load);
   }, [expeditionsKey]);
 
-  const { data, isLoading } = trpc.guide.myExpeditions.useQuery(undefined, { enabled: !STATIC_USERS });
+  const { data, isLoading } = trpc.guide.myExpeditions.useQuery(undefined, { enabled: !STATIC_NO_API });
 
-  const expeditions = STATIC_USERS ? staticExpeditions : (data?.expeditions ?? []);
-  const loading = STATIC_USERS ? false : isLoading;
+  const expeditions = STATIC_NO_API ? staticExpeditions : (data?.expeditions ?? []);
+  const loading = STATIC_NO_API ? false : isLoading;
 
   if (loading) {
     return (
@@ -549,7 +546,7 @@ function ExpeditionManageCard({ expedition, expeditionsKey }: { expedition: any;
   });
 
   const handleDelete = () => {
-    if (STATIC_USERS) {
+    if (STATIC_NO_API) {
       try {
         const all: any[] = JSON.parse(localStorage.getItem(expeditionsKey) ?? "[]");
         localStorage.setItem(expeditionsKey, JSON.stringify(all.filter((e) => e.id !== expedition.id)));
@@ -607,7 +604,7 @@ function ExpeditionManageCard({ expedition, expeditionsKey }: { expedition: any;
               size="sm" 
               className="text-destructive"
               onClick={handleDelete}
-              disabled={!STATIC_USERS && deleteMutation.isPending}
+              disabled={!STATIC_NO_API && deleteMutation.isPending}
             >
               <Trash2 className="w-4 h-4 mr-1" />
               Remover
@@ -656,7 +653,7 @@ function CreateExpeditionForm({ onClose }: { onClose: () => void }) {
       return;
     }
 
-    if (STATIC_USERS) {
+    if (STATIC_NO_API) {
       setSubmitting(true);
       try {
         const existing: any[] = JSON.parse(localStorage.getItem(expeditionsKey) ?? "[]");

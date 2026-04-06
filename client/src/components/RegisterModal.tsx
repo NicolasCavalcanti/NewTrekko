@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { staticRegister } from "@/lib/staticAuth";
 
-const STATIC_USERS = import.meta.env.VITE_STATIC_MODE === "true";
+const STATIC_NO_API =
+  import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -181,7 +182,7 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
     }
     setErrors({});
 
-    if (STATIC_USERS) {
+    if (STATIC_NO_API) {
       setCadasturValidating(true);
       const normalized = cadasturNumber.replace(/\D/g, "");
       try {
@@ -249,7 +250,7 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
       return;
     }
 
-    if (STATIC_USERS) {
+    if (STATIC_NO_API) {
       const result = staticRegister({
         name: name.trim(),
         email: email.trim().toLowerCase(),
@@ -506,9 +507,9 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
             <Button
               type="button"
               onClick={handleValidateCadastur}
-              disabled={(STATIC_USERS ? cadasturValidating : validateCadasturMutation.isPending) || !cadasturNumber.trim()}
+              disabled={(STATIC_NO_API ? cadasturValidating : validateCadasturMutation.isPending) || !cadasturNumber.trim()}
             >
-              {(STATIC_USERS ? cadasturValidating : validateCadasturMutation.isPending) ? (
+              {(STATIC_NO_API ? cadasturValidating : validateCadasturMutation.isPending) ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                   Validando...
