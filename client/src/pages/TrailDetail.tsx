@@ -83,6 +83,7 @@ export default function TrailDetail() {
         setStaticFavorite(true);
         toast.success("Trilha adicionada aos favoritos!");
       }
+      window.dispatchEvent(new Event("staticFavoritesUpdated"));
       return;
     }
     if (isFavorite) {
