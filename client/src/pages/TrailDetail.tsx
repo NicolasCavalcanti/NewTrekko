@@ -32,19 +32,33 @@ export default function TrailDetail() {
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const touchStartX = useRef<number | null>(null);
 
-  const { data, isLoading, error } = useTrailById(trailId);
-  const { data: isFavorite, refetch: refetchFavorite } = trpc.favorites.check.useQuery(
-    { trailId },
-    { enabled: isAuthenticated }
+  const STATIC_NO_API =
+    import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
+
+  // Static mode favorites — stored in localStorage
+  const FAVORITES_KEY = "trekko_favorites";
+  const getStaticFavorites = (): number[] => {
+    try { return JSON.parse(localStorage.getItem(FAVORITES_KEY) ?? "[]"); } catch { return []; }
+  };
+  const [staticFavorite, setStaticFavorite] = useState<boolean>(() =>
+    STATIC_NO_API ? getStaticFavorites().includes(trailId) : false
   );
-  
+
+  const { data, isLoading, error } = useTrailById(trailId);
+  const { data: isFavoriteData, refetch: refetchFavorite } = trpc.favorites.check.useQuery(
+    { trailId },
+    { enabled: !STATIC_NO_API && isAuthenticated }
+  );
+
+  const isFavorite = STATIC_NO_API ? staticFavorite : isFavoriteData;
+
   const addFavoriteMutation = trpc.favorites.add.useMutation({
     onSuccess: () => {
       refetchFavorite();
       toast.success("Trilha adicionada aos favoritos!");
     },
   });
-  
+
   const removeFavoriteMutation = trpc.favorites.remove.useMutation({
     onSuccess: () => {
       refetchFavorite();
@@ -55,6 +69,20 @@ export default function TrailDetail() {
   const handleFavorite = () => {
     if (!isAuthenticated) {
       toast.error("Faça login para favoritar trilhas");
+      return;
+    }
+    if (STATIC_NO_API) {
+      const favs = getStaticFavorites();
+      if (staticFavorite) {
+        const updated = favs.filter((f) => f !== trailId);
+        localStorage.setItem(FAVORITES_KEY, JSON.stringify(updated));
+        setStaticFavorite(false);
+        toast.success("Trilha removida dos favoritos");
+      } else {
+        localStorage.setItem(FAVORITES_KEY, JSON.stringify([...favs, trailId]));
+        setStaticFavorite(true);
+        toast.success("Trilha adicionada aos favoritos!");
+      }
       return;
     }
     if (isFavorite) {
