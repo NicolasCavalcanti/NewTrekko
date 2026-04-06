@@ -26,7 +26,7 @@ import { toast } from "sonner";
 export default function TrailDetail() {
   const { id } = useParams<{ id: string }>();
   const [, navigate] = useLocation();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const trailId = parseInt(id || "0");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
@@ -38,10 +38,10 @@ export default function TrailDetail() {
   // regardless of whether VITE_API_URL is set — backend sessions don't exist for static users.
   const STATIC_USERS = import.meta.env.VITE_STATIC_MODE === "true";
 
-  // Static mode favorites — stored in localStorage
-  const FAVORITES_KEY = "trekko_favorites";
+  // Static mode favorites — stored per-user in localStorage
+  const favoritesKey = `trekko_favorites_${user?.id ?? "guest"}`;
   const getStaticFavorites = (): number[] => {
-    try { return JSON.parse(localStorage.getItem(FAVORITES_KEY) ?? "[]"); } catch { return []; }
+    try { return JSON.parse(localStorage.getItem(favoritesKey) ?? "[]"); } catch { return []; }
   };
   const [staticFavorite, setStaticFavorite] = useState<boolean>(() =>
     STATIC_USERS ? getStaticFavorites().includes(trailId) : false
@@ -78,11 +78,11 @@ export default function TrailDetail() {
       const favs = getStaticFavorites();
       if (staticFavorite) {
         const updated = favs.filter((f) => f !== trailId);
-        localStorage.setItem(FAVORITES_KEY, JSON.stringify(updated));
+        localStorage.setItem(favoritesKey, JSON.stringify(updated));
         setStaticFavorite(false);
         toast.success("Trilha removida dos favoritos");
       } else {
-        localStorage.setItem(FAVORITES_KEY, JSON.stringify([...favs, trailId]));
+        localStorage.setItem(favoritesKey, JSON.stringify([...favs, trailId]));
         setStaticFavorite(true);
         toast.success("Trilha adicionada aos favoritos!");
       }
