@@ -172,14 +172,56 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
     );
   };
 
+  const [cadasturValidating, setCadasturValidating] = useState(false);
+
   // Handle CADASTUR validation
-  const handleValidateCadastur = () => {
+  const handleValidateCadastur = async () => {
     const error = validateCadasturNumber(cadasturNumber);
     if (error) {
       setErrors({ cadastur: error });
       return;
     }
     setErrors({});
+
+    if (STATIC_USERS) {
+      setCadasturValidating(true);
+      const normalized = cadasturNumber.replace(/\D/g, "");
+      try {
+        const base = import.meta.env.BASE_URL ?? "/";
+        const res = await fetch(`${base}data/guides.json`.replace("//", "/"));
+        const guides: any[] = res.ok ? await res.json() : [];
+        const match = guides.find(
+          (g: any) => String(g.cadasturNumber).replace(/\D/g, "") === normalized
+        );
+        if (!match) {
+          const msg = "Número CADASTUR não encontrado na base de guias certificados";
+          setErrors({ cadastur: msg });
+          toast.error(msg);
+          return;
+        }
+        setCadasturValidated(true);
+        setCadasturData({
+          name: match.name ?? null,
+          uf: match.uf ?? null,
+          city: match.city ?? null,
+          phone: match.phone ?? null,
+          email: match.email ?? null,
+          languages: null,
+          categories: match.categories ?? null,
+        });
+        if (match.name) setName(match.name);
+        if (match.email) setEmail(match.email);
+        toast.success("CADASTUR validado com sucesso!");
+      } catch {
+        const msg = "Erro ao validar CADASTUR. Tente novamente.";
+        setErrors({ cadastur: msg });
+        toast.error(msg);
+      } finally {
+        setCadasturValidating(false);
+      }
+      return;
+    }
+
     validateCadasturMutation.mutate({ cadasturNumber });
   };
 
@@ -466,9 +508,9 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
             <Button
               type="button"
               onClick={handleValidateCadastur}
-              disabled={validateCadasturMutation.isPending || !cadasturNumber.trim()}
+              disabled={(STATIC_USERS ? cadasturValidating : validateCadasturMutation.isPending) || !cadasturNumber.trim()}
             >
-              {validateCadasturMutation.isPending ? (
+              {(STATIC_USERS ? cadasturValidating : validateCadasturMutation.isPending) ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                   Validando...
