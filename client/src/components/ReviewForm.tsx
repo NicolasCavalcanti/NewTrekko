@@ -7,7 +7,8 @@ import { trpc } from '@/lib/trpc';
 import { useAuth } from '@/_core/hooks/useAuth';
 import { cn } from '@/lib/utils';
 
-const STATIC_USERS = import.meta.env.VITE_STATIC_MODE === "true";
+const STATIC_NO_API =
+  import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
 
 interface ReviewFormProps {
   targetType: 'trail' | 'guide';
@@ -107,7 +108,7 @@ export function ReviewForm({ targetType, targetId, onSuccess, onCancel }: Review
     }
 
     // Static mode: save to localStorage
-    if (STATIC_USERS) {
+    if (STATIC_NO_API) {
       const key = `trekko_reviews_${targetType}_${targetId}`;
       const existing = (() => { try { return JSON.parse(localStorage.getItem(key) ?? '[]'); } catch { return []; } })();
       existing.unshift({

@@ -10,7 +10,8 @@ import { useLocation } from "wouter";
 import { Loader2, Eye, EyeOff } from "lucide-react";
 import { getLoginUrl } from "@/const";
 
-const STATIC_USERS = import.meta.env.VITE_STATIC_MODE === "true";
+const STATIC_NO_API =
+  import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
 
 interface LoginModalProps {
   open: boolean;
@@ -65,7 +66,7 @@ export default function LoginModal({ open, onOpenChange, onSwitchToRegister }: L
       return;
     }
 
-    if (STATIC_USERS) {
+    if (STATIC_NO_API) {
       const result = staticLogin(email.trim().toLowerCase(), password);
       if ("error" in result) {
         setErrors({ general: result.error });
