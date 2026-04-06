@@ -15,6 +15,9 @@ import { staticUpdateProfile, staticSetPhoto, staticRemovePhoto } from "@/lib/st
 
 const STATIC_NO_API =
   import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
+// User data always uses localStorage when VITE_STATIC_MODE is set,
+// even if VITE_API_URL is also configured (backend sessions don't exist for static users).
+const STATIC_USERS = import.meta.env.VITE_STATIC_MODE === "true";
 import { getLoginUrl } from "@/const";
 import { User, Heart, Star, Calendar, Plus, Edit, Trash2, Shield, Mountain, MapPin, Loader2, Upload, X, Wallet, Receipt } from "lucide-react";
 import GuideFinancialPanel from "@/components/GuideFinancialPanel";
@@ -260,7 +263,7 @@ function EditProfileForm({ onClose }: { onClose: () => void }) {
       return;
     }
 
-    if (STATIC_NO_API) {
+    if (STATIC_USERS) {
       setUploading(true);
       const reader = new FileReader();
       reader.onload = () => {
@@ -284,7 +287,7 @@ function EditProfileForm({ onClose }: { onClose: () => void }) {
   };
 
   const handleRemovePhoto = () => {
-    if (STATIC_NO_API) {
+    if (STATIC_USERS) {
       staticRemovePhoto();
       toast.success("Foto removida!");
       return;
@@ -294,7 +297,7 @@ function EditProfileForm({ onClose }: { onClose: () => void }) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (STATIC_NO_API) {
+    if (STATIC_USERS) {
       staticUpdateProfile({ name, email, bio, cadasturNumber: cadasturNumber || undefined });
       toast.success("Perfil atualizado!");
       onClose();
@@ -391,15 +394,15 @@ function FavoritesList() {
   // Backend mode
   const { data: favorites, isLoading } = trpc.favorites.list.useQuery(
     undefined,
-    { enabled: !STATIC_NO_API }
+    { enabled: !STATIC_USERS }
   );
 
   // Static mode: load IDs from localStorage then resolve full trail objects
   const [staticFavorites, setStaticFavorites] = useState<any[]>([]);
-  const [staticLoading, setStaticLoading] = useState(STATIC_NO_API);
+  const [staticLoading, setStaticLoading] = useState(STATIC_USERS);
 
   const loadStaticFavorites = useCallback(async () => {
-    if (!STATIC_NO_API) return;
+    if (!STATIC_USERS) return;
     setStaticLoading(true);
     try {
       const ids: number[] = JSON.parse(localStorage.getItem(FAVORITES_KEY) ?? "[]");
@@ -421,8 +424,8 @@ function FavoritesList() {
     return () => window.removeEventListener("staticFavoritesUpdated", loadStaticFavorites);
   }, [loadStaticFavorites]);
 
-  const displayFavorites = STATIC_NO_API ? staticFavorites : favorites;
-  const loading = STATIC_NO_API ? staticLoading : isLoading;
+  const displayFavorites = STATIC_USERS ? staticFavorites : favorites;
+  const loading = STATIC_USERS ? staticLoading : isLoading;
 
   if (loading) {
     return (

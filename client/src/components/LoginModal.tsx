@@ -12,6 +12,7 @@ import { getLoginUrl } from "@/const";
 
 const STATIC_NO_API =
   import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
+const STATIC_USERS = import.meta.env.VITE_STATIC_MODE === "true";
 
 interface LoginModalProps {
   open: boolean;
@@ -66,7 +67,7 @@ export default function LoginModal({ open, onOpenChange, onSwitchToRegister }: L
       return;
     }
 
-    if (STATIC_NO_API) {
+    if (STATIC_USERS) {
       const result = staticLogin(email.trim().toLowerCase(), password);
       if ("error" in result) {
         setErrors({ general: result.error });
