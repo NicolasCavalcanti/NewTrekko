@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useLocation, useSearch } from "wouter";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { staticUpdateProfile, staticSetPhoto, staticRemovePhoto } from "@/lib/staticAuth";
+import { useQuery } from "@tanstack/react-query";
 
 const STATIC_NO_API =
   import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
@@ -386,9 +387,52 @@ function EditProfileForm({ onClose }: { onClose: () => void }) {
 
 function FavoritesList() {
   const [, navigate] = useLocation();
-  const { data: favorites, isLoading } = trpc.favorites.list.useQuery();
 
-  if (isLoading) {
+  // Static mode: read favorite IDs from localStorage, then resolve trail data
+  const FAVORITES_KEY = "trekko_favorites";
+  const BASE = import.meta.env.BASE_URL ?? "/";
+
+  const [staticFavIds, setStaticFavIds] = useState<number[]>(() => {
+    if (!STATIC_NO_API) return [];
+    try { return JSON.parse(localStorage.getItem(FAVORITES_KEY) ?? "[]"); } catch { return []; }
+  });
+
+  // Re-sync when the tab becomes visible (user may have toggled on trail page)
+  useEffect(() => {
+    if (!STATIC_NO_API) return;
+    const sync = () => {
+      try { setStaticFavIds(JSON.parse(localStorage.getItem(FAVORITES_KEY) ?? "[]")); } catch {}
+    };
+    window.addEventListener("focus", sync);
+    document.addEventListener("visibilitychange", sync);
+    return () => { window.removeEventListener("focus", sync); document.removeEventListener("visibilitychange", sync); };
+  }, []);
+
+  const staticTrailsQuery = useQuery({
+    queryKey: ["static-trails"],
+    queryFn: async () => {
+      const url = `${BASE}data/trails.json`.replace("//", "/");
+      const res = await fetch(url);
+      if (!res.ok) return [];
+      return res.json();
+    },
+    enabled: STATIC_NO_API,
+    staleTime: Infinity,
+  });
+
+  const { data: favorites, isLoading } = trpc.favorites.list.useQuery(
+    undefined,
+    { enabled: !STATIC_NO_API }
+  );
+
+  const staticFavorites = STATIC_NO_API
+    ? (staticTrailsQuery.data ?? []).filter((t: any) => staticFavIds.includes(t.id))
+    : null;
+
+  const displayFavorites = STATIC_NO_API ? staticFavorites : favorites;
+  const loading = STATIC_NO_API ? staticTrailsQuery.isLoading : isLoading;
+
+  if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
@@ -396,7 +440,7 @@ function FavoritesList() {
     );
   }
 
-  if (!favorites || favorites.length === 0) {
+  if (!displayFavorites || displayFavorites.length === 0) {
     return (
       <Card>
         <CardContent className="p-8 text-center">
@@ -413,14 +457,18 @@ function FavoritesList() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {favorites.map((trail) => (
-        <Card 
-          key={trail?.id} 
+      {displayFavorites.map((trail: any) => (
+        <Card
+          key={trail?.id}
           className="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
           onClick={() => navigate(`/trilha/${trail?.id}`)}
         >
-          <div className="h-32 bg-gradient-to-br from-forest/20 to-forest-light/20 flex items-center justify-center">
-            <Mountain className="w-10 h-10 text-forest/40" />
+          <div className="h-32 bg-gradient-to-br from-forest/20 to-forest-light/20 flex items-center justify-center overflow-hidden">
+            {trail?.imageUrl ? (
+              <img src={trail.imageUrl} alt={trail.name} className="w-full h-full object-cover" />
+            ) : (
+              <Mountain className="w-10 h-10 text-forest/40" />
+            )}
           </div>
           <CardContent className="p-4">
             <h3 className="font-heading font-semibold mb-1">{trail?.name}</h3>
