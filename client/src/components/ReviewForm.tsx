@@ -7,8 +7,6 @@ import { trpc } from '@/lib/trpc';
 import { useAuth } from '@/_core/hooks/useAuth';
 import { cn } from '@/lib/utils';
 
-const STATIC_NO_API =
-  import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
 const STATIC_USERS = import.meta.env.VITE_STATIC_MODE === "true";
 
 interface ReviewFormProps {

@@ -2,8 +2,6 @@ import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { staticRegister } from "@/lib/staticAuth";
 
-const STATIC_NO_API =
-  import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
 const STATIC_USERS = import.meta.env.VITE_STATIC_MODE === "true";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

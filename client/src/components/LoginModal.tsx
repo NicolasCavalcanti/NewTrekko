@@ -10,8 +10,6 @@ import { useLocation } from "wouter";
 import { Loader2, Eye, EyeOff } from "lucide-react";
 import { getLoginUrl } from "@/const";
 
-const STATIC_NO_API =
-  import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
 const STATIC_USERS = import.meta.env.VITE_STATIC_MODE === "true";
 
 interface LoginModalProps {
