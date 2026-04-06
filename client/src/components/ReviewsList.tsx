@@ -24,8 +24,6 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 
-const STATIC_USERS =
-  import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
 const STATIC_USERS = import.meta.env.VITE_STATIC_MODE === "true";
 
 interface ReviewsListProps {
