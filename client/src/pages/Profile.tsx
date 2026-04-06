@@ -19,7 +19,7 @@ const STATIC_NO_API =
 // even if VITE_API_URL is also configured (backend sessions don't exist for static users).
 const STATIC_USERS = import.meta.env.VITE_STATIC_MODE === "true";
 import { getLoginUrl } from "@/const";
-import { useTrailsList } from "@/hooks/useTrails";
+import { useTrailsList, useTrailById } from "@/hooks/useTrails";
 import { User, Heart, Star, Calendar, Plus, Edit, Trash2, Shield, Mountain, MapPin, Loader2, Upload, X, Wallet, Receipt } from "lucide-react";
 import GuideFinancialPanel from "@/components/GuideFinancialPanel";
 import UserReservationsPanel from "@/components/UserReservationsPanel";
@@ -481,9 +481,32 @@ function FavoritesList() {
 }
 
 function GuideExpeditions() {
-  const { data, isLoading } = trpc.guide.myExpeditions.useQuery();
+  const { user } = useAuth();
+  const expeditionsKey = `trekko_expeditions_${user?.id ?? "guest"}`;
 
-  if (isLoading) {
+  const [staticExpeditions, setStaticExpeditions] = useState<any[]>(() => {
+    if (!STATIC_USERS) return [];
+    try { return JSON.parse(localStorage.getItem(`trekko_expeditions_${(user as any)?.id ?? "guest"}`) ?? "[]"); }
+    catch { return []; }
+  });
+
+  useEffect(() => {
+    if (!STATIC_USERS) return;
+    const load = () => {
+      try { setStaticExpeditions(JSON.parse(localStorage.getItem(expeditionsKey) ?? "[]")); }
+      catch { setStaticExpeditions([]); }
+    };
+    load();
+    window.addEventListener("staticExpeditionsUpdated", load);
+    return () => window.removeEventListener("staticExpeditionsUpdated", load);
+  }, [expeditionsKey]);
+
+  const { data, isLoading } = trpc.guide.myExpeditions.useQuery(undefined, { enabled: !STATIC_USERS });
+
+  const expeditions = STATIC_USERS ? staticExpeditions : (data?.expeditions ?? []);
+  const loading = STATIC_USERS ? false : isLoading;
+
+  if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
@@ -491,7 +514,7 @@ function GuideExpeditions() {
     );
   }
 
-  if (!data?.expeditions || data.expeditions.length === 0) {
+  if (expeditions.length === 0) {
     return (
       <Card>
         <CardContent className="p-8 text-center">
@@ -507,23 +530,40 @@ function GuideExpeditions() {
 
   return (
     <div className="space-y-4">
-      {data.expeditions.map((expedition) => (
-        <ExpeditionManageCard key={expedition.id} expedition={expedition} />
+      {expeditions.map((expedition: any) => (
+        <ExpeditionManageCard key={expedition.id} expedition={expedition} expeditionsKey={expeditionsKey} />
       ))}
     </div>
   );
 }
 
-function ExpeditionManageCard({ expedition }: { expedition: any }) {
-  const { data: trailData } = trpc.trails.getById.useQuery({ id: expedition.trailId });
+function ExpeditionManageCard({ expedition, expeditionsKey }: { expedition: any; expeditionsKey: string }) {
+  const { data: trailData } = useTrailById(expedition.trailId);
   const utils = trpc.useUtils();
-  
+
   const deleteMutation = trpc.guide.deleteExpedition.useMutation({
     onSuccess: () => {
       utils.guide.myExpeditions.invalidate();
       toast.success("Expedição removida!");
     },
   });
+
+  const handleDelete = () => {
+    if (STATIC_USERS) {
+      try {
+        const all: any[] = JSON.parse(localStorage.getItem(expeditionsKey) ?? "[]");
+        localStorage.setItem(expeditionsKey, JSON.stringify(all.filter((e) => e.id !== expedition.id)));
+        window.dispatchEvent(new Event("staticExpeditionsUpdated"));
+        toast.success("Expedição removida!");
+      } catch {
+        toast.error("Erro ao remover expedição");
+      }
+      return;
+    }
+    deleteMutation.mutate({ id: expedition.id });
+  };
+
+  const trailName = expedition.trailName || trailData?.trail?.name || "Expedição";
 
   return (
     <Card>
@@ -532,7 +572,7 @@ function ExpeditionManageCard({ expedition }: { expedition: any }) {
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
               <h3 className="font-heading font-semibold text-lg">
-                {expedition.title || trailData?.trail.name || "Expedição"}
+                {expedition.title || trailName}
               </h3>
               <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                 expedition.status === 'active' || expedition.status === 'published' ? 'bg-green-100 text-green-700' :
@@ -566,8 +606,8 @@ function ExpeditionManageCard({ expedition }: { expedition: any }) {
               variant="outline" 
               size="sm" 
               className="text-destructive"
-              onClick={() => deleteMutation.mutate({ id: expedition.id })}
-              disabled={deleteMutation.isPending}
+              onClick={handleDelete}
+              disabled={!STATIC_USERS && deleteMutation.isPending}
             >
               <Trash2 className="w-4 h-4 mr-1" />
               Remover
@@ -580,6 +620,9 @@ function ExpeditionManageCard({ expedition }: { expedition: any }) {
 }
 
 function CreateExpeditionForm({ onClose }: { onClose: () => void }) {
+  const { user } = useAuth();
+  const expeditionsKey = `trekko_expeditions_${user?.id ?? "guest"}`;
+
   const [trailId, setTrailId] = useState<number | null>(null);
   const [trailSearch, setTrailSearch] = useState("");
   const [title, setTitle] = useState("");
@@ -604,12 +647,45 @@ function CreateExpeditionForm({ onClose }: { onClose: () => void }) {
     },
   });
 
+  const [submitting, setSubmitting] = useState(false);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!trailId || !startDate) {
       toast.error("Selecione uma trilha e data");
       return;
     }
+
+    if (STATIC_USERS) {
+      setSubmitting(true);
+      try {
+        const existing: any[] = JSON.parse(localStorage.getItem(expeditionsKey) ?? "[]");
+        const newExpedition = {
+          id: Date.now(),
+          trailId,
+          trailName: trailSearch,
+          title: title || null,
+          startDate: new Date(startDate).toISOString(),
+          endDate: endDate ? new Date(endDate).toISOString() : null,
+          capacity: parseInt(capacity),
+          availableSpots: parseInt(capacity),
+          price: price || null,
+          meetingPoint: meetingPoint || null,
+          notes: notes || null,
+          status: "active",
+        };
+        localStorage.setItem(expeditionsKey, JSON.stringify([...existing, newExpedition]));
+        window.dispatchEvent(new Event("staticExpeditionsUpdated"));
+        toast.success("Expedição criada!");
+        onClose();
+      } catch {
+        toast.error("Erro ao criar expedição");
+      } finally {
+        setSubmitting(false);
+      }
+      return;
+    }
+
     createMutation.mutate({
       trailId,
       title: title || undefined,
@@ -708,8 +784,8 @@ function CreateExpeditionForm({ onClose }: { onClose: () => void }) {
 
       <div className="flex justify-end gap-2 pt-4">
         <Button type="button" variant="outline" onClick={onClose}>Cancelar</Button>
-        <Button type="submit" disabled={createMutation.isPending}>
-          {createMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+        <Button type="submit" disabled={submitting || createMutation.isPending}>
+          {(submitting || createMutation.isPending) ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
           Criar expedição
         </Button>
       </div>
