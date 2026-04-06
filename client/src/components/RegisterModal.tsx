@@ -4,6 +4,7 @@ import { staticRegister } from "@/lib/staticAuth";
 
 const STATIC_NO_API =
   import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
+const STATIC_USERS = import.meta.env.VITE_STATIC_MODE === "true";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -208,7 +209,7 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
       return;
     }
 
-    if (STATIC_NO_API) {
+    if (STATIC_USERS) {
       const result = staticRegister({
         name: name.trim(),
         email: email.trim().toLowerCase(),

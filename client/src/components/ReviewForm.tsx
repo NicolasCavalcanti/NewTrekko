@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 
 const STATIC_NO_API =
   import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
+const STATIC_USERS = import.meta.env.VITE_STATIC_MODE === "true";
 
 interface ReviewFormProps {
   targetType: 'trail' | 'guide';
@@ -108,7 +109,7 @@ export function ReviewForm({ targetType, targetId, onSuccess, onCancel }: Review
     }
 
     // Static mode: save to localStorage
-    if (STATIC_NO_API) {
+    if (STATIC_USERS) {
       const key = `trekko_reviews_${targetType}_${targetId}`;
       const existing = (() => { try { return JSON.parse(localStorage.getItem(key) ?? '[]'); } catch { return []; } })();
       existing.unshift({

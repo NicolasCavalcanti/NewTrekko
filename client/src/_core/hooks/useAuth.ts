@@ -6,6 +6,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 const STATIC_NO_API =
   import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
+// When VITE_STATIC_MODE is true, user identity always comes from localStorage —
+// even if VITE_API_URL is set, static users have no backend session.
+const STATIC_USERS = import.meta.env.VITE_STATIC_MODE === "true";
 
 type UseAuthOptions = {
   redirectOnUnauthenticated?: boolean;
@@ -20,7 +23,7 @@ export function useAuth(options?: UseAuthOptions) {
   const meQuery = trpc.auth.me.useQuery(undefined, {
     retry: false,
     refetchOnWindowFocus: false,
-    enabled: !STATIC_NO_API,
+    enabled: !STATIC_USERS,
   });
 
   const logoutMutation = trpc.auth.logout.useMutation({
@@ -30,7 +33,7 @@ export function useAuth(options?: UseAuthOptions) {
   });
 
   const logout = useCallback(async () => {
-    if (STATIC_NO_API) {
+    if (STATIC_USERS) {
       staticLogout();
       window.location.href = import.meta.env.BASE_URL;
       return;
@@ -53,16 +56,16 @@ export function useAuth(options?: UseAuthOptions) {
 
   const [staticTick, setStaticTick] = useState(0);
   useEffect(() => {
-    if (!STATIC_NO_API) return;
+    if (!STATIC_USERS) return;
     const handler = () => setStaticTick((t) => t + 1);
     window.addEventListener("staticAuthUpdated", handler);
     return () => window.removeEventListener("staticAuthUpdated", handler);
   }, []);
 
-  const staticUser = STATIC_NO_API ? staticGetCurrentUser() : null;
+  const staticUser = STATIC_USERS ? staticGetCurrentUser() : null;
 
   const state = useMemo(() => {
-    const user = STATIC_NO_API ? staticUser : (meQuery.data ?? null);
+    const user = STATIC_USERS ? staticUser : (meQuery.data ?? null);
     if (typeof localStorage !== "undefined") {
       // Strip photoUrl (may be a large base64 data URL) to avoid QuotaExceededError.
       const { photoUrl: _photo, ...userInfo } = (user ?? {}) as any;
@@ -74,8 +77,8 @@ export function useAuth(options?: UseAuthOptions) {
     }
     return {
       user,
-      loading: STATIC_NO_API ? false : (meQuery.isLoading || logoutMutation.isPending),
-      error: STATIC_NO_API ? null : (meQuery.error ?? logoutMutation.error ?? null),
+      loading: STATIC_USERS ? false : (meQuery.isLoading || logoutMutation.isPending),
+      error: STATIC_USERS ? null : (meQuery.error ?? logoutMutation.error ?? null),
       isAuthenticated: Boolean(user),
     };
   }, [
