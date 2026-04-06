@@ -79,6 +79,7 @@ function makeStaticErrorResponse(url: string | URL | Request): Response {
   });
 }
 
+
 const trpcClient = trpc.createClient({
   links: [
     httpBatchLink({
