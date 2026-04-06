@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { staticRegister } from "@/lib/staticAuth";
-import { USE_SUPABASE, supabaseRegister } from "@/lib/supabaseAuth";
+import { USE_SUPABASE } from "@/lib/supabase";
+import { supabaseRegister } from "@/lib/supabaseAuth";
 
 const STATIC_NO_API =
   import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
