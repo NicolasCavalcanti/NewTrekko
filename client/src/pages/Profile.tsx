@@ -389,7 +389,8 @@ function EditProfileForm({ onClose }: { onClose: () => void }) {
 
 function FavoritesList() {
   const [, navigate] = useLocation();
-  const FAVORITES_KEY = "trekko_favorites";
+  const { user } = useAuth();
+  const FAVORITES_KEY = `trekko_favorites_${user?.id ?? "guest"}`;
 
   // Backend mode
   const { data: favorites, isLoading } = trpc.favorites.list.useQuery(
@@ -416,7 +417,7 @@ function FavoritesList() {
     } finally {
       setStaticLoading(false);
     }
-  }, []);
+  }, [FAVORITES_KEY]);
 
   useEffect(() => {
     loadStaticFavorites();
