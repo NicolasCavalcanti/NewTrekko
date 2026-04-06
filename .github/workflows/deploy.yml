@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy
 
 on:
   push:
@@ -9,6 +9,20 @@ permissions:
   contents: write
 
 jobs:
+  # ── Backend ─────────────────────────────────────────────────────────────────
+  # Triggers a Render deploy so the API server is always in sync with the
+  # frontend. Set RENDER_DEPLOY_HOOK_URL in GitHub secrets to enable this
+  # (Render → Service → Settings → Deploy Hook → copy the URL).
+  deploy-backend:
+    runs-on: ubuntu-latest
+    if: ${{ vars.RENDER_DEPLOY_HOOK_URL != '' || secrets.RENDER_DEPLOY_HOOK_URL != '' }}
+    steps:
+      - name: Trigger Render deploy
+        run: |
+          curl -s -o /dev/null -w "%{http_code}" \
+            "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
+
+  # ── Frontend ─────────────────────────────────────────────────────────────────
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
