@@ -19,6 +19,7 @@ const STATIC_NO_API =
 // even if VITE_API_URL is also configured (backend sessions don't exist for static users).
 const STATIC_USERS = import.meta.env.VITE_STATIC_MODE === "true";
 import { getLoginUrl } from "@/const";
+import { useTrailsList } from "@/hooks/useTrails";
 import { User, Heart, Star, Calendar, Plus, Edit, Trash2, Shield, Mountain, MapPin, Loader2, Upload, X, Wallet, Receipt } from "lucide-react";
 import GuideFinancialPanel from "@/components/GuideFinancialPanel";
 import UserReservationsPanel from "@/components/UserReservationsPanel";
@@ -589,7 +590,7 @@ function CreateExpeditionForm({ onClose }: { onClose: () => void }) {
   const [meetingPoint, setMeetingPoint] = useState("");
   const [notes, setNotes] = useState("");
 
-  const { data: trailsData } = trpc.trails.list.useQuery({ search: trailSearch, limit: 5 });
+  const { data: trailsData } = useTrailsList({ search: trailSearch, limit: 5 });
   const utils = trpc.useUtils();
 
   const createMutation = trpc.guide.createExpedition.useMutation({
