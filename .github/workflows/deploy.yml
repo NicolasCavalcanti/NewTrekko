@@ -7,6 +7,11 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   build-and-deploy:
@@ -15,20 +20,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
+          node-version: 22
+          cache: pnpm
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       # Generate guides from the committed xlsx — no DATABASE_URL needed.
-      # If DATABASE_URL is available it will also run the DB-based exporter
-      # to pick up any newly registered Trekko guides (isVerified flag).
       - name: Generate guides static data
         run: node scripts/generate-guides-from-xlsx.cjs
 
@@ -51,6 +55,11 @@ jobs:
 
       - name: Add CNAME
         run: echo "www.trekko.com.br" > dist/public/CNAME
+
+      - name: Configure git
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
