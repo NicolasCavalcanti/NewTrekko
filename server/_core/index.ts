@@ -40,6 +40,7 @@ async function startServer() {
   const allowedOrigins = new Set([
     "https://nicolascavalcanti.github.io",
     "https://trekko.com.br",
+    "https://www.trekko.com.br",
     "http://localhost:3000",
     "http://localhost:5173",
     ...(process.env.CORS_ORIGINS ?? "")

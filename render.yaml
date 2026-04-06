@@ -1,0 +1,50 @@
+services:
+  - type: web
+    name: trekko-api
+    runtime: node
+    plan: free
+    region: oregon
+
+    buildCommand: pnpm install --frozen-lockfile && pnpm build:server
+    startCommand: node dist/index.js
+
+    healthCheckPath: /health
+
+    envVars:
+      - key: NODE_ENV
+        value: production
+
+      # ── Required ────────────────────────────────────────────────────────────
+      # MySQL connection string — use PlanetScale, Aiven, Railway, or any
+      # MySQL 8+ provider. Format: mysql://user:pass@host:3306/dbname
+      - key: DATABASE_URL
+        sync: false
+
+      # AES-256 encryption key for PII columns.
+      # Generate with: node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+      - key: DB_ENCRYPTION_KEY
+        sync: false
+
+      # ── Optional ────────────────────────────────────────────────────────────
+      # Extra CORS origins (comma-separated) beyond trekko.com.br and
+      # nicolascavalcanti.github.io which are always allowed.
+      - key: CORS_ORIGINS
+        value: ""
+
+      # Mercado Pago payment integration
+      - key: MERCADOPAGO_ACCESS_TOKEN
+        sync: false
+
+      # AWS S3 for photo uploads
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+      - key: AWS_REGION
+        sync: false
+      - key: AWS_S3_BUCKET
+        sync: false
+
+      # The openId of the admin/owner user
+      - key: OWNER_OPEN_ID
+        sync: false
