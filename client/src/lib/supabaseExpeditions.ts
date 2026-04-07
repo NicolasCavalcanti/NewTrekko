@@ -62,6 +62,13 @@ function toExpedition(row: ExpeditionRow): Expedition {
   };
 }
 
+/** Returns true if the expeditions table is accessible. */
+export async function sbExpeditionsTableExists(): Promise<boolean> {
+  if (!supabase) return false;
+  const { error } = await supabase.from("expeditions").select("id").limit(0);
+  return !error;
+}
+
 export async function sbListPublicExpeditions(search?: string): Promise<Expedition[]> {
   if (!supabase) return [];
   let q = supabase

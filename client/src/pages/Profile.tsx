@@ -27,6 +27,7 @@ import {
   sbListGuideExpeditions,
   sbCreateExpedition,
   sbDeleteExpedition,
+  sbExpeditionsTableExists,
 } from "@/lib/supabaseExpeditions";
 
 export default function Profile() {
@@ -490,13 +491,17 @@ function GuideExpeditions() {
   // ── Supabase mode ──────────────────────────────────────────────────────────
   const [sbExpeditions, setSbExpeditions] = useState<any[]>([]);
   const [sbLoading, setSbLoading] = useState(USE_SUPABASE);
+  const [sbTableMissing, setSbTableMissing] = useState(false);
 
   useEffect(() => {
     if (!USE_SUPABASE || !user?.openId) return;
     setSbLoading(true);
-    sbListGuideExpeditions(user.openId as string)
-      .then(setSbExpeditions)
-      .finally(() => setSbLoading(false));
+    sbExpeditionsTableExists().then((exists) => {
+      if (!exists) { setSbTableMissing(true); setSbLoading(false); return; }
+      sbListGuideExpeditions(user.openId as string)
+        .then(setSbExpeditions)
+        .finally(() => setSbLoading(false));
+    });
     const handler = () => {
       sbListGuideExpeditions(user.openId as string).then(setSbExpeditions);
     };
@@ -533,6 +538,44 @@ function GuideExpeditions() {
       <div className="flex items-center justify-center py-12">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
+    );
+  }
+
+  if (sbTableMissing) {
+    const sql = `create table if not exists expeditions (
+  id bigserial primary key,
+  guide_id text not null,
+  guide_name text,
+  trail_id integer not null,
+  trail_name text,
+  title text,
+  start_date timestamptz not null,
+  end_date timestamptz,
+  capacity integer not null default 10,
+  available_spots integer not null default 10,
+  price text,
+  meeting_point text,
+  notes text,
+  status text not null default 'active',
+  created_at timestamptz default now()
+);
+alter table expeditions enable row level security;
+create policy "Public can read active expeditions" on expeditions for select using (status != 'cancelled');
+create policy "Guides can insert own expeditions" on expeditions for insert with check (auth.uid()::text = guide_id);
+create policy "Guides can delete own expeditions" on expeditions for delete using (auth.uid()::text = guide_id);`;
+    return (
+      <Card className="border-amber-200 bg-amber-50">
+        <CardContent className="p-6">
+          <h3 className="font-heading text-lg font-semibold mb-2 text-amber-800">Configuração necessária</h3>
+          <p className="text-sm text-amber-700 mb-3">
+            Execute o SQL abaixo no seu <a href="https://supabase.com/dashboard/project/nyvfwvydcwmbafzxfozk/editor" target="_blank" rel="noopener noreferrer" className="underline font-medium">Supabase SQL Editor</a> para ativar expedições:
+          </p>
+          <pre className="bg-amber-100 border border-amber-300 rounded p-3 text-xs overflow-x-auto mb-3 select-all">{sql}</pre>
+          <Button size="sm" variant="outline" onClick={() => { navigator.clipboard.writeText(sql); toast.success("SQL copiado!"); }}>
+            Copiar SQL
+          </Button>
+        </CardContent>
+      </Card>
     );
   }
 
