@@ -41,6 +41,18 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
+      - name: Run Supabase migrations (optional - skipped if SUPABASE_DB_URL not set)
+        run: |
+          if [ -n "$SUPABASE_DB_URL" ]; then
+            echo "Running Supabase migrations..."
+            psql "$SUPABASE_DB_URL" -f supabase/migrations/001_create_expeditions.sql
+          else
+            echo "SUPABASE_DB_URL not set, skipping DB migration"
+          fi
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        continue-on-error: true
+
       - name: Build frontend
         run: pnpm vite build --base=/
         env:
