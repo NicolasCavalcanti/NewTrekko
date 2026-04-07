@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { staticRegister } from "@/lib/staticAuth";
+import { USE_SUPABASE } from "@/lib/supabase";
+import { supabaseRegister } from "@/lib/supabaseAuth";
 
 const STATIC_NO_API =
   import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
@@ -171,14 +173,56 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
     );
   };
 
+  const [cadasturValidating, setCadasturValidating] = useState(false);
+
   // Handle CADASTUR validation
-  const handleValidateCadastur = () => {
+  const handleValidateCadastur = async () => {
     const error = validateCadasturNumber(cadasturNumber);
     if (error) {
       setErrors({ cadastur: error });
       return;
     }
     setErrors({});
+
+    if (STATIC_NO_API) {
+      setCadasturValidating(true);
+      const normalized = cadasturNumber.replace(/\D/g, "");
+      try {
+        const base = import.meta.env.BASE_URL ?? "/";
+        const res = await fetch(`${base}data/guides.json`.replace("//", "/"));
+        const guides: any[] = res.ok ? await res.json() : [];
+        const match = guides.find(
+          (g: any) => String(g.cadasturNumber).replace(/\D/g, "") === normalized
+        );
+        if (!match) {
+          const msg = "Número CADASTUR não encontrado na base de guias certificados";
+          setErrors({ cadastur: msg });
+          toast.error(msg);
+          return;
+        }
+        setCadasturValidated(true);
+        setCadasturData({
+          name: match.name ?? null,
+          uf: match.uf ?? null,
+          city: match.city ?? null,
+          phone: match.phone ?? null,
+          email: match.email ?? null,
+          languages: null,
+          categories: match.categories ?? null,
+        });
+        if (match.name) setName(match.name);
+        if (match.email) setEmail(match.email);
+        toast.success("CADASTUR validado com sucesso!");
+      } catch {
+        const msg = "Erro ao validar CADASTUR. Tente novamente.";
+        setErrors({ cadastur: msg });
+        toast.error(msg);
+      } finally {
+        setCadasturValidating(false);
+      }
+      return;
+    }
+
     validateCadasturMutation.mutate({ cadasturNumber });
   };
 
@@ -205,6 +249,39 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
+      return;
+    }
+
+    if (USE_SUPABASE) {
+      supabaseRegister({
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        password,
+        userType: userType as "trekker" | "guide",
+        cadasturNumber: userType === "guide" ? cadasturNumber : undefined,
+      }).then((result: any) => {
+        if ("error" in result) {
+          if (result.error.includes("e-mail") || result.error.includes("cadastrado")) {
+            setErrors({ email: result.error });
+          } else {
+            toast.error(result.error);
+          }
+          return;
+        }
+        if (result.confirmationRequired) {
+          toast.success(
+            "Cadastro realizado! Verifique seu e-mail e clique no link de confirmação para ativar sua conta.",
+            { duration: 8000 }
+          );
+          onOpenChange(false);
+          resetForm();
+          return;
+        }
+        toast.success("Conta criada com sucesso!");
+        onOpenChange(false);
+        resetForm();
+        window.location.reload();
+      });
       return;
     }
 
@@ -465,9 +542,9 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
             <Button
               type="button"
               onClick={handleValidateCadastur}
-              disabled={validateCadasturMutation.isPending || !cadasturNumber.trim()}
+              disabled={(STATIC_NO_API ? cadasturValidating : validateCadasturMutation.isPending) || !cadasturNumber.trim()}
             >
-              {validateCadasturMutation.isPending ? (
+              {(STATIC_NO_API ? cadasturValidating : validateCadasturMutation.isPending) ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                   Validando...
