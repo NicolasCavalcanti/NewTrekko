@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useLocation, useSearch } from "wouter";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -16,6 +16,7 @@ import { staticUpdateProfile, staticSetPhoto, staticRemovePhoto } from "@/lib/st
 const STATIC_NO_API =
   import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
 import { getLoginUrl } from "@/const";
+import { useTrailsList, useTrailById } from "@/hooks/useTrails";
 import { User, Heart, Star, Calendar, Plus, Edit, Trash2, Shield, Mountain, MapPin, Loader2, Upload, X, Wallet, Receipt } from "lucide-react";
 import GuideFinancialPanel from "@/components/GuideFinancialPanel";
 import UserReservationsPanel from "@/components/UserReservationsPanel";
@@ -386,9 +387,46 @@ function EditProfileForm({ onClose }: { onClose: () => void }) {
 
 function FavoritesList() {
   const [, navigate] = useLocation();
-  const { data: favorites, isLoading } = trpc.favorites.list.useQuery();
+  const { user } = useAuth();
+  const FAVORITES_KEY = `trekko_favorites_${user?.id ?? "guest"}`;
 
-  if (isLoading) {
+  // Backend mode
+  const { data: favorites, isLoading } = trpc.favorites.list.useQuery(
+    undefined,
+    { enabled: !STATIC_NO_API }
+  );
+
+  // Static mode: load IDs from localStorage then resolve full trail objects
+  const [staticFavorites, setStaticFavorites] = useState<any[]>([]);
+  const [staticLoading, setStaticLoading] = useState(STATIC_NO_API);
+
+  const loadStaticFavorites = useCallback(async () => {
+    if (!STATIC_NO_API) return;
+    setStaticLoading(true);
+    try {
+      const ids: number[] = JSON.parse(localStorage.getItem(FAVORITES_KEY) ?? "[]");
+      if (ids.length === 0) { setStaticFavorites([]); setStaticLoading(false); return; }
+      const base = import.meta.env.BASE_URL ?? "/";
+      const res = await fetch(`${base}data/trails.json`.replace("//", "/"));
+      const all: any[] = res.ok ? await res.json() : [];
+      setStaticFavorites(all.filter((t) => ids.includes(Number(t.id))));
+    } catch {
+      setStaticFavorites([]);
+    } finally {
+      setStaticLoading(false);
+    }
+  }, [FAVORITES_KEY]);
+
+  useEffect(() => {
+    loadStaticFavorites();
+    window.addEventListener("staticFavoritesUpdated", loadStaticFavorites);
+    return () => window.removeEventListener("staticFavoritesUpdated", loadStaticFavorites);
+  }, [loadStaticFavorites]);
+
+  const displayFavorites = STATIC_NO_API ? staticFavorites : favorites;
+  const loading = STATIC_NO_API ? staticLoading : isLoading;
+
+  if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
@@ -396,7 +434,7 @@ function FavoritesList() {
     );
   }
 
-  if (!favorites || favorites.length === 0) {
+  if (!displayFavorites || displayFavorites.length === 0) {
     return (
       <Card>
         <CardContent className="p-8 text-center">
@@ -413,14 +451,18 @@ function FavoritesList() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {favorites.map((trail) => (
-        <Card 
-          key={trail?.id} 
+      {displayFavorites.map((trail: any) => (
+        <Card
+          key={trail?.id}
           className="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
           onClick={() => navigate(`/trilha/${trail?.id}`)}
         >
-          <div className="h-32 bg-gradient-to-br from-forest/20 to-forest-light/20 flex items-center justify-center">
-            <Mountain className="w-10 h-10 text-forest/40" />
+          <div className="h-32 bg-gradient-to-br from-forest/20 to-forest-light/20 flex items-center justify-center overflow-hidden">
+            {trail?.imageUrl ? (
+              <img src={trail.imageUrl} alt={trail.name} className="w-full h-full object-cover" />
+            ) : (
+              <Mountain className="w-10 h-10 text-forest/40" />
+            )}
           </div>
           <CardContent className="p-4">
             <h3 className="font-heading font-semibold mb-1">{trail?.name}</h3>
@@ -436,9 +478,32 @@ function FavoritesList() {
 }
 
 function GuideExpeditions() {
-  const { data, isLoading } = trpc.guide.myExpeditions.useQuery();
+  const { user } = useAuth();
+  const expeditionsKey = `trekko_expeditions_${user?.id ?? "guest"}`;
 
-  if (isLoading) {
+  const [staticExpeditions, setStaticExpeditions] = useState<any[]>(() => {
+    if (!STATIC_NO_API) return [];
+    try { return JSON.parse(localStorage.getItem(`trekko_expeditions_${(user as any)?.id ?? "guest"}`) ?? "[]"); }
+    catch { return []; }
+  });
+
+  useEffect(() => {
+    if (!STATIC_NO_API) return;
+    const load = () => {
+      try { setStaticExpeditions(JSON.parse(localStorage.getItem(expeditionsKey) ?? "[]")); }
+      catch { setStaticExpeditions([]); }
+    };
+    load();
+    window.addEventListener("staticExpeditionsUpdated", load);
+    return () => window.removeEventListener("staticExpeditionsUpdated", load);
+  }, [expeditionsKey]);
+
+  const { data, isLoading } = trpc.guide.myExpeditions.useQuery(undefined, { enabled: !STATIC_NO_API });
+
+  const expeditions = STATIC_NO_API ? staticExpeditions : (data?.expeditions ?? []);
+  const loading = STATIC_NO_API ? false : isLoading;
+
+  if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
@@ -446,7 +511,7 @@ function GuideExpeditions() {
     );
   }
 
-  if (!data?.expeditions || data.expeditions.length === 0) {
+  if (expeditions.length === 0) {
     return (
       <Card>
         <CardContent className="p-8 text-center">
@@ -462,23 +527,40 @@ function GuideExpeditions() {
 
   return (
     <div className="space-y-4">
-      {data.expeditions.map((expedition) => (
-        <ExpeditionManageCard key={expedition.id} expedition={expedition} />
+      {expeditions.map((expedition: any) => (
+        <ExpeditionManageCard key={expedition.id} expedition={expedition} expeditionsKey={expeditionsKey} />
       ))}
     </div>
   );
 }
 
-function ExpeditionManageCard({ expedition }: { expedition: any }) {
-  const { data: trailData } = trpc.trails.getById.useQuery({ id: expedition.trailId });
+function ExpeditionManageCard({ expedition, expeditionsKey }: { expedition: any; expeditionsKey: string }) {
+  const { data: trailData } = useTrailById(expedition.trailId);
   const utils = trpc.useUtils();
-  
+
   const deleteMutation = trpc.guide.deleteExpedition.useMutation({
     onSuccess: () => {
       utils.guide.myExpeditions.invalidate();
       toast.success("Expedição removida!");
     },
   });
+
+  const handleDelete = () => {
+    if (STATIC_NO_API) {
+      try {
+        const all: any[] = JSON.parse(localStorage.getItem(expeditionsKey) ?? "[]");
+        localStorage.setItem(expeditionsKey, JSON.stringify(all.filter((e) => e.id !== expedition.id)));
+        window.dispatchEvent(new Event("staticExpeditionsUpdated"));
+        toast.success("Expedição removida!");
+      } catch {
+        toast.error("Erro ao remover expedição");
+      }
+      return;
+    }
+    deleteMutation.mutate({ id: expedition.id });
+  };
+
+  const trailName = expedition.trailName || trailData?.trail?.name || "Expedição";
 
   return (
     <Card>
@@ -487,7 +569,7 @@ function ExpeditionManageCard({ expedition }: { expedition: any }) {
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
               <h3 className="font-heading font-semibold text-lg">
-                {expedition.title || trailData?.trail.name || "Expedição"}
+                {expedition.title || trailName}
               </h3>
               <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                 expedition.status === 'active' || expedition.status === 'published' ? 'bg-green-100 text-green-700' :
@@ -521,8 +603,8 @@ function ExpeditionManageCard({ expedition }: { expedition: any }) {
               variant="outline" 
               size="sm" 
               className="text-destructive"
-              onClick={() => deleteMutation.mutate({ id: expedition.id })}
-              disabled={deleteMutation.isPending}
+              onClick={handleDelete}
+              disabled={!STATIC_NO_API && deleteMutation.isPending}
             >
               <Trash2 className="w-4 h-4 mr-1" />
               Remover
@@ -535,6 +617,9 @@ function ExpeditionManageCard({ expedition }: { expedition: any }) {
 }
 
 function CreateExpeditionForm({ onClose }: { onClose: () => void }) {
+  const { user } = useAuth();
+  const expeditionsKey = `trekko_expeditions_${user?.id ?? "guest"}`;
+
   const [trailId, setTrailId] = useState<number | null>(null);
   const [trailSearch, setTrailSearch] = useState("");
   const [title, setTitle] = useState("");
@@ -545,7 +630,7 @@ function CreateExpeditionForm({ onClose }: { onClose: () => void }) {
   const [meetingPoint, setMeetingPoint] = useState("");
   const [notes, setNotes] = useState("");
 
-  const { data: trailsData } = trpc.trails.list.useQuery({ search: trailSearch, limit: 5 });
+  const { data: trailsData } = useTrailsList({ search: trailSearch, limit: 5 });
   const utils = trpc.useUtils();
 
   const createMutation = trpc.guide.createExpedition.useMutation({
@@ -559,12 +644,45 @@ function CreateExpeditionForm({ onClose }: { onClose: () => void }) {
     },
   });
 
+  const [submitting, setSubmitting] = useState(false);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!trailId || !startDate) {
       toast.error("Selecione uma trilha e data");
       return;
     }
+
+    if (STATIC_NO_API) {
+      setSubmitting(true);
+      try {
+        const existing: any[] = JSON.parse(localStorage.getItem(expeditionsKey) ?? "[]");
+        const newExpedition = {
+          id: Date.now(),
+          trailId,
+          trailName: trailSearch,
+          title: title || null,
+          startDate: new Date(startDate).toISOString(),
+          endDate: endDate ? new Date(endDate).toISOString() : null,
+          capacity: parseInt(capacity),
+          availableSpots: parseInt(capacity),
+          price: price || null,
+          meetingPoint: meetingPoint || null,
+          notes: notes || null,
+          status: "active",
+        };
+        localStorage.setItem(expeditionsKey, JSON.stringify([...existing, newExpedition]));
+        window.dispatchEvent(new Event("staticExpeditionsUpdated"));
+        toast.success("Expedição criada!");
+        onClose();
+      } catch {
+        toast.error("Erro ao criar expedição");
+      } finally {
+        setSubmitting(false);
+      }
+      return;
+    }
+
     createMutation.mutate({
       trailId,
       title: title || undefined,
@@ -663,8 +781,8 @@ function CreateExpeditionForm({ onClose }: { onClose: () => void }) {
 
       <div className="flex justify-end gap-2 pt-4">
         <Button type="button" variant="outline" onClick={onClose}>Cancelar</Button>
-        <Button type="submit" disabled={createMutation.isPending}>
-          {createMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+        <Button type="submit" disabled={submitting || createMutation.isPending}>
+          {(submitting || createMutation.isPending) ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
           Criar expedição
         </Button>
       </div>

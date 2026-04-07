@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { trpc } from "@/lib/trpc";
 import { staticLogin } from "@/lib/staticAuth";
+import { USE_SUPABASE } from "@/lib/supabase";
+import { supabaseLogin } from "@/lib/supabaseAuth";
 import { toast } from "sonner";
 import { useLocation } from "wouter";
 import { Loader2, Eye, EyeOff } from "lucide-react";
@@ -27,6 +29,7 @@ export default function LoginModal({ open, onOpenChange, onSwitchToRegister }: L
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitting, setSubmitting] = useState(false);
 
   const loginMutation = trpc.auth.login.useMutation({
     onSuccess: async () => {
@@ -63,6 +66,22 @@ export default function LoginModal({ open, onOpenChange, onSwitchToRegister }: L
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
+      return;
+    }
+
+    if (USE_SUPABASE) {
+      setSubmitting(true);
+      supabaseLogin(email.trim().toLowerCase(), password).then((result) => {
+        if ("error" in result) {
+          setErrors({ general: result.error });
+          setSubmitting(false);
+          return;
+        }
+        toast.success("Login realizado com sucesso!");
+        onOpenChange(false);
+        resetForm();
+        window.location.reload();
+      });
       return;
     }
 
@@ -153,9 +172,9 @@ export default function LoginModal({ open, onOpenChange, onSwitchToRegister }: L
           <Button
             type="submit"
             className="w-full"
-            disabled={loginMutation.isPending}
+            disabled={submitting || loginMutation.isPending}
           >
-            {loginMutation.isPending ? (
+            {(submitting || loginMutation.isPending) ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                 Entrando...
