@@ -58,8 +58,8 @@ export async function supabaseLogin(
     if (error.message.includes("Invalid login credentials")) {
       return { error: "E-mail ou senha incorretos" };
     }
-    if (error.message.includes("Email not confirmed")) {
-      return { error: "Confirme seu e-mail antes de entrar" };
+    if (error.message.includes("Email not confirmed") || error.message.includes("email_not_confirmed")) {
+      return { error: "Confirme seu e-mail antes de entrar. Verifique sua caixa de entrada (e a pasta de spam)." };
     }
     return { error: error.message };
   }
@@ -91,12 +91,19 @@ export async function supabaseRegister(data: {
     },
   });
   if (error) {
-    if (error.message.includes("already registered")) {
+    if (error.message.includes("already registered") || error.message.includes("already been registered")) {
       return { error: "Este e-mail já está cadastrado" };
     }
     return { error: error.message };
   }
   if (!auth.user) return { error: "Cadastro falhou" };
+  // Supabase returns identities=[] when email confirmation is required and
+  // the user is created but not yet confirmed.
+  const needsConfirmation =
+    !auth.session && auth.user.identities?.length === 0;
+  if (needsConfirmation) {
+    return { confirmationRequired: true, user: toUser(auth.user) } as any;
+  }
   return { user: toUser(auth.user) };
 }
 
