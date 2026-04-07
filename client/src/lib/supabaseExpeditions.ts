@@ -98,8 +98,9 @@ export async function sbCreateExpedition(input: {
   price?: string;
   meetingPoint?: string;
   notes?: string;
-}): Promise<Expedition | null> {
-  if (!supabase) return null;
+}): Promise<{ expedition: Expedition | null; error: string | null }> {
+  if (!supabase) return { expedition: null, error: "Supabase não configurado" };
+  if (!input.guideId) return { expedition: null, error: "Usuário não autenticado" };
   const { data, error } = await supabase
     .from("expeditions")
     .insert({
@@ -119,8 +120,14 @@ export async function sbCreateExpedition(input: {
     })
     .select()
     .single();
-  if (error) { console.error("[Trekko] sbCreateExpedition:", error.message); return null; }
-  return toExpedition(data as ExpeditionRow);
+  if (error) {
+    console.error("[Trekko] sbCreateExpedition:", error.message, error.code);
+    const msg = error.code === "42P01"
+      ? "Tabela de expedições não existe no Supabase. Execute o SQL de configuração."
+      : error.message;
+    return { expedition: null, error: msg };
+  }
+  return { expedition: toExpedition(data as ExpeditionRow), error: null };
 }
 
 export async function sbDeleteExpedition(id: number): Promise<boolean> {

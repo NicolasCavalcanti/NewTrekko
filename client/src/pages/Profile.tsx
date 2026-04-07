@@ -688,9 +688,13 @@ function CreateExpeditionForm({ onClose }: { onClose: () => void }) {
     }
 
     if (USE_SUPABASE) {
+      if (!user?.openId) {
+        toast.error("Sessão expirada. Faça login novamente.");
+        return;
+      }
       setSubmitting(true);
       sbCreateExpedition({
-        guideId: user?.openId as string,
+        guideId: user.openId as string,
         guideName: user?.name ?? null,
         trailId,
         trailName: trailSearch,
@@ -701,8 +705,11 @@ function CreateExpeditionForm({ onClose }: { onClose: () => void }) {
         price: price || undefined,
         meetingPoint: meetingPoint || undefined,
         notes: notes || undefined,
-      }).then((result) => {
-        if (!result) { toast.error("Erro ao criar expedição"); return; }
+      }).then(({ expedition, error }) => {
+        if (error || !expedition) {
+          toast.error(error ?? "Erro ao criar expedição");
+          return;
+        }
         window.dispatchEvent(new Event("supabaseExpeditionsUpdated"));
         toast.success("Expedição criada!");
         onClose();
