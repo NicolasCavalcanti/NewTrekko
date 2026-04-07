@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation, useSearch } from "wouter";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
@@ -14,6 +14,8 @@ import { useTrailsList } from "@/hooks/useTrails";
 import { Search, Mountain, MapPin, Calendar, Users, Loader2, ChevronLeft, ChevronRight, User, DollarSign, CheckCircle2, XCircle, Clock, AlertCircle } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { USE_SUPABASE } from "@/lib/supabase";
+import { sbListPublicExpeditions, type Expedition as SbExpedition } from "@/lib/supabaseExpeditions";
 
 const BRAZILIAN_STATES = [
   "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG",
@@ -63,17 +65,40 @@ export default function Trails() {
     limit: 12,
   });
 
-  const { data: expeditionsData, isLoading: expeditionsLoading } = trpc.expeditions.list.useQuery({
+  // ── Supabase expeditions ────────────────────────────────────────────────────
+  const [sbExpeditions, setSbExpeditions] = useState<SbExpedition[]>([]);
+  const [sbExpLoading, setSbExpLoading] = useState(USE_SUPABASE);
+
+  useEffect(() => {
+    if (!USE_SUPABASE) return;
+    setSbExpLoading(true);
+    sbListPublicExpeditions(expSearchText || undefined)
+      .then(setSbExpeditions)
+      .finally(() => setSbExpLoading(false));
+    const handler = () => {
+      sbListPublicExpeditions(expSearchText || undefined).then(setSbExpeditions);
+    };
+    window.addEventListener("supabaseExpeditionsUpdated", handler);
+    return () => window.removeEventListener("supabaseExpeditionsUpdated", handler);
+  }, [expSearchText]);
+
+  // ── tRPC expeditions (disabled in Supabase mode) ────────────────────────────
+  const { data: expeditionsData, isLoading: trpcExpLoading } = trpc.expeditions.list.useQuery({
     search: expSearchText || undefined,
     uf: expUF && expUF !== "all" ? expUF : undefined,
     startDate: expStartDate ? new Date(expStartDate) : undefined,
     endDate: expEndDate ? new Date(expEndDate) : undefined,
     page: expPage,
     limit: 12,
-  });
+  }, { enabled: !USE_SUPABASE });
+
+  const displayExpeditions: any[] = USE_SUPABASE ? sbExpeditions : (expeditionsData?.expeditions ?? []);
+  const expeditionsLoading = USE_SUPABASE ? sbExpLoading : trpcExpLoading;
 
   const totalTrailPages = Math.ceil((trailsData?.total || 0) / 12);
-  const totalExpPages = Math.ceil((expeditionsData?.total || 0) / 12);
+  const totalExpPages = USE_SUPABASE
+    ? Math.ceil(sbExpeditions.length / 12)
+    : Math.ceil((expeditionsData?.total || 0) / 12);
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -335,7 +360,7 @@ export default function Trails() {
                 <div className="flex items-center justify-center py-12">
                   <Loader2 className="w-8 h-8 animate-spin text-primary" />
                 </div>
-              ) : expeditionsData?.expeditions.length === 0 ? (
+              ) : displayExpeditions.length === 0 ? (
                 <div className="text-center py-12">
                   <Calendar className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
                   <h3 className="font-heading text-xl font-semibold mb-2">Nenhuma expedição encontrada</h3>
@@ -344,7 +369,7 @@ export default function Trails() {
               ) : (
                 <>
                   <div className="space-y-4">
-                    {expeditionsData?.expeditions.map((expedition) => (
+                    {displayExpeditions.map((expedition) => (
                       <ExpeditionCard key={expedition.id} expedition={expedition} />
                     ))}
                   </div>
@@ -387,12 +412,20 @@ export default function Trails() {
 
 function ExpeditionCard({ expedition }: { expedition: any }) {
   const [, navigate] = useLocation();
-  const { data: trailData } = trpc.trails.getById.useQuery({ id: expedition.trailId });
-  const { data: guideData } = trpc.user.getById.useQuery({ id: expedition.guideId });
+  const { data: trailData } = trpc.trails.getById.useQuery(
+    { id: expedition.trailId },
+    { enabled: !USE_SUPABASE },
+  );
+  const { data: guideData } = trpc.user.getById.useQuery(
+    { id: expedition.guideId },
+    { enabled: !USE_SUPABASE && typeof expedition.guideId === "number" },
+  );
 
   const capacity = expedition.capacity || 10;
-  const enrolledCount = expedition.enrolledCount || 0;
-  const availableSpots = capacity - enrolledCount;
+  const availableSpots = expedition.availableSpots !== undefined
+    ? expedition.availableSpots
+    : capacity - (expedition.enrolledCount || 0);
+  const enrolledCount = expedition.enrolledCount ?? (capacity - availableSpots);
   const status = expedition.status || 'active';
   const statusInfo = STATUS_LABELS[status] || STATUS_LABELS.active;
 
@@ -431,7 +464,7 @@ function ExpeditionCard({ expedition }: { expedition: any }) {
               {/* Header */}
               <div className="mb-4">
                 <h3 className="font-heading font-semibold text-xl mb-2">
-                  {expedition.title || trailData?.trail.name || "Expedição"}
+                  {expedition.title || expedition.trailName || trailData?.trail?.name || "Expedição"}
                 </h3>
                 <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
                   {trailData?.trail && (
@@ -460,7 +493,7 @@ function ExpeditionCard({ expedition }: { expedition: any }) {
                   )}
                 </div>
                 <div>
-                  <p className="text-sm font-medium">Guia: {guideData?.name || 'Carregando...'}</p>
+                  <p className="text-sm font-medium">Guia: {guideData?.name || expedition.guideName || 'Carregando...'}</p>
                   {guideData?.cadasturNumber && (
                     <p className="text-xs text-muted-foreground">CADASTUR: {guideData.cadasturNumber}</p>
                   )}

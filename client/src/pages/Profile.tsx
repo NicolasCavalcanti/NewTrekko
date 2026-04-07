@@ -22,6 +22,12 @@ import GuideFinancialPanel from "@/components/GuideFinancialPanel";
 import UserReservationsPanel from "@/components/UserReservationsPanel";
 import { toast } from "sonner";
 import { format } from "date-fns";
+import { USE_SUPABASE } from "@/lib/supabase";
+import {
+  sbListGuideExpeditions,
+  sbCreateExpedition,
+  sbDeleteExpedition,
+} from "@/lib/supabaseExpeditions";
 
 export default function Profile() {
   const [, navigate] = useLocation();
@@ -481,6 +487,24 @@ function GuideExpeditions() {
   const { user } = useAuth();
   const expeditionsKey = `trekko_expeditions_${user?.id ?? "guest"}`;
 
+  // ── Supabase mode ──────────────────────────────────────────────────────────
+  const [sbExpeditions, setSbExpeditions] = useState<any[]>([]);
+  const [sbLoading, setSbLoading] = useState(USE_SUPABASE);
+
+  useEffect(() => {
+    if (!USE_SUPABASE || !user?.openId) return;
+    setSbLoading(true);
+    sbListGuideExpeditions(user.openId as string)
+      .then(setSbExpeditions)
+      .finally(() => setSbLoading(false));
+    const handler = () => {
+      sbListGuideExpeditions(user.openId as string).then(setSbExpeditions);
+    };
+    window.addEventListener("supabaseExpeditionsUpdated", handler);
+    return () => window.removeEventListener("supabaseExpeditionsUpdated", handler);
+  }, [user?.openId]);
+
+  // ── Static localStorage mode ───────────────────────────────────────────────
   const [staticExpeditions, setStaticExpeditions] = useState<any[]>(() => {
     if (!STATIC_NO_API) return [];
     try { return JSON.parse(localStorage.getItem(`trekko_expeditions_${(user as any)?.id ?? "guest"}`) ?? "[]"); }
@@ -498,10 +522,11 @@ function GuideExpeditions() {
     return () => window.removeEventListener("staticExpeditionsUpdated", load);
   }, [expeditionsKey]);
 
-  const { data, isLoading } = trpc.guide.myExpeditions.useQuery(undefined, { enabled: !STATIC_NO_API });
+  // ── tRPC backend mode ──────────────────────────────────────────────────────
+  const { data, isLoading } = trpc.guide.myExpeditions.useQuery(undefined, { enabled: !STATIC_NO_API && !USE_SUPABASE });
 
-  const expeditions = STATIC_NO_API ? staticExpeditions : (data?.expeditions ?? []);
-  const loading = STATIC_NO_API ? false : isLoading;
+  const expeditions = USE_SUPABASE ? sbExpeditions : STATIC_NO_API ? staticExpeditions : (data?.expeditions ?? []);
+  const loading = USE_SUPABASE ? sbLoading : STATIC_NO_API ? false : isLoading;
 
   if (loading) {
     return (
@@ -545,7 +570,18 @@ function ExpeditionManageCard({ expedition, expeditionsKey }: { expedition: any;
     },
   });
 
-  const handleDelete = () => {
+
+  const handleDelete = async () => {
+    if (USE_SUPABASE) {
+      const ok = await sbDeleteExpedition(expedition.id);
+      if (ok) {
+        window.dispatchEvent(new Event("supabaseExpeditionsUpdated"));
+        toast.success("Expedição removida!");
+      } else {
+        toast.error("Erro ao remover expedição");
+      }
+      return;
+    }
     if (STATIC_NO_API) {
       try {
         const all: any[] = JSON.parse(localStorage.getItem(expeditionsKey) ?? "[]");
@@ -569,7 +605,7 @@ function ExpeditionManageCard({ expedition, expeditionsKey }: { expedition: any;
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
               <h3 className="font-heading font-semibold text-lg">
-                {expedition.title || trailName}
+                {expedition.title || trailName || "Expedição"}
               </h3>
               <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                 expedition.status === 'active' || expedition.status === 'published' ? 'bg-green-100 text-green-700' :
@@ -604,7 +640,7 @@ function ExpeditionManageCard({ expedition, expeditionsKey }: { expedition: any;
               size="sm" 
               className="text-destructive"
               onClick={handleDelete}
-              disabled={!STATIC_NO_API && deleteMutation.isPending}
+              disabled={!STATIC_NO_API && !USE_SUPABASE && deleteMutation.isPending}
             >
               <Trash2 className="w-4 h-4 mr-1" />
               Remover
@@ -619,7 +655,6 @@ function ExpeditionManageCard({ expedition, expeditionsKey }: { expedition: any;
 function CreateExpeditionForm({ onClose }: { onClose: () => void }) {
   const { user } = useAuth();
   const expeditionsKey = `trekko_expeditions_${user?.id ?? "guest"}`;
-
   const [trailId, setTrailId] = useState<number | null>(null);
   const [trailSearch, setTrailSearch] = useState("");
   const [title, setTitle] = useState("");
@@ -629,6 +664,7 @@ function CreateExpeditionForm({ onClose }: { onClose: () => void }) {
   const [price, setPrice] = useState("");
   const [meetingPoint, setMeetingPoint] = useState("");
   const [notes, setNotes] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const { data: trailsData } = useTrailsList({ search: trailSearch, limit: 5 });
   const utils = trpc.useUtils();
@@ -644,12 +680,33 @@ function CreateExpeditionForm({ onClose }: { onClose: () => void }) {
     },
   });
 
-  const [submitting, setSubmitting] = useState(false);
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!trailId || !startDate) {
       toast.error("Selecione uma trilha e data");
+      return;
+    }
+
+    if (USE_SUPABASE) {
+      setSubmitting(true);
+      sbCreateExpedition({
+        guideId: user?.openId as string,
+        guideName: user?.name ?? null,
+        trailId,
+        trailName: trailSearch,
+        title: title || undefined,
+        startDate: new Date(startDate).toISOString(),
+        endDate: endDate ? new Date(endDate).toISOString() : undefined,
+        capacity: parseInt(capacity),
+        price: price || undefined,
+        meetingPoint: meetingPoint || undefined,
+        notes: notes || undefined,
+      }).then((result) => {
+        if (!result) { toast.error("Erro ao criar expedição"); return; }
+        window.dispatchEvent(new Event("supabaseExpeditionsUpdated"));
+        toast.success("Expedição criada!");
+        onClose();
+      }).finally(() => setSubmitting(false));
       return;
     }
 
