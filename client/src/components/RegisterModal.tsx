@@ -259,13 +259,22 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
         password,
         userType: userType as "trekker" | "guide",
         cadasturNumber: userType === "guide" ? cadasturNumber : undefined,
-      }).then((result) => {
+      }).then((result: any) => {
         if ("error" in result) {
           if (result.error.includes("e-mail") || result.error.includes("cadastrado")) {
             setErrors({ email: result.error });
           } else {
             toast.error(result.error);
           }
+          return;
+        }
+        if (result.confirmationRequired) {
+          toast.success(
+            "Cadastro realizado! Verifique seu e-mail e clique no link de confirmação para ativar sua conta.",
+            { duration: 8000 }
+          );
+          onOpenChange(false);
+          resetForm();
           return;
         }
         toast.success("Conta criada com sucesso!");
