@@ -185,8 +185,8 @@ export async function sbUpdateExpedition(
     return { expedition: toExpedition(updated as ExpeditionRow), error: null };
   }
 
-  // Fallback: delete + re-insert (works with INSERT + DELETE policies only,
-  // needed until the UPDATE RLS policy is applied via migration).
+  // Fallback: delete + re-insert preserving the same ID
+  // (needed until the UPDATE RLS policy is applied via migration).
   console.warn("[Trekko] UPDATE failed, falling back to delete+insert:", updateError?.message);
 
   const { data: existing, error: fetchError } = await supabase
@@ -202,6 +202,7 @@ export async function sbUpdateExpedition(
   const { data: inserted, error: insertError } = await supabase
     .from("expeditions")
     .insert({
+      id,                                              // Preserve original ID so URLs don't break
       guide_id: (existing as ExpeditionRow).guide_id,
       guide_name: (existing as ExpeditionRow).guide_name,
       trail_id: (existing as ExpeditionRow).trail_id,
