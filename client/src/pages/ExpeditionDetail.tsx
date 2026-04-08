@@ -12,7 +12,16 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import { useTrailById } from "@/hooks/useTrails";
 import { USE_SUPABASE } from "@/lib/supabase";
-import { sbGetExpeditionById, type Expedition as SbExpedition } from "@/lib/supabaseExpeditions";
+import {
+  sbGetExpeditionById,
+  sbIsEnrolled,
+  sbEnrollExpedition,
+  sbCancelEnrollment,
+  sbGetParticipants,
+  type Expedition as SbExpedition,
+  type EnrollmentRow,
+} from "@/lib/supabaseExpeditions";
+import { sbCreateMpCheckout } from "@/lib/supabasePayments";
 import {
   ArrowLeft, Calendar, MapPin, Users, User, DollarSign, Clock,
   Mountain, CheckCircle2, XCircle, AlertCircle, Loader2,
@@ -36,6 +45,7 @@ export default function ExpeditionDetail() {
   const { user, isAuthenticated } = useAuth();
   const [showEnrollDialog, setShowEnrollDialog] = useState(false);
   const [showCancelDialog, setShowCancelDialog] = useState(false);
+  const [showPaymentDialog, setShowPaymentDialog] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [bookingQuantity, setBookingQuantity] = useState(1);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
@@ -57,6 +67,129 @@ export default function ExpeditionDetail() {
   const { data: sbTrailData } = useTrailById(
     USE_SUPABASE ? (sbExpedition?.trailId ?? 0) : 0
   );
+
+  // Supabase enrollment state
+  const [sbEnrolled, setSbEnrolled] = useState(false);
+  const [sbEnrolling, setSbEnrolling] = useState(false);
+  const [sbCancelling, setSbCancelling] = useState(false);
+  const [sbParticipants, setSbParticipants] = useState<EnrollmentRow[]>([]);
+
+  useEffect(() => {
+    if (!USE_SUPABASE || !user?.openId || expeditionId <= 0) return;
+    sbIsEnrolled(expeditionId, user.openId).then(setSbEnrolled);
+  }, [expeditionId, user?.openId]);
+
+  // Fetch participants for guide view (runs after sbExpedition loads so we know the guide_id)
+  useEffect(() => {
+    if (!USE_SUPABASE || !sbExpedition || !user?.openId) return;
+    if (user.openId !== sbExpedition.guideId && user?.role !== 'admin') return;
+    sbGetParticipants(expeditionId).then(setSbParticipants);
+  }, [expeditionId, sbExpedition, user?.openId]);
+
+  async function handleSbEnroll() {
+    if (!user?.openId) return;
+
+    const hasPaid = sbExpedition?.price && parseFloat(sbExpedition.price) > 0;
+
+    // ── Paid expedition: create Mercado Pago checkout ──────────────────────────
+    if (hasPaid) {
+      setSbEnrolling(true);
+      setIsProcessingPayment(true);
+
+      const { checkoutUrl, error: payErr } = await sbCreateMpCheckout({
+        expeditionId,
+        expeditionTitle: sbExpedition?.title ?? null,
+        trailName: sbExpedition?.trailName ?? null,
+        startDate: sbExpedition?.startDate ?? null,
+        price: sbExpedition!.price!,
+        quantity: bookingQuantity,
+        userEmail: user.email ?? null,
+        userName: user.name ?? null,
+      });
+
+      if (checkoutUrl) {
+        // Record enrollment before leaving the page
+        await sbEnrollExpedition({
+          expeditionId,
+          userId: user.openId,
+          userName: user.name ?? null,
+          userEmail: user.email ?? null,
+          spots: bookingQuantity,
+        });
+        setSbEnrolled(true);
+        setSbExpedition(prev => prev
+          ? { ...prev, availableSpots: Math.max(0, prev.availableSpots - bookingQuantity) }
+          : prev
+        );
+        setShowEnrollDialog(false);
+        window.location.href = checkoutUrl;
+        return;
+      }
+
+      // Edge function not deployed yet — fall back to payment-dialog with contact info
+      console.warn("[Trekko] MP checkout failed, falling back to payment dialog:", payErr);
+      setSbEnrolling(false);
+      setIsProcessingPayment(false);
+      // Still record the enrollment so the guide knows about interest
+      await sbEnrollExpedition({
+        expeditionId,
+        userId: user.openId,
+        userName: user.name ?? null,
+        userEmail: user.email ?? null,
+        spots: bookingQuantity,
+      });
+      setSbEnrolled(true);
+      setSbExpedition(prev => prev
+        ? { ...prev, availableSpots: Math.max(0, prev.availableSpots - bookingQuantity) }
+        : prev
+      );
+      setShowEnrollDialog(false);
+      setShowPaymentDialog(true);
+      return;
+    }
+
+    // ── Free expedition: enroll directly ──────────────────────────────────────
+    setSbEnrolling(true);
+    const { success, error: err } = await sbEnrollExpedition({
+      expeditionId,
+      userId: user.openId,
+      userName: user.name ?? null,
+      userEmail: user.email ?? null,
+      spots: bookingQuantity,
+    });
+    setSbEnrolling(false);
+    if (success) {
+      setSbEnrolled(true);
+      // Optimistically decrement available spots (trekkers can't UPDATE expeditions via RLS)
+      setSbExpedition(prev => prev
+        ? { ...prev, availableSpots: Math.max(0, prev.availableSpots - bookingQuantity) }
+        : prev
+      );
+      setShowEnrollDialog(false);
+      toast.success("Inscrição confirmada!");
+    } else {
+      toast.error(err || "Erro ao realizar inscrição");
+    }
+  }
+
+  async function handleSbCancel() {
+    if (!user?.openId) return;
+    setSbCancelling(true);
+    const { success, error: err } = await sbCancelEnrollment(expeditionId, user.openId);
+    setSbCancelling(false);
+    if (success) {
+      setSbEnrolled(false);
+      // Restore the spot optimistically
+      setSbExpedition(prev => prev
+        ? { ...prev, availableSpots: Math.min(prev.capacity, prev.availableSpots + 1) }
+        : prev
+      );
+      setShowCancelDialog(false);
+      toast.success("Inscrição cancelada com sucesso");
+    } else {
+      toast.error(err || "Erro ao cancelar inscrição");
+    }
+  }
 
   // ── tRPC mode ────────────────────────────────────────────────────────────────
   const { data: trpcData, isLoading: trpcLoading, error: trpcError, refetch } = trpc.expeditions.getDetails.useQuery(
@@ -83,7 +216,7 @@ export default function ExpeditionDetail() {
           city: sbTrailData?.trail?.city ?? "",
           uf: sbTrailData?.trail?.uf ?? "",
           imageUrl: sbTrailData?.trail?.imageUrl ?? null,
-          images: [],
+          images: sbTrailData?.trail?.images ?? [],
           distanceKm: sbTrailData?.trail?.distanceKm ?? null,
           elevationGain: sbTrailData?.trail?.elevationGain ?? null,
         },
@@ -100,10 +233,11 @@ export default function ExpeditionDetail() {
   const isLoading = USE_SUPABASE ? sbLoading : trpcLoading;
   const error = USE_SUPABASE ? (sbLoading ? null : (!sbExpedition ? true : null)) : trpcError;
 
-  const { data: isEnrolled, refetch: refetchEnrollment } = trpc.expeditions.isEnrolled.useQuery(
+  const { data: trpcIsEnrolled, refetch: refetchEnrollment } = trpc.expeditions.isEnrolled.useQuery(
     { expeditionId },
     { enabled: !USE_SUPABASE && expeditionId > 0 && isAuthenticated }
   );
+  const isEnrolled = USE_SUPABASE ? sbEnrolled : trpcIsEnrolled;
 
   const { data: participants } = trpc.expeditions.getParticipants.useQuery(
     { expeditionId },
@@ -196,28 +330,22 @@ export default function ExpeditionDetail() {
   const enrolledCount = expedition.enrolledCount || 0;
   const availableSpots = capacity - enrolledCount;
   const canEnroll = status === 'active' && availableSpots > 0 && !isEnrolled;
-  const isGuideOrAdmin = user?.id === guide.id || user?.role === 'admin';
+  // In Supabase mode guide.id is a UUID; compare against user.openId instead of user.id
+  const isGuideOrAdmin = USE_SUPABASE
+    ? (user?.openId === guide.id || user?.role === 'admin')
+    : (user?.id === guide.id || user?.role === 'admin');
 
-  // Get images (already typed as string[] in schema)
-  const images: string[] = expedition.images || [];
-  
-  // Get trail images
-  const trailImages: string[] = trail.images || [];
-  
-  // Combine all images, prioritizing expedition images
-  let allImages = [...images];
-  
-  // Add trail image as fallback if no expedition images
-  if (allImages.length === 0 && trail.imageUrl) {
-    allImages = [trail.imageUrl];
-  }
-  
-  // Add trail gallery images that aren't already included
-  trailImages.forEach(img => {
-    if (!allImages.includes(img)) {
-      allImages.push(img);
-    }
-  });
+  // Always build the gallery from the trail:
+  // 1. Full trail gallery (images[])
+  // 2. Trail main image as fallback if gallery is empty
+  // Expedition-specific images (if any) are appended after.
+  const trailImages: string[] = trail.images?.length ? trail.images : (trail.imageUrl ? [trail.imageUrl] : []);
+  const expeditionImages: string[] = expedition.images || [];
+  // Start with trail gallery, then add any expedition-specific images not already present
+  const allImages: string[] = [
+    ...trailImages,
+    ...expeditionImages.filter(img => !trailImages.includes(img)),
+  ];
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -434,18 +562,39 @@ export default function ExpeditionDetail() {
                 </Card>
               )}
 
-              {/* Participants List (Only for guide/admin) */}
-              {isGuideOrAdmin && participants && participants.length > 0 && (
+                      {/* Participants List (Only for guide/admin) */}
+              {isGuideOrAdmin && (USE_SUPABASE ? true : (participants && participants.length > 0)) && (
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Users className="w-5 h-5" />
-                      Lista de Participantes ({participants.length})
+                      Lista de Participantes ({USE_SUPABASE ? sbParticipants.length : participants?.length ?? 0})
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
+                    {USE_SUPABASE && sbParticipants.length === 0 ? (
+                      <p className="text-sm text-muted-foreground text-center py-4">Nenhum inscrito ainda.</p>
+                    ) : (
                     <div className="space-y-3">
-                      {participants.map(({ participant, user: participantUser }) => (
+                      {USE_SUPABASE
+                        ? sbParticipants.map((p) => (
+                            <div key={p.id} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                              <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                                  <User className="w-5 h-5 text-primary" />
+                                </div>
+                                <div>
+                                  <p className="font-medium">{p.user_name ?? "Participante"}</p>
+                                  <p className="text-sm text-muted-foreground">{p.user_email}</p>
+                                </div>
+                              </div>
+                              <div className="text-right text-sm text-muted-foreground">
+                                <p>{p.spots} vaga{p.spots !== 1 ? "s" : ""}</p>
+                                <p>{format(new Date(p.created_at), "dd/MM/yyyy HH:mm")}</p>
+                              </div>
+                            </div>
+                          ))
+                        : participants!.map(({ participant, user: participantUser }) => (
                         <div key={participant.id} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden">
@@ -466,6 +615,7 @@ export default function ExpeditionDetail() {
                         </div>
                       ))}
                     </div>
+                    )}
                   </CardContent>
                 </Card>
               )}
@@ -734,17 +884,11 @@ export default function ExpeditionDetail() {
               Cancelar
             </Button>
             {expedition.price && parseFloat(expedition.price) > 0 ? (
-              <Button 
-                onClick={() => {
-                  setIsProcessingPayment(true);
-                  createCheckoutMutation.mutate({ 
-                    expeditionId, 
-                    quantity: bookingQuantity 
-                  });
-                }}
-                disabled={isProcessingPayment || createCheckoutMutation.isPending}
+              <Button
+                onClick={handleSbEnroll}
+                disabled={sbEnrolling || isProcessingPayment}
               >
-                {(isProcessingPayment || createCheckoutMutation.isPending) ? (
+                {(sbEnrolling || isProcessingPayment) ? (
                   <Loader2 className="w-4 h-4 animate-spin mr-2" />
                 ) : (
                   <DollarSign className="w-4 h-4 mr-2" />
@@ -752,11 +896,11 @@ export default function ExpeditionDetail() {
                 Pagar e Reservar
               </Button>
             ) : (
-              <Button 
-                onClick={() => enrollMutation.mutate({ expeditionId })}
-                disabled={enrollMutation.isPending}
+              <Button
+                onClick={handleSbEnroll}
+                disabled={sbEnrolling}
               >
-                {enrollMutation.isPending ? (
+                {sbEnrolling ? (
                   <Loader2 className="w-4 h-4 animate-spin mr-2" />
                 ) : null}
                 Confirmar Inscrição
@@ -779,16 +923,66 @@ export default function ExpeditionDetail() {
             <Button variant="outline" onClick={() => setShowCancelDialog(false)}>
               Voltar
             </Button>
-            <Button 
+            <Button
               variant="destructive"
-              onClick={() => cancelMutation.mutate({ expeditionId })}
-              disabled={cancelMutation.isPending}
+              onClick={handleSbCancel}
+              disabled={sbCancelling}
             >
-              {cancelMutation.isPending ? (
+              {sbCancelling ? (
                 <Loader2 className="w-4 h-4 animate-spin mr-2" />
               ) : null}
               Confirmar Cancelamento
             </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Post-enrollment payment instructions dialog (Supabase / no-backend mode) */}
+      <Dialog open={showPaymentDialog} onOpenChange={setShowPaymentDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <CheckCircle2 className="w-5 h-5 text-green-600" />
+              Vaga Reservada!
+            </DialogTitle>
+            <DialogDescription>
+              Sua reserva foi registrada com sucesso.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4 space-y-4">
+            <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+              <p className="font-medium text-green-800 mb-1">Próximo passo: pagamento</p>
+              <p className="text-sm text-green-700">
+                Entre em contato com o guia <strong>{data?.guide?.name}</strong> para combinar o pagamento de{" "}
+                <strong>
+                  R$ {data?.expedition?.price
+                    ? (parseFloat(data.expedition.price) * bookingQuantity).toFixed(2)
+                    : "—"}
+                </strong>{" "}
+                e confirmar sua vaga.
+              </p>
+            </div>
+            <div className="p-3 bg-muted rounded-lg text-xs text-muted-foreground space-y-1">
+              <p className="font-medium">Expedição:</p>
+              <p>{data?.expedition?.title || data?.trail?.name}</p>
+              <p>{data?.expedition?.startDate
+                ? format(new Date(data.expedition.startDate), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })
+                : ""}</p>
+              <p>Vagas: {bookingQuantity}</p>
+            </div>
+          </div>
+          <DialogFooter className="gap-2 sm:gap-0">
+            <Button variant="outline" onClick={() => setShowPaymentDialog(false)}>
+              Fechar
+            </Button>
+            {data?.guide?.cadasturNumber && (
+              <Button onClick={() => {
+                setShowPaymentDialog(false);
+                navigate(`/guia/${data.guide.cadasturNumber}`);
+              }}>
+                Ver perfil do guia
+              </Button>
+            )}
           </DialogFooter>
         </DialogContent>
       </Dialog>
