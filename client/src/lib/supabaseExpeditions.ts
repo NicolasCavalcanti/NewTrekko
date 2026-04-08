@@ -366,6 +366,33 @@ export async function sbCancelEnrollment(
   return { success: true, error: null };
 }
 
+export type EnrollmentRow = {
+  id: number;
+  expedition_id: number;
+  user_id: string;
+  user_name: string | null;
+  user_email: string | null;
+  spots: number;
+  status: string;
+  created_at: string;
+};
+
+/** Fetch all active enrollments for an expedition (only accessible to that expedition's guide). */
+export async function sbGetParticipants(expeditionId: number): Promise<EnrollmentRow[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from("enrollments")
+    .select("*")
+    .eq("expedition_id", expeditionId)
+    .neq("status", "cancelled")
+    .order("created_at", { ascending: true });
+  if (error) {
+    if (!isMissingTableError(error)) console.error("[Trekko] sbGetParticipants:", error.message);
+    return [];
+  }
+  return (data ?? []) as EnrollmentRow[];
+}
+
 export async function sbDeleteExpedition(id: number): Promise<boolean> {
   if (!supabase) return false;
   const { error } = await supabase.from("expeditions").delete().eq("id", id);

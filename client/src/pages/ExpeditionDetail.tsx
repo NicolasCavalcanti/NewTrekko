@@ -17,7 +17,9 @@ import {
   sbIsEnrolled,
   sbEnrollExpedition,
   sbCancelEnrollment,
+  sbGetParticipants,
   type Expedition as SbExpedition,
+  type EnrollmentRow,
 } from "@/lib/supabaseExpeditions";
 import {
   ArrowLeft, Calendar, MapPin, Users, User, DollarSign, Clock,
@@ -42,6 +44,7 @@ export default function ExpeditionDetail() {
   const { user, isAuthenticated } = useAuth();
   const [showEnrollDialog, setShowEnrollDialog] = useState(false);
   const [showCancelDialog, setShowCancelDialog] = useState(false);
+  const [showPaymentDialog, setShowPaymentDialog] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [bookingQuantity, setBookingQuantity] = useState(1);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
@@ -68,11 +71,19 @@ export default function ExpeditionDetail() {
   const [sbEnrolled, setSbEnrolled] = useState(false);
   const [sbEnrolling, setSbEnrolling] = useState(false);
   const [sbCancelling, setSbCancelling] = useState(false);
+  const [sbParticipants, setSbParticipants] = useState<EnrollmentRow[]>([]);
 
   useEffect(() => {
     if (!USE_SUPABASE || !user?.openId || expeditionId <= 0) return;
     sbIsEnrolled(expeditionId, user.openId).then(setSbEnrolled);
   }, [expeditionId, user?.openId]);
+
+  // Fetch participants for guide view (runs after sbExpedition loads so we know the guide_id)
+  useEffect(() => {
+    if (!USE_SUPABASE || !sbExpedition || !user?.openId) return;
+    if (user.openId !== sbExpedition.guideId && user?.role !== 'admin') return;
+    sbGetParticipants(expeditionId).then(setSbParticipants);
+  }, [expeditionId, sbExpedition, user?.openId]);
 
   async function handleSbEnroll() {
     if (!user?.openId) return;
@@ -87,12 +98,16 @@ export default function ExpeditionDetail() {
     setSbEnrolling(false);
     if (success) {
       setSbEnrolled(true);
-      // Refresh expedition to get updated spots
-      sbGetExpeditionById(expeditionId).then(setSbExpedition);
+      // Optimistically decrement available spots so UI updates immediately
+      // (trekkers can't UPDATE expeditions via RLS, so DB won't reflect this)
+      setSbExpedition(prev => prev
+        ? { ...prev, availableSpots: Math.max(0, prev.availableSpots - bookingQuantity) }
+        : prev
+      );
       setShowEnrollDialog(false);
       const hasPaid = sbExpedition?.price && parseFloat(sbExpedition.price) > 0;
       if (hasPaid) {
-        toast.success("Inscrição solicitada! Entre em contato com o guia para finalizar o pagamento.");
+        setShowPaymentDialog(true);
       } else {
         toast.success("Inscrição confirmada!");
       }
@@ -108,7 +123,11 @@ export default function ExpeditionDetail() {
     setSbCancelling(false);
     if (success) {
       setSbEnrolled(false);
-      sbGetExpeditionById(expeditionId).then(setSbExpedition);
+      // Restore the spot optimistically
+      setSbExpedition(prev => prev
+        ? { ...prev, availableSpots: Math.min(prev.capacity, prev.availableSpots + 1) }
+        : prev
+      );
       setShowCancelDialog(false);
       toast.success("Inscrição cancelada com sucesso");
     } else {
@@ -255,7 +274,10 @@ export default function ExpeditionDetail() {
   const enrolledCount = expedition.enrolledCount || 0;
   const availableSpots = capacity - enrolledCount;
   const canEnroll = status === 'active' && availableSpots > 0 && !isEnrolled;
-  const isGuideOrAdmin = user?.id === guide.id || user?.role === 'admin';
+  // In Supabase mode guide.id is a UUID; compare against user.openId instead of user.id
+  const isGuideOrAdmin = USE_SUPABASE
+    ? (user?.openId === guide.id || user?.role === 'admin')
+    : (user?.id === guide.id || user?.role === 'admin');
 
   // Get images (already typed as string[] in schema)
   const images: string[] = expedition.images || [];
@@ -493,18 +515,39 @@ export default function ExpeditionDetail() {
                 </Card>
               )}
 
-              {/* Participants List (Only for guide/admin) */}
-              {isGuideOrAdmin && participants && participants.length > 0 && (
+                      {/* Participants List (Only for guide/admin) */}
+              {isGuideOrAdmin && (USE_SUPABASE ? true : (participants && participants.length > 0)) && (
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Users className="w-5 h-5" />
-                      Lista de Participantes ({participants.length})
+                      Lista de Participantes ({USE_SUPABASE ? sbParticipants.length : participants?.length ?? 0})
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
+                    {USE_SUPABASE && sbParticipants.length === 0 ? (
+                      <p className="text-sm text-muted-foreground text-center py-4">Nenhum inscrito ainda.</p>
+                    ) : (
                     <div className="space-y-3">
-                      {participants.map(({ participant, user: participantUser }) => (
+                      {USE_SUPABASE
+                        ? sbParticipants.map((p) => (
+                            <div key={p.id} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                              <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                                  <User className="w-5 h-5 text-primary" />
+                                </div>
+                                <div>
+                                  <p className="font-medium">{p.user_name ?? "Participante"}</p>
+                                  <p className="text-sm text-muted-foreground">{p.user_email}</p>
+                                </div>
+                              </div>
+                              <div className="text-right text-sm text-muted-foreground">
+                                <p>{p.spots} vaga{p.spots !== 1 ? "s" : ""}</p>
+                                <p>{format(new Date(p.created_at), "dd/MM/yyyy HH:mm")}</p>
+                              </div>
+                            </div>
+                          ))
+                        : participants!.map(({ participant, user: participantUser }) => (
                         <div key={participant.id} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden">
@@ -525,6 +568,7 @@ export default function ExpeditionDetail() {
                         </div>
                       ))}
                     </div>
+                    )}
                   </CardContent>
                 </Card>
               )}
@@ -861,6 +905,56 @@ export default function ExpeditionDetail() {
               ) : null}
               Confirmar Cancelamento
             </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Post-enrollment payment instructions dialog (Supabase / no-backend mode) */}
+      <Dialog open={showPaymentDialog} onOpenChange={setShowPaymentDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <CheckCircle2 className="w-5 h-5 text-green-600" />
+              Vaga Reservada!
+            </DialogTitle>
+            <DialogDescription>
+              Sua reserva foi registrada com sucesso.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4 space-y-4">
+            <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+              <p className="font-medium text-green-800 mb-1">Próximo passo: pagamento</p>
+              <p className="text-sm text-green-700">
+                Entre em contato com o guia <strong>{data?.guide?.name}</strong> para combinar o pagamento de{" "}
+                <strong>
+                  R$ {data?.expedition?.price
+                    ? (parseFloat(data.expedition.price) * bookingQuantity).toFixed(2)
+                    : "—"}
+                </strong>{" "}
+                e confirmar sua vaga.
+              </p>
+            </div>
+            <div className="p-3 bg-muted rounded-lg text-xs text-muted-foreground space-y-1">
+              <p className="font-medium">Expedição:</p>
+              <p>{data?.expedition?.title || data?.trail?.name}</p>
+              <p>{data?.expedition?.startDate
+                ? format(new Date(data.expedition.startDate), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })
+                : ""}</p>
+              <p>Vagas: {bookingQuantity}</p>
+            </div>
+          </div>
+          <DialogFooter className="gap-2 sm:gap-0">
+            <Button variant="outline" onClick={() => setShowPaymentDialog(false)}>
+              Fechar
+            </Button>
+            {data?.guide?.cadasturNumber && (
+              <Button onClick={() => {
+                setShowPaymentDialog(false);
+                navigate(`/guia/${data.guide.cadasturNumber}`);
+              }}>
+                Ver perfil do guia
+              </Button>
+            )}
           </DialogFooter>
         </DialogContent>
       </Dialog>
