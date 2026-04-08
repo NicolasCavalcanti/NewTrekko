@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useLocation } from "wouter";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -10,9 +10,12 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
-import { 
-  ArrowLeft, Calendar, MapPin, Users, User, DollarSign, Clock, 
-  Mountain, CheckCircle2, XCircle, AlertCircle, Loader2, 
+import { useTrailById } from "@/hooks/useTrails";
+import { USE_SUPABASE } from "@/lib/supabase";
+import { sbGetExpeditionById, type Expedition as SbExpedition } from "@/lib/supabaseExpeditions";
+import {
+  ArrowLeft, Calendar, MapPin, Users, User, DollarSign, Clock,
+  Mountain, CheckCircle2, XCircle, AlertCircle, Loader2,
   Phone, Mail, Award, Info, ImageIcon, ChevronLeft, ChevronRight
 } from "lucide-react";
 import { format } from "date-fns";
@@ -39,21 +42,74 @@ export default function ExpeditionDetail() {
 
   const expeditionId = parseInt(id || "0");
 
-  const { data, isLoading, error, refetch } = trpc.expeditions.getDetails.useQuery(
-    { id: expeditionId },
-    { enabled: expeditionId > 0 }
+  // ── Supabase mode ────────────────────────────────────────────────────────────
+  const [sbExpedition, setSbExpedition] = useState<SbExpedition | null>(null);
+  const [sbLoading, setSbLoading] = useState(USE_SUPABASE);
+
+  useEffect(() => {
+    if (!USE_SUPABASE || expeditionId <= 0) return;
+    setSbLoading(true);
+    sbGetExpeditionById(expeditionId)
+      .then(setSbExpedition)
+      .finally(() => setSbLoading(false));
+  }, [expeditionId]);
+
+  const { data: sbTrailData } = useTrailById(
+    USE_SUPABASE ? (sbExpedition?.trailId ?? 0) : 0
   );
+
+  // ── tRPC mode ────────────────────────────────────────────────────────────────
+  const { data: trpcData, isLoading: trpcLoading, error: trpcError, refetch } = trpc.expeditions.getDetails.useQuery(
+    { id: expeditionId },
+    { enabled: !USE_SUPABASE && expeditionId > 0 }
+  );
+
+  // Build a unified `data` shape from whichever source is active
+  const data = USE_SUPABASE && sbExpedition
+    ? {
+        expedition: {
+          ...sbExpedition,
+          enrolledCount: sbExpedition.capacity - sbExpedition.availableSpots,
+          description: null,
+          guideNotes: sbExpedition.notes,
+          includedItems: null,
+          images: [],
+          startTime: null,
+          endTime: null,
+        },
+        trail: {
+          id: sbExpedition.trailId,
+          name: sbExpedition.trailName ?? sbTrailData?.trail?.name ?? "Trilha",
+          city: sbTrailData?.trail?.city ?? "",
+          uf: sbTrailData?.trail?.uf ?? "",
+          imageUrl: sbTrailData?.trail?.imageUrl ?? null,
+          images: [],
+          distanceKm: sbTrailData?.trail?.distanceKm ?? null,
+          elevationGain: sbTrailData?.trail?.elevationGain ?? null,
+        },
+        guide: {
+          id: sbExpedition.guideId,
+          name: sbExpedition.guideName ?? "Guia",
+          email: null,
+          photoUrl: null,
+          cadasturNumber: null,
+        },
+      }
+    : trpcData ?? null;
+
+  const isLoading = USE_SUPABASE ? sbLoading : trpcLoading;
+  const error = USE_SUPABASE ? (sbLoading ? null : (!sbExpedition ? true : null)) : trpcError;
 
   const { data: isEnrolled, refetch: refetchEnrollment } = trpc.expeditions.isEnrolled.useQuery(
     { expeditionId },
-    { enabled: expeditionId > 0 && isAuthenticated }
+    { enabled: !USE_SUPABASE && expeditionId > 0 && isAuthenticated }
   );
 
   const { data: participants } = trpc.expeditions.getParticipants.useQuery(
     { expeditionId },
-    { 
-      enabled: expeditionId > 0 && isAuthenticated && 
-        (data?.guide.id === user?.id || user?.role === 'admin')
+    {
+      enabled: !USE_SUPABASE && expeditionId > 0 && isAuthenticated &&
+        (trpcData?.guide.id === user?.id || user?.role === 'admin')
     }
   );
 
