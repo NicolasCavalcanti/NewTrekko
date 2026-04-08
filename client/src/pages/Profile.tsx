@@ -18,7 +18,7 @@ const STATIC_NO_API =
   import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
 import { getLoginUrl } from "@/const";
 import { useTrailsList, useTrailById } from "@/hooks/useTrails";
-import { User, Heart, Star, Calendar, Plus, Edit, Trash2, Shield, Mountain, MapPin, Loader2, Upload, X, Wallet, Receipt } from "lucide-react";
+import { User, Heart, Star, Calendar, Plus, Edit, Trash2, Shield, Mountain, MapPin, Loader2, Upload, X, Wallet, Receipt, Eye } from "lucide-react";
 import GuideFinancialPanel from "@/components/GuideFinancialPanel";
 import UserReservationsPanel from "@/components/UserReservationsPanel";
 import { toast } from "sonner";
@@ -563,6 +563,7 @@ function GuideExpeditions() {
 
 function ExpeditionManageCard({ expedition, expeditionsKey }: { expedition: any; expeditionsKey: string }) {
   const { data: trailData } = useTrailById(expedition.trailId);
+  const [, navigate] = useLocation();
   const utils = trpc.useUtils();
   const [editOpen, setEditOpen] = useState(false);
 
@@ -634,6 +635,14 @@ function ExpeditionManageCard({ expedition, expeditionsKey }: { expedition: any;
             </div>
           </div>
           <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => navigate(`/expedicao/${expedition.id}`)}
+            >
+              <Eye className="w-4 h-4 mr-1" />
+              Ver Detalhes
+            </Button>
             <Dialog open={editOpen} onOpenChange={setEditOpen}>
               <DialogTrigger asChild>
                 <Button variant="outline" size="sm">
