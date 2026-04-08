@@ -228,18 +228,46 @@ export async function sbUpdateExpedition(
 }
 
 // ─── Enrollment ───────────────────────────────────────────────────────────────
+//
+// Three-tier strategy per operation:
+//   1. Supabase `enrollments` table via atomic RPC function (best: tracks spots)
+//   2. Direct insert/delete on `enrollments` table (good: records enrollment)
+//   3. Supabase auth user_metadata (fallback: works without any migration)
+//
 
-export async function sbIsEnrolled(expeditionId: number, userId: string): Promise<boolean> {
+/** Read enrolled expedition IDs from the current user's auth metadata. */
+async function metaGetEnrolled(): Promise<number[]> {
+  if (!supabase) return [];
+  const { data: { user } } = await supabase.auth.getUser();
+  return (user?.user_metadata?.enrolledExpeditions as number[] | undefined) ?? [];
+}
+
+/** Persist enrolled expedition IDs to the current user's auth metadata. */
+async function metaSetEnrolled(ids: number[]): Promise<void> {
+  await supabase!.auth.updateUser({ data: { enrolledExpeditions: ids } });
+}
+
+export async function sbIsEnrolled(expeditionId: number, _userId: string): Promise<boolean> {
   if (!supabase) return false;
+
+  // Try the enrollments table
   const { data, error } = await supabase
     .from("enrollments")
     .select("id")
     .eq("expedition_id", expeditionId)
-    .eq("user_id", userId)
     .neq("status", "cancelled")
     .maybeSingle();
-  if (error) { console.error("[Trekko] sbIsEnrolled:", error.message); return false; }
-  return Boolean(data);
+
+  if (!error) return Boolean(data);
+
+  // Table missing — fall back to user_metadata
+  if (error.code === "42P01") {
+    const ids = await metaGetEnrolled();
+    return ids.includes(expeditionId);
+  }
+
+  console.error("[Trekko] sbIsEnrolled:", error.message);
+  return false;
 }
 
 export async function sbEnrollExpedition(input: {
@@ -251,7 +279,7 @@ export async function sbEnrollExpedition(input: {
 }): Promise<{ success: boolean; error: string | null }> {
   if (!supabase) return { success: false, error: "Supabase não configurado" };
 
-  // Try the RPC function first (atomically updates available_spots)
+  // 1. Try atomic RPC (creates enrollment + updates available_spots in one tx)
   const { data: rpcData, error: rpcError } = await supabase.rpc("enroll_in_expedition", {
     p_expedition_id: input.expeditionId,
     p_user_id: input.userId,
@@ -260,28 +288,37 @@ export async function sbEnrollExpedition(input: {
     p_spots: input.spots,
   });
 
-  if (!rpcError && (rpcData as any)?.success) {
-    return { success: true, error: null };
+  if (!rpcError && (rpcData as any)?.success) return { success: true, error: null };
+
+  // 2. Try direct insert into enrollments table
+  if (rpcError?.code !== "42P01") {
+    const { error: insertError } = await supabase.from("enrollments").insert({
+      expedition_id: input.expeditionId,
+      user_id: input.userId,
+      user_name: input.userName,
+      user_email: input.userEmail,
+      spots: input.spots,
+      status: "confirmed",
+    });
+
+    if (!insertError) return { success: true, error: null };
+
+    if (insertError.code === "23505") {
+      return { success: false, error: "Você já está inscrito nesta expedição" };
+    }
+    if (insertError.code !== "42P01") {
+      return { success: false, error: insertError.message };
+    }
+    // fall through to metadata fallback
   }
 
-  // Fallback: direct insert into enrollments (available_spots won't be updated,
-  // but the enrollment IS recorded)
-  console.warn("[Trekko] RPC enroll failed, falling back to direct insert:", rpcError?.message, rpcData);
-  const { error: insertError } = await supabase.from("enrollments").insert({
-    expedition_id: input.expeditionId,
-    user_id: input.userId,
-    user_name: input.userName,
-    user_email: input.userEmail,
-    spots: input.spots,
-    status: "confirmed",
-  });
-
-  if (insertError) {
-    const msg = insertError.code === "23505"
-      ? "Você já está inscrito nesta expedição"
-      : insertError.message;
-    return { success: false, error: msg };
+  // 3. Fallback: store in auth user_metadata (no table required)
+  console.warn("[Trekko] enrollments table not found — using user_metadata fallback");
+  const ids = await metaGetEnrolled();
+  if (ids.includes(input.expeditionId)) {
+    return { success: false, error: "Você já está inscrito nesta expedição" };
   }
+  await metaSetEnrolled([...ids, input.expeditionId]);
   return { success: true, error: null };
 }
 
@@ -291,25 +328,30 @@ export async function sbCancelEnrollment(
 ): Promise<{ success: boolean; error: string | null }> {
   if (!supabase) return { success: false, error: "Supabase não configurado" };
 
-  // Try the RPC function first (atomically restores available_spots)
+  // 1. Try atomic RPC
   const { data: rpcData, error: rpcError } = await supabase.rpc("cancel_enrollment", {
     p_expedition_id: expeditionId,
     p_user_id: userId,
   });
 
-  if (!rpcError && (rpcData as any)?.success) {
-    return { success: true, error: null };
+  if (!rpcError && (rpcData as any)?.success) return { success: true, error: null };
+
+  // 2. Try direct delete on enrollments table
+  if (rpcError?.code !== "42P01") {
+    const { error: deleteError } = await supabase
+      .from("enrollments")
+      .delete()
+      .eq("expedition_id", expeditionId)
+      .eq("user_id", userId);
+
+    if (!deleteError) return { success: true, error: null };
+    if (deleteError.code !== "42P01") return { success: false, error: deleteError.message };
   }
 
-  // Fallback: direct delete
-  console.warn("[Trekko] RPC cancel failed, falling back to direct delete:", rpcError?.message, rpcData);
-  const { error: deleteError } = await supabase
-    .from("enrollments")
-    .delete()
-    .eq("expedition_id", expeditionId)
-    .eq("user_id", userId);
-
-  if (deleteError) return { success: false, error: deleteError.message };
+  // 3. Fallback: remove from auth user_metadata
+  console.warn("[Trekko] enrollments table not found — using user_metadata fallback for cancel");
+  const ids = await metaGetEnrolled();
+  await metaSetEnrolled(ids.filter((id) => id !== expeditionId));
   return { success: true, error: null };
 }
 
