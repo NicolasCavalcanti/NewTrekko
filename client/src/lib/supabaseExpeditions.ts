@@ -69,6 +69,17 @@ export async function sbExpeditionsTableExists(): Promise<boolean> {
   return !error;
 }
 
+export async function sbGetExpeditionById(id: number): Promise<Expedition | null> {
+  if (!supabase) return null;
+  const { data, error } = await supabase
+    .from("expeditions")
+    .select("*")
+    .eq("id", id)
+    .single();
+  if (error) { console.error("[Trekko] sbGetExpeditionById:", error.message); return null; }
+  return toExpedition(data as ExpeditionRow);
+}
+
 export async function sbListPublicExpeditions(search?: string): Promise<Expedition[]> {
   if (!supabase) return [];
   let q = supabase
