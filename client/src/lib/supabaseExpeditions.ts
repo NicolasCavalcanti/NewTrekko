@@ -137,6 +137,43 @@ export async function sbCreateExpedition(input: {
   return { expedition: toExpedition(data as ExpeditionRow), error: null };
 }
 
+export async function sbUpdateExpedition(
+  id: number,
+  input: {
+    title?: string | null;
+    startDate: string;
+    endDate?: string | null;
+    capacity: number;
+    price?: string | null;
+    meetingPoint?: string | null;
+    notes?: string | null;
+    status?: string;
+  }
+): Promise<{ expedition: Expedition | null; error: string | null }> {
+  if (!supabase) return { expedition: null, error: "Supabase não configurado" };
+  const { data, error } = await supabase
+    .from("expeditions")
+    .update({
+      title: input.title ?? null,
+      start_date: input.startDate,
+      end_date: input.endDate ?? null,
+      capacity: input.capacity,
+      available_spots: input.capacity,
+      price: input.price ?? null,
+      meeting_point: input.meetingPoint ?? null,
+      notes: input.notes ?? null,
+      status: input.status ?? "active",
+    })
+    .eq("id", id)
+    .select()
+    .single();
+  if (error) {
+    console.error("[Trekko] sbUpdateExpedition:", error.message);
+    return { expedition: null, error: error.message };
+  }
+  return { expedition: toExpedition(data as ExpeditionRow), error: null };
+}
+
 export async function sbDeleteExpedition(id: number): Promise<boolean> {
   if (!supabase) return false;
   const { error } = await supabase.from("expeditions").delete().eq("id", id);

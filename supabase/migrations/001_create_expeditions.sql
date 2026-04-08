@@ -30,6 +30,12 @@ create policy if not exists "Guides can insert own expeditions"
   on expeditions for insert
   with check (auth.uid()::text = guide_id);
 
+-- Guides can update their own expeditions
+create policy if not exists "Guides can update own expeditions"
+  on expeditions for update
+  using (auth.uid()::text = guide_id)
+  with check (auth.uid()::text = guide_id);
+
 -- Guides can delete their own expeditions
 create policy if not exists "Guides can delete own expeditions"
   on expeditions for delete
