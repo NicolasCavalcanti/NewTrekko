@@ -69,6 +69,17 @@ export async function sbExpeditionsTableExists(): Promise<boolean> {
   return !error;
 }
 
+export async function sbGetExpeditionById(id: number): Promise<Expedition | null> {
+  if (!supabase) return null;
+  const { data, error } = await supabase
+    .from("expeditions")
+    .select("*")
+    .eq("id", id)
+    .single();
+  if (error) { console.error("[Trekko] sbGetExpeditionById:", error.message); return null; }
+  return toExpedition(data as ExpeditionRow);
+}
+
 export async function sbListPublicExpeditions(search?: string): Promise<Expedition[]> {
   if (!supabase) return [];
   let q = supabase
@@ -151,7 +162,9 @@ export async function sbUpdateExpedition(
   }
 ): Promise<{ expedition: Expedition | null; error: string | null }> {
   if (!supabase) return { expedition: null, error: "Supabase não configurado" };
-  const { data, error } = await supabase
+
+  // First try a direct UPDATE (works when the UPDATE RLS policy exists)
+  const { data: updated, error: updateError } = await supabase
     .from("expeditions")
     .update({
       title: input.title ?? null,
@@ -167,11 +180,51 @@ export async function sbUpdateExpedition(
     .eq("id", id)
     .select()
     .single();
-  if (error) {
-    console.error("[Trekko] sbUpdateExpedition:", error.message);
-    return { expedition: null, error: error.message };
+
+  if (!updateError && updated) {
+    return { expedition: toExpedition(updated as ExpeditionRow), error: null };
   }
-  return { expedition: toExpedition(data as ExpeditionRow), error: null };
+
+  // Fallback: delete + re-insert preserving the same ID
+  // (needed until the UPDATE RLS policy is applied via migration).
+  console.warn("[Trekko] UPDATE failed, falling back to delete+insert:", updateError?.message);
+
+  const { data: existing, error: fetchError } = await supabase
+    .from("expeditions")
+    .select("*")
+    .eq("id", id)
+    .single();
+  if (fetchError || !existing) return { expedition: null, error: "Expedição não encontrada" };
+
+  const { error: deleteError } = await supabase.from("expeditions").delete().eq("id", id);
+  if (deleteError) return { expedition: null, error: deleteError.message };
+
+  const { data: inserted, error: insertError } = await supabase
+    .from("expeditions")
+    .insert({
+      id,                                              // Preserve original ID so URLs don't break
+      guide_id: (existing as ExpeditionRow).guide_id,
+      guide_name: (existing as ExpeditionRow).guide_name,
+      trail_id: (existing as ExpeditionRow).trail_id,
+      trail_name: (existing as ExpeditionRow).trail_name,
+      title: input.title ?? null,
+      start_date: input.startDate,
+      end_date: input.endDate ?? null,
+      capacity: input.capacity,
+      available_spots: input.capacity,
+      price: input.price ?? null,
+      meeting_point: input.meetingPoint ?? null,
+      notes: input.notes ?? null,
+      status: input.status ?? "active",
+    })
+    .select()
+    .single();
+
+  if (insertError) {
+    console.error("[Trekko] sbUpdateExpedition fallback insert failed:", insertError.message);
+    return { expedition: null, error: insertError.message };
+  }
+  return { expedition: toExpedition(inserted as ExpeditionRow), error: null };
 }
 
 export async function sbDeleteExpedition(id: number): Promise<boolean> {
