@@ -21,6 +21,7 @@ import {
   type Expedition as SbExpedition,
   type EnrollmentRow,
 } from "@/lib/supabaseExpeditions";
+import { sbCreateMpCheckout } from "@/lib/supabasePayments";
 import {
   ArrowLeft, Calendar, MapPin, Users, User, DollarSign, Clock,
   Mountain, CheckCircle2, XCircle, AlertCircle, Loader2,
@@ -87,6 +88,47 @@ export default function ExpeditionDetail() {
 
   async function handleSbEnroll() {
     if (!user?.openId) return;
+
+    const hasPaid = sbExpedition?.price && parseFloat(sbExpedition.price) > 0;
+
+    // ── Paid expedition: create Mercado Pago checkout ──────────────────────────
+    if (hasPaid) {
+      setSbEnrolling(true);
+      setIsProcessingPayment(true);
+
+      const { checkoutUrl, error: payErr } = await sbCreateMpCheckout({
+        expeditionId,
+        expeditionTitle: sbExpedition?.title ?? null,
+        trailName: sbExpedition?.trailName ?? null,
+        startDate: sbExpedition?.startDate ?? null,
+        price: sbExpedition!.price!,
+        quantity: bookingQuantity,
+        userEmail: user.email ?? null,
+        userName: user.name ?? null,
+      });
+
+      if (!checkoutUrl) {
+        setSbEnrolling(false);
+        setIsProcessingPayment(false);
+        toast.error(payErr || "Erro ao gerar pagamento");
+        return;
+      }
+
+      // Record enrollment as pending before leaving the page
+      await sbEnrollExpedition({
+        expeditionId,
+        userId: user.openId,
+        userName: user.name ?? null,
+        userEmail: user.email ?? null,
+        spots: bookingQuantity,
+      });
+
+      setShowEnrollDialog(false);
+      window.location.href = checkoutUrl;
+      return;
+    }
+
+    // ── Free expedition: enroll directly ──────────────────────────────────────
     setSbEnrolling(true);
     const { success, error: err } = await sbEnrollExpedition({
       expeditionId,
@@ -98,19 +140,13 @@ export default function ExpeditionDetail() {
     setSbEnrolling(false);
     if (success) {
       setSbEnrolled(true);
-      // Optimistically decrement available spots so UI updates immediately
-      // (trekkers can't UPDATE expeditions via RLS, so DB won't reflect this)
+      // Optimistically decrement available spots (trekkers can't UPDATE expeditions via RLS)
       setSbExpedition(prev => prev
         ? { ...prev, availableSpots: Math.max(0, prev.availableSpots - bookingQuantity) }
         : prev
       );
       setShowEnrollDialog(false);
-      const hasPaid = sbExpedition?.price && parseFloat(sbExpedition.price) > 0;
-      if (hasPaid) {
-        setShowPaymentDialog(true);
-      } else {
-        toast.success("Inscrição confirmada!");
-      }
+      toast.success("Inscrição confirmada!");
     } else {
       toast.error(err || "Erro ao realizar inscrição");
     }
@@ -853,7 +889,7 @@ export default function ExpeditionDetail() {
                 ) : (
                   <DollarSign className="w-4 h-4 mr-2" />
                 )}
-                {USE_SUPABASE ? "Solicitar Reserva" : "Pagar e Reservar"}
+                Pagar e Reservar
               </Button>
             ) : (
               <Button
