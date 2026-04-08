@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -22,6 +23,13 @@ import GuideFinancialPanel from "@/components/GuideFinancialPanel";
 import UserReservationsPanel from "@/components/UserReservationsPanel";
 import { toast } from "sonner";
 import { format } from "date-fns";
+import { USE_SUPABASE } from "@/lib/supabase";
+import {
+  sbListGuideExpeditions,
+  sbCreateExpedition,
+  sbUpdateExpedition,
+  sbDeleteExpedition,
+} from "@/lib/supabaseExpeditions";
 
 export default function Profile() {
   const [, navigate] = useLocation();
@@ -481,6 +489,24 @@ function GuideExpeditions() {
   const { user } = useAuth();
   const expeditionsKey = `trekko_expeditions_${user?.id ?? "guest"}`;
 
+  // ── Supabase mode ──────────────────────────────────────────────────────────
+  const [sbExpeditions, setSbExpeditions] = useState<any[]>([]);
+  const [sbLoading, setSbLoading] = useState(USE_SUPABASE);
+
+  useEffect(() => {
+    if (!USE_SUPABASE || !user?.openId) return;
+    setSbLoading(true);
+    sbListGuideExpeditions(user.openId as string)
+      .then(setSbExpeditions)
+      .finally(() => setSbLoading(false));
+    const handler = () => {
+      sbListGuideExpeditions(user.openId as string).then(setSbExpeditions);
+    };
+    window.addEventListener("supabaseExpeditionsUpdated", handler);
+    return () => window.removeEventListener("supabaseExpeditionsUpdated", handler);
+  }, [user?.openId]);
+
+  // ── Static localStorage mode ───────────────────────────────────────────────
   const [staticExpeditions, setStaticExpeditions] = useState<any[]>(() => {
     if (!STATIC_NO_API) return [];
     try { return JSON.parse(localStorage.getItem(`trekko_expeditions_${(user as any)?.id ?? "guest"}`) ?? "[]"); }
@@ -498,10 +524,11 @@ function GuideExpeditions() {
     return () => window.removeEventListener("staticExpeditionsUpdated", load);
   }, [expeditionsKey]);
 
-  const { data, isLoading } = trpc.guide.myExpeditions.useQuery(undefined, { enabled: !STATIC_NO_API });
+  // ── tRPC backend mode ──────────────────────────────────────────────────────
+  const { data, isLoading } = trpc.guide.myExpeditions.useQuery(undefined, { enabled: !STATIC_NO_API && !USE_SUPABASE });
 
-  const expeditions = STATIC_NO_API ? staticExpeditions : (data?.expeditions ?? []);
-  const loading = STATIC_NO_API ? false : isLoading;
+  const expeditions = USE_SUPABASE ? sbExpeditions : STATIC_NO_API ? staticExpeditions : (data?.expeditions ?? []);
+  const loading = USE_SUPABASE ? sbLoading : STATIC_NO_API ? false : isLoading;
 
   if (loading) {
     return (
@@ -537,6 +564,7 @@ function GuideExpeditions() {
 function ExpeditionManageCard({ expedition, expeditionsKey }: { expedition: any; expeditionsKey: string }) {
   const { data: trailData } = useTrailById(expedition.trailId);
   const utils = trpc.useUtils();
+  const [editOpen, setEditOpen] = useState(false);
 
   const deleteMutation = trpc.guide.deleteExpedition.useMutation({
     onSuccess: () => {
@@ -545,7 +573,18 @@ function ExpeditionManageCard({ expedition, expeditionsKey }: { expedition: any;
     },
   });
 
-  const handleDelete = () => {
+
+  const handleDelete = async () => {
+    if (USE_SUPABASE) {
+      const ok = await sbDeleteExpedition(expedition.id);
+      if (ok) {
+        window.dispatchEvent(new Event("supabaseExpeditionsUpdated"));
+        toast.success("Expedição removida!");
+      } else {
+        toast.error("Erro ao remover expedição");
+      }
+      return;
+    }
     if (STATIC_NO_API) {
       try {
         const all: any[] = JSON.parse(localStorage.getItem(expeditionsKey) ?? "[]");
@@ -569,7 +608,7 @@ function ExpeditionManageCard({ expedition, expeditionsKey }: { expedition: any;
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
               <h3 className="font-heading font-semibold text-lg">
-                {expedition.title || trailName}
+                {expedition.title || trailName || "Expedição"}
               </h3>
               <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                 expedition.status === 'active' || expedition.status === 'published' ? 'bg-green-100 text-green-700' :
@@ -595,16 +634,30 @@ function ExpeditionManageCard({ expedition, expeditionsKey }: { expedition: any;
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm">
-              <Edit className="w-4 h-4 mr-1" />
-              Editar
-            </Button>
-            <Button 
-              variant="outline" 
-              size="sm" 
+            <Dialog open={editOpen} onOpenChange={setEditOpen}>
+              <DialogTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <Edit className="w-4 h-4 mr-1" />
+                  Editar
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-lg">
+                <DialogHeader>
+                  <DialogTitle>Editar expedição</DialogTitle>
+                </DialogHeader>
+                <EditExpeditionForm
+                  expedition={expedition}
+                  expeditionsKey={expeditionsKey}
+                  onClose={() => setEditOpen(false)}
+                />
+              </DialogContent>
+            </Dialog>
+            <Button
+              variant="outline"
+              size="sm"
               className="text-destructive"
               onClick={handleDelete}
-              disabled={!STATIC_NO_API && deleteMutation.isPending}
+              disabled={!STATIC_NO_API && !USE_SUPABASE && deleteMutation.isPending}
             >
               <Trash2 className="w-4 h-4 mr-1" />
               Remover
@@ -616,10 +669,134 @@ function ExpeditionManageCard({ expedition, expeditionsKey }: { expedition: any;
   );
 }
 
+function EditExpeditionForm({ expedition, expeditionsKey, onClose }: { expedition: any; expeditionsKey: string; onClose: () => void }) {
+  const { user } = useAuth();
+  const [title, setTitle] = useState(expedition.title ?? "");
+  const [startDate, setStartDate] = useState(expedition.startDate ? expedition.startDate.slice(0, 10) : "");
+  const [endDate, setEndDate] = useState(expedition.endDate ? expedition.endDate.slice(0, 10) : "");
+  const [capacity, setCapacity] = useState(String(expedition.capacity ?? 10));
+  const [price, setPrice] = useState(expedition.price ?? "");
+  const [meetingPoint, setMeetingPoint] = useState(expedition.meetingPoint ?? "");
+  const [notes, setNotes] = useState(expedition.notes ?? "");
+  const [status, setStatus] = useState(expedition.status ?? "active");
+  const [submitting, setSubmitting] = useState(false);
+
+  const utils = trpc.useUtils();
+  const updateMutation = trpc.guide.updateExpedition?.useMutation?.({
+    onSuccess: () => { utils.guide.myExpeditions.invalidate(); toast.success("Expedição atualizada!"); onClose(); },
+    onError: () => toast.error("Erro ao atualizar expedição"),
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!startDate) { toast.error("Informe a data de início"); return; }
+
+    if (USE_SUPABASE) {
+      if (!user?.openId) { toast.error("Sessão expirada. Faça login novamente."); return; }
+      setSubmitting(true);
+      const { expedition: updated, error } = await sbUpdateExpedition(expedition.id, {
+        title: title || null,
+        startDate: new Date(startDate).toISOString(),
+        endDate: endDate ? new Date(endDate).toISOString() : null,
+        capacity: parseInt(capacity),
+        price: price || null,
+        meetingPoint: meetingPoint || null,
+        notes: notes || null,
+        status,
+      });
+      setSubmitting(false);
+      if (error || !updated) { console.error(error); toast.error("Não foi possível atualizar a expedição."); return; }
+      window.dispatchEvent(new Event("supabaseExpeditionsUpdated"));
+      toast.success("Expedição atualizada!");
+      onClose();
+      return;
+    }
+
+    if (STATIC_NO_API) {
+      try {
+        const all: any[] = JSON.parse(localStorage.getItem(expeditionsKey) ?? "[]");
+        const idx = all.findIndex((e) => e.id === expedition.id);
+        if (idx !== -1) {
+          all[idx] = { ...all[idx], title: title || null, startDate: new Date(startDate).toISOString(), endDate: endDate ? new Date(endDate).toISOString() : null, capacity: parseInt(capacity), availableSpots: parseInt(capacity), price: price || null, meetingPoint: meetingPoint || null, notes: notes || null, status };
+          localStorage.setItem(expeditionsKey, JSON.stringify(all));
+          window.dispatchEvent(new Event("staticExpeditionsUpdated"));
+        }
+        toast.success("Expedição atualizada!"); onClose();
+      } catch { toast.error("Erro ao atualizar expedição"); }
+      return;
+    }
+
+    updateMutation?.mutate?.({ id: expedition.id, title: title || undefined, startDate: new Date(startDate), endDate: endDate ? new Date(endDate) : undefined, capacity: parseInt(capacity), price: price ? parseFloat(price) : undefined, meetingPoint: meetingPoint || undefined, notes: notes || undefined });
+  };
+
+  const STATUS_OPTIONS = [
+    { value: "active", label: "Ativa" },
+    { value: "full", label: "Lotada" },
+    { value: "closed", label: "Encerrada" },
+    { value: "cancelled", label: "Cancelada" },
+  ];
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <Label htmlFor="edit-title">Título (opcional)</Label>
+        <Input id="edit-title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Ex: Expedição de fim de semana" />
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <Label htmlFor="edit-startDate">Data início *</Label>
+          <Input id="edit-startDate" type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+        </div>
+        <div>
+          <Label htmlFor="edit-endDate">Data fim</Label>
+          <Input id="edit-endDate" type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <Label htmlFor="edit-capacity">Vagas</Label>
+          <Input id="edit-capacity" type="number" value={capacity} onChange={(e) => setCapacity(e.target.value)} min="1" />
+        </div>
+        <div>
+          <Label htmlFor="edit-price">Preço (R$)</Label>
+          <Input id="edit-price" type="number" value={price} onChange={(e) => setPrice(e.target.value)} min="0" step="0.01" />
+        </div>
+      </div>
+      <div>
+        <Label htmlFor="edit-meetingPoint">Ponto de encontro</Label>
+        <Input id="edit-meetingPoint" value={meetingPoint} onChange={(e) => setMeetingPoint(e.target.value)} />
+      </div>
+      <div>
+        <Label htmlFor="edit-notes">Observações</Label>
+        <Textarea id="edit-notes" value={notes} onChange={(e) => setNotes(e.target.value)} rows={2} />
+      </div>
+      <div>
+        <Label htmlFor="edit-status">Status</Label>
+        <Select value={status} onValueChange={setStatus}>
+          <SelectTrigger id="edit-status">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {STATUS_OPTIONS.map((s) => (
+              <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="flex justify-end gap-2 pt-2">
+        <Button type="button" variant="outline" onClick={onClose}>Cancelar</Button>
+        <Button type="submit" disabled={submitting}>
+          {submitting ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+          Salvar alterações
+        </Button>
+      </div>
+    </form>
+  );
+}
+
 function CreateExpeditionForm({ onClose }: { onClose: () => void }) {
   const { user } = useAuth();
   const expeditionsKey = `trekko_expeditions_${user?.id ?? "guest"}`;
-
   const [trailId, setTrailId] = useState<number | null>(null);
   const [trailSearch, setTrailSearch] = useState("");
   const [title, setTitle] = useState("");
@@ -629,6 +806,7 @@ function CreateExpeditionForm({ onClose }: { onClose: () => void }) {
   const [price, setPrice] = useState("");
   const [meetingPoint, setMeetingPoint] = useState("");
   const [notes, setNotes] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const { data: trailsData } = useTrailsList({ search: trailSearch, limit: 5 });
   const utils = trpc.useUtils();
@@ -644,12 +822,41 @@ function CreateExpeditionForm({ onClose }: { onClose: () => void }) {
     },
   });
 
-  const [submitting, setSubmitting] = useState(false);
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!trailId || !startDate) {
       toast.error("Selecione uma trilha e data");
+      return;
+    }
+
+    if (USE_SUPABASE) {
+      if (!user?.openId) {
+        toast.error("Sessão expirada. Faça login novamente.");
+        return;
+      }
+      setSubmitting(true);
+      sbCreateExpedition({
+        guideId: user.openId as string,
+        guideName: user?.name ?? null,
+        trailId,
+        trailName: trailSearch,
+        title: title || undefined,
+        startDate: new Date(startDate).toISOString(),
+        endDate: endDate ? new Date(endDate).toISOString() : undefined,
+        capacity: parseInt(capacity),
+        price: price || undefined,
+        meetingPoint: meetingPoint || undefined,
+        notes: notes || undefined,
+      }).then(({ expedition, error }) => {
+        if (error || !expedition) {
+          console.error("[Trekko] expedition creation failed:", error);
+          toast.error("Não foi possível criar a expedição. Tente novamente.");
+          return;
+        }
+        window.dispatchEvent(new Event("supabaseExpeditionsUpdated"));
+        toast.success("Expedição criada!");
+        onClose();
+      }).finally(() => setSubmitting(false));
       return;
     }
 

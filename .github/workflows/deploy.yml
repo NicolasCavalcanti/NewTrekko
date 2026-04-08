@@ -41,6 +41,30 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
+      - name: Run Supabase migrations
+        run: |
+          SQL=$(cat supabase/migrations/001_create_expeditions.sql)
+          PAYLOAD=$(jq -n --arg q "$SQL" '{"query": $q}')
+          # Try Supabase Management API first
+          if [ -n "$SUPABASE_ACCESS_TOKEN" ]; then
+            echo "Running migration via Supabase Management API..."
+            curl -sf -X POST \
+              "https://api.supabase.com/v1/projects/nyvfwvydcwmbafzxfozk/database/query" \
+              -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+              -H "Content-Type: application/json" \
+              -d "$PAYLOAD" && echo "Migration applied." || echo "Migration failed (table may already exist)."
+          # Fallback: direct psql with DATABASE_URL
+          elif [ -n "$DATABASE_URL" ]; then
+            echo "Running migration via psql..."
+            psql "$DATABASE_URL" -f supabase/migrations/001_create_expeditions.sql || echo "psql migration failed."
+          else
+            echo "No DB credentials set — skipping migration. Add SUPABASE_ACCESS_TOKEN secret to automate."
+          fi
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        continue-on-error: true
+
       - name: Build frontend
         run: pnpm vite build --base=/
         env:
