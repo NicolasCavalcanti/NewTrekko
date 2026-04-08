@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { trpc } from "@/lib/trpc";
-import { useTrailsList } from "@/hooks/useTrails";
+import { useTrailsList, useTrailById } from "@/hooks/useTrails";
 import { Search, Mountain, MapPin, Calendar, Users, Loader2, ChevronLeft, ChevronRight, User, DollarSign, CheckCircle2, XCircle, Clock, AlertCircle } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -412,6 +412,9 @@ export default function Trails() {
 
 function ExpeditionCard({ expedition }: { expedition: any }) {
   const [, navigate] = useLocation();
+  // Static hook works in both Supabase and tRPC modes; tRPC query kept as
+  // fallback for non-Supabase mode where numeric guideId is available.
+  const { data: staticTrail } = useTrailById(expedition.trailId ?? 0);
   const { data: trailData } = trpc.trails.getById.useQuery(
     { id: expedition.trailId },
     { enabled: !USE_SUPABASE },
@@ -420,6 +423,9 @@ function ExpeditionCard({ expedition }: { expedition: any }) {
     { id: expedition.guideId },
     { enabled: !USE_SUPABASE && typeof expedition.guideId === "number" },
   );
+
+  // Always prefer static trail image (available without a backend)
+  const trailImageUrl = staticTrail?.trail?.imageUrl ?? trailData?.trail?.imageUrl ?? null;
 
   const capacity = expedition.capacity || 10;
   const availableSpots = expedition.availableSpots !== undefined
@@ -438,10 +444,10 @@ function ExpeditionCard({ expedition }: { expedition: any }) {
         <div className="flex flex-col lg:flex-row">
           {/* Trail Image */}
           <div className="lg:w-64 h-48 lg:h-auto bg-gradient-to-br from-forest/20 to-forest-light/20 relative flex-shrink-0">
-            {trailData?.trail.imageUrl ? (
-              <img 
-                src={trailData.trail.imageUrl} 
-                alt={trailData.trail.name}
+            {trailImageUrl ? (
+              <img
+                src={trailImageUrl}
+                alt={expedition.trailName ?? "Trilha"}
                 className="w-full h-full object-cover"
               />
             ) : (

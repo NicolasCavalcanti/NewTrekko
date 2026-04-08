@@ -227,6 +227,172 @@ export async function sbUpdateExpedition(
   return { expedition: toExpedition(inserted as ExpeditionRow), error: null };
 }
 
+// ─── Enrollment ───────────────────────────────────────────────────────────────
+//
+// Three-tier strategy per operation:
+//   1. Supabase `enrollments` table via atomic RPC function (best: tracks spots)
+//   2. Direct insert/delete on `enrollments` table (good: records enrollment)
+//   3. Supabase auth user_metadata (fallback: works without any migration)
+//
+
+/** PostgREST returns a schema-cache error (not 42P01) when the table doesn't exist. */
+function isMissingTableError(err: { code?: string; message?: string } | null | undefined): boolean {
+  if (!err) return false;
+  return (
+    err.code === "42P01" ||
+    err.message?.includes("schema cache") === true ||
+    err.message?.includes("does not exist") === true ||
+    err.message?.includes("Could not find") === true
+  );
+}
+
+/** Read enrolled expedition IDs from the current user's auth metadata. */
+async function metaGetEnrolled(): Promise<number[]> {
+  if (!supabase) return [];
+  const { data: { user } } = await supabase.auth.getUser();
+  return (user?.user_metadata?.enrolledExpeditions as number[] | undefined) ?? [];
+}
+
+/** Persist enrolled expedition IDs to the current user's auth metadata. */
+async function metaSetEnrolled(ids: number[]): Promise<void> {
+  await supabase!.auth.updateUser({ data: { enrolledExpeditions: ids } });
+}
+
+export async function sbIsEnrolled(expeditionId: number, _userId: string): Promise<boolean> {
+  if (!supabase) return false;
+
+  // Try the enrollments table
+  const { data, error } = await supabase
+    .from("enrollments")
+    .select("id")
+    .eq("expedition_id", expeditionId)
+    .neq("status", "cancelled")
+    .maybeSingle();
+
+  if (!error) return Boolean(data);
+
+  // Table missing — fall back to user_metadata
+  if (isMissingTableError(error)) {
+    const ids = await metaGetEnrolled();
+    return ids.includes(expeditionId);
+  }
+
+  console.error("[Trekko] sbIsEnrolled:", error.message);
+  return false;
+}
+
+export async function sbEnrollExpedition(input: {
+  expeditionId: number;
+  userId: string;
+  userName: string | null;
+  userEmail: string | null;
+  spots: number;
+}): Promise<{ success: boolean; error: string | null }> {
+  if (!supabase) return { success: false, error: "Supabase não configurado" };
+
+  // 1. Try atomic RPC (creates enrollment + updates available_spots in one tx)
+  const { data: rpcData, error: rpcError } = await supabase.rpc("enroll_in_expedition", {
+    p_expedition_id: input.expeditionId,
+    p_user_id: input.userId,
+    p_user_name: input.userName,
+    p_user_email: input.userEmail,
+    p_spots: input.spots,
+  });
+
+  if (!rpcError && (rpcData as any)?.success) return { success: true, error: null };
+
+  // 2. Try direct insert into enrollments table (RPC may have failed for unrelated reason)
+  if (!isMissingTableError(rpcError)) {
+    const { error: insertError } = await supabase.from("enrollments").insert({
+      expedition_id: input.expeditionId,
+      user_id: input.userId,
+      user_name: input.userName,
+      user_email: input.userEmail,
+      spots: input.spots,
+      status: "confirmed",
+    });
+
+    if (!insertError) return { success: true, error: null };
+
+    if (insertError.code === "23505") {
+      return { success: false, error: "Você já está inscrito nesta expedição" };
+    }
+    if (!isMissingTableError(insertError)) {
+      return { success: false, error: insertError.message };
+    }
+    // table missing → fall through
+  }
+
+  // 3. Fallback: store in auth user_metadata (no table required)
+  console.warn("[Trekko] enrollments table not found — using user_metadata fallback");
+  const ids = await metaGetEnrolled();
+  if (ids.includes(input.expeditionId)) {
+    return { success: false, error: "Você já está inscrito nesta expedição" };
+  }
+  await metaSetEnrolled([...ids, input.expeditionId]);
+  return { success: true, error: null };
+}
+
+export async function sbCancelEnrollment(
+  expeditionId: number,
+  userId: string,
+): Promise<{ success: boolean; error: string | null }> {
+  if (!supabase) return { success: false, error: "Supabase não configurado" };
+
+  // 1. Try atomic RPC
+  const { data: rpcData, error: rpcError } = await supabase.rpc("cancel_enrollment", {
+    p_expedition_id: expeditionId,
+    p_user_id: userId,
+  });
+
+  if (!rpcError && (rpcData as any)?.success) return { success: true, error: null };
+
+  // 2. Try direct delete on enrollments table
+  if (!isMissingTableError(rpcError)) {
+    const { error: deleteError } = await supabase
+      .from("enrollments")
+      .delete()
+      .eq("expedition_id", expeditionId)
+      .eq("user_id", userId);
+
+    if (!deleteError) return { success: true, error: null };
+    if (!isMissingTableError(deleteError)) return { success: false, error: deleteError.message };
+  }
+
+  // 3. Fallback: remove from auth user_metadata
+  console.warn("[Trekko] enrollments table not found — using user_metadata fallback for cancel");
+  const ids = await metaGetEnrolled();
+  await metaSetEnrolled(ids.filter((id) => id !== expeditionId));
+  return { success: true, error: null };
+}
+
+export type EnrollmentRow = {
+  id: number;
+  expedition_id: number;
+  user_id: string;
+  user_name: string | null;
+  user_email: string | null;
+  spots: number;
+  status: string;
+  created_at: string;
+};
+
+/** Fetch all active enrollments for an expedition (only accessible to that expedition's guide). */
+export async function sbGetParticipants(expeditionId: number): Promise<EnrollmentRow[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from("enrollments")
+    .select("*")
+    .eq("expedition_id", expeditionId)
+    .neq("status", "cancelled")
+    .order("created_at", { ascending: true });
+  if (error) {
+    if (!isMissingTableError(error)) console.error("[Trekko] sbGetParticipants:", error.message);
+    return [];
+  }
+  return (data ?? []) as EnrollmentRow[];
+}
+
 export async function sbDeleteExpedition(id: number): Promise<boolean> {
   if (!supabase) return false;
   const { error } = await supabase.from("expeditions").delete().eq("id", id);
