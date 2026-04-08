@@ -107,14 +107,30 @@ export default function ExpeditionDetail() {
         userName: user.name ?? null,
       });
 
-      if (!checkoutUrl) {
-        setSbEnrolling(false);
-        setIsProcessingPayment(false);
-        toast.error(payErr || "Erro ao gerar pagamento");
+      if (checkoutUrl) {
+        // Record enrollment before leaving the page
+        await sbEnrollExpedition({
+          expeditionId,
+          userId: user.openId,
+          userName: user.name ?? null,
+          userEmail: user.email ?? null,
+          spots: bookingQuantity,
+        });
+        setSbEnrolled(true);
+        setSbExpedition(prev => prev
+          ? { ...prev, availableSpots: Math.max(0, prev.availableSpots - bookingQuantity) }
+          : prev
+        );
+        setShowEnrollDialog(false);
+        window.location.href = checkoutUrl;
         return;
       }
 
-      // Record enrollment as pending before leaving the page
+      // Edge function not deployed yet — fall back to payment-dialog with contact info
+      console.warn("[Trekko] MP checkout failed, falling back to payment dialog:", payErr);
+      setSbEnrolling(false);
+      setIsProcessingPayment(false);
+      // Still record the enrollment so the guide knows about interest
       await sbEnrollExpedition({
         expeditionId,
         userId: user.openId,
@@ -122,9 +138,13 @@ export default function ExpeditionDetail() {
         userEmail: user.email ?? null,
         spots: bookingQuantity,
       });
-
+      setSbEnrolled(true);
+      setSbExpedition(prev => prev
+        ? { ...prev, availableSpots: Math.max(0, prev.availableSpots - bookingQuantity) }
+        : prev
+      );
       setShowEnrollDialog(false);
-      window.location.href = checkoutUrl;
+      setShowPaymentDialog(true);
       return;
     }
 
@@ -874,17 +894,10 @@ export default function ExpeditionDetail() {
             </Button>
             {expedition.price && parseFloat(expedition.price) > 0 ? (
               <Button
-                onClick={() => {
-                  if (USE_SUPABASE) {
-                    handleSbEnroll();
-                  } else {
-                    setIsProcessingPayment(true);
-                    createCheckoutMutation.mutate({ expeditionId, quantity: bookingQuantity });
-                  }
-                }}
-                disabled={sbEnrolling || isProcessingPayment || createCheckoutMutation.isPending}
+                onClick={handleSbEnroll}
+                disabled={sbEnrolling || isProcessingPayment}
               >
-                {(sbEnrolling || isProcessingPayment || createCheckoutMutation.isPending) ? (
+                {(sbEnrolling || isProcessingPayment) ? (
                   <Loader2 className="w-4 h-4 animate-spin mr-2" />
                 ) : (
                   <DollarSign className="w-4 h-4 mr-2" />
@@ -893,16 +906,10 @@ export default function ExpeditionDetail() {
               </Button>
             ) : (
               <Button
-                onClick={() => {
-                  if (USE_SUPABASE) {
-                    handleSbEnroll();
-                  } else {
-                    enrollMutation.mutate({ expeditionId });
-                  }
-                }}
-                disabled={sbEnrolling || enrollMutation.isPending}
+                onClick={handleSbEnroll}
+                disabled={sbEnrolling}
               >
-                {(sbEnrolling || enrollMutation.isPending) ? (
+                {sbEnrolling ? (
                   <Loader2 className="w-4 h-4 animate-spin mr-2" />
                 ) : null}
                 Confirmar Inscrição
@@ -927,16 +934,10 @@ export default function ExpeditionDetail() {
             </Button>
             <Button
               variant="destructive"
-              onClick={() => {
-                if (USE_SUPABASE) {
-                  handleSbCancel();
-                } else {
-                  cancelMutation.mutate({ expeditionId });
-                }
-              }}
-              disabled={sbCancelling || cancelMutation.isPending}
+              onClick={handleSbCancel}
+              disabled={sbCancelling}
             >
-              {(sbCancelling || cancelMutation.isPending) ? (
+              {sbCancelling ? (
                 <Loader2 className="w-4 h-4 animate-spin mr-2" />
               ) : null}
               Confirmar Cancelamento
