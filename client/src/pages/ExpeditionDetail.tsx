@@ -216,7 +216,7 @@ export default function ExpeditionDetail() {
           city: sbTrailData?.trail?.city ?? "",
           uf: sbTrailData?.trail?.uf ?? "",
           imageUrl: sbTrailData?.trail?.imageUrl ?? null,
-          images: [],
+          images: sbTrailData?.trail?.images ?? [],
           distanceKm: sbTrailData?.trail?.distanceKm ?? null,
           elevationGain: sbTrailData?.trail?.elevationGain ?? null,
         },
@@ -335,26 +335,17 @@ export default function ExpeditionDetail() {
     ? (user?.openId === guide.id || user?.role === 'admin')
     : (user?.id === guide.id || user?.role === 'admin');
 
-  // Get images (already typed as string[] in schema)
-  const images: string[] = expedition.images || [];
-  
-  // Get trail images
-  const trailImages: string[] = trail.images || [];
-  
-  // Combine all images, prioritizing expedition images
-  let allImages = [...images];
-  
-  // Add trail image as fallback if no expedition images
-  if (allImages.length === 0 && trail.imageUrl) {
-    allImages = [trail.imageUrl];
-  }
-  
-  // Add trail gallery images that aren't already included
-  trailImages.forEach(img => {
-    if (!allImages.includes(img)) {
-      allImages.push(img);
-    }
-  });
+  // Always build the gallery from the trail:
+  // 1. Full trail gallery (images[])
+  // 2. Trail main image as fallback if gallery is empty
+  // Expedition-specific images (if any) are appended after.
+  const trailImages: string[] = trail.images?.length ? trail.images : (trail.imageUrl ? [trail.imageUrl] : []);
+  const expeditionImages: string[] = expedition.images || [];
+  // Start with trail gallery, then add any expedition-specific images not already present
+  const allImages: string[] = [
+    ...trailImages,
+    ...expeditionImages.filter(img => !trailImages.includes(img)),
+  ];
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
