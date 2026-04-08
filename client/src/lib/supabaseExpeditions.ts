@@ -235,6 +235,17 @@ export async function sbUpdateExpedition(
 //   3. Supabase auth user_metadata (fallback: works without any migration)
 //
 
+/** PostgREST returns a schema-cache error (not 42P01) when the table doesn't exist. */
+function isMissingTableError(err: { code?: string; message?: string } | null | undefined): boolean {
+  if (!err) return false;
+  return (
+    err.code === "42P01" ||
+    err.message?.includes("schema cache") === true ||
+    err.message?.includes("does not exist") === true ||
+    err.message?.includes("Could not find") === true
+  );
+}
+
 /** Read enrolled expedition IDs from the current user's auth metadata. */
 async function metaGetEnrolled(): Promise<number[]> {
   if (!supabase) return [];
@@ -261,7 +272,7 @@ export async function sbIsEnrolled(expeditionId: number, _userId: string): Promi
   if (!error) return Boolean(data);
 
   // Table missing — fall back to user_metadata
-  if (error.code === "42P01") {
+  if (isMissingTableError(error)) {
     const ids = await metaGetEnrolled();
     return ids.includes(expeditionId);
   }
@@ -290,8 +301,8 @@ export async function sbEnrollExpedition(input: {
 
   if (!rpcError && (rpcData as any)?.success) return { success: true, error: null };
 
-  // 2. Try direct insert into enrollments table
-  if (rpcError?.code !== "42P01") {
+  // 2. Try direct insert into enrollments table (RPC may have failed for unrelated reason)
+  if (!isMissingTableError(rpcError)) {
     const { error: insertError } = await supabase.from("enrollments").insert({
       expedition_id: input.expeditionId,
       user_id: input.userId,
@@ -306,10 +317,10 @@ export async function sbEnrollExpedition(input: {
     if (insertError.code === "23505") {
       return { success: false, error: "Você já está inscrito nesta expedição" };
     }
-    if (insertError.code !== "42P01") {
+    if (!isMissingTableError(insertError)) {
       return { success: false, error: insertError.message };
     }
-    // fall through to metadata fallback
+    // table missing → fall through
   }
 
   // 3. Fallback: store in auth user_metadata (no table required)
@@ -337,7 +348,7 @@ export async function sbCancelEnrollment(
   if (!rpcError && (rpcData as any)?.success) return { success: true, error: null };
 
   // 2. Try direct delete on enrollments table
-  if (rpcError?.code !== "42P01") {
+  if (!isMissingTableError(rpcError)) {
     const { error: deleteError } = await supabase
       .from("enrollments")
       .delete()
@@ -345,7 +356,7 @@ export async function sbCancelEnrollment(
       .eq("user_id", userId);
 
     if (!deleteError) return { success: true, error: null };
-    if (deleteError.code !== "42P01") return { success: false, error: deleteError.message };
+    if (!isMissingTableError(deleteError)) return { success: false, error: deleteError.message };
   }
 
   // 3. Fallback: remove from auth user_metadata
