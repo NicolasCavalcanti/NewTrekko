@@ -12,7 +12,13 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import { useTrailById } from "@/hooks/useTrails";
 import { USE_SUPABASE } from "@/lib/supabase";
-import { sbGetExpeditionById, type Expedition as SbExpedition } from "@/lib/supabaseExpeditions";
+import {
+  sbGetExpeditionById,
+  sbIsEnrolled,
+  sbEnrollExpedition,
+  sbCancelEnrollment,
+  type Expedition as SbExpedition,
+} from "@/lib/supabaseExpeditions";
 import {
   ArrowLeft, Calendar, MapPin, Users, User, DollarSign, Clock,
   Mountain, CheckCircle2, XCircle, AlertCircle, Loader2,
@@ -58,6 +64,58 @@ export default function ExpeditionDetail() {
     USE_SUPABASE ? (sbExpedition?.trailId ?? 0) : 0
   );
 
+  // Supabase enrollment state
+  const [sbEnrolled, setSbEnrolled] = useState(false);
+  const [sbEnrolling, setSbEnrolling] = useState(false);
+  const [sbCancelling, setSbCancelling] = useState(false);
+
+  useEffect(() => {
+    if (!USE_SUPABASE || !user?.openId || expeditionId <= 0) return;
+    sbIsEnrolled(expeditionId, user.openId).then(setSbEnrolled);
+  }, [expeditionId, user?.openId]);
+
+  async function handleSbEnroll() {
+    if (!user?.openId) return;
+    setSbEnrolling(true);
+    const { success, error: err } = await sbEnrollExpedition({
+      expeditionId,
+      userId: user.openId,
+      userName: user.name ?? null,
+      userEmail: user.email ?? null,
+      spots: bookingQuantity,
+    });
+    setSbEnrolling(false);
+    if (success) {
+      setSbEnrolled(true);
+      // Refresh expedition to get updated spots
+      sbGetExpeditionById(expeditionId).then(setSbExpedition);
+      setShowEnrollDialog(false);
+      const hasPaid = sbExpedition?.price && parseFloat(sbExpedition.price) > 0;
+      if (hasPaid) {
+        toast.success("Inscrição solicitada! Entre em contato com o guia para finalizar o pagamento.");
+      } else {
+        toast.success("Inscrição confirmada!");
+      }
+    } else {
+      toast.error(err || "Erro ao realizar inscrição");
+    }
+  }
+
+  async function handleSbCancel() {
+    if (!user?.openId) return;
+    setSbCancelling(true);
+    const { success, error: err } = await sbCancelEnrollment(expeditionId, user.openId);
+    setSbCancelling(false);
+    if (success) {
+      setSbEnrolled(false);
+      sbGetExpeditionById(expeditionId).then(setSbExpedition);
+      setShowCancelDialog(false);
+      toast.success("Inscrição cancelada com sucesso");
+    } else {
+      toast.error(err || "Erro ao cancelar inscrição");
+    }
+  }
+
   // ── tRPC mode ────────────────────────────────────────────────────────────────
   const { data: trpcData, isLoading: trpcLoading, error: trpcError, refetch } = trpc.expeditions.getDetails.useQuery(
     { id: expeditionId },
@@ -100,10 +158,11 @@ export default function ExpeditionDetail() {
   const isLoading = USE_SUPABASE ? sbLoading : trpcLoading;
   const error = USE_SUPABASE ? (sbLoading ? null : (!sbExpedition ? true : null)) : trpcError;
 
-  const { data: isEnrolled, refetch: refetchEnrollment } = trpc.expeditions.isEnrolled.useQuery(
+  const { data: trpcIsEnrolled, refetch: refetchEnrollment } = trpc.expeditions.isEnrolled.useQuery(
     { expeditionId },
     { enabled: !USE_SUPABASE && expeditionId > 0 && isAuthenticated }
   );
+  const isEnrolled = USE_SUPABASE ? sbEnrolled : trpcIsEnrolled;
 
   const { data: participants } = trpc.expeditions.getParticipants.useQuery(
     { expeditionId },
@@ -734,29 +793,36 @@ export default function ExpeditionDetail() {
               Cancelar
             </Button>
             {expedition.price && parseFloat(expedition.price) > 0 ? (
-              <Button 
+              <Button
                 onClick={() => {
-                  setIsProcessingPayment(true);
-                  createCheckoutMutation.mutate({ 
-                    expeditionId, 
-                    quantity: bookingQuantity 
-                  });
+                  if (USE_SUPABASE) {
+                    handleSbEnroll();
+                  } else {
+                    setIsProcessingPayment(true);
+                    createCheckoutMutation.mutate({ expeditionId, quantity: bookingQuantity });
+                  }
                 }}
-                disabled={isProcessingPayment || createCheckoutMutation.isPending}
+                disabled={sbEnrolling || isProcessingPayment || createCheckoutMutation.isPending}
               >
-                {(isProcessingPayment || createCheckoutMutation.isPending) ? (
+                {(sbEnrolling || isProcessingPayment || createCheckoutMutation.isPending) ? (
                   <Loader2 className="w-4 h-4 animate-spin mr-2" />
                 ) : (
                   <DollarSign className="w-4 h-4 mr-2" />
                 )}
-                Pagar e Reservar
+                {USE_SUPABASE ? "Solicitar Reserva" : "Pagar e Reservar"}
               </Button>
             ) : (
-              <Button 
-                onClick={() => enrollMutation.mutate({ expeditionId })}
-                disabled={enrollMutation.isPending}
+              <Button
+                onClick={() => {
+                  if (USE_SUPABASE) {
+                    handleSbEnroll();
+                  } else {
+                    enrollMutation.mutate({ expeditionId });
+                  }
+                }}
+                disabled={sbEnrolling || enrollMutation.isPending}
               >
-                {enrollMutation.isPending ? (
+                {(sbEnrolling || enrollMutation.isPending) ? (
                   <Loader2 className="w-4 h-4 animate-spin mr-2" />
                 ) : null}
                 Confirmar Inscrição
@@ -779,12 +845,18 @@ export default function ExpeditionDetail() {
             <Button variant="outline" onClick={() => setShowCancelDialog(false)}>
               Voltar
             </Button>
-            <Button 
+            <Button
               variant="destructive"
-              onClick={() => cancelMutation.mutate({ expeditionId })}
-              disabled={cancelMutation.isPending}
+              onClick={() => {
+                if (USE_SUPABASE) {
+                  handleSbCancel();
+                } else {
+                  cancelMutation.mutate({ expeditionId });
+                }
+              }}
+              disabled={sbCancelling || cancelMutation.isPending}
             >
-              {cancelMutation.isPending ? (
+              {(sbCancelling || cancelMutation.isPending) ? (
                 <Loader2 className="w-4 h-4 animate-spin mr-2" />
               ) : null}
               Confirmar Cancelamento
