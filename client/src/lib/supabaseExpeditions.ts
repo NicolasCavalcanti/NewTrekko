@@ -227,6 +227,92 @@ export async function sbUpdateExpedition(
   return { expedition: toExpedition(inserted as ExpeditionRow), error: null };
 }
 
+// ─── Enrollment ───────────────────────────────────────────────────────────────
+
+export async function sbIsEnrolled(expeditionId: number, userId: string): Promise<boolean> {
+  if (!supabase) return false;
+  const { data, error } = await supabase
+    .from("enrollments")
+    .select("id")
+    .eq("expedition_id", expeditionId)
+    .eq("user_id", userId)
+    .neq("status", "cancelled")
+    .maybeSingle();
+  if (error) { console.error("[Trekko] sbIsEnrolled:", error.message); return false; }
+  return Boolean(data);
+}
+
+export async function sbEnrollExpedition(input: {
+  expeditionId: number;
+  userId: string;
+  userName: string | null;
+  userEmail: string | null;
+  spots: number;
+}): Promise<{ success: boolean; error: string | null }> {
+  if (!supabase) return { success: false, error: "Supabase não configurado" };
+
+  // Try the RPC function first (atomically updates available_spots)
+  const { data: rpcData, error: rpcError } = await supabase.rpc("enroll_in_expedition", {
+    p_expedition_id: input.expeditionId,
+    p_user_id: input.userId,
+    p_user_name: input.userName,
+    p_user_email: input.userEmail,
+    p_spots: input.spots,
+  });
+
+  if (!rpcError && (rpcData as any)?.success) {
+    return { success: true, error: null };
+  }
+
+  // Fallback: direct insert into enrollments (available_spots won't be updated,
+  // but the enrollment IS recorded)
+  console.warn("[Trekko] RPC enroll failed, falling back to direct insert:", rpcError?.message, rpcData);
+  const { error: insertError } = await supabase.from("enrollments").insert({
+    expedition_id: input.expeditionId,
+    user_id: input.userId,
+    user_name: input.userName,
+    user_email: input.userEmail,
+    spots: input.spots,
+    status: "confirmed",
+  });
+
+  if (insertError) {
+    const msg = insertError.code === "23505"
+      ? "Você já está inscrito nesta expedição"
+      : insertError.message;
+    return { success: false, error: msg };
+  }
+  return { success: true, error: null };
+}
+
+export async function sbCancelEnrollment(
+  expeditionId: number,
+  userId: string,
+): Promise<{ success: boolean; error: string | null }> {
+  if (!supabase) return { success: false, error: "Supabase não configurado" };
+
+  // Try the RPC function first (atomically restores available_spots)
+  const { data: rpcData, error: rpcError } = await supabase.rpc("cancel_enrollment", {
+    p_expedition_id: expeditionId,
+    p_user_id: userId,
+  });
+
+  if (!rpcError && (rpcData as any)?.success) {
+    return { success: true, error: null };
+  }
+
+  // Fallback: direct delete
+  console.warn("[Trekko] RPC cancel failed, falling back to direct delete:", rpcError?.message, rpcData);
+  const { error: deleteError } = await supabase
+    .from("enrollments")
+    .delete()
+    .eq("expedition_id", expeditionId)
+    .eq("user_id", userId);
+
+  if (deleteError) return { success: false, error: deleteError.message };
+  return { success: true, error: null };
+}
+
 export async function sbDeleteExpedition(id: number): Promise<boolean> {
   if (!supabase) return false;
   const { error } = await supabase.from("expeditions").delete().eq("id", id);
