@@ -74,7 +74,6 @@ jobs:
         continue-on-error: true
 
       - name: Deploy Supabase Edge Functions
-        if: ${{ secrets.SUPABASE_ACCESS_TOKEN != '' }}
         timeout-minutes: 3
         run: |
           if [ -z "$SUPABASE_ACCESS_TOKEN" ]; then
