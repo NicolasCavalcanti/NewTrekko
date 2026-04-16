@@ -41,6 +41,9 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
+      - name: Patch swapped trail images (Lençóis ↔ Guartelá)
+        run: node scripts/patch-trail-images.mjs
+
       - name: Run Supabase migrations
         run: |
           run_migration() {
