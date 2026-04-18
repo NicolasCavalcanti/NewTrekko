@@ -6,39 +6,39 @@ const ADSENSE_SRC = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle
 const SCRIPT_ID = "adsense-script";
 
 /**
- * Routes on which AdSense must NOT be loaded.
- * Prefix-matched: /perfil also blocks /perfil/settings, etc.
+ * Whitelist of route patterns where AdSense is permitted.
+ * Only pages that contain <AdUnit /> placements AND have substantial
+ * editorial content should be listed here.
+ *
+ * Allowed:  /trilha/:id   — Trail detail pages
+ *           /blog/:slug   — Blog post pages
+ *
+ * Everything else (home, lists, legal, contact, etc.) is blocked by default.
  */
-const BLOCKED_PREFIXES = [
-  "/checkout",
-  "/perfil",
-  "/reservas",
-  "/admin",
-  "/login",
+const ALLOWED_PATTERNS: RegExp[] = [
+  /^\/trilha\/[^/]+/,
+  /^\/blog\/[^/]+/,
 ];
 
-function isBlocked(path: string): boolean {
-  return BLOCKED_PREFIXES.some(
-    (prefix) => path === prefix || path.startsWith(prefix + "/")
-  );
+function isAllowed(path: string): boolean {
+  return ALLOWED_PATTERNS.some((pattern) => pattern.test(path));
 }
 
 /**
- * Dynamically injects or removes the Google AdSense script based on the
- * current wouter route.  Place this component once inside the app tree
- * (inside the wouter Router context) and it will manage itself automatically.
+ * Manages the Google AdSense script lifecycle based on the current route.
+ * Uses a whitelist strategy: the script is injected only on editorial content
+ * pages (/trilha/:id, /blog/:slug) and removed from every other route.
  *
- * Allowed:  /, /trilhas, /trilha/:id, /guias, /guia/:id, /blog, /blog/:slug
- * Blocked:  /checkout, /perfil, /reservas, /admin, /login
+ * Place this component once inside the Wouter Router context.
  */
 export function AdSenseLoader() {
   const [location] = useLocation();
 
   useEffect(() => {
-    const blocked = isBlocked(location);
+    const allowed = isAllowed(location);
     const existing = document.getElementById(SCRIPT_ID);
 
-    if (blocked) {
+    if (!allowed) {
       if (existing) existing.remove();
       return;
     }
