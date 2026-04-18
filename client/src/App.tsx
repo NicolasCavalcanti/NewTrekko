@@ -5,6 +5,7 @@ import { Router, Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { PageSkeleton } from "./components/PageSkeleton";
 import { AdSenseLoader } from "./components/AdSenseLoader";
+import { AdReadinessProvider } from "./contexts/AdReadinessContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 
@@ -31,31 +32,31 @@ const routerBase = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 function AppRoutes() {
   return (
-    <>
+    <AdReadinessProvider>
       <AdSenseLoader />
       <Suspense fallback={<PageSkeleton />}>
-      <Switch>
-        <Route path="/" component={Home} />
-        <Route path="/trilhas" component={Trails} />
-        <Route path="/trilha/:id" component={TrailDetail} />
-        <Route path="/expedicao/:id" component={ExpeditionDetail} />
-        <Route path="/guias" component={Guides} />
-        <Route path="/guia/:id" component={GuideDetail} />
-        <Route path="/perfil" component={Profile} />
-        <Route path="/admin" component={Admin} />
-        <Route path="/sobre" component={About} />
-        <Route path="/blog" component={Blog} />
-        <Route path="/blog/:slug" component={BlogPost} />
-        <Route path="/reservas" component={Reservations} />
-        <Route path="/termos" component={Terms} />
-        <Route path="/privacidade" component={Privacy} />
-        <Route path="/politica-editorial" component={EditorialPolicy} />
-        <Route path="/contato" component={Contact} />
-        <Route path="/404" component={NotFound} />
-        <Route component={NotFound} />
-      </Switch>
-    </Suspense>
-    </>
+        <Switch>
+          <Route path="/" component={Home} />
+          <Route path="/trilhas" component={Trails} />
+          <Route path="/trilha/:id" component={TrailDetail} />
+          <Route path="/expedicao/:id" component={ExpeditionDetail} />
+          <Route path="/guias" component={Guides} />
+          <Route path="/guia/:id" component={GuideDetail} />
+          <Route path="/perfil" component={Profile} />
+          <Route path="/admin" component={Admin} />
+          <Route path="/sobre" component={About} />
+          <Route path="/blog" component={Blog} />
+          <Route path="/blog/:slug" component={BlogPost} />
+          <Route path="/reservas" component={Reservations} />
+          <Route path="/termos" component={Terms} />
+          <Route path="/privacidade" component={Privacy} />
+          <Route path="/politica-editorial" component={EditorialPolicy} />
+          <Route path="/contato" component={Contact} />
+          <Route path="/404" component={NotFound} />
+          <Route component={NotFound} />
+        </Switch>
+      </Suspense>
+    </AdReadinessProvider>
   );
 }
 
