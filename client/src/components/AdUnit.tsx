@@ -1,4 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
+import { useLocation } from "wouter";
+import { useAdReadiness } from "@/contexts/AdReadinessContext";
 
 const ADSENSE_CLIENT = "ca-pub-2482023752745520";
 
@@ -27,23 +29,29 @@ interface AdUnitProps {
 /**
  * Renders a single responsive AdSense display ad unit.
  *
- * - Uses data-ad-format="auto" + data-full-width-responsive="true" for responsiveness
- * - Wraps in a min-height container to prevent Cumulative Layout Shift (CLS)
- * - Guards adsbygoogle.push() so it silently no-ops when the AdSense script is
- *   absent (blocked routes, ad blockers, or SSR)
+ * On mount (which only happens after the page's data has loaded and content
+ * is in the DOM), this component:
+ *   1. Calls markContentReady(location) — triggers AdSenseLoader to inject
+ *      the adsbygoogle script now that real content exists on the page.
+ *   2. Calls adsbygoogle.push({}) — queued in the array buffer and processed
+ *      by the script once it loads, filling this <ins> element.
+ *
+ * The effect re-runs on location change so that navigating between content
+ * pages (e.g. /blog/post-1 → /blog/post-2) correctly re-signals readiness
+ * and re-queues the push for the new <ins> element.
  */
 export function AdUnit({ slot, className }: AdUnitProps) {
-  const pushed = useRef(false);
+  const [location] = useLocation();
+  const { markContentReady } = useAdReadiness();
 
   useEffect(() => {
-    if (pushed.current) return;
-    pushed.current = true;
+    markContentReady(location);
     try {
       ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
     } catch {
-      // AdSense script not loaded (blocked route, ad blocker, etc.)
+      // AdSense script not yet loaded — push is buffered and processed on load
     }
-  }, []);
+  }, [location, markContentReady]);
 
   return (
     <div
