@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { trpc } from "@/lib/trpc";
 import { useGuideDetail } from "@/hooks/useGuides";
+import { evaluateGuideIndexability } from "@/lib/guideIndexability";
 import { ArrowLeft, Shield, Mail, Phone, Globe, Calendar, Users, MapPin, Loader2, CheckCircle2, Car } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -49,6 +50,8 @@ export default function GuideDetail() {
 
   const { guide, expeditions } = data;
 
+  const { robotsContent } = evaluateGuideIndexability(guide, expeditions.length);
+
   const canonicalUrl = `https://trekko.com.br/guia/${guide.cadasturNumber}`;
   const metaTitle = `${guide.name || "Guia"} — Guia Certificado CADASTUR | Trekko`;
   const metaDescription = guide.bio
@@ -60,6 +63,7 @@ export default function GuideDetail() {
     <div className="min-h-screen flex flex-col">
       <Helmet>
         <title>{metaTitle}</title>
+        <meta name="robots" content={robotsContent} />
         <meta name="description" content={metaDescription} />
         <link rel="canonical" href={canonicalUrl} />
         <meta property="og:type" content="profile" />
