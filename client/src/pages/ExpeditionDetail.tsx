@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useLocation } from "wouter";
+import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -30,6 +31,7 @@ import {
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { toast } from "sonner";
+import { evaluateExpeditionQuality } from "@/lib/expeditionQuality";
 
 const STATUS_LABELS: Record<string, { label: string; color: string; icon: React.ReactNode }> = {
   active: { label: "Ativa", color: "bg-green-100 text-green-700 border-green-200", icon: <CheckCircle2 className="w-4 h-4" /> },
@@ -347,8 +349,109 @@ export default function ExpeditionDetail() {
     ...expeditionImages.filter(img => !trailImages.includes(img)),
   ];
 
+  // ── SEO / Indexation ─────────────────────────────────────────────────────────
+  const quality = evaluateExpeditionQuality({
+    status: expedition.status,
+    startDate: expedition.startDate,
+    description: expedition.description,
+    meetingPoint: expedition.meetingPoint,
+    guideNotes: expedition.guideNotes,
+    includedItems: expedition.includedItems
+      ? String(expedition.includedItems)
+      : null,
+    title: expedition.title,
+  });
+
+  const expeditionName = expedition.title || trail.name;
+  const formattedDate = format(
+    new Date(expedition.startDate),
+    "dd 'de' MMMM 'de' yyyy",
+    { locale: ptBR }
+  );
+  const locationLabel = `${trail.city}, ${trail.uf}`;
+
+  const metaTitle = `${expeditionName} — ${locationLabel} | ${formattedDate} | Trekko`;
+
+  const descSnippet = expedition.description?.trim()
+    ? expedition.description.trim().slice(0, 140)
+    : `Expedição guiada na ${trail.name} em ${locationLabel}, conduzida por ${guide.name}.`;
+  const metaDescription = `${descSnippet}. Saiba mais sobre datas, ponto de encontro e como se inscrever.`;
+
+  const canonicalUrl = `https://trekko.com.br/expedicao/${expeditionId}`;
+  const ogImage =
+    allImages[0] ||
+    "https://trekko.com.br/android-chrome-512x512.png";
+
+  const eventSchema = {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    name: expeditionName,
+    description: expedition.description || metaDescription,
+    startDate: expedition.startDate,
+    endDate: expedition.endDate || expedition.startDate,
+    eventStatus: "https://schema.org/EventScheduled",
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    location: {
+      "@type": "Place",
+      name: expedition.meetingPoint || `${trail.name}, ${locationLabel}`,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: trail.city,
+        addressRegion: trail.uf,
+        addressCountry: "BR",
+      },
+    },
+    image: allImages.slice(0, 3),
+    organizer: {
+      "@type": "Person",
+      name: guide.name,
+    },
+    offers: expedition.price
+      ? {
+          "@type": "Offer",
+          price: expedition.price,
+          priceCurrency: "BRL",
+          availability:
+            status === "active"
+              ? "https://schema.org/InStock"
+              : "https://schema.org/SoldOut",
+          url: canonicalUrl,
+        }
+      : undefined,
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
+      <Helmet>
+        <title>{metaTitle}</title>
+        <meta name="description" content={metaDescription} />
+        <link rel="canonical" href={canonicalUrl} />
+        <meta
+          name="robots"
+          content={quality.shouldIndex ? "index, follow" : "noindex, follow"}
+        />
+
+        {/* Open Graph */}
+        <meta property="og:type" content="event" />
+        <meta property="og:title" content={metaTitle} />
+        <meta property="og:description" content={metaDescription} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:site_name" content="Trekko" />
+        <meta property="og:locale" content="pt_BR" />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={metaTitle} />
+        <meta name="twitter:description" content={metaDescription} />
+        <meta name="twitter:image" content={ogImage} />
+
+        {/* JSON-LD Event schema */}
+        <script type="application/ld+json">
+          {JSON.stringify(eventSchema)}
+        </script>
+      </Helmet>
+
       <Header />
 
       <main className="flex-1 py-8">
@@ -362,6 +465,26 @@ export default function ExpeditionDetail() {
             <ArrowLeft className="w-4 h-4 mr-2" />
             Voltar para expedições
           </Button>
+
+          {/* SEO quality warning — visible only to the guide/admin */}
+          {isGuideOrAdmin && !quality.shouldIndex && quality.missingFields.length > 0 && (
+            <div className="mb-6 p-4 bg-amber-50 border border-amber-300 rounded-lg flex gap-3">
+              <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+              <div>
+                <p className="font-semibold text-amber-800 text-sm">
+                  Esta expedição não está sendo indexada pelo Google
+                </p>
+                <p className="text-amber-700 text-sm mt-1">
+                  Complete os campos abaixo para torná-la indexável:
+                </p>
+                <ul className="list-disc list-inside text-amber-700 text-sm mt-1 space-y-0.5">
+                  {quality.missingFields.map((field) => (
+                    <li key={field}>{field}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Main Content */}
