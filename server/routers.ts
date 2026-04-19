@@ -9,6 +9,7 @@ import { storagePut } from "./storage";
 import { nanoid } from "nanoid";
 import { searchWikiloc } from "./lib/wikiloc-search";
 import { MercadoPagoConfig, Preference, Payment } from "mercadopago";
+import { validatePixKey, normalizePixKey } from "./lib/pix-validation";
 
 // Helper function to add business days (excluding weekends)
 function addBusinessDays(date: Date, days: number): Date {
@@ -607,27 +608,14 @@ export const appRouter = router({
         pixKeyHolderName: z.string().min(1, 'Nome do titular é obrigatório'),
       }))
       .mutation(async ({ ctx, input }) => {
-        const { pixKeyType, pixKey } = input;
-        const digits = pixKey.replace(/\D/g, '');
-
-        if (pixKeyType === 'cpf' && digits.length !== 11) {
-          throw new TRPCError({ code: 'BAD_REQUEST', message: 'CPF deve ter 11 dígitos' });
+        const result = validatePixKey(input.pixKeyType, input.pixKey);
+        if (!result.valid) {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: result.error! });
         }
-        if (pixKeyType === 'cnpj' && digits.length !== 14) {
-          throw new TRPCError({ code: 'BAD_REQUEST', message: 'CNPJ deve ter 14 dígitos' });
-        }
-        if (pixKeyType === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(pixKey)) {
-          throw new TRPCError({ code: 'BAD_REQUEST', message: 'E-mail inválido' });
-        }
-        if (pixKeyType === 'phone' && (digits.length < 10 || digits.length > 11)) {
-          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Telefone inválido' });
-        }
-
-        const normalizedKey = pixKeyType === 'email' ? pixKey : digits || pixKey;
 
         await db.savePixKeyData(ctx.user.id, {
           pixKeyType: input.pixKeyType,
-          pixKey: normalizedKey,
+          pixKey: normalizePixKey(input.pixKeyType, input.pixKey),
           pixKeyHolderName: input.pixKeyHolderName,
         });
 
@@ -647,20 +635,26 @@ export const appRouter = router({
         acceptedContestationPolicy: z.boolean(),
       }))
       .mutation(async ({ ctx, input }) => {
+        // Validate Pix key format (CPF/CNPJ algorithm included)
+        const pixValidation = validatePixKey(input.pixKeyType, input.pixKey);
+        if (!pixValidation.valid) {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: pixValidation.error! });
+        }
+
         // Validate PIX key matches document for CPF/CNPJ keys
-        if ((input.pixKeyType === 'cpf' || input.pixKeyType === 'cnpj') && 
+        if ((input.pixKeyType === 'cpf' || input.pixKeyType === 'cnpj') &&
             input.pixKey !== input.documentNumber) {
-          throw new TRPCError({ 
-            code: 'BAD_REQUEST', 
-            message: 'A chave PIX deve pertencer ao mesmo CPF/CNPJ cadastrado' 
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'A chave PIX deve pertencer ao mesmo CPF/CNPJ cadastrado'
           });
         }
 
         // All terms must be accepted
         if (!input.acceptedIntermediationTerms || !input.acceptedPayoutTerms || !input.acceptedContestationPolicy) {
-          throw new TRPCError({ 
-            code: 'BAD_REQUEST', 
-            message: 'Todos os termos devem ser aceitos' 
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Todos os termos devem ser aceitos'
           });
         }
 
@@ -1140,6 +1134,15 @@ export const appRouter = router({
         // Check if expedition is available for booking
         if (!expedition.status || !['published', 'active'].includes(expedition.status)) {
           throw new TRPCError({ code: 'BAD_REQUEST', message: 'Expedição não está disponível para reservas' });
+        }
+
+        // Story 4: Block payment if guide has no valid Pix key configured
+        const guidePixVerification = await db.getGuideVerification(expedition.guideId);
+        if (!guidePixVerification?.pixKey || !guidePixVerification?.pixKeyType) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Este guia ainda não configurou uma chave PIX. O pagamento não pode ser processado no momento.',
+          });
         }
 
         // Check available spots
