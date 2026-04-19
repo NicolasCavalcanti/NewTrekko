@@ -711,3 +711,24 @@ export const ratingStats = mysqlTable("rating_stats", {
 
 export type RatingStats = typeof ratingStats.$inferSelect;
 export type InsertRatingStats = typeof ratingStats.$inferInsert;
+
+// ---------------------------------------------------------------------------
+// guide_financial_info  (Story 5: separate financial routing data)
+// Stores Pix key for payment routing, decoupled from identity verification.
+// DB-SEC-01: pixKey stored AES-256-GCM encrypted via server/lib/crypto.ts
+// DB-SEC-02: cascade — delete financial info when guide account is deleted
+// ---------------------------------------------------------------------------
+export const guideFinancialInfo = mysqlTable("guide_financial_info", {
+  id: int("id").autoincrement().primaryKey(),
+  guideId: int("guide_id").notNull().unique().references(() => users.id, { onDelete: "cascade" }),
+  pixKeyType: mysqlEnum("pix_key_type", ["cpf", "cnpj", "email", "phone", "random"]),
+  // DB-SEC-01 /* ENCRYPTED */ — AES-256-GCM encrypted at application layer
+  pixKey: varchar("pix_key", { length: 512 }),
+  pixKeyHolderName: varchar("pix_key_holder_name", { length: 256 }),
+  pixKeyVerified: int("pix_key_verified").default(0),
+  paymentEnabled: int("payment_enabled").default(0),
+  ...timestamps,
+});
+
+export type GuideFinancialInfo = typeof guideFinancialInfo.$inferSelect;
+export type InsertGuideFinancialInfo = typeof guideFinancialInfo.$inferInsert;
