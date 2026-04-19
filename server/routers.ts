@@ -622,6 +622,40 @@ export const appRouter = router({
         return { success: true };
       }),
 
+    // Get guide's own financial info (Pix routing data)
+    getMyFinancialInfo: guideProcedure.query(async ({ ctx }) => {
+      return await db.getGuideFinancialInfo(ctx.user.id);
+    }),
+
+    // Update Pix key — requires existing record (Story 6: PATCH semantics)
+    updatePixKey: guideProcedure
+      .input(z.object({
+        pixKeyType: z.enum(['cpf', 'cnpj', 'email', 'phone', 'random']),
+        pixKey: z.string().min(1, 'Chave PIX é obrigatória'),
+        pixKeyHolderName: z.string().min(1, 'Nome do titular é obrigatório'),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const validation = validatePixKey(input.pixKeyType, input.pixKey);
+        if (!validation.valid) {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: validation.error! });
+        }
+
+        try {
+          await db.updateGuideFinancialInfo(ctx.user.id, {
+            pixKeyType: input.pixKeyType,
+            pixKey: normalizePixKey(input.pixKeyType, input.pixKey),
+            pixKeyHolderName: input.pixKeyHolderName,
+          });
+        } catch (err: any) {
+          if (err.message?.includes('Nenhuma chave PIX cadastrada')) {
+            throw new TRPCError({ code: 'NOT_FOUND', message: err.message });
+          }
+          throw err;
+        }
+
+        return { success: true };
+      }),
+
     // Save guide PIX data
     savePixData: guideProcedure
       .input(z.object({
@@ -1136,9 +1170,9 @@ export const appRouter = router({
           throw new TRPCError({ code: 'BAD_REQUEST', message: 'Expedição não está disponível para reservas' });
         }
 
-        // Story 4: Block payment if guide has no valid Pix key configured
-        const guidePixVerification = await db.getGuideVerification(expedition.guideId);
-        if (!guidePixVerification?.pixKey || !guidePixVerification?.pixKeyType) {
+        // Story 4/5: Block payment if guide has no valid Pix key in guide_financial_info
+        const guideFinancialInfo = await db.getGuideFinancialInfo(expedition.guideId);
+        if (!guideFinancialInfo?.pixKey || !guideFinancialInfo?.pixKeyType) {
           throw new TRPCError({
             code: 'BAD_REQUEST',
             message: 'Este guia ainda não configurou uma chave PIX. O pagamento não pode ser processado no momento.',

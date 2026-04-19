@@ -1101,8 +1101,9 @@ export async function getRelatedBlogPosts(postId: number, category: string, limi
 // PAYMENT SYSTEM DATABASE FUNCTIONS
 // ============================================
 
-import { 
+import {
   guideVerification, InsertGuideVerification, GuideVerification,
+  guideFinancialInfo, GuideFinancialInfo, InsertGuideFinancialInfo,
   cancellationPolicies, InsertCancellationPolicy, CancellationPolicy,
   reservations, InsertReservation, Reservation,
   payments, InsertPayment, Payment,
@@ -1171,6 +1172,13 @@ export async function saveGuidePixData(userId: number, data: {
       pixKeyVerified: 1,
     });
   }
+
+  // Dual-write Pix routing data to guide_financial_info (Story 5)
+  await saveGuideFinancialInfo(userId, {
+    pixKeyType: data.pixKeyType,
+    pixKey: data.pixKey,
+    pixKeyHolderName: data.pixKeyHolderName,
+  });
 }
 
 export async function savePixKeyData(userId: number, data: {
@@ -1183,6 +1191,7 @@ export async function savePixKeyData(userId: number, data: {
 
   const encryptedPixKey = encrypt(data.pixKey) ?? data.pixKey;
 
+  // Write to guide_verification (legacy / identity-verification flow)
   const existing = await getGuideVerification(userId);
   if (existing) {
     await db.update(guideVerification).set({
@@ -1200,6 +1209,77 @@ export async function savePixKeyData(userId: number, data: {
       pixKeyHolderName: data.pixKeyHolderName,
     });
   }
+
+  // Dual-write to guide_financial_info (Story 5: primary payment-routing store)
+  await saveGuideFinancialInfo(userId, data);
+}
+
+// ---------------------------------------------------------------------------
+// guide_financial_info functions (Story 5)
+// ---------------------------------------------------------------------------
+
+export async function getGuideFinancialInfo(guideId: number): Promise<GuideFinancialInfo | undefined> {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(guideFinancialInfo).where(eq(guideFinancialInfo.guideId, guideId)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function saveGuideFinancialInfo(guideId: number, data: {
+  pixKeyType: 'cpf' | 'cnpj' | 'email' | 'phone' | 'random';
+  pixKey: string;
+  pixKeyHolderName: string;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error('Database not available');
+
+  const encryptedPixKey = encrypt(data.pixKey) ?? data.pixKey;
+  const existing = await getGuideFinancialInfo(guideId);
+
+  if (existing) {
+    await db.update(guideFinancialInfo).set({
+      pixKeyType: data.pixKeyType,
+      pixKey: encryptedPixKey,
+      pixKeyHolderName: data.pixKeyHolderName,
+      updatedAt: new Date(),
+    }).where(eq(guideFinancialInfo.guideId, guideId));
+  } else {
+    await db.insert(guideFinancialInfo).values({
+      guideId,
+      pixKeyType: data.pixKeyType,
+      pixKey: encryptedPixKey,
+      pixKeyHolderName: data.pixKeyHolderName,
+    });
+  }
+}
+
+export async function updateGuideFinancialInfo(guideId: number, data: {
+  pixKeyType: 'cpf' | 'cnpj' | 'email' | 'phone' | 'random';
+  pixKey: string;
+  pixKeyHolderName: string;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error('Database not available');
+
+  const existing = await getGuideFinancialInfo(guideId);
+  if (!existing) throw new Error('Nenhuma chave PIX cadastrada. Use o onboarding para cadastrar.');
+
+  const encryptedPixKey = encrypt(data.pixKey) ?? data.pixKey;
+  await db.update(guideFinancialInfo).set({
+    pixKeyType: data.pixKeyType,
+    pixKey: encryptedPixKey,
+    pixKeyHolderName: data.pixKeyHolderName,
+    updatedAt: new Date(),
+  }).where(eq(guideFinancialInfo.guideId, guideId));
+}
+
+/**
+ * DB-SEC-01: Return a guide_financial_info record with the pixKey decrypted.
+ */
+export async function getGuideFinancialInfoDecrypted(guideId: number) {
+  const record = await getGuideFinancialInfo(guideId);
+  if (!record) return undefined;
+  return { ...record, pixKey: decrypt(record.pixKey) };
 }
 
 /**
