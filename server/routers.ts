@@ -599,6 +599,41 @@ export const appRouter = router({
       return await db.getGuideVerification(ctx.user.id);
     }),
 
+    // Save minimal Pix key during guide onboarding (step 3 of registration)
+    savePixKeyOnboarding: guideProcedure
+      .input(z.object({
+        pixKeyType: z.enum(['cpf', 'cnpj', 'email', 'phone', 'random']),
+        pixKey: z.string().min(1, 'Chave PIX é obrigatória'),
+        pixKeyHolderName: z.string().min(1, 'Nome do titular é obrigatório'),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const { pixKeyType, pixKey } = input;
+        const digits = pixKey.replace(/\D/g, '');
+
+        if (pixKeyType === 'cpf' && digits.length !== 11) {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'CPF deve ter 11 dígitos' });
+        }
+        if (pixKeyType === 'cnpj' && digits.length !== 14) {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'CNPJ deve ter 14 dígitos' });
+        }
+        if (pixKeyType === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(pixKey)) {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'E-mail inválido' });
+        }
+        if (pixKeyType === 'phone' && (digits.length < 10 || digits.length > 11)) {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Telefone inválido' });
+        }
+
+        const normalizedKey = pixKeyType === 'email' ? pixKey : digits || pixKey;
+
+        await db.savePixKeyData(ctx.user.id, {
+          pixKeyType: input.pixKeyType,
+          pixKey: normalizedKey,
+          pixKeyHolderName: input.pixKeyHolderName,
+        });
+
+        return { success: true };
+      }),
+
     // Save guide PIX data
     savePixData: guideProcedure
       .input(z.object({

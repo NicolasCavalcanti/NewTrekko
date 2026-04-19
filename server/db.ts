@@ -1173,6 +1173,35 @@ export async function saveGuidePixData(userId: number, data: {
   }
 }
 
+export async function savePixKeyData(userId: number, data: {
+  pixKeyType: 'cpf' | 'cnpj' | 'email' | 'phone' | 'random';
+  pixKey: string;
+  pixKeyHolderName: string;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error('Database not available');
+
+  const encryptedPixKey = encrypt(data.pixKey) ?? data.pixKey;
+
+  const existing = await getGuideVerification(userId);
+  if (existing) {
+    await db.update(guideVerification).set({
+      pixKeyType: data.pixKeyType,
+      pixKey: encryptedPixKey,
+      pixKeyHolderName: data.pixKeyHolderName,
+      updatedAt: new Date(),
+    }).where(eq(guideVerification.userId, userId));
+  } else {
+    await db.insert(guideVerification).values({
+      userId,
+      status: 'pending',
+      pixKeyType: data.pixKeyType,
+      pixKey: encryptedPixKey,
+      pixKeyHolderName: data.pixKeyHolderName,
+    });
+  }
+}
+
 /**
  * DB-SEC-01: Return a guide verification record with encrypted fields decrypted.
  * Use this instead of calling getGuideVerification() when the plaintext values
