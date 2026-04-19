@@ -14,6 +14,8 @@ vi.mock("./db", () => ({
   createAuditLog: vi.fn(),
   getCancellationPolicies: vi.fn(),
   getDefaultCancellationPolicy: vi.fn(),
+  getGuideVerification: vi.fn(),
+  getGuideFinancialInfo: vi.fn(),
   // Add other required mocks
   getTrails: vi.fn().mockResolvedValue({ trails: [], total: 0 }),
   getExpeditions: vi.fn().mockResolvedValue({ expeditions: [], total: 0 }),
@@ -115,6 +117,16 @@ describe('payments.createCheckout', () => {
     vi.mocked(db.createReservation).mockResolvedValue(1);
     vi.mocked(db.updateReservation).mockResolvedValue(undefined);
     vi.mocked(db.createAuditLog).mockResolvedValue(1);
+    // Default: guide has a valid Pix key in guide_financial_info
+    vi.mocked(db.getGuideFinancialInfo).mockResolvedValue({
+      id: 1,
+      guideId: 2,
+      pixKeyType: 'email',
+      pixKey: 'encrypted_guia@example.com',
+      pixKeyHolderName: 'Guide User',
+      pixKeyVerified: 1,
+      paymentEnabled: 1,
+    } as any);
   });
 
   it('creates a checkout session successfully', async () => {
@@ -206,6 +218,41 @@ describe('payments.createCheckout', () => {
         quantity: 5,
       })
     ).rejects.toThrow('Apenas 2 vagas disponíveis');
+  });
+
+  // Story 4/5 — Block Payments Without Pix Key (reads from guide_financial_info)
+  it('blocks payment when guide has no Pix key configured', async () => {
+    vi.mocked(db.getGuideFinancialInfo).mockResolvedValue(undefined);
+
+    const caller = appRouter.createCaller(createAuthContext());
+
+    await expect(
+      caller.payments.createCheckout({
+        expeditionId: 90001,
+        quantity: 1,
+      })
+    ).rejects.toThrow('Este guia ainda não configurou uma chave PIX');
+  });
+
+  it('blocks payment when guide financial info exists but has no Pix key value', async () => {
+    vi.mocked(db.getGuideFinancialInfo).mockResolvedValue({
+      id: 1,
+      guideId: 2,
+      pixKeyType: null,
+      pixKey: null,
+      pixKeyHolderName: null,
+      pixKeyVerified: 0,
+      paymentEnabled: 0,
+    } as any);
+
+    const caller = appRouter.createCaller(createAuthContext());
+
+    await expect(
+      caller.payments.createCheckout({
+        expeditionId: 90001,
+        quantity: 1,
+      })
+    ).rejects.toThrow('Este guia ainda não configurou uma chave PIX');
   });
 
   it('creates reservation with correct total amount', async () => {
