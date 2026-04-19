@@ -36,7 +36,9 @@ export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
 
   const { data: post, isLoading, error } = useBlogPostBySlug(slug || "");
-  const { data: author } = useAuthorBySlug(post?.authorSlug ?? "");
+  // authorSlug only exists on StaticBlogPost; tRPC posts fall back to null
+  const authorSlug = post && "authorSlug" in post ? (post as { authorSlug?: string | null }).authorSlug ?? "" : "";
+  const { data: author } = useAuthorBySlug(authorSlug);
 
   const { data: relatedPosts } = useBlogRelated(post?.id, post?.category ?? undefined);
 
