@@ -20,6 +20,7 @@ const About = lazy(() => import("./pages/About"));
 const ExpeditionDetail = lazy(() => import("./pages/ExpeditionDetail"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
+const AuthorDetail = lazy(() => import("./pages/AuthorDetail"));
 const Reservations = lazy(() => import("./pages/Reservations"));
 const Terms = lazy(() => import("./pages/Terms"));
 const Privacy = lazy(() => import("./pages/Privacy"));
@@ -47,6 +48,7 @@ function AppRoutes() {
           <Route path="/sobre" component={About} />
           <Route path="/blog" component={Blog} />
           <Route path="/blog/:slug" component={BlogPost} />
+          <Route path="/autor/:slug" component={AuthorDetail} />
           <Route path="/reservas" component={Reservations} />
           <Route path="/termos" component={Terms} />
           <Route path="/privacidade" component={Privacy} />
