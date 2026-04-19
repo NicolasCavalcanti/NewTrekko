@@ -10,6 +10,7 @@ import { nanoid } from "nanoid";
 import { searchWikiloc } from "./lib/wikiloc-search";
 import { MercadoPagoConfig, Preference, Payment } from "mercadopago";
 import { validatePixKey, normalizePixKey, maskPixKey } from "./lib/pix-validation";
+import { executePayoutWithRetry } from "./lib/payout-service";
 
 // Helper function to add business days (excluding weekends)
 function addBusinessDays(date: Date, days: number): Date {
@@ -1794,6 +1795,105 @@ export const appRouter = router({
         });
         return { success: true };
       }),
+
+    // Story 10: Trigger a new payout for a guide using their Pix key
+    triggerPayout: adminProcedure
+      .input(z.object({
+        guideId: z.number(),
+        grossAmount: z.number().positive(),
+        platformFeePercent: z.number().min(0).max(100).default(10),
+        reservationId: z.number().optional(),
+        scheduledDate: z.date().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const financialInfo = await db.getGuideFinancialInfo(input.guideId);
+        if (!financialInfo?.pixKey || financialInfo.pixKeyStatus !== 'valid') {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Guia não possui chave Pix válida para receber pagamento',
+          });
+        }
+
+        const platformFee = Number((input.grossAmount * input.platformFeePercent / 100).toFixed(2));
+        const netAmount = Number((input.grossAmount - platformFee).toFixed(2));
+
+        const payoutId = await db.createPayout({
+          guideId: input.guideId,
+          reservationId: input.reservationId,
+          status: 'scheduled',
+          grossAmount: String(input.grossAmount),
+          platformFee: String(platformFee),
+          netAmount: String(netAmount),
+          currency: 'BRL',
+          scheduledDate: input.scheduledDate ?? new Date(),
+        });
+
+        await db.createAuditLog({
+          entityType: 'payout',
+          entityId: payoutId,
+          action: 'payout_triggered',
+          actorId: ctx.user.id,
+          actorType: 'admin',
+          source: 'admin_portal',
+        });
+
+        // Immediately attempt execution
+        const result = await executePayoutWithRetry(payoutId);
+        return { payoutId, ...result };
+      }),
+
+    // Story 11: Manually retry a failed or scheduled payout
+    retryPayout: adminProcedure
+      .input(z.object({ payoutId: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        const result = await executePayoutWithRetry(input.payoutId);
+        await db.createAuditLog({
+          entityType: 'payout',
+          entityId: input.payoutId,
+          action: 'payout_manual_retry',
+          actorId: ctx.user.id,
+          actorType: 'admin',
+          source: 'admin_portal',
+        });
+        return result;
+      }),
+
+    // Story 11: Process all due scheduled payouts (cron / batch trigger)
+    processScheduledPayouts: adminProcedure.mutation(async ({ ctx }) => {
+      const scheduled = await db.getScheduledPayouts();
+      const results = await Promise.allSettled(
+        scheduled.map(p => executePayoutWithRetry(p.id))
+      );
+
+      const summary = {
+        total: scheduled.length,
+        sent: 0,
+        failed: 0,
+        errors: [] as string[],
+      };
+
+      results.forEach((r, i) => {
+        if (r.status === 'fulfilled') {
+          if (r.value.status === 'sent') summary.sent++;
+          else summary.failed++;
+        } else {
+          summary.failed++;
+          summary.errors.push(`payout ${scheduled[i].id}: ${r.reason}`);
+        }
+      });
+
+      await db.createAuditLog({
+        entityType: 'payout',
+        entityId: 0,
+        action: 'batch_payouts_processed',
+        newValue: JSON.stringify({ total: summary.total, sent: summary.sent, failed: summary.failed }),
+        actorId: ctx.user.id,
+        actorType: 'admin',
+        source: 'admin_portal',
+      });
+
+      return summary;
+    }),
   }),
 
   // Reviews for trails and guides

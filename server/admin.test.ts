@@ -31,6 +31,16 @@ vi.mock("./db", () => ({
   getAuditLogsForEntity: vi.fn().mockResolvedValue([]),
   setGuidePixKeyStatus: vi.fn().mockResolvedValue(undefined),
   createAuditLog: vi.fn().mockResolvedValue(1),
+  createPayout: vi.fn().mockResolvedValue(1),
+  getGuideFinancialInfo: vi.fn(),
+  getScheduledPayouts: vi.fn().mockResolvedValue([]),
+  getPayoutById: vi.fn(),
+  updatePayout: vi.fn().mockResolvedValue(undefined),
+  getPlatformSetting: vi.fn().mockResolvedValue('3'),
+}));
+
+vi.mock('./lib/payout-service', () => ({
+  executePayoutWithRetry: vi.fn().mockResolvedValue({ status: 'sent', transactionId: 'tx-test-123' }),
 }));
 
 type AuthenticatedUser = NonNullable<TrpcContext["user"]>;
@@ -190,6 +200,7 @@ describe("admin.expeditions", () => {
 });
 
 import * as db from "./db";
+import * as payoutService from "./lib/payout-service";
 
 // ---------------------------------------------------------------------------
 // Story 8 — adminPayments.getGuidePixInfo (masked Pix key)
@@ -367,5 +378,162 @@ describe("adminPayments.setGuidePixKeyStatus", () => {
     await expect(
       caller.adminPayments.setGuidePixKeyStatus({ guideId: 5, status: "invalid" })
     ).rejects.toThrow();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Story 10 — adminPayments.triggerPayout
+// ---------------------------------------------------------------------------
+describe("adminPayments.triggerPayout", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.mocked(db.getGuideFinancialInfo).mockResolvedValue({
+      id: 1,
+      guideId: 5,
+      pixKeyType: "email",
+      pixKey: "encrypted_guia@example.com",
+      pixKeyHolderName: "Guia Teste",
+      pixKeyStatus: "valid",
+      pixKeyVerified: 1,
+      paymentEnabled: 1,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    } as any);
+    vi.mocked(payoutService.executePayoutWithRetry).mockResolvedValue({
+      status: "sent",
+      transactionId: "tx-test-123",
+    });
+  });
+
+  it("creates payout and executes it immediately", async () => {
+    const caller = appRouter.createCaller(createAdminContext());
+    const result = await caller.adminPayments.triggerPayout({
+      guideId: 5,
+      grossAmount: 1000,
+      platformFeePercent: 10,
+    });
+
+    expect(result.status).toBe("sent");
+    expect(result.transactionId).toBe("tx-test-123");
+    expect(db.createPayout).toHaveBeenCalledWith(
+      expect.objectContaining({
+        guideId: 5,
+        grossAmount: "1000",
+        platformFee: "100",
+        netAmount: "900",
+        currency: "BRL",
+      })
+    );
+    expect(payoutService.executePayoutWithRetry).toHaveBeenCalledWith(1);
+  });
+
+  it("throws when guide has no valid Pix key", async () => {
+    vi.mocked(db.getGuideFinancialInfo).mockResolvedValue(undefined);
+
+    const caller = appRouter.createCaller(createAdminContext());
+    await expect(
+      caller.adminPayments.triggerPayout({ guideId: 5, grossAmount: 1000 })
+    ).rejects.toThrow("chave Pix válida");
+  });
+
+  it("throws when guide Pix key status is not valid", async () => {
+    vi.mocked(db.getGuideFinancialInfo).mockResolvedValue({
+      id: 1, guideId: 5, pixKeyType: "email",
+      pixKey: "enc", pixKeyHolderName: "X",
+      pixKeyStatus: "invalid",
+    } as any);
+
+    const caller = appRouter.createCaller(createAdminContext());
+    await expect(
+      caller.adminPayments.triggerPayout({ guideId: 5, grossAmount: 1000 })
+    ).rejects.toThrow("chave Pix válida");
+  });
+
+  it("denies access to regular user", async () => {
+    const caller = appRouter.createCaller(createUserContext());
+    await expect(
+      caller.adminPayments.triggerPayout({ guideId: 5, grossAmount: 1000 })
+    ).rejects.toThrow();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Story 11 — adminPayments.retryPayout
+// ---------------------------------------------------------------------------
+describe("adminPayments.retryPayout", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.mocked(payoutService.executePayoutWithRetry).mockResolvedValue({
+      status: "sent",
+      transactionId: "tx-retry-ok",
+    });
+  });
+
+  it("retries a payout and returns result", async () => {
+    const caller = appRouter.createCaller(createAdminContext());
+    const result = await caller.adminPayments.retryPayout({ payoutId: 101 });
+
+    expect(result.status).toBe("sent");
+    expect(payoutService.executePayoutWithRetry).toHaveBeenCalledWith(101);
+    expect(db.createAuditLog).toHaveBeenCalledWith(
+      expect.objectContaining({ action: "payout_manual_retry", actorType: "admin" })
+    );
+  });
+
+  it("denies access to regular user", async () => {
+    const caller = appRouter.createCaller(createUserContext());
+    await expect(caller.adminPayments.retryPayout({ payoutId: 101 })).rejects.toThrow();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Story 11 — adminPayments.processScheduledPayouts
+// ---------------------------------------------------------------------------
+describe("adminPayments.processScheduledPayouts", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("processes all scheduled payouts and returns summary", async () => {
+    vi.mocked(db.getScheduledPayouts).mockResolvedValue([
+      { id: 1 } as any,
+      { id: 2 } as any,
+    ]);
+    vi.mocked(payoutService.executePayoutWithRetry)
+      .mockResolvedValueOnce({ status: "sent", transactionId: "tx-1" })
+      .mockResolvedValueOnce({ status: "failed", error: "timeout" });
+
+    const caller = appRouter.createCaller(createAdminContext());
+    const result = await caller.adminPayments.processScheduledPayouts();
+
+    expect(result.total).toBe(2);
+    expect(result.sent).toBe(1);
+    expect(result.failed).toBe(1);
+  });
+
+  it("returns zero summary when no payouts are scheduled", async () => {
+    vi.mocked(db.getScheduledPayouts).mockResolvedValue([]);
+
+    const caller = appRouter.createCaller(createAdminContext());
+    const result = await caller.adminPayments.processScheduledPayouts();
+
+    expect(result.total).toBe(0);
+    expect(result.sent).toBe(0);
+  });
+
+  it("creates batch audit log entry", async () => {
+    vi.mocked(db.getScheduledPayouts).mockResolvedValue([]);
+
+    const caller = appRouter.createCaller(createAdminContext());
+    await caller.adminPayments.processScheduledPayouts();
+
+    expect(db.createAuditLog).toHaveBeenCalledWith(
+      expect.objectContaining({ action: "batch_payouts_processed", actorType: "admin" })
+    );
+  });
+
+  it("denies access to regular user", async () => {
+    const caller = appRouter.createCaller(createUserContext());
+    await expect(caller.adminPayments.processScheduledPayouts()).rejects.toThrow();
   });
 });
