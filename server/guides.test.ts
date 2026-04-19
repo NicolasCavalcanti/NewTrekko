@@ -12,6 +12,8 @@ vi.mock("./db", () => ({
   createSystemEvent: vi.fn(),
   getGuideVerification: vi.fn(),
   savePixKeyData: vi.fn(),
+  getGuideFinancialInfo: vi.fn(),
+  updateGuideFinancialInfo: vi.fn(),
 }));
 
 import * as db from "./db";
@@ -609,5 +611,174 @@ describe("guide.createExpedition", () => {
       startDate: new Date("2025-02-15"),
       capacity: 10,
     })).rejects.toThrow();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Story 5 — guides.getMyFinancialInfo
+// ---------------------------------------------------------------------------
+describe("guides.getMyFinancialInfo", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("returns financial info for guide", async () => {
+    vi.mocked(db.getGuideFinancialInfo).mockResolvedValue({
+      id: 1,
+      guideId: 2,
+      pixKeyType: "email",
+      pixKey: "encrypted_guia@example.com",
+      pixKeyHolderName: "Guide User",
+      pixKeyVerified: 1,
+      paymentEnabled: 1,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    } as any);
+
+    const caller = appRouter.createCaller(createGuideContext());
+    const result = await caller.guides.getMyFinancialInfo();
+
+    expect(result).not.toBeNull();
+    expect(result?.pixKeyType).toBe("email");
+    expect(db.getGuideFinancialInfo).toHaveBeenCalledWith(2);
+  });
+
+  it("returns null when no financial info exists", async () => {
+    vi.mocked(db.getGuideFinancialInfo).mockResolvedValue(undefined);
+
+    const caller = appRouter.createCaller(createGuideContext());
+    const result = await caller.guides.getMyFinancialInfo();
+
+    expect(result).toBeUndefined();
+  });
+
+  it("denies trekker access to financial info", async () => {
+    const caller = appRouter.createCaller(createTrekkerContext());
+
+    await expect(caller.guides.getMyFinancialInfo()).rejects.toThrow("Guide access required");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Story 6 — guides.updatePixKey
+// ---------------------------------------------------------------------------
+describe("guides.updatePixKey", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.mocked(db.updateGuideFinancialInfo).mockResolvedValue(undefined);
+  });
+
+  it("updates Pix key with valid email", async () => {
+    const caller = appRouter.createCaller(createGuideContext());
+
+    const result = await caller.guides.updatePixKey({
+      pixKeyType: "email",
+      pixKey: "novachave@example.com",
+      pixKeyHolderName: "Guide User",
+    });
+
+    expect(result).toEqual({ success: true });
+    expect(db.updateGuideFinancialInfo).toHaveBeenCalledWith(
+      2,
+      expect.objectContaining({
+        pixKeyType: "email",
+        pixKey: "novachave@example.com",
+        pixKeyHolderName: "Guide User",
+      })
+    );
+  });
+
+  it("normalizes email to lowercase before saving", async () => {
+    const caller = appRouter.createCaller(createGuideContext());
+
+    await caller.guides.updatePixKey({
+      pixKeyType: "email",
+      pixKey: "  Nova@Example.COM  ",
+      pixKeyHolderName: "Guide User",
+    });
+
+    expect(db.updateGuideFinancialInfo).toHaveBeenCalledWith(
+      2,
+      expect.objectContaining({ pixKey: "nova@example.com" })
+    );
+  });
+
+  it("normalizes CPF by stripping formatting", async () => {
+    const caller = appRouter.createCaller(createGuideContext());
+
+    await caller.guides.updatePixKey({
+      pixKeyType: "cpf",
+      pixKey: "529.982.247-25",
+      pixKeyHolderName: "Guide User",
+    });
+
+    expect(db.updateGuideFinancialInfo).toHaveBeenCalledWith(
+      2,
+      expect.objectContaining({ pixKey: "52998224725" })
+    );
+  });
+
+  it("rejects invalid CPF key", async () => {
+    const caller = appRouter.createCaller(createGuideContext());
+
+    await expect(
+      caller.guides.updatePixKey({
+        pixKeyType: "cpf",
+        pixKey: "111.111.111-11",
+        pixKeyHolderName: "Guide User",
+      })
+    ).rejects.toThrow();
+  });
+
+  it("rejects invalid email key", async () => {
+    const caller = appRouter.createCaller(createGuideContext());
+
+    await expect(
+      caller.guides.updatePixKey({
+        pixKeyType: "email",
+        pixKey: "not-an-email",
+        pixKeyHolderName: "Guide User",
+      })
+    ).rejects.toThrow("inválido");
+  });
+
+  it("throws NOT_FOUND when no Pix key is registered yet", async () => {
+    vi.mocked(db.updateGuideFinancialInfo).mockRejectedValue(
+      new Error("Nenhuma chave PIX cadastrada. Use o onboarding para cadastrar.")
+    );
+
+    const caller = appRouter.createCaller(createGuideContext());
+
+    await expect(
+      caller.guides.updatePixKey({
+        pixKeyType: "email",
+        pixKey: "guia@example.com",
+        pixKeyHolderName: "Guide User",
+      })
+    ).rejects.toThrow("Nenhuma chave PIX cadastrada");
+  });
+
+  it("denies trekker from updating Pix key", async () => {
+    const caller = appRouter.createCaller(createTrekkerContext());
+
+    await expect(
+      caller.guides.updatePixKey({
+        pixKeyType: "email",
+        pixKey: "trekker@example.com",
+        pixKeyHolderName: "Trekker",
+      })
+    ).rejects.toThrow("Guide access required");
+  });
+
+  it("denies unauthenticated user from updating Pix key", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+
+    await expect(
+      caller.guides.updatePixKey({
+        pixKeyType: "email",
+        pixKey: "anon@example.com",
+        pixKeyHolderName: "Anon",
+      })
+    ).rejects.toThrow();
   });
 });
