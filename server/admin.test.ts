@@ -29,6 +29,8 @@ vi.mock("./db", () => ({
   deleteExpedition: vi.fn().mockResolvedValue(undefined),
   getGuideFinancialInfoDecrypted: vi.fn(),
   getAuditLogsForEntity: vi.fn().mockResolvedValue([]),
+  setGuidePixKeyStatus: vi.fn().mockResolvedValue(undefined),
+  createAuditLog: vi.fn().mockResolvedValue(1),
 }));
 
 type AuthenticatedUser = NonNullable<TrpcContext["user"]>;
@@ -296,5 +298,74 @@ describe("adminPayments.getGuidePixAuditLog", () => {
   it("denies access to regular user", async () => {
     const caller = appRouter.createCaller(createUserContext());
     await expect(caller.adminPayments.getGuidePixAuditLog({ guideId: 5 })).rejects.toThrow();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Story 9 — adminPayments.setGuidePixKeyStatus (state machine)
+// ---------------------------------------------------------------------------
+describe("adminPayments.setGuidePixKeyStatus", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.mocked(db.setGuidePixKeyStatus).mockResolvedValue(undefined);
+  });
+
+  it("allows admin to set status to invalid", async () => {
+    const caller = appRouter.createCaller(createAdminContext());
+    const result = await caller.adminPayments.setGuidePixKeyStatus({
+      guideId: 5,
+      status: "invalid",
+    });
+
+    expect(result).toEqual({ success: true });
+    expect(db.setGuidePixKeyStatus).toHaveBeenCalledWith(5, "invalid");
+    expect(db.createAuditLog).toHaveBeenCalledWith(
+      expect.objectContaining({
+        entityType: "guide_financial_info",
+        entityId: 5,
+        action: "pix_key_status_set_invalid",
+        actorType: "admin",
+        source: "admin_portal",
+      })
+    );
+  });
+
+  it("allows admin to set status to valid", async () => {
+    const caller = appRouter.createCaller(createAdminContext());
+    const result = await caller.adminPayments.setGuidePixKeyStatus({
+      guideId: 5,
+      status: "valid",
+    });
+
+    expect(result).toEqual({ success: true });
+    expect(db.setGuidePixKeyStatus).toHaveBeenCalledWith(5, "valid");
+  });
+
+  it("allows admin to set status to pending", async () => {
+    const caller = appRouter.createCaller(createAdminContext());
+    const result = await caller.adminPayments.setGuidePixKeyStatus({
+      guideId: 5,
+      status: "pending",
+    });
+
+    expect(result).toEqual({ success: true });
+    expect(db.setGuidePixKeyStatus).toHaveBeenCalledWith(5, "pending");
+  });
+
+  it("rejects unknown status values", async () => {
+    const caller = appRouter.createCaller(createAdminContext());
+    await expect(
+      caller.adminPayments.setGuidePixKeyStatus({
+        guideId: 5,
+        status: "unknown" as any,
+      })
+    ).rejects.toThrow();
+  });
+
+  it("denies access to regular user", async () => {
+    const caller = appRouter.createCaller(createUserContext());
+    await expect(
+      caller.adminPayments.setGuidePixKeyStatus({ guideId: 5, status: "invalid" })
+    ).rejects.toThrow();
   });
 });

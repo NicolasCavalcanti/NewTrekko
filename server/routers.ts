@@ -1203,12 +1203,19 @@ export const appRouter = router({
           throw new TRPCError({ code: 'BAD_REQUEST', message: 'Expedição não está disponível para reservas' });
         }
 
-        // Story 4/5: Block payment if guide has no valid Pix key in guide_financial_info
+        // Stories 4/5/9: Block payment if guide has no valid Pix key in guide_financial_info
         const guideFinancialInfo = await db.getGuideFinancialInfo(expedition.guideId);
         if (!guideFinancialInfo?.pixKey || !guideFinancialInfo?.pixKeyType) {
           throw new TRPCError({
             code: 'BAD_REQUEST',
             message: 'Este guia ainda não configurou uma chave PIX. O pagamento não pode ser processado no momento.',
+          });
+        }
+        // Story 9: reject if admin/system has invalidated the key
+        if (guideFinancialInfo.pixKeyStatus === 'invalid') {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'A chave PIX do guia está inválida. O pagamento não pode ser processado no momento.',
           });
         }
 
@@ -1766,6 +1773,26 @@ export const appRouter = router({
       .input(z.object({ guideId: z.number() }))
       .query(async ({ input }) => {
         return await db.getAuditLogsForEntity('guide_financial_info', input.guideId);
+      }),
+
+    // Story 9: Admin-driven state machine transition for Pix key status
+    setGuidePixKeyStatus: adminProcedure
+      .input(z.object({
+        guideId: z.number(),
+        status: z.enum(['pending', 'valid', 'invalid']),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        await db.setGuidePixKeyStatus(input.guideId, input.status);
+        await db.createAuditLog({
+          entityType: 'guide_financial_info',
+          entityId: input.guideId,
+          action: `pix_key_status_set_${input.status}`,
+          newValue: input.status,
+          actorId: ctx.user.id,
+          actorType: 'admin',
+          source: 'admin_portal',
+        });
+        return { success: true };
       }),
   }),
 
