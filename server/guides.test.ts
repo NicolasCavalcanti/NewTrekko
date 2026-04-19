@@ -10,6 +10,8 @@ vi.mock("./db", () => ({
   getExpeditions: vi.fn(),
   createExpedition: vi.fn(),
   createSystemEvent: vi.fn(),
+  getGuideVerification: vi.fn(),
+  savePixKeyData: vi.fn(),
 }));
 
 import * as db from "./db";
@@ -385,6 +387,160 @@ describe("guides.getById", () => {
 
     await expect(caller.guides.getById({ cadasturNumber: "invalid" }))
       .rejects.toThrow("Guide not found");
+  });
+});
+
+describe("guides.savePixKeyOnboarding", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("saves a CPF Pix key successfully", async () => {
+    vi.mocked(db.savePixKeyData).mockResolvedValue(undefined);
+
+    const ctx = createGuideContext();
+    const caller = appRouter.createCaller(ctx);
+
+    const result = await caller.guides.savePixKeyOnboarding({
+      pixKeyType: "cpf",
+      pixKey: "12345678901",
+      pixKeyHolderName: "João Silva",
+    });
+
+    expect(result.success).toBe(true);
+    expect(db.savePixKeyData).toHaveBeenCalledWith(2, {
+      pixKeyType: "cpf",
+      pixKey: "12345678901",
+      pixKeyHolderName: "João Silva",
+    });
+  });
+
+  it("saves an email Pix key successfully", async () => {
+    vi.mocked(db.savePixKeyData).mockResolvedValue(undefined);
+
+    const ctx = createGuideContext();
+    const caller = appRouter.createCaller(ctx);
+
+    const result = await caller.guides.savePixKeyOnboarding({
+      pixKeyType: "email",
+      pixKey: "guia@example.com",
+      pixKeyHolderName: "João Silva",
+    });
+
+    expect(result.success).toBe(true);
+    expect(db.savePixKeyData).toHaveBeenCalledWith(2, {
+      pixKeyType: "email",
+      pixKey: "guia@example.com",
+      pixKeyHolderName: "João Silva",
+    });
+  });
+
+  it("saves a phone Pix key successfully", async () => {
+    vi.mocked(db.savePixKeyData).mockResolvedValue(undefined);
+
+    const ctx = createGuideContext();
+    const caller = appRouter.createCaller(ctx);
+
+    const result = await caller.guides.savePixKeyOnboarding({
+      pixKeyType: "phone",
+      pixKey: "11987654321",
+      pixKeyHolderName: "João Silva",
+    });
+
+    expect(result.success).toBe(true);
+  });
+
+  it("saves a random Pix key successfully", async () => {
+    vi.mocked(db.savePixKeyData).mockResolvedValue(undefined);
+
+    const ctx = createGuideContext();
+    const caller = appRouter.createCaller(ctx);
+
+    const result = await caller.guides.savePixKeyOnboarding({
+      pixKeyType: "random",
+      pixKey: "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      pixKeyHolderName: "João Silva",
+    });
+
+    expect(result.success).toBe(true);
+  });
+
+  it("rejects invalid CPF (wrong digit count)", async () => {
+    const ctx = createGuideContext();
+    const caller = appRouter.createCaller(ctx);
+
+    await expect(
+      caller.guides.savePixKeyOnboarding({
+        pixKeyType: "cpf",
+        pixKey: "123456",
+        pixKeyHolderName: "João Silva",
+      })
+    ).rejects.toThrow("CPF deve ter 11 dígitos");
+  });
+
+  it("rejects invalid CNPJ (wrong digit count)", async () => {
+    const ctx = createGuideContext();
+    const caller = appRouter.createCaller(ctx);
+
+    await expect(
+      caller.guides.savePixKeyOnboarding({
+        pixKeyType: "cnpj",
+        pixKey: "12345678",
+        pixKeyHolderName: "João Silva",
+      })
+    ).rejects.toThrow("CNPJ deve ter 14 dígitos");
+  });
+
+  it("rejects invalid email format", async () => {
+    const ctx = createGuideContext();
+    const caller = appRouter.createCaller(ctx);
+
+    await expect(
+      caller.guides.savePixKeyOnboarding({
+        pixKeyType: "email",
+        pixKey: "not-an-email",
+        pixKeyHolderName: "João Silva",
+      })
+    ).rejects.toThrow("E-mail inválido");
+  });
+
+  it("rejects invalid phone (too few digits)", async () => {
+    const ctx = createGuideContext();
+    const caller = appRouter.createCaller(ctx);
+
+    await expect(
+      caller.guides.savePixKeyOnboarding({
+        pixKeyType: "phone",
+        pixKey: "12345",
+        pixKeyHolderName: "João Silva",
+      })
+    ).rejects.toThrow("Telefone inválido");
+  });
+
+  it("denies trekker from saving Pix key", async () => {
+    const ctx = createTrekkerContext();
+    const caller = appRouter.createCaller(ctx);
+
+    await expect(
+      caller.guides.savePixKeyOnboarding({
+        pixKeyType: "email",
+        pixKey: "trekker@example.com",
+        pixKeyHolderName: "Trekker User",
+      })
+    ).rejects.toThrow("Guide access required");
+  });
+
+  it("denies unauthenticated user from saving Pix key", async () => {
+    const ctx = createPublicContext();
+    const caller = appRouter.createCaller(ctx);
+
+    await expect(
+      caller.guides.savePixKeyOnboarding({
+        pixKeyType: "email",
+        pixKey: "anon@example.com",
+        pixKeyHolderName: "Anon User",
+      })
+    ).rejects.toThrow();
   });
 });
 
