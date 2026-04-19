@@ -13,7 +13,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import { useLocation } from "wouter";
-import { Loader2, User, Shield, CheckCircle, ArrowLeft, ArrowRight, Eye, EyeOff } from "lucide-react";
+import { Loader2, User, Shield, CheckCircle, ArrowLeft, ArrowRight, Eye, EyeOff, Wallet } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface RegisterModalProps {
   open: boolean;
@@ -22,7 +23,7 @@ interface RegisterModalProps {
 }
 
 type UserType = "trekker" | "guide" | null;
-type GuideStep = 1 | 2;
+type GuideStep = 1 | 2 | 3;
 
 export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: RegisterModalProps) {
   const [, navigate] = useLocation();
@@ -55,6 +56,12 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  // Pix key state (step 3)
+  const [pixKeyType, setPixKeyType] = useState<"cpf" | "cnpj" | "email" | "phone" | "random">("cpf");
+  const [pixKey, setPixKey] = useState("");
+  const [pixKeyHolderName, setPixKeyHolderName] = useState("");
+  const [pixKeyError, setPixKeyError] = useState("");
+
   // Validation errors
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -78,13 +85,29 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
     },
   });
 
+  const savePixKeyMutation = trpc.guides.savePixKeyOnboarding.useMutation({
+    onSuccess: () => {
+      toast.success("Chave PIX cadastrada com sucesso!");
+      onOpenChange(false);
+      resetForm();
+      navigate("/perfil");
+    },
+    onError: (error) => {
+      toast.error(error.message || "Erro ao salvar chave PIX");
+    },
+  });
+
   const registerMutation = trpc.auth.register.useMutation({
     onSuccess: async () => {
       toast.success("Conta criada com sucesso!");
       await utils.auth.me.invalidate();
-      onOpenChange(false);
-      resetForm();
-      navigate("/perfil");
+      if (userType === "guide") {
+        setGuideStep(3);
+      } else {
+        onOpenChange(false);
+        resetForm();
+        navigate("/perfil");
+      }
     },
     onError: (error) => {
       if (error.message.includes("E-mail")) {
@@ -110,6 +133,10 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
     setBio("");
     setAcceptedTerms(false);
     setErrors({});
+    setPixKeyType("cpf");
+    setPixKey("");
+    setPixKeyHolderName("");
+    setPixKeyError("");
   };
 
   // Validation functions
@@ -766,6 +793,126 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
     </form>
   );
 
+  // Pix key formatting helpers
+  const formatPixKeyCPF = (v: string) => {
+    const n = v.replace(/\D/g, "").slice(0, 11);
+    return n.replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+  };
+  const formatPixKeyCNPJ = (v: string) => {
+    const n = v.replace(/\D/g, "").slice(0, 14);
+    return n.replace(/(\d{2})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1/$2").replace(/(\d{4})(\d{1,2})$/, "$1-$2");
+  };
+  const formatPixKeyPhone = (v: string) => {
+    const n = v.replace(/\D/g, "").slice(0, 11);
+    return n.replace(/(\d{2})(\d)/, "($1) $2").replace(/(\d{5})(\d{1,4})$/, "$1-$2");
+  };
+
+  const handlePixKeyChange = (value: string) => {
+    setPixKeyError("");
+    if (pixKeyType === "cpf") setPixKey(formatPixKeyCPF(value));
+    else if (pixKeyType === "cnpj") setPixKey(formatPixKeyCNPJ(value));
+    else if (pixKeyType === "phone") setPixKey(formatPixKeyPhone(value));
+    else setPixKey(value);
+  };
+
+  const getPixKeyPlaceholder = () => {
+    switch (pixKeyType) {
+      case "cpf": return "000.000.000-00";
+      case "cnpj": return "00.000.000/0000-00";
+      case "email": return "seu@email.com";
+      case "phone": return "(00) 00000-0000";
+      case "random": return "Chave aleatória (UUID)";
+    }
+  };
+
+  const validateAndSubmitPixKey = () => {
+    if (!pixKey.trim()) { setPixKeyError("Chave PIX é obrigatória"); return; }
+    if (!pixKeyHolderName.trim()) { setPixKeyError("Nome do titular é obrigatório"); return; }
+    const digits = pixKey.replace(/\D/g, "");
+    if (pixKeyType === "cpf" && digits.length !== 11) { setPixKeyError("CPF deve ter 11 dígitos"); return; }
+    if (pixKeyType === "cnpj" && digits.length !== 14) { setPixKeyError("CNPJ deve ter 14 dígitos"); return; }
+    if (pixKeyType === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(pixKey)) { setPixKeyError("E-mail inválido"); return; }
+    if (pixKeyType === "phone" && (digits.length < 10 || digits.length > 11)) { setPixKeyError("Telefone deve ter 10 ou 11 dígitos"); return; }
+    savePixKeyMutation.mutate({ pixKeyType, pixKey, pixKeyHolderName });
+  };
+
+  const handleSkipPixKey = () => {
+    onOpenChange(false);
+    resetForm();
+    navigate("/perfil");
+  };
+
+  // Render Guide Step 3 - Pix key collection
+  const renderGuideStep3 = () => (
+    <div className="space-y-4 w-full overflow-visible">
+      <p className="text-sm text-muted-foreground">
+        Configure sua chave PIX para receber os pagamentos das expedições. Você pode atualizar isso depois no seu perfil.
+      </p>
+
+      <div className="space-y-2">
+        <Label>Tipo de Chave PIX</Label>
+        <Select
+          value={pixKeyType}
+          onValueChange={(v: typeof pixKeyType) => { setPixKeyType(v); setPixKey(""); setPixKeyError(""); }}
+        >
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="cpf">CPF</SelectItem>
+            <SelectItem value="cnpj">CNPJ</SelectItem>
+            <SelectItem value="email">E-mail</SelectItem>
+            <SelectItem value="phone">Telefone</SelectItem>
+            <SelectItem value="random">Chave Aleatória</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="space-y-2">
+        <Label>Chave PIX</Label>
+        <Input
+          value={pixKey}
+          onChange={(e) => handlePixKeyChange(e.target.value)}
+          placeholder={getPixKeyPlaceholder()}
+          className={pixKeyError ? "border-destructive" : ""}
+        />
+        {pixKeyError && <p className="text-sm text-destructive">{pixKeyError}</p>}
+      </div>
+
+      <div className="space-y-2">
+        <Label>Nome do Titular da Chave PIX</Label>
+        <Input
+          value={pixKeyHolderName}
+          onChange={(e) => { setPixKeyHolderName(e.target.value); setPixKeyError(""); }}
+          placeholder="Nome completo conforme cadastro no banco"
+        />
+      </div>
+
+      <div className="flex gap-3 pt-2">
+        <Button
+          type="button"
+          onClick={validateAndSubmitPixKey}
+          disabled={savePixKeyMutation.isPending}
+          className="flex-1"
+        >
+          {savePixKeyMutation.isPending ? (
+            <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Salvando...</>
+          ) : (
+            <><Wallet className="w-4 h-4 mr-2" />Salvar Chave PIX</>
+          )}
+        </Button>
+      </div>
+
+      <button
+        type="button"
+        onClick={handleSkipPixKey}
+        className="w-full text-sm text-muted-foreground hover:text-foreground underline-offset-4 hover:underline"
+      >
+        Configurar depois
+      </button>
+    </div>
+  );
+
   // Determine what to render
   const renderContent = () => {
     if (!userType) {
@@ -777,10 +924,9 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
     }
 
     if (userType === "guide") {
-      if (guideStep === 1) {
-        return renderGuideStep1();
-      }
-      return renderGuideStep2();
+      if (guideStep === 1) return renderGuideStep1();
+      if (guideStep === 2) return renderGuideStep2();
+      return renderGuideStep3();
     }
 
     return null;
@@ -792,14 +938,18 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
     if (userType === "trekker") return "Cadastro de Trekker";
     if (userType === "guide") {
       if (guideStep === 1) return "Validação CADASTUR";
-      return "Dados da conta";
+      if (guideStep === 2) return "Dados da conta";
+      return "Chave PIX para Recebimento";
     }
     return "Criar conta";
   };
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => {
-      if (!isOpen) resetForm();
+      if (!isOpen) {
+        if (guideStep === 3) navigate("/perfil");
+        resetForm();
+      }
       onOpenChange(isOpen);
     }}>
       <DialogContent className="sm:max-w-md">
