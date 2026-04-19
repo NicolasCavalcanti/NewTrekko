@@ -3,19 +3,23 @@ import { useParams, Link } from "wouter";
 import { Helmet } from "react-helmet-async";
 import { trpc } from "@/lib/trpc";
 import { useBlogPostBySlug, useBlogRelated } from "@/hooks/useBlog";
+import { useAuthorBySlug } from "@/hooks/useAuthors";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
 import { AdUnit, AD_SLOTS } from "@/components/AdUnit";
-import { 
-  ArrowLeft, 
-  Clock, 
-  Calendar, 
-  Share2, 
+import {
+  ArrowLeft,
+  Clock,
+  Calendar,
+  Share2,
   Bookmark,
   ChevronRight,
   Mountain,
-  User
+  User,
+  Award,
+  MapPin
 } from "lucide-react";
 
 
@@ -30,9 +34,9 @@ const CATEGORY_LABELS: Record<string, string> = {
 
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
-  
 
   const { data: post, isLoading, error } = useBlogPostBySlug(slug || "");
+  const { data: author } = useAuthorBySlug(post?.authorSlug ?? "");
 
   const { data: relatedPosts } = useBlogRelated(post?.id, post?.category ?? undefined);
 
@@ -196,6 +200,45 @@ export default function BlogPost() {
   const metaTitle = `${post.title} — Trekko`;
   const metaDescription = post.excerpt || post.title;
   const ogImage = post.imageUrl || "https://trekko.com.br/og-image.jpg";
+  const authorUrl = author
+    ? `https://trekko.com.br/autor/${author.slug}`
+    : undefined;
+
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: metaDescription,
+    image: ogImage,
+    url: canonicalUrl,
+    datePublished: post.publishedAt
+      ? new Date(post.publishedAt).toISOString()
+      : undefined,
+    dateModified: post.updatedAt
+      ? new Date(post.updatedAt).toISOString()
+      : undefined,
+    publisher: {
+      "@type": "Organization",
+      name: "Trekko",
+      url: "https://trekko.com.br",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://trekko.com.br/android-chrome-512x512.png",
+      },
+    },
+    author: author
+      ? {
+          "@type": "Person",
+          name: author.name,
+          url: authorUrl,
+          description: author.shortBio,
+          jobTitle: author.title,
+          ...(author.photoUrl
+            ? { image: author.photoUrl }
+            : {}),
+        }
+      : { "@type": "Organization", name: "Trekko" },
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -212,10 +255,14 @@ export default function BlogPost() {
         <meta property="og:locale" content="pt_BR" />
         {post.publishedAt && <meta property="article:published_time" content={new Date(post.publishedAt).toISOString()} />}
         {post.updatedAt && <meta property="article:modified_time" content={new Date(post.updatedAt).toISOString()} />}
+        {author && <meta property="article:author" content={authorUrl} />}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={metaTitle} />
         <meta name="twitter:description" content={metaDescription} />
         <meta name="twitter:image" content={ogImage} />
+        <script type="application/ld+json">
+          {JSON.stringify(articleSchema)}
+        </script>
       </Helmet>
       {/* Back Button */}
       <div className="container py-4">
@@ -265,12 +312,37 @@ export default function BlogPost() {
             </p>
           )}
 
-          {/* Meta Info */}
+          {/* Author Byline */}
           <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-8 pb-8 border-b">
-            <div className="flex items-center gap-2">
-              <User className="h-4 w-4" />
-              <span>{post.authorName || "TREKKO"}</span>
-            </div>
+            {author ? (
+              <Link href={`/autor/${author.slug}`} className="flex items-center gap-2 hover:text-foreground transition-colors group">
+                {author.photoUrl ? (
+                  <img
+                    src={author.photoUrl}
+                    alt={author.name}
+                    className="w-8 h-8 rounded-full object-cover ring-2 ring-green-100"
+                  />
+                ) : (
+                  <span className="w-8 h-8 rounded-full bg-green-700 text-white text-xs font-bold flex items-center justify-center shrink-0">
+                    {author.name.split(" ").map((n) => n[0]).slice(0, 2).join("")}
+                  </span>
+                )}
+                <div>
+                  <span className="font-medium text-foreground group-hover:text-green-700 transition-colors block leading-tight">
+                    {author.name}
+                  </span>
+                  {author.cadasturNumber && (
+                    <span className="text-xs text-green-700 leading-tight block">CADASTUR {author.cadasturNumber}</span>
+                  )}
+                </div>
+              </Link>
+            ) : (
+              <div className="flex items-center gap-2">
+                <User className="h-4 w-4" />
+                <span>{post.authorName || "TREKKO"}</span>
+              </div>
+            )}
+
             {publishedDate && (
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
@@ -281,7 +353,7 @@ export default function BlogPost() {
               <Clock className="h-4 w-4" />
               <span>{post.readingTime || 5} min de leitura</span>
             </div>
-            
+
             {/* Actions */}
             <div className="flex gap-2 ml-auto">
               <Button variant="outline" size="sm" onClick={handleShare}>
@@ -318,6 +390,62 @@ export default function BlogPost() {
                 ))}
               </div>
             </div>
+          )}
+
+          {/* Author Bio Card */}
+          {author && (
+            <Card className="mt-8 border-green-100">
+              <CardContent className="p-6">
+                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-4">
+                  Sobre o autor
+                </h3>
+                <div className="flex gap-4">
+                  {author.photoUrl ? (
+                    <img
+                      src={author.photoUrl}
+                      alt={author.name}
+                      className="w-16 h-16 rounded-full object-cover shrink-0 ring-2 ring-green-100"
+                    />
+                  ) : (
+                    <span className="w-16 h-16 rounded-full bg-green-700 text-white text-xl font-bold flex items-center justify-center shrink-0">
+                      {author.name.split(" ").map((n) => n[0]).slice(0, 2).join("")}
+                    </span>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <Link href={`/autor/${author.slug}`}>
+                      <h4 className="font-bold text-lg hover:text-green-700 transition-colors">
+                        {author.name}
+                      </h4>
+                    </Link>
+                    <p className="text-sm text-green-700 font-medium mb-1">{author.title}</p>
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {author.cadasturNumber && (
+                        <Badge variant="outline" className="text-xs border-green-300 text-green-700 gap-1">
+                          <Award className="h-3 w-3" />
+                          CADASTUR {author.cadasturNumber}
+                        </Badge>
+                      )}
+                      <Badge variant="outline" className="text-xs border-slate-200 text-muted-foreground gap-1">
+                        <MapPin className="h-3 w-3" />
+                        {author.location}
+                      </Badge>
+                      <Badge variant="outline" className="text-xs border-slate-200 text-muted-foreground">
+                        {author.yearsExperience} anos de experiência
+                      </Badge>
+                    </div>
+                    <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+                      {author.shortBio}
+                    </p>
+                    <Link href={`/autor/${author.slug}`}>
+                      <Button variant="outline" size="sm" className="border-green-600 text-green-700 hover:bg-green-50 text-xs">
+                        Ver perfil completo
+                        <ChevronRight className="h-3 w-3 ml-1" />
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           )}
 
           {/* CTA Box */}

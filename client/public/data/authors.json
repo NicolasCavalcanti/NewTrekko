@@ -1,0 +1,56 @@
+[
+  {
+    "slug": "ana-beatriz-soares",
+    "name": "Ana Beatriz Soares",
+    "title": "Guia de Turismo certificada CADASTUR • Especialista em Ecoturismo",
+    "shortBio": "Guia CADASTUR com 12 anos percorrendo trilhas do Cerrado e Mata Atlântica. Formada em Turismo pela UFBA e pós-graduada em Gestão Ambiental.",
+    "bio": "Ana Beatriz Soares é guia de turismo certificada pelo CADASTUR (nº 015432-BA) com mais de 12 anos de experiência em trilhas no Brasil. Formada em Turismo pela Universidade Federal da Bahia e pós-graduada em Gestão Ambiental pela PUC-MG, ela já percorreu mais de 180 trilhas em biomas como Cerrado, Mata Atlântica e Caatinga.\n\nPioneira na condução de mulheres em trekking de longo curso no Nordeste, Ana ministra cursos de primeiros socorros em trilhas e é colaboradora do Grupo de Trabalho de Ecoturismo da SETUR-BA. Suas análises de destinos combinam rigor técnico e olhar humano sobre cada paisagem percorrida.",
+    "cadasturNumber": "015432-BA",
+    "specialty": ["Cerrado", "Mata Atlântica", "Caatinga", "Trilhas de longo curso"],
+    "yearsExperience": 12,
+    "trailsCount": 180,
+    "location": "Salvador, BA",
+    "photoUrl": null,
+    "social": {
+      "instagram": null,
+      "website": null
+    },
+    "postIds": [1, 5]
+  },
+  {
+    "slug": "rafael-mendes",
+    "name": "Rafael Mendes",
+    "title": "Jornalista Outdoor • Fotógrafo de Natureza",
+    "shortBio": "Jornalista outdoor com 8 anos cobrindo expedições em regiões remotas do Brasil. Colaborador de publicações especializadas em aventura e natureza.",
+    "bio": "Rafael Mendes é jornalista e fotógrafo especializado em turismo outdoor e expedições de longo curso. Com passagens por Monte Roraima, Pico da Neblina e Travessia da Serra Fina, Rafael já cobriu mais de 95 trilhas em 11 estados brasileiros ao longo de 8 anos de carreira.\n\nColaborador das revistas Mochileiro Brasileiro e Outdoor Life Brasil, ele combina narrativa jornalística com fotografia de natureza para documentar ecossistemas ameaçados e rotas ainda pouco conhecidas. É formado em Jornalismo pela UFRJ e certificado em Wilderness First Aid pela NOLS Brasil.",
+    "cadasturNumber": null,
+    "specialty": ["Alta Montanha", "Expedições Remotas", "Fotografia de Natureza", "Amazônia"],
+    "yearsExperience": 8,
+    "trailsCount": 95,
+    "location": "Rio de Janeiro, RJ",
+    "photoUrl": null,
+    "social": {
+      "instagram": null,
+      "website": null
+    },
+    "postIds": [2, 6]
+  },
+  {
+    "slug": "carla-monteiro",
+    "name": "Carla Monteiro",
+    "title": "Educadora Ambiental • Instrutora de Segurança em Trilhas",
+    "shortBio": "Bióloga e educadora ambiental com 6 anos treinando trilheiros em segurança e equipamentos. Instrutora de primeiros socorros em ambientes remotos.",
+    "bio": "Carla Monteiro é bióloga formada pela Unicamp com especialização em Educação Ambiental e certificação internacional de Wilderness First Responder (WFR). Há 6 anos ela dedica sua carreira a ensinar trilheiros sobre segurança em ambientes remotos, escolha e manutenção de equipamentos, e mínimo impacto ambiental.\n\nAutora do guia digital 'Mochila Segura', adotado por mais de 40 grupos de trekking no Brasil, Carla também ministra oficinas de preparação física para longos percursos. Sua abordagem une rigor científico à linguagem acessível para trilheiros de todos os níveis.",
+    "cadasturNumber": null,
+    "specialty": ["Equipamentos", "Segurança em Trilhas", "Educação Ambiental", "Mínimo Impacto"],
+    "yearsExperience": 6,
+    "trailsCount": 62,
+    "location": "Campinas, SP",
+    "photoUrl": null,
+    "social": {
+      "instagram": null,
+      "website": null
+    },
+    "postIds": [3, 4]
+  }
+]
