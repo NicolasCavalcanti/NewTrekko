@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi, beforeEach } from "vitest";
 import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
 
@@ -27,6 +27,8 @@ vi.mock("./db", () => ({
   getAllExpeditions: vi.fn().mockResolvedValue({ expeditions: [], total: 0 }),
   updateExpedition: vi.fn().mockResolvedValue(undefined),
   deleteExpedition: vi.fn().mockResolvedValue(undefined),
+  getGuideFinancialInfoDecrypted: vi.fn(),
+  getAuditLogsForEntity: vi.fn().mockResolvedValue([]),
 }));
 
 type AuthenticatedUser = NonNullable<TrpcContext["user"]>;
@@ -182,5 +184,117 @@ describe("admin.expeditions", () => {
 
     expect(result).toHaveProperty("expeditions");
     expect(result).toHaveProperty("total");
+  });
+});
+
+import * as db from "./db";
+
+// ---------------------------------------------------------------------------
+// Story 8 — adminPayments.getGuidePixInfo (masked Pix key)
+// ---------------------------------------------------------------------------
+describe("adminPayments.getGuidePixInfo", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("returns masked Pix key for email type", async () => {
+    vi.mocked(db.getGuideFinancialInfoDecrypted).mockResolvedValue({
+      id: 1,
+      guideId: 5,
+      pixKeyType: "email",
+      pixKey: "guia@example.com",
+      pixKeyHolderName: "Guia Teste",
+      pixKeyVerified: 1,
+      paymentEnabled: 1,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    } as any);
+
+    const caller = appRouter.createCaller(createAdminContext());
+    const result = await caller.adminPayments.getGuidePixInfo({ guideId: 5 });
+
+    expect(result).not.toBeNull();
+    expect(result!.pixKey).toBe("****@example.com");
+    expect(result!.pixKeyHolderName).toBe("Guia Teste");
+  });
+
+  it("returns null when guide has no financial info", async () => {
+    vi.mocked(db.getGuideFinancialInfoDecrypted).mockResolvedValue(undefined);
+
+    const caller = appRouter.createCaller(createAdminContext());
+    const result = await caller.adminPayments.getGuidePixInfo({ guideId: 99 });
+
+    expect(result).toBeNull();
+  });
+
+  it("masks CPF key correctly", async () => {
+    vi.mocked(db.getGuideFinancialInfoDecrypted).mockResolvedValue({
+      id: 2,
+      guideId: 5,
+      pixKeyType: "cpf",
+      pixKey: "52998224725",
+      pixKeyHolderName: "João",
+      pixKeyVerified: 1,
+      paymentEnabled: 1,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    } as any);
+
+    const caller = appRouter.createCaller(createAdminContext());
+    const result = await caller.adminPayments.getGuidePixInfo({ guideId: 5 });
+
+    expect(result!.pixKey).toBe("***.***.***-25");
+  });
+
+  it("denies access to regular user", async () => {
+    const caller = appRouter.createCaller(createUserContext());
+    await expect(caller.adminPayments.getGuidePixInfo({ guideId: 5 })).rejects.toThrow();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Story 7 — adminPayments.getGuidePixAuditLog
+// ---------------------------------------------------------------------------
+describe("adminPayments.getGuidePixAuditLog", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("returns audit log entries for a guide", async () => {
+    vi.mocked(db.getAuditLogsForEntity).mockResolvedValue([
+      {
+        id: 1,
+        entityType: "guide_financial_info",
+        entityId: 5,
+        action: "pix_key_created",
+        previousValue: null,
+        newValue: JSON.stringify({ type: "email", key: "****@example.com" }),
+        actorId: 5,
+        actorType: "guide",
+        source: "onboarding",
+        createdAt: new Date("2026-01-01"),
+      } as any,
+    ]);
+
+    const caller = appRouter.createCaller(createAdminContext());
+    const result = await caller.adminPayments.getGuidePixAuditLog({ guideId: 5 });
+
+    expect(result).toHaveLength(1);
+    expect(result[0].action).toBe("pix_key_created");
+    expect(db.getAuditLogsForEntity).toHaveBeenCalledWith("guide_financial_info", 5);
+  });
+
+  it("returns empty array when no audit entries exist", async () => {
+    vi.mocked(db.getAuditLogsForEntity).mockResolvedValue([]);
+
+    const caller = appRouter.createCaller(createAdminContext());
+    const result = await caller.adminPayments.getGuidePixAuditLog({ guideId: 99 });
+
+    expect(result).toHaveLength(0);
+  });
+
+  it("denies access to regular user", async () => {
+    const caller = appRouter.createCaller(createUserContext());
+    await expect(caller.adminPayments.getGuidePixAuditLog({ guideId: 5 })).rejects.toThrow();
   });
 });

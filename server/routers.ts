@@ -9,7 +9,7 @@ import { storagePut } from "./storage";
 import { nanoid } from "nanoid";
 import { searchWikiloc } from "./lib/wikiloc-search";
 import { MercadoPagoConfig, Preference, Payment } from "mercadopago";
-import { validatePixKey, normalizePixKey } from "./lib/pix-validation";
+import { validatePixKey, normalizePixKey, maskPixKey } from "./lib/pix-validation";
 
 // Helper function to add business days (excluding weekends)
 function addBusinessDays(date: Date, days: number): Date {
@@ -613,10 +613,24 @@ export const appRouter = router({
           throw new TRPCError({ code: 'BAD_REQUEST', message: result.error! });
         }
 
+        const normalizedKey = normalizePixKey(input.pixKeyType, input.pixKey);
+
         await db.savePixKeyData(ctx.user.id, {
           pixKeyType: input.pixKeyType,
-          pixKey: normalizePixKey(input.pixKeyType, input.pixKey),
+          pixKey: normalizedKey,
           pixKeyHolderName: input.pixKeyHolderName,
+        });
+
+        // Story 7: audit log for Pix key creation
+        await db.createAuditLog({
+          entityType: 'guide_financial_info',
+          entityId: ctx.user.id,
+          action: 'pix_key_created',
+          previousValue: null,
+          newValue: JSON.stringify({ type: input.pixKeyType, key: maskPixKey(input.pixKeyType, normalizedKey) }),
+          actorId: ctx.user.id,
+          actorType: 'guide',
+          source: 'onboarding',
         });
 
         return { success: true };
@@ -627,7 +641,7 @@ export const appRouter = router({
       return await db.getGuideFinancialInfo(ctx.user.id);
     }),
 
-    // Update Pix key — requires existing record (Story 6: PATCH semantics)
+    // Update Pix key — requires existing record (Story 6/7: PATCH + audit)
     updatePixKey: guideProcedure
       .input(z.object({
         pixKeyType: z.enum(['cpf', 'cnpj', 'email', 'phone', 'random']),
@@ -640,10 +654,15 @@ export const appRouter = router({
           throw new TRPCError({ code: 'BAD_REQUEST', message: validation.error! });
         }
 
+        // Story 7: fetch old record before update for audit trail
+        const oldRecord = await db.getGuideFinancialInfoDecrypted(ctx.user.id);
+
+        const normalizedKey = normalizePixKey(input.pixKeyType, input.pixKey);
+
         try {
           await db.updateGuideFinancialInfo(ctx.user.id, {
             pixKeyType: input.pixKeyType,
-            pixKey: normalizePixKey(input.pixKeyType, input.pixKey),
+            pixKey: normalizedKey,
             pixKeyHolderName: input.pixKeyHolderName,
           });
         } catch (err: any) {
@@ -652,6 +671,20 @@ export const appRouter = router({
           }
           throw err;
         }
+
+        // Story 7: audit log for Pix key update
+        await db.createAuditLog({
+          entityType: 'guide_financial_info',
+          entityId: ctx.user.id,
+          action: 'pix_key_updated',
+          previousValue: oldRecord?.pixKeyType
+            ? JSON.stringify({ type: oldRecord.pixKeyType, key: maskPixKey(oldRecord.pixKeyType, oldRecord.pixKey ?? '') })
+            : null,
+          newValue: JSON.stringify({ type: input.pixKeyType, key: maskPixKey(input.pixKeyType, normalizedKey) }),
+          actorId: ctx.user.id,
+          actorType: 'guide',
+          source: 'guide_portal',
+        });
 
         return { success: true };
       }),
@@ -1713,6 +1746,27 @@ export const appRouter = router({
     getSettings: adminProcedure.query(async () => {
       return await db.getAllPlatformSettings();
     }),
+
+    // Story 8: Return guide Pix info with key masked (LGPD compliance)
+    getGuidePixInfo: adminProcedure
+      .input(z.object({ guideId: z.number() }))
+      .query(async ({ input }) => {
+        const info = await db.getGuideFinancialInfoDecrypted(input.guideId);
+        if (!info) return null;
+        return {
+          ...info,
+          pixKey: (info.pixKeyType && info.pixKey)
+            ? maskPixKey(info.pixKeyType, info.pixKey)
+            : null,
+        };
+      }),
+
+    // Story 7: Audit trail for a guide's Pix key changes
+    getGuidePixAuditLog: adminProcedure
+      .input(z.object({ guideId: z.number() }))
+      .query(async ({ input }) => {
+        return await db.getAuditLogsForEntity('guide_financial_info', input.guideId);
+      }),
   }),
 
   // Reviews for trails and guides

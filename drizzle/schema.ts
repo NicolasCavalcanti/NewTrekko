@@ -567,7 +567,7 @@ export type InsertPayout = typeof payouts.$inferInsert;
 // ---------------------------------------------------------------------------
 export const paymentAuditLog = mysqlTable("payment_audit_log", {
   id: int("id").autoincrement().primaryKey(),
-  entityType: mysqlEnum("entityType", ["reservation", "payment", "payout", "guide_verification"]).notNull(),
+  entityType: mysqlEnum("entityType", ["reservation", "payment", "payout", "guide_verification", "guide_financial_info"]).notNull(),
   entityId: int("entityId").notNull(),
   action: varchar("action", { length: 64 }).notNull(),
   previousValue: text("previousValue"),
