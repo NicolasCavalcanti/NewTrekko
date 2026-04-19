@@ -401,16 +401,17 @@ describe("guides.savePixKeyOnboarding", () => {
     const ctx = createGuideContext();
     const caller = appRouter.createCaller(ctx);
 
+    // 52998224725 is a well-known valid CPF (passes mod-11 check digits)
     const result = await caller.guides.savePixKeyOnboarding({
       pixKeyType: "cpf",
-      pixKey: "12345678901",
+      pixKey: "52998224725",
       pixKeyHolderName: "João Silva",
     });
 
     expect(result.success).toBe(true);
     expect(db.savePixKeyData).toHaveBeenCalledWith(2, {
       pixKeyType: "cpf",
-      pixKey: "12345678901",
+      pixKey: "52998224725",
       pixKeyHolderName: "João Silva",
     });
   });
@@ -478,6 +479,20 @@ describe("guides.savePixKeyOnboarding", () => {
     ).rejects.toThrow("CPF deve ter 11 dígitos");
   });
 
+  it("rejects CPF that fails check-digit algorithm", async () => {
+    const ctx = createGuideContext();
+    const caller = appRouter.createCaller(ctx);
+
+    await expect(
+      caller.guides.savePixKeyOnboarding({
+        pixKeyType: "cpf",
+        // 11 digits but invalid check digits
+        pixKey: "52998224700",
+        pixKeyHolderName: "João Silva",
+      })
+    ).rejects.toThrow("CPF inválido");
+  });
+
   it("rejects invalid CNPJ (wrong digit count)", async () => {
     const ctx = createGuideContext();
     const caller = appRouter.createCaller(ctx);
@@ -514,7 +529,7 @@ describe("guides.savePixKeyOnboarding", () => {
         pixKey: "12345",
         pixKeyHolderName: "João Silva",
       })
-    ).rejects.toThrow("Telefone inválido");
+    ).rejects.toThrow("dígitos");
   });
 
   it("denies trekker from saving Pix key", async () => {
