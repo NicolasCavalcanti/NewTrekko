@@ -25,6 +25,7 @@ export type StaticBlogPost = {
   images: string[] | null;
   authorId: number | null;
   authorName: string | null;
+  authorSlug: string | null;
   readingTime: number | null;
   relatedTrailIds: number[] | null;
   tags: string[] | null;
@@ -57,6 +58,13 @@ function useAllStaticPosts() {
     enabled: STATIC_MODE,
     staleTime: Infinity,
   });
+}
+
+/** Public export for pages that need all published posts (e.g. author profile). */
+export function useAllStaticPostsPublic() {
+  const query = useAllStaticPosts();
+  const published = query.data?.filter((p) => p.status === 'published') ?? undefined;
+  return { data: published, isLoading: query.isLoading };
 }
 
 export function useBlogList(params: {

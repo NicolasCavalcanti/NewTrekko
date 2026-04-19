@@ -8,12 +8,21 @@
     "excerpt": "30 km de pura Mata Atlântica, picos rochosos e o Dedo de Deus no horizonte. Confira o guia completo para a trilha mais clássica do Brasil.",
     "category": "trilhas-destinos",
     "imageUrl": "/trails/bCKTbP7YuBYO.jpg",
-    "images": ["/trails/bCKTbP7YuBYO.jpg"],
+    "images": [
+      "/trails/bCKTbP7YuBYO.jpg"
+    ],
     "authorId": null,
-    "authorName": "TREKKO",
+    "authorName": "Ana Beatriz Soares",
     "readingTime": 8,
-    "relatedTrailIds": [2],
-    "tags": ["RJ", "mata-atlantica", "travessia", "serra-dos-orgaos"],
+    "relatedTrailIds": [
+      2
+    ],
+    "tags": [
+      "RJ",
+      "mata-atlantica",
+      "travessia",
+      "serra-dos-orgaos"
+    ],
     "metaTitle": "Travessia Petrópolis x Teresópolis: Guia Completo 2026 | Trekko",
     "metaDescription": "Tudo sobre a travessia mais clássica do Brasil: percurso, abrigos, dificuldades, melhor época e dicas essenciais para os 30 km pela Serra dos Órgãos.",
     "featured": 1,
@@ -21,7 +30,8 @@
     "status": "published",
     "publishedAt": "2026-01-10T10:00:00.000Z",
     "createdAt": "2026-01-10T10:00:00.000Z",
-    "updatedAt": "2026-01-10T10:00:00.000Z"
+    "updatedAt": "2026-01-10T10:00:00.000Z",
+    "authorSlug": "ana-beatriz-soares"
   },
   {
     "id": 2,
@@ -32,12 +42,21 @@
     "excerpt": "Um tepui de 2 bilhões de anos na tríplice fronteira, com piscinas naturais, cristais de quartzo e paisagens que parecem de outro planeta. Guia completo para o Monte Roraima.",
     "category": "trilhas-destinos",
     "imageUrl": "/trails/x3cCqIWOMgkN.jpg",
-    "images": ["/trails/x3cCqIWOMgkN.jpg"],
+    "images": [
+      "/trails/x3cCqIWOMgkN.jpg"
+    ],
     "authorId": null,
-    "authorName": "TREKKO",
+    "authorName": "Rafael Mendes",
     "readingTime": 9,
-    "relatedTrailIds": [1],
-    "tags": ["RR", "roraima", "tepui", "especialista"],
+    "relatedTrailIds": [
+      1
+    ],
+    "tags": [
+      "RR",
+      "roraima",
+      "tepui",
+      "especialista"
+    ],
     "metaTitle": "Monte Roraima: Guia Completo para Subir o Tepui | Trekko",
     "metaDescription": "Como chegar, o que levar e o que esperar no Monte Roraima. Guia completo para conquistar a montanha mais antiga do planeta na tríplice fronteira.",
     "featured": 1,
@@ -45,7 +64,8 @@
     "status": "published",
     "publishedAt": "2026-01-20T10:00:00.000Z",
     "createdAt": "2026-01-20T10:00:00.000Z",
-    "updatedAt": "2026-01-20T10:00:00.000Z"
+    "updatedAt": "2026-01-20T10:00:00.000Z",
+    "authorSlug": "rafael-mendes"
   },
   {
     "id": 3,
@@ -56,12 +76,18 @@
     "excerpt": "A lista que todo trilheiro deveria conhecer — 10 itens essenciais que nunca devem ficar de fora da mochila, do iniciante ao expert.",
     "category": "equipamentos",
     "imageUrl": "/trails/HIVdPoGFbdU7.jpg",
-    "images": ["/trails/HIVdPoGFbdU7.jpg"],
+    "images": [
+      "/trails/HIVdPoGFbdU7.jpg"
+    ],
     "authorId": null,
-    "authorName": "TREKKO",
+    "authorName": "Carla Monteiro",
     "readingTime": 6,
     "relatedTrailIds": [],
-    "tags": ["equipamentos", "seguranca", "iniciante"],
+    "tags": [
+      "equipamentos",
+      "seguranca",
+      "iniciante"
+    ],
     "metaTitle": "10 Itens Essenciais para Qualquer Trilha | Trekko",
     "metaDescription": "Lista completa dos 10 itens que nunca devem faltar na mochila de um trilheiro, adaptada para a realidade das trilhas brasileiras.",
     "featured": 0,
@@ -69,7 +95,8 @@
     "status": "published",
     "publishedAt": "2026-02-01T10:00:00.000Z",
     "createdAt": "2026-02-01T10:00:00.000Z",
-    "updatedAt": "2026-02-01T10:00:00.000Z"
+    "updatedAt": "2026-02-01T10:00:00.000Z",
+    "authorSlug": "carla-monteiro"
   },
   {
     "id": 4,
@@ -80,12 +107,19 @@
     "excerpt": "Guia CADASTUR não é só quem conhece o caminho — é um profissional formado que garante segurança, enriquece a experiência e apoia a economia local.",
     "category": "guias-praticos",
     "imageUrl": "/trails/GrKqtaH9rXei.jpg",
-    "images": ["/trails/GrKqtaH9rXei.jpg"],
+    "images": [
+      "/trails/GrKqtaH9rXei.jpg"
+    ],
     "authorId": null,
-    "authorName": "TREKKO",
+    "authorName": "Carla Monteiro",
     "readingTime": 5,
     "relatedTrailIds": [],
-    "tags": ["cadastur", "guia", "seguranca", "turismo"],
+    "tags": [
+      "cadastur",
+      "guia",
+      "seguranca",
+      "turismo"
+    ],
     "metaTitle": "Por Que Contratar um Guia CADASTUR | Trekko",
     "metaDescription": "Entenda por que guias certificados pelo CADASTUR são essenciais para sua segurança, para enriquecer a experiência e para apoiar a economia local.",
     "featured": 0,
@@ -93,7 +127,8 @@
     "status": "published",
     "publishedAt": "2026-02-10T10:00:00.000Z",
     "createdAt": "2026-02-10T10:00:00.000Z",
-    "updatedAt": "2026-02-10T10:00:00.000Z"
+    "updatedAt": "2026-02-10T10:00:00.000Z",
+    "authorSlug": "carla-monteiro"
   },
   {
     "id": 5,
@@ -104,12 +139,21 @@
     "excerpt": "O Cerrado mais preservado do Brasil, com cachoeiras, formações rochosas lunares e uma biodiversidade que o mundo ainda está descobrindo.",
     "category": "conservacao-ambiental",
     "imageUrl": "/trails/Y8KJdb96pKOX.jpg",
-    "images": ["/trails/Y8KJdb96pKOX.jpg"],
+    "images": [
+      "/trails/Y8KJdb96pKOX.jpg"
+    ],
     "authorId": null,
-    "authorName": "TREKKO",
+    "authorName": "Ana Beatriz Soares",
     "readingTime": 7,
-    "relatedTrailIds": [3],
-    "tags": ["GO", "cerrado", "conservacao", "chapada-dos-veadeiros"],
+    "relatedTrailIds": [
+      3
+    ],
+    "tags": [
+      "GO",
+      "cerrado",
+      "conservacao",
+      "chapada-dos-veadeiros"
+    ],
     "metaTitle": "Chapada dos Veadeiros: Guia Completo do Cerrado Sagrado | Trekko",
     "metaDescription": "Conheça a Chapada dos Veadeiros, o coração preservado do Cerrado brasileiro — trilhas, cachoeiras, fauna e como visitar com responsabilidade.",
     "featured": 1,
@@ -117,7 +161,8 @@
     "status": "published",
     "publishedAt": "2026-02-20T10:00:00.000Z",
     "createdAt": "2026-02-20T10:00:00.000Z",
-    "updatedAt": "2026-02-20T10:00:00.000Z"
+    "updatedAt": "2026-02-20T10:00:00.000Z",
+    "authorSlug": "ana-beatriz-soares"
   },
   {
     "id": 6,
@@ -128,12 +173,22 @@
     "excerpt": "Do destino certo ao peso da mochila: checklist completo para quem quer planejar uma trilha de longo curso com segurança e sem surpresas.",
     "category": "planejamento-seguranca",
     "imageUrl": "/trails/pgQoZDaSrDV9.jpeg",
-    "images": ["/trails/pgQoZDaSrDV9.jpeg"],
+    "images": [
+      "/trails/pgQoZDaSrDV9.jpeg"
+    ],
     "authorId": null,
-    "authorName": "TREKKO",
+    "authorName": "Rafael Mendes",
     "readingTime": 7,
-    "relatedTrailIds": [2, 8],
-    "tags": ["planejamento", "seguranca", "longo-curso", "checklist"],
+    "relatedTrailIds": [
+      2,
+      8
+    ],
+    "tags": [
+      "planejamento",
+      "seguranca",
+      "longo-curso",
+      "checklist"
+    ],
     "metaTitle": "Como Planejar uma Trilha de Longo Curso | Trekko",
     "metaDescription": "Guia completo passo a passo para planejar travessias de múltiplos dias: destino, autorizações, mochila, alimentação e segurança.",
     "featured": 0,
@@ -141,6 +196,7 @@
     "status": "published",
     "publishedAt": "2026-03-01T10:00:00.000Z",
     "createdAt": "2026-03-01T10:00:00.000Z",
-    "updatedAt": "2026-03-01T10:00:00.000Z"
+    "updatedAt": "2026-03-01T10:00:00.000Z",
+    "authorSlug": "rafael-mendes"
   }
 ]
