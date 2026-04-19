@@ -117,13 +117,14 @@ describe('payments.createCheckout', () => {
     vi.mocked(db.createReservation).mockResolvedValue(1);
     vi.mocked(db.updateReservation).mockResolvedValue(undefined);
     vi.mocked(db.createAuditLog).mockResolvedValue(1);
-    // Default: guide has a valid Pix key in guide_financial_info
+    // Default: guide has a valid Pix key in guide_financial_info (Story 9: status = valid)
     vi.mocked(db.getGuideFinancialInfo).mockResolvedValue({
       id: 1,
       guideId: 2,
       pixKeyType: 'email',
       pixKey: 'encrypted_guia@example.com',
       pixKeyHolderName: 'Guide User',
+      pixKeyStatus: 'valid',
       pixKeyVerified: 1,
       paymentEnabled: 1,
     } as any);
@@ -253,6 +254,51 @@ describe('payments.createCheckout', () => {
         quantity: 1,
       })
     ).rejects.toThrow('Este guia ainda não configurou uma chave PIX');
+  });
+
+  // Story 9 — Block Payment When Pix Key Status Is Invalid
+  it('blocks payment when guide Pix key status is invalid', async () => {
+    vi.mocked(db.getGuideFinancialInfo).mockResolvedValue({
+      id: 1,
+      guideId: 2,
+      pixKeyType: 'email',
+      pixKey: 'encrypted_guia@example.com',
+      pixKeyHolderName: 'Guide User',
+      pixKeyStatus: 'invalid',
+      pixKeyVerified: 0,
+      paymentEnabled: 0,
+    } as any);
+
+    const caller = appRouter.createCaller(createAuthContext());
+
+    await expect(
+      caller.payments.createCheckout({
+        expeditionId: 90001,
+        quantity: 1,
+      })
+    ).rejects.toThrow('A chave PIX do guia está inválida');
+  });
+
+  it('allows payment when guide Pix key status is pending (key exists)', async () => {
+    vi.mocked(db.getGuideFinancialInfo).mockResolvedValue({
+      id: 1,
+      guideId: 2,
+      pixKeyType: 'email',
+      pixKey: 'encrypted_guia@example.com',
+      pixKeyHolderName: 'Guide User',
+      pixKeyStatus: 'pending',
+      pixKeyVerified: 0,
+      paymentEnabled: 0,
+    } as any);
+    vi.mocked(db.createReservation).mockResolvedValue(1);
+
+    const caller = appRouter.createCaller(createAuthContext());
+
+    // pending status does not block (only 'invalid' blocks)
+    // Network call to MP will fail in tests but the guard passes
+    await expect(
+      caller.payments.createCheckout({ expeditionId: 90001, quantity: 1 })
+    ).rejects.not.toThrow('A chave PIX do guia está inválida');
   });
 
   it('creates reservation with correct total amount', async () => {

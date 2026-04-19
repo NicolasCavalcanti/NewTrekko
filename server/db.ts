@@ -1236,11 +1236,13 @@ export async function saveGuideFinancialInfo(guideId: number, data: {
   const encryptedPixKey = encrypt(data.pixKey) ?? data.pixKey;
   const existing = await getGuideFinancialInfo(guideId);
 
+  // Story 9: key passes format validation before reaching this function → status = valid
   if (existing) {
     await db.update(guideFinancialInfo).set({
       pixKeyType: data.pixKeyType,
       pixKey: encryptedPixKey,
       pixKeyHolderName: data.pixKeyHolderName,
+      pixKeyStatus: 'valid',
       updatedAt: new Date(),
     }).where(eq(guideFinancialInfo.guideId, guideId));
   } else {
@@ -1249,6 +1251,7 @@ export async function saveGuideFinancialInfo(guideId: number, data: {
       pixKeyType: data.pixKeyType,
       pixKey: encryptedPixKey,
       pixKeyHolderName: data.pixKeyHolderName,
+      pixKeyStatus: 'valid',
     });
   }
 }
@@ -1265,12 +1268,26 @@ export async function updateGuideFinancialInfo(guideId: number, data: {
   if (!existing) throw new Error('Nenhuma chave PIX cadastrada. Use o onboarding para cadastrar.');
 
   const encryptedPixKey = encrypt(data.pixKey) ?? data.pixKey;
+  // Story 9: re-saving resets status to valid (guide is asserting the key is correct)
   await db.update(guideFinancialInfo).set({
     pixKeyType: data.pixKeyType,
     pixKey: encryptedPixKey,
     pixKeyHolderName: data.pixKeyHolderName,
+    pixKeyStatus: 'valid',
     updatedAt: new Date(),
   }).where(eq(guideFinancialInfo.guideId, guideId));
+}
+
+// Story 9: Admin/system transition for the Pix key status state machine
+export async function setGuidePixKeyStatus(
+  guideId: number,
+  status: 'pending' | 'valid' | 'invalid'
+) {
+  const db = await getDb();
+  if (!db) throw new Error('Database not available');
+  await db.update(guideFinancialInfo)
+    .set({ pixKeyStatus: status, updatedAt: new Date() })
+    .where(eq(guideFinancialInfo.guideId, guideId));
 }
 
 /**
