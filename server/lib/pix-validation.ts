@@ -84,3 +84,35 @@ export function normalizePixKey(pixKeyType: PixKeyType, pixKey: string): string 
       return pixKey;
   }
 }
+
+// Story 8: Mask Pix key for safe display (LGPD compliance).
+// Accepts the plaintext normalized value; never pass ciphertext.
+export function maskPixKey(pixKeyType: PixKeyType, value: string): string {
+  if (!value || !value.trim()) return '****';
+  switch (pixKeyType) {
+    case 'email': {
+      const atIdx = value.indexOf('@');
+      if (atIdx < 0) return '****';
+      return `****@${value.slice(atIdx + 1)}`;
+    }
+    case 'cpf': {
+      const d = value.replace(/\D/g, '');
+      const suffix = d.length >= 11 ? d.slice(9, 11) : d.slice(-2).padStart(2, '*');
+      return `***.***.***-${suffix}`;
+    }
+    case 'cnpj': {
+      const d = value.replace(/\D/g, '');
+      const suffix = d.length >= 14 ? d.slice(12, 14) : d.slice(-2).padStart(2, '*');
+      return `**.***.****/****-${suffix}`;
+    }
+    case 'phone': {
+      const d = value.replace(/\D/g, '');
+      const suffix = d.length >= 4 ? d.slice(-4) : d.padStart(4, '*');
+      return `(**) *****-${suffix}`;
+    }
+    case 'random':
+      return value.length > 4 ? `${value.slice(0, 4)}****` : '****';
+    default:
+      return '****';
+  }
+}

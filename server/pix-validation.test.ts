@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { validateCPF, validateCNPJ, validatePixKey, normalizePixKey } from "./lib/pix-validation";
+import { validateCPF, validateCNPJ, validatePixKey, normalizePixKey, maskPixKey } from "./lib/pix-validation";
 
 // Well-known valid CPFs for testing (generated with mod-11 algorithm)
 const VALID_CPF = "529.982.247-25";
@@ -148,5 +148,51 @@ describe("normalizePixKey", () => {
 
   it("trims random key", () => {
     expect(normalizePixKey("random", "  abc-123  ")).toBe("abc-123");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Story 8 — maskPixKey
+// ---------------------------------------------------------------------------
+describe("maskPixKey", () => {
+  it("masks email local part, preserves domain", () => {
+    expect(maskPixKey("email", "guia@example.com")).toBe("****@example.com");
+  });
+
+  it("masks email with subdomain", () => {
+    expect(maskPixKey("email", "user@mail.trekko.com.br")).toBe("****@mail.trekko.com.br");
+  });
+
+  it("masks CPF showing only last 2 check digits", () => {
+    expect(maskPixKey("cpf", "52998224725")).toBe("***.***.***-25");
+  });
+
+  it("masks formatted CPF", () => {
+    expect(maskPixKey("cpf", "529.982.247-25")).toBe("***.***.***-25");
+  });
+
+  it("masks CNPJ showing only last 2 check digits", () => {
+    expect(maskPixKey("cnpj", "11222333000181")).toBe("**.***.****/****-81");
+  });
+
+  it("masks phone showing only last 4 digits", () => {
+    expect(maskPixKey("phone", "11987654321")).toBe("(**) *****-4321");
+  });
+
+  it("masks phone with 10 digits", () => {
+    expect(maskPixKey("phone", "1132165478")).toBe("(**) *****-5478");
+  });
+
+  it("masks random key showing first 4 chars", () => {
+    expect(maskPixKey("random", "a1b2c3d4-e5f6-7890")).toBe("a1b2****");
+  });
+
+  it("masks short random key entirely", () => {
+    expect(maskPixKey("random", "abc")).toBe("****");
+  });
+
+  it("returns '****' for empty value", () => {
+    expect(maskPixKey("email", "")).toBe("****");
+    expect(maskPixKey("cpf", "")).toBe("****");
   });
 });
