@@ -37,6 +37,7 @@ vi.mock("./db", () => ({
   getPayoutById: vi.fn(),
   updatePayout: vi.fn().mockResolvedValue(undefined),
   getPlatformSetting: vi.fn().mockResolvedValue('3'),
+  checkAndUpdatePaymentEligibility: vi.fn().mockResolvedValue({ eligible: true }),
 }));
 
 vi.mock('./lib/payout-service', () => ({
@@ -339,6 +340,8 @@ describe("adminPayments.setGuidePixKeyStatus", () => {
         source: "admin_portal",
       })
     );
+    // Story 13: status change triggers eligibility re-check
+    expect(db.checkAndUpdatePaymentEligibility).toHaveBeenCalledWith(5);
   });
 
   it("allows admin to set status to valid", async () => {
@@ -535,5 +538,68 @@ describe("adminPayments.processScheduledPayouts", () => {
   it("denies access to regular user", async () => {
     const caller = appRouter.createCaller(createUserContext());
     await expect(caller.adminPayments.processScheduledPayouts()).rejects.toThrow();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Story 13 — adminPayments.checkEligibility
+// ---------------------------------------------------------------------------
+describe("adminPayments.checkEligibility", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("returns eligible=true when guide has valid Pix and active profile", async () => {
+    vi.mocked(db.checkAndUpdatePaymentEligibility).mockResolvedValue({ eligible: true });
+
+    const caller = appRouter.createCaller(createAdminContext());
+    const result = await caller.adminPayments.checkEligibility({ guideId: 5 });
+
+    expect(result.eligible).toBe(true);
+    expect(db.checkAndUpdatePaymentEligibility).toHaveBeenCalledWith(5);
+  });
+
+  it("returns eligible=false with reason when Pix key is missing", async () => {
+    vi.mocked(db.checkAndUpdatePaymentEligibility).mockResolvedValue({
+      eligible: false,
+      reason: "No Pix key configured",
+    });
+
+    const caller = appRouter.createCaller(createAdminContext());
+    const result = await caller.adminPayments.checkEligibility({ guideId: 5 });
+
+    expect(result.eligible).toBe(false);
+    expect(result.reason).toBe("No Pix key configured");
+  });
+
+  it("returns eligible=false when Pix key status is invalid", async () => {
+    vi.mocked(db.checkAndUpdatePaymentEligibility).mockResolvedValue({
+      eligible: false,
+      reason: "Pix key status: invalid",
+    });
+
+    const caller = appRouter.createCaller(createAdminContext());
+    const result = await caller.adminPayments.checkEligibility({ guideId: 5 });
+
+    expect(result.eligible).toBe(false);
+    expect(result.reason).toContain("invalid");
+  });
+
+  it("returns eligible=false for archived account", async () => {
+    vi.mocked(db.checkAndUpdatePaymentEligibility).mockResolvedValue({
+      eligible: false,
+      reason: "Account archived",
+    });
+
+    const caller = appRouter.createCaller(createAdminContext());
+    const result = await caller.adminPayments.checkEligibility({ guideId: 5 });
+
+    expect(result.eligible).toBe(false);
+    expect(result.reason).toBe("Account archived");
+  });
+
+  it("denies access to regular user", async () => {
+    const caller = appRouter.createCaller(createUserContext());
+    await expect(caller.adminPayments.checkEligibility({ guideId: 5 })).rejects.toThrow();
   });
 });

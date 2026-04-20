@@ -16,6 +16,7 @@ vi.mock("./db", () => ({
   updateGuideFinancialInfo: vi.fn(),
   getGuideFinancialInfoDecrypted: vi.fn(),
   createAuditLog: vi.fn().mockResolvedValue(1),
+  checkAndUpdatePaymentEligibility: vi.fn().mockResolvedValue({ eligible: true }),
 }));
 
 import * as db from "./db";
@@ -430,6 +431,8 @@ describe("guides.savePixKeyOnboarding", () => {
         source: "onboarding",
       })
     );
+    // Story 13: eligibility check runs after key is saved
+    expect(db.checkAndUpdatePaymentEligibility).toHaveBeenCalledWith(2);
   });
 
   it("saves an email Pix key successfully", async () => {
@@ -728,6 +731,8 @@ describe("guides.updatePixKey", () => {
     expect(prev.key).toBe("****@example.com");       // old masked
     expect(next.key).toBe("****@example.com");        // new masked
     expect(next.type).toBe("email");
+    // Story 13: eligibility check runs after key update
+    expect(db.checkAndUpdatePaymentEligibility).toHaveBeenCalledWith(2);
   });
 
   it("normalizes email to lowercase before saving", async () => {

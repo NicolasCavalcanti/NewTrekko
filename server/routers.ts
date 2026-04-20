@@ -634,6 +634,9 @@ export const appRouter = router({
           source: 'onboarding',
         });
 
+        // Story 13: re-evaluate payment eligibility after key is set
+        await db.checkAndUpdatePaymentEligibility(ctx.user.id);
+
         return { success: true };
       }),
 
@@ -686,6 +689,9 @@ export const appRouter = router({
           actorType: 'guide',
           source: 'guide_portal',
         });
+
+        // Story 13: re-evaluate payment eligibility after key update
+        await db.checkAndUpdatePaymentEligibility(ctx.user.id);
 
         return { success: true };
       }),
@@ -1793,7 +1799,16 @@ export const appRouter = router({
           actorType: 'admin',
           source: 'admin_portal',
         });
+        // Story 13: status change may alter payment eligibility
+        await db.checkAndUpdatePaymentEligibility(input.guideId);
         return { success: true };
+      }),
+
+    // Story 13: Admin-triggered eligibility check (also auto-runs after key mutations)
+    checkEligibility: adminProcedure
+      .input(z.object({ guideId: z.number() }))
+      .mutation(async ({ input }) => {
+        return await db.checkAndUpdatePaymentEligibility(input.guideId);
       }),
 
     // Story 10: Trigger a new payout for a guide using their Pix key
