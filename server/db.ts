@@ -1278,6 +1278,47 @@ export async function updateGuideFinancialInfo(guideId: number, data: {
   }).where(eq(guideFinancialInfo.guideId, guideId));
 }
 
+// Story 13: Determine if a guide is eligible to receive payments.
+// Criteria: active guide account + valid Pix key in guide_financial_info.
+// Sets payment_enabled accordingly and returns the eligibility result.
+export async function checkAndUpdatePaymentEligibility(guideId: number): Promise<{
+  eligible: boolean;
+  reason?: string;
+}> {
+  const db = await getDb();
+  if (!db) return { eligible: false, reason: 'Database not available' };
+
+  const [user, financialInfo] = await Promise.all([
+    getUserById(guideId),
+    getGuideFinancialInfo(guideId),
+  ]);
+
+  let eligible = false;
+  let reason: string | undefined;
+
+  if (!user) {
+    reason = 'User not found';
+  } else if (user.userType !== 'guide') {
+    reason = 'Not a guide account';
+  } else if (user.archivedAt) {
+    reason = 'Account archived';
+  } else if (!financialInfo?.pixKey) {
+    reason = 'No Pix key configured';
+  } else if (financialInfo.pixKeyStatus !== 'valid') {
+    reason = `Pix key status: ${financialInfo.pixKeyStatus}`;
+  } else {
+    eligible = true;
+  }
+
+  if (financialInfo) {
+    await db.update(guideFinancialInfo)
+      .set({ paymentEnabled: eligible ? 1 : 0, updatedAt: new Date() })
+      .where(eq(guideFinancialInfo.guideId, guideId));
+  }
+
+  return { eligible, reason };
+}
+
 // Story 9: Admin/system transition for the Pix key status state machine
 export async function setGuidePixKeyStatus(
   guideId: number,
