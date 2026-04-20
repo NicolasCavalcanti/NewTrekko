@@ -19,8 +19,13 @@ import {
   Mountain,
   User,
   Award,
-  MapPin
+  MapPin,
+  Map,
+  BookOpen,
 } from "lucide-react";
+import { ArticleFAQBlock } from "@/components/ArticleFAQBlock";
+import { ArticleTrustBlock } from "@/components/ArticleTrustBlock";
+import { ArticlePracticalBox } from "@/components/ArticlePracticalBox";
 
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -214,8 +219,8 @@ export default function BlogPost() {
     datePublished: post.publishedAt
       ? new Date(post.publishedAt).toISOString()
       : undefined,
-    dateModified: post.updatedAt
-      ? new Date(post.updatedAt).toISOString()
+    dateModified: (post.reviewedAt ?? post.updatedAt)
+      ? new Date((post.reviewedAt ?? post.updatedAt)!).toISOString()
       : undefined,
     publisher: {
       "@type": "Organization",
@@ -367,13 +372,122 @@ export default function BlogPost() {
             </div>
           </div>
 
+          {/* Trust block — published/reviewed signals */}
+          <ArticleTrustBlock
+            publishedAt={post.publishedAt}
+            reviewedAt={post.reviewedAt}
+            reviewerName={post.reviewerName}
+            isHighValue={!!post.isHighValue}
+          />
+
           {/* Content */}
           <div className="prose prose-lg max-w-none">
             {renderContent(post.content)}
           </div>
 
+          {/* Practical experience callout — shown on high-value articles */}
+          {post.isHighValue && author && (
+            <ArticlePracticalBox>
+              <p>
+                Este artigo foi produzido com base em{" "}
+                <strong>experiência prática de campo</strong> por{" "}
+                <strong>{author.name}</strong>
+                {author.yearsExperience
+                  ? `, com ${author.yearsExperience} anos de experiência em ecoturismo e trekking no Brasil`
+                  : ""}
+                {author.location ? `, atuando em ${author.location}` : ""}.
+              </p>
+              {post.reviewedAt && (
+                <p>
+                  Conteúdo revisado e atualizado em{" "}
+                  {new Date(post.reviewedAt).toLocaleDateString("pt-BR", {
+                    month: "long",
+                    year: "numeric",
+                  })}
+                  {post.reviewerName ? ` por ${post.reviewerName}` : ""}.
+                </p>
+              )}
+            </ArticlePracticalBox>
+          )}
+
           {/* Ad unit 2 — end of article */}
           <AdUnit slot={AD_SLOTS.BLOG_END_ARTICLE} className="my-8" />
+
+          {/* Internal links — related trails & guides */}
+          {post.isHighValue && (
+            <div className="mt-10 pt-8 border-t">
+              <div className="flex items-center gap-2 mb-4">
+                <BookOpen className="h-5 w-5 text-green-700 shrink-0" />
+                <h2 className="text-lg font-bold text-foreground">Continue Explorando</h2>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <Link href="/trilhas">
+                  <div className="flex items-center gap-3 p-3 rounded-lg border border-green-100 hover:border-green-300 hover:bg-green-50/50 transition-colors group">
+                    <Map className="h-5 w-5 text-green-600 shrink-0" />
+                    <div>
+                      <p className="text-sm font-medium group-hover:text-green-700 transition-colors">
+                        Trilhas no Brasil
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Explore trilhas por dificuldade e região
+                      </p>
+                    </div>
+                    <ChevronRight className="h-4 w-4 text-muted-foreground ml-auto" />
+                  </div>
+                </Link>
+                <Link href="/guias">
+                  <div className="flex items-center gap-3 p-3 rounded-lg border border-green-100 hover:border-green-300 hover:bg-green-50/50 transition-colors group">
+                    <Award className="h-5 w-5 text-green-600 shrink-0" />
+                    <div>
+                      <p className="text-sm font-medium group-hover:text-green-700 transition-colors">
+                        Guias Certificados CADASTUR
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Conecte-se com guias experientes
+                      </p>
+                    </div>
+                    <ChevronRight className="h-4 w-4 text-muted-foreground ml-auto" />
+                  </div>
+                </Link>
+                <Link href="/blog">
+                  <div className="flex items-center gap-3 p-3 rounded-lg border border-green-100 hover:border-green-300 hover:bg-green-50/50 transition-colors group">
+                    <BookOpen className="h-5 w-5 text-green-600 shrink-0" />
+                    <div>
+                      <p className="text-sm font-medium group-hover:text-green-700 transition-colors">
+                        Guias Práticos
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Planejamento, equipamentos e segurança
+                      </p>
+                    </div>
+                    <ChevronRight className="h-4 w-4 text-muted-foreground ml-auto" />
+                  </div>
+                </Link>
+                <Link href="/blog?category=planejamento-seguranca">
+                  <div className="flex items-center gap-3 p-3 rounded-lg border border-green-100 hover:border-green-300 hover:bg-green-50/50 transition-colors group">
+                    <Mountain className="h-5 w-5 text-green-600 shrink-0" />
+                    <div>
+                      <p className="text-sm font-medium group-hover:text-green-700 transition-colors">
+                        Segurança em Trilhas
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Dicas essenciais para trilhar com segurança
+                      </p>
+                    </div>
+                    <ChevronRight className="h-4 w-4 text-muted-foreground ml-auto" />
+                  </div>
+                </Link>
+              </div>
+            </div>
+          )}
+
+          {/* FAQ section */}
+          {post.faqData && post.faqData.length > 0 && (
+            <ArticleFAQBlock
+              faqs={post.faqData}
+              articleUrl={`https://trekko.com.br/blog/${post.slug}`}
+            />
+          )}
 
           {/* Tags */}
           {post.tags && post.tags.length > 0 && (

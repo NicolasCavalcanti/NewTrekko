@@ -333,6 +333,7 @@ export const blogPosts = mysqlTable("blog_posts", {
   // DB-SEC-02: FK set null so author deletion preserves the article
   authorId: int("authorId").references(() => users.id, { onDelete: "set null" }),
   authorName: varchar("authorName", { length: 128 }),
+  authorSlug: varchar("authorSlug", { length: 128 }),
   readingTime: int("readingTime").default(5),
   // DB-PERF-02: relatedTrailIds moved to blog_post_trails join table
   /* display-only: not queryable — see blog_post_trails table */ relatedTrailIds: json("relatedTrailIds").$type<number[]>(),
@@ -344,6 +345,11 @@ export const blogPosts = mysqlTable("blog_posts", {
   viewCount: int("viewCount").default(0),
   status: mysqlEnum("status", ["draft", "published"]).default("draft"),
   publishedAt: timestamp("publishedAt"),
+  // Story 3.3 — editorial template high-value fields
+  isHighValue: int("isHighValue").default(0),
+  reviewedAt: timestamp("reviewedAt"),
+  reviewerName: varchar("reviewerName", { length: 128 }),
+  faqData: json("faqData").$type<Array<{ question: string; answer: string }>>(),
   ...timestamps,
 }, (t) => [
   index("idx_blog_status").on(t.status),
