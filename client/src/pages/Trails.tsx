@@ -11,7 +11,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { trpc } from "@/lib/trpc";
 import { useTrailsList, useTrailById } from "@/hooks/useTrails";
-import { Search, Mountain, MapPin, Calendar, Users, Loader2, ChevronLeft, ChevronRight, User, DollarSign, CheckCircle2, XCircle, Clock, AlertCircle } from "lucide-react";
+import {
+  Search, Mountain, MapPin, Calendar, Users, Loader2,
+  ChevronLeft, ChevronRight, User, DollarSign, CheckCircle2,
+  XCircle, Clock, AlertCircle, Compass, Shield, Route, Download,
+} from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { USE_SUPABASE } from "@/lib/supabase";
@@ -36,6 +40,64 @@ const STATUS_LABELS: Record<string, { label: string; color: string; icon: React.
   cancelled: { label: "Cancelada", color: "bg-red-100 text-red-700 border-red-200", icon: <AlertCircle className="w-3 h-3" /> },
   draft: { label: "Rascunho", color: "bg-yellow-100 text-yellow-700 border-yellow-200", icon: <Clock className="w-3 h-3" /> },
 };
+
+const VALUE_PROPS = [
+  {
+    icon: Compass,
+    title: "Curadoria Editorial",
+    description:
+      "Cada trilha é verificada e documentada com informações técnicas precisas: distância, ganho de elevação, tempo estimado, pontos de água e dicas de segurança.",
+  },
+  {
+    icon: Shield,
+    title: "Guias Certificados CADASTUR",
+    description:
+      "Conectamos você a profissionais habilitados pelo Ministério do Turismo, com experiência comprovada nas trilhas que conduzem.",
+  },
+  {
+    icon: Download,
+    title: "GPX e Mapas Offline",
+    description:
+      "Baixe a rota GPX antes de sair de casa e navegue com segurança mesmo sem sinal de celular. Disponível para a maioria das trilhas cadastradas.",
+  },
+  {
+    icon: Calendar,
+    title: "Expedições Organizadas",
+    description:
+      "Encontre grupos com data definida, guia confirmado e vagas abertas. Perfeito para quem quer aventura sem se preocupar com a logística.",
+  },
+];
+
+const DIFFICULTY_GUIDE = [
+  {
+    level: "Fácil",
+    color: "bg-green-100 text-green-800 border-green-200",
+    dotColor: "bg-green-500",
+    description:
+      "Até 8 km, terreno regular e ganho de altitude baixo. Ideal para iniciantes, crianças e quem quer uma caminhada leve no fim de semana.",
+  },
+  {
+    level: "Moderada",
+    color: "bg-yellow-100 text-yellow-800 border-yellow-200",
+    dotColor: "bg-yellow-500",
+    description:
+      "Entre 8 e 20 km, com terreno irregular e algum ganho de altitude. Requer boa disposição física, calçado adequado e hidratação constante.",
+  },
+  {
+    level: "Difícil",
+    color: "bg-orange-100 text-orange-800 border-orange-200",
+    dotColor: "bg-orange-500",
+    description:
+      "Mais de 15 km ou ganho elevado de altitude. Exige boa capacidade aeróbica, equipamentos de trekking e, em muitos casos, guia profissional.",
+  },
+  {
+    level: "Especialista",
+    color: "bg-red-100 text-red-800 border-red-200",
+    dotColor: "bg-red-500",
+    description:
+      "Trilhas técnicas, remotas ou com condições extremas. Recomendado somente para experientes com equipamento completo e acompanhamento especializado.",
+  },
+];
 
 export default function Trails() {
   const [, navigate] = useLocation();
@@ -103,25 +165,128 @@ export default function Trails() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Helmet>
-        <title>Trilhas no Brasil — Trekko</title>
-        <meta name="description" content="Explore centenas de trilhas cadastradas em todo o Brasil. Filtre por estado, dificuldade e distância e encontre a trilha perfeita para sua próxima aventura." />
+        <title>Trilhas no Brasil: Catálogo Completo de Percursos e Expedições — Trekko</title>
+        <meta name="description" content="Descubra centenas de trilhas em todo o Brasil. Filtre por estado, dificuldade e distância. Expedições guiadas com profissionais certificados CADASTUR." />
         <link rel="canonical" href="https://trekko.com.br/trilhas" />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="Trilhas no Brasil — Trekko" />
-        <meta property="og:description" content="Explore centenas de trilhas cadastradas em todo o Brasil. Filtre por estado, dificuldade e distância." />
+        <meta property="og:title" content="Trilhas no Brasil: Catálogo Completo de Percursos e Expedições — Trekko" />
+        <meta property="og:description" content="Descubra centenas de trilhas em todo o Brasil. Filtre por estado, dificuldade e distância. Expedições guiadas com profissionais certificados CADASTUR." />
         <meta property="og:url" content="https://trekko.com.br/trilhas" />
         <meta property="og:image" content="https://trekko.com.br/og-image.jpg" />
         <meta property="og:site_name" content="Trekko" />
         <meta property="og:locale" content="pt_BR" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Trilhas no Brasil — Trekko" />
-        <meta name="twitter:description" content="Explore centenas de trilhas cadastradas em todo o Brasil." />
+        <meta name="twitter:title" content="Trilhas no Brasil: Catálogo Completo de Percursos e Expedições — Trekko" />
+        <meta name="twitter:description" content="Descubra centenas de trilhas em todo o Brasil com guias certificados CADASTUR." />
         <meta name="twitter:image" content="https://trekko.com.br/og-image.jpg" />
       </Helmet>
       <Header />
 
       <main className="flex-1 py-8">
         <div className="container">
+
+          {/* ── Editorial Hero ────────────────────────────────────────────────── */}
+          <section className="relative bg-forest text-white rounded-2xl overflow-hidden mb-8">
+            <div className="absolute inset-0 bg-gradient-to-br from-forest via-forest to-forest-light opacity-90" />
+            <div className="absolute inset-0 opacity-5" style={{
+              backgroundImage: "radial-gradient(circle at 2px 2px, white 1px, transparent 0)",
+              backgroundSize: "32px 32px"
+            }} />
+            <div className="relative px-6 py-12 md:py-16 md:px-12 lg:px-16">
+              <div className="max-w-3xl">
+                <div className="flex items-center gap-2 text-white/60 mb-4">
+                  <Route className="w-4 h-4" />
+                  <span className="text-xs font-medium uppercase tracking-widest">Plataforma Nacional de Trilhas</span>
+                </div>
+                <h1 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold mb-5 text-white leading-tight">
+                  Explore as Melhores<br className="hidden sm:block" /> Trilhas do Brasil
+                </h1>
+                <p className="text-base md:text-lg text-white/80 mb-4 leading-relaxed">
+                  O Brasil é um dos países mais ricos em biodiversidade e paisagens naturais do mundo.
+                  De norte a sul, são mais de 8,5 milhões de km² repletos de cerrado, mata atlântica,
+                  pantanal, amazônia e litoral — um convite permanente para quem busca se reconectar
+                  com a natureza.
+                </p>
+                <p className="text-sm md:text-base text-white/70 mb-8 leading-relaxed">
+                  O Trekko reúne trilhas catalogadas em todos os estados, com informações técnicas
+                  detalhadas, mapas GPX para download e guias certificados pelo Ministério do Turismo.
+                  Seja uma caminhada de fim de semana ou uma expedição de vários dias em trilhas remotas,
+                  aqui você encontra tudo que precisa para planejar com segurança.
+                </p>
+
+                {/* Stats bar */}
+                <div className="flex flex-wrap gap-x-6 gap-y-3">
+                  <div className="flex items-center gap-2">
+                    <Mountain className="w-4 h-4 text-white/60" />
+                    <span className="text-sm font-medium text-white">
+                      {trailsData?.total ? `${trailsData.total}+ trilhas cadastradas` : "Centenas de trilhas"}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <MapPin className="w-4 h-4 text-white/60" />
+                    <span className="text-sm font-medium text-white">27 estados cobertos</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Shield className="w-4 h-4 text-white/60" />
+                    <span className="text-sm font-medium text-white">Guias certificados CADASTUR</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Download className="w-4 h-4 text-white/60" />
+                    <span className="text-sm font-medium text-white">GPX disponível para download</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* ── Value Props ───────────────────────────────────────────────────── */}
+          <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            {VALUE_PROPS.map((vp) => (
+              <div key={vp.title} className="bg-card border rounded-xl p-5 hover:shadow-md transition-shadow">
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
+                  <vp.icon className="w-5 h-5 text-primary" />
+                </div>
+                <h3 className="font-heading font-semibold text-sm mb-2">{vp.title}</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">{vp.description}</p>
+              </div>
+            ))}
+          </section>
+
+          {/* ── How to Choose ─────────────────────────────────────────────────── */}
+          <section className="bg-muted/40 border rounded-xl p-6 mb-8">
+            <div className="flex items-center gap-2 mb-3">
+              <Compass className="w-5 h-5 text-primary" />
+              <h2 className="font-heading text-lg font-semibold">Como escolher sua próxima trilha</h2>
+            </div>
+            <p className="text-sm text-muted-foreground mb-5 leading-relaxed max-w-3xl">
+              Escolher a trilha certa faz toda a diferença na experiência. Leve em conta seu
+              condicionamento físico, o tempo disponível, a época do ano e se prefere ir de forma
+              independente ou com um grupo guiado. Use o guia abaixo como referência antes de aplicar
+              os filtros — e lembre-se: toda aventura começa com um bom planejamento.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {DIFFICULTY_GUIDE.map((g) => (
+                <div key={g.level} className={`border rounded-lg p-4 ${g.color}`}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className={`w-2.5 h-2.5 rounded-full ${g.dotColor}`} />
+                    <span className="text-xs font-semibold uppercase tracking-wide">{g.level}</span>
+                  </div>
+                  <p className="text-xs leading-relaxed opacity-80">{g.description}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* ── Catalog Divider ───────────────────────────────────────────────── */}
+          <div id="catalogo" className="flex items-center gap-4 mb-6">
+            <div className="flex-1 h-px bg-border" />
+            <span className="font-heading text-sm font-semibold text-muted-foreground uppercase tracking-widest whitespace-nowrap px-2">
+              Catálogo
+            </span>
+            <div className="flex-1 h-px bg-border" />
+          </div>
+
+          {/* ── Catalog Tabs ──────────────────────────────────────────────────── */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="mb-6">
               <TabsTrigger value="trilhas" className="flex items-center gap-2">
@@ -208,15 +373,15 @@ export default function Trails() {
                 <>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {trailsData?.trails.map((trail) => (
-                      <Card 
-                        key={trail.id} 
+                      <Card
+                        key={trail.id}
                         className="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow group"
                         onClick={() => navigate(`/trilha/${trail.id}`)}
                       >
                         <div className="h-48 bg-gradient-to-br from-forest/20 to-forest-light/20 relative overflow-hidden">
                           {trail.imageUrl ? (
-                            <img 
-                              src={trail.imageUrl} 
+                            <img
+                              src={trail.imageUrl}
                               alt={trail.name}
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                             />
@@ -436,7 +601,7 @@ function ExpeditionCard({ expedition }: { expedition: any }) {
   const statusInfo = STATUS_LABELS[status] || STATUS_LABELS.active;
 
   return (
-    <Card 
+    <Card
       className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
       onClick={() => navigate(`/expedicao/${expedition.id}`)}
     >
@@ -536,7 +701,7 @@ function ExpeditionCard({ expedition }: { expedition: any }) {
 
                 {/* CTA */}
                 <div className="ml-auto">
-                  <Button 
+                  <Button
                     size="lg"
                     disabled={status !== 'active' || availableSpots <= 0}
                     onClick={(e) => {
@@ -544,7 +709,7 @@ function ExpeditionCard({ expedition }: { expedition: any }) {
                       navigate(`/expedicao/${expedition.id}`);
                     }}
                   >
-                    {status === 'full' || availableSpots <= 0 ? 'Lotada' : 
+                    {status === 'full' || availableSpots <= 0 ? 'Lotada' :
                      status === 'closed' ? 'Encerrada' :
                      status === 'cancelled' ? 'Cancelada' : 'Ver Detalhes'}
                   </Button>
