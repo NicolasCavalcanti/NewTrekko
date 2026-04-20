@@ -9,7 +9,8 @@ import { storagePut } from "./storage";
 import { nanoid } from "nanoid";
 import { searchWikiloc } from "./lib/wikiloc-search";
 import { MercadoPagoConfig, Preference, Payment } from "mercadopago";
-import { validatePixKey, normalizePixKey } from "./lib/pix-validation";
+import { validatePixKey, normalizePixKey, maskPixKey } from "./lib/pix-validation";
+import { executePayoutWithRetry } from "./lib/payout-service";
 
 // Helper function to add business days (excluding weekends)
 function addBusinessDays(date: Date, days: number): Date {
@@ -613,11 +614,28 @@ export const appRouter = router({
           throw new TRPCError({ code: 'BAD_REQUEST', message: result.error! });
         }
 
+        const normalizedKey = normalizePixKey(input.pixKeyType, input.pixKey);
+
         await db.savePixKeyData(ctx.user.id, {
           pixKeyType: input.pixKeyType,
-          pixKey: normalizePixKey(input.pixKeyType, input.pixKey),
+          pixKey: normalizedKey,
           pixKeyHolderName: input.pixKeyHolderName,
         });
+
+        // Story 7: audit log for Pix key creation
+        await db.createAuditLog({
+          entityType: 'guide_financial_info',
+          entityId: ctx.user.id,
+          action: 'pix_key_created',
+          previousValue: null,
+          newValue: JSON.stringify({ type: input.pixKeyType, key: maskPixKey(input.pixKeyType, normalizedKey) }),
+          actorId: ctx.user.id,
+          actorType: 'guide',
+          source: 'onboarding',
+        });
+
+        // Story 13: re-evaluate payment eligibility after key is set
+        await db.checkAndUpdatePaymentEligibility(ctx.user.id);
 
         return { success: true };
       }),
@@ -627,7 +645,7 @@ export const appRouter = router({
       return await db.getGuideFinancialInfo(ctx.user.id);
     }),
 
-    // Update Pix key — requires existing record (Story 6: PATCH semantics)
+    // Update Pix key — requires existing record (Story 6/7: PATCH + audit)
     updatePixKey: guideProcedure
       .input(z.object({
         pixKeyType: z.enum(['cpf', 'cnpj', 'email', 'phone', 'random']),
@@ -640,10 +658,15 @@ export const appRouter = router({
           throw new TRPCError({ code: 'BAD_REQUEST', message: validation.error! });
         }
 
+        // Story 7: fetch old record before update for audit trail
+        const oldRecord = await db.getGuideFinancialInfoDecrypted(ctx.user.id);
+
+        const normalizedKey = normalizePixKey(input.pixKeyType, input.pixKey);
+
         try {
           await db.updateGuideFinancialInfo(ctx.user.id, {
             pixKeyType: input.pixKeyType,
-            pixKey: normalizePixKey(input.pixKeyType, input.pixKey),
+            pixKey: normalizedKey,
             pixKeyHolderName: input.pixKeyHolderName,
           });
         } catch (err: any) {
@@ -652,6 +675,23 @@ export const appRouter = router({
           }
           throw err;
         }
+
+        // Story 7: audit log for Pix key update
+        await db.createAuditLog({
+          entityType: 'guide_financial_info',
+          entityId: ctx.user.id,
+          action: 'pix_key_updated',
+          previousValue: oldRecord?.pixKeyType
+            ? JSON.stringify({ type: oldRecord.pixKeyType, key: maskPixKey(oldRecord.pixKeyType, oldRecord.pixKey ?? '') })
+            : null,
+          newValue: JSON.stringify({ type: input.pixKeyType, key: maskPixKey(input.pixKeyType, normalizedKey) }),
+          actorId: ctx.user.id,
+          actorType: 'guide',
+          source: 'guide_portal',
+        });
+
+        // Story 13: re-evaluate payment eligibility after key update
+        await db.checkAndUpdatePaymentEligibility(ctx.user.id);
 
         return { success: true };
       }),
@@ -1170,12 +1210,19 @@ export const appRouter = router({
           throw new TRPCError({ code: 'BAD_REQUEST', message: 'Expedição não está disponível para reservas' });
         }
 
-        // Story 4/5: Block payment if guide has no valid Pix key in guide_financial_info
+        // Stories 4/5/9: Block payment if guide has no valid Pix key in guide_financial_info
         const guideFinancialInfo = await db.getGuideFinancialInfo(expedition.guideId);
         if (!guideFinancialInfo?.pixKey || !guideFinancialInfo?.pixKeyType) {
           throw new TRPCError({
             code: 'BAD_REQUEST',
             message: 'Este guia ainda não configurou uma chave PIX. O pagamento não pode ser processado no momento.',
+          });
+        }
+        // Story 9: reject if admin/system has invalidated the key
+        if (guideFinancialInfo.pixKeyStatus === 'invalid') {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'A chave PIX do guia está inválida. O pagamento não pode ser processado no momento.',
           });
         }
 
@@ -1712,6 +1759,155 @@ export const appRouter = router({
     // Get all platform settings
     getSettings: adminProcedure.query(async () => {
       return await db.getAllPlatformSettings();
+    }),
+
+    // Story 8: Return guide Pix info with key masked (LGPD compliance)
+    getGuidePixInfo: adminProcedure
+      .input(z.object({ guideId: z.number() }))
+      .query(async ({ input }) => {
+        const info = await db.getGuideFinancialInfoDecrypted(input.guideId);
+        if (!info) return null;
+        return {
+          ...info,
+          pixKey: (info.pixKeyType && info.pixKey)
+            ? maskPixKey(info.pixKeyType, info.pixKey)
+            : null,
+        };
+      }),
+
+    // Story 7: Audit trail for a guide's Pix key changes
+    getGuidePixAuditLog: adminProcedure
+      .input(z.object({ guideId: z.number() }))
+      .query(async ({ input }) => {
+        return await db.getAuditLogsForEntity('guide_financial_info', input.guideId);
+      }),
+
+    // Story 9: Admin-driven state machine transition for Pix key status
+    setGuidePixKeyStatus: adminProcedure
+      .input(z.object({
+        guideId: z.number(),
+        status: z.enum(['pending', 'valid', 'invalid']),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        await db.setGuidePixKeyStatus(input.guideId, input.status);
+        await db.createAuditLog({
+          entityType: 'guide_financial_info',
+          entityId: input.guideId,
+          action: `pix_key_status_set_${input.status}`,
+          newValue: input.status,
+          actorId: ctx.user.id,
+          actorType: 'admin',
+          source: 'admin_portal',
+        });
+        // Story 13: status change may alter payment eligibility
+        await db.checkAndUpdatePaymentEligibility(input.guideId);
+        return { success: true };
+      }),
+
+    // Story 13: Admin-triggered eligibility check (also auto-runs after key mutations)
+    checkEligibility: adminProcedure
+      .input(z.object({ guideId: z.number() }))
+      .mutation(async ({ input }) => {
+        return await db.checkAndUpdatePaymentEligibility(input.guideId);
+      }),
+
+    // Story 10: Trigger a new payout for a guide using their Pix key
+    triggerPayout: adminProcedure
+      .input(z.object({
+        guideId: z.number(),
+        grossAmount: z.number().positive(),
+        platformFeePercent: z.number().min(0).max(100).default(10),
+        reservationId: z.number().optional(),
+        scheduledDate: z.date().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const financialInfo = await db.getGuideFinancialInfo(input.guideId);
+        if (!financialInfo?.pixKey || financialInfo.pixKeyStatus !== 'valid') {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Guia não possui chave Pix válida para receber pagamento',
+          });
+        }
+
+        const platformFee = Number((input.grossAmount * input.platformFeePercent / 100).toFixed(2));
+        const netAmount = Number((input.grossAmount - platformFee).toFixed(2));
+
+        const payoutId = await db.createPayout({
+          guideId: input.guideId,
+          reservationId: input.reservationId,
+          status: 'scheduled',
+          grossAmount: String(input.grossAmount),
+          platformFee: String(platformFee),
+          netAmount: String(netAmount),
+          currency: 'BRL',
+          scheduledDate: input.scheduledDate ?? new Date(),
+        });
+
+        await db.createAuditLog({
+          entityType: 'payout',
+          entityId: payoutId,
+          action: 'payout_triggered',
+          actorId: ctx.user.id,
+          actorType: 'admin',
+          source: 'admin_portal',
+        });
+
+        // Immediately attempt execution
+        const result = await executePayoutWithRetry(payoutId);
+        return { payoutId, ...result };
+      }),
+
+    // Story 11: Manually retry a failed or scheduled payout
+    retryPayout: adminProcedure
+      .input(z.object({ payoutId: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        const result = await executePayoutWithRetry(input.payoutId);
+        await db.createAuditLog({
+          entityType: 'payout',
+          entityId: input.payoutId,
+          action: 'payout_manual_retry',
+          actorId: ctx.user.id,
+          actorType: 'admin',
+          source: 'admin_portal',
+        });
+        return result;
+      }),
+
+    // Story 11: Process all due scheduled payouts (cron / batch trigger)
+    processScheduledPayouts: adminProcedure.mutation(async ({ ctx }) => {
+      const scheduled = await db.getScheduledPayouts();
+      const results = await Promise.allSettled(
+        scheduled.map(p => executePayoutWithRetry(p.id))
+      );
+
+      const summary = {
+        total: scheduled.length,
+        sent: 0,
+        failed: 0,
+        errors: [] as string[],
+      };
+
+      results.forEach((r, i) => {
+        if (r.status === 'fulfilled') {
+          if (r.value.status === 'sent') summary.sent++;
+          else summary.failed++;
+        } else {
+          summary.failed++;
+          summary.errors.push(`payout ${scheduled[i].id}: ${r.reason}`);
+        }
+      });
+
+      await db.createAuditLog({
+        entityType: 'payout',
+        entityId: 0,
+        action: 'batch_payouts_processed',
+        newValue: JSON.stringify({ total: summary.total, sent: summary.sent, failed: summary.failed }),
+        actorId: ctx.user.id,
+        actorType: 'admin',
+        source: 'admin_portal',
+      });
+
+      return summary;
     }),
   }),
 
