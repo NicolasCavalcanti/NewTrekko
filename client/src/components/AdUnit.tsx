@@ -16,6 +16,8 @@ export const AD_SLOTS = {
   BLOG_MID_ARTICLE: "8145037926",
   /** Blog post page — end of article, before tags */
   BLOG_END_ARTICLE: "2907631548",
+  /** Guides page — between editorial sections and the guide directory */
+  GUIDES_AFTER_EDITORIAL: "5038274619",
 } as const;
 
 interface AdUnitProps {
