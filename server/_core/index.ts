@@ -7,6 +7,7 @@ import { registerOAuthRoutes } from "./oauth";
 import mercadopagoWebhook from "../webhooks/mercadopago";
 import { offlineMapRouter } from "../routes/offline-map";
 import { sitemapRouter } from "../routes/sitemap";
+import { financialInfoRouter } from "../routes/financial-info";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
@@ -54,7 +55,7 @@ async function startServer() {
     if (origin && allowedOrigins.has(origin)) {
       res.setHeader("Access-Control-Allow-Origin", origin);
       res.setHeader("Access-Control-Allow-Credentials", "true");
-      res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+      res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, OPTIONS");
       res.setHeader("Access-Control-Allow-Headers", "Content-Type");
       res.setHeader("Access-Control-Max-Age", "86400");
     }
@@ -105,6 +106,9 @@ async function startServer() {
 
   // Sitemap
   app.use(sitemapRouter);
+
+  // Financial info REST API (Stories 14 & 15)
+  app.use('/api/financial-info', financialInfoRouter);
 
   // Offline map download route
   app.use('/api/trilhas', offlineMapRouter);

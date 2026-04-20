@@ -11,6 +11,7 @@ import { searchWikiloc } from "./lib/wikiloc-search";
 import { MercadoPagoConfig, Preference, Payment } from "mercadopago";
 import { validatePixKey, normalizePixKey, maskPixKey } from "./lib/pix-validation";
 import { executePayoutWithRetry } from "./lib/payout-service";
+import { checkCpfPixKeyMismatch } from "./lib/fraud-detection";
 
 // Helper function to add business days (excluding weekends)
 function addBusinessDays(date: Date, days: number): Date {
@@ -634,6 +635,21 @@ export const appRouter = router({
           source: 'onboarding',
         });
 
+        // Story 15: flag for admin review when CPF Pix key doesn't match registered CPF
+        const fraudCheck = await checkCpfPixKeyMismatch(ctx.user.id, input.pixKeyType, normalizedKey);
+        if (fraudCheck.flagged) {
+          await db.setGuidePixKeyStatus(ctx.user.id, 'pending');
+          await db.createAuditLog({
+            entityType: 'guide_financial_info',
+            entityId: ctx.user.id,
+            action: 'pix_cpf_mismatch',
+            payload: { reason: fraudCheck.reason },
+            actorId: ctx.user.id,
+            actorType: 'guide',
+            source: 'fraud_detection',
+          });
+        }
+
         // Story 13: re-evaluate payment eligibility after key is set
         await db.checkAndUpdatePaymentEligibility(ctx.user.id);
 
@@ -689,6 +705,21 @@ export const appRouter = router({
           actorType: 'guide',
           source: 'guide_portal',
         });
+
+        // Story 15: flag for admin review when CPF Pix key doesn't match registered CPF
+        const fraudCheckUpdate = await checkCpfPixKeyMismatch(ctx.user.id, input.pixKeyType, normalizedKey);
+        if (fraudCheckUpdate.flagged) {
+          await db.setGuidePixKeyStatus(ctx.user.id, 'pending');
+          await db.createAuditLog({
+            entityType: 'guide_financial_info',
+            entityId: ctx.user.id,
+            action: 'pix_cpf_mismatch',
+            payload: { reason: fraudCheckUpdate.reason },
+            actorId: ctx.user.id,
+            actorType: 'guide',
+            source: 'fraud_detection',
+          });
+        }
 
         // Story 13: re-evaluate payment eligibility after key update
         await db.checkAndUpdatePaymentEligibility(ctx.user.id);

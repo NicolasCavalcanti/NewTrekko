@@ -15,11 +15,18 @@ vi.mock("./db", () => ({
   getGuideFinancialInfo: vi.fn(),
   updateGuideFinancialInfo: vi.fn(),
   getGuideFinancialInfoDecrypted: vi.fn(),
+  setGuidePixKeyStatus: vi.fn(),
   createAuditLog: vi.fn().mockResolvedValue(1),
   checkAndUpdatePaymentEligibility: vi.fn().mockResolvedValue({ eligible: true }),
 }));
 
+// Story 15: fraud detection is unit-tested separately; default to no-flag in tRPC tests
+vi.mock("./lib/fraud-detection", () => ({
+  checkCpfPixKeyMismatch: vi.fn().mockResolvedValue({ flagged: false }),
+}));
+
 import * as db from "./db";
+import { checkCpfPixKeyMismatch } from "./lib/fraud-detection";
 
 type AuthenticatedUser = NonNullable<TrpcContext["user"]>;
 
@@ -576,6 +583,30 @@ describe("guides.savePixKeyOnboarding", () => {
       })
     ).rejects.toThrow();
   });
+
+  it("Story 15: flags CPF mismatch and downgrades status to pending", async () => {
+    const ctx = createGuideContext();
+    const caller = appRouter.createCaller(ctx);
+
+    (db.savePixKeyData as ReturnType<typeof vi.fn>).mockResolvedValue(undefined);
+    (checkCpfPixKeyMismatch as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      flagged: true,
+      reason: "CPF da chave Pix não corresponde ao CPF cadastrado no perfil.",
+    });
+
+    // 52998224725 passes mod-11 CPF validation; fraud mock returns flagged=true
+    const result = await caller.guides.savePixKeyOnboarding({
+      pixKeyType: "cpf",
+      pixKey: "52998224725",
+      pixKeyHolderName: "Guide User",
+    });
+
+    expect(result.success).toBe(true);
+    expect(db.setGuidePixKeyStatus).toHaveBeenCalledWith(ctx.user!.id, "pending");
+    expect(db.createAuditLog).toHaveBeenCalledWith(
+      expect.objectContaining({ action: "pix_cpf_mismatch", source: "fraud_detection" })
+    );
+  });
 });
 
 describe("guide.createExpedition", () => {
@@ -827,5 +858,34 @@ describe("guides.updatePixKey", () => {
         pixKeyHolderName: "Anon",
       })
     ).rejects.toThrow();
+  });
+
+  it("Story 15: flags CPF mismatch on update and downgrades status to pending", async () => {
+    const ctx = createGuideContext();
+    const caller = appRouter.createCaller(ctx);
+
+    (db.getGuideFinancialInfoDecrypted as ReturnType<typeof vi.fn>).mockResolvedValue({
+      pixKeyType: "email",
+      pixKey: "old@example.com",
+      pixKeyHolderName: "Guide",
+    });
+    (db.updateGuideFinancialInfo as ReturnType<typeof vi.fn>).mockResolvedValue(undefined);
+    (checkCpfPixKeyMismatch as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      flagged: true,
+      reason: "CPF da chave Pix não corresponde ao CPF cadastrado no perfil.",
+    });
+
+    // 52998224725 passes mod-11 CPF validation; fraud mock returns flagged=true
+    const result = await caller.guides.updatePixKey({
+      pixKeyType: "cpf",
+      pixKey: "52998224725",
+      pixKeyHolderName: "Guide User",
+    });
+
+    expect(result.success).toBe(true);
+    expect(db.setGuidePixKeyStatus).toHaveBeenCalledWith(ctx.user!.id, "pending");
+    expect(db.createAuditLog).toHaveBeenCalledWith(
+      expect.objectContaining({ action: "pix_cpf_mismatch", source: "fraud_detection" })
+    );
   });
 });
