@@ -1236,11 +1236,13 @@ export async function saveGuideFinancialInfo(guideId: number, data: {
   const encryptedPixKey = encrypt(data.pixKey) ?? data.pixKey;
   const existing = await getGuideFinancialInfo(guideId);
 
+  // Story 9: key passes format validation before reaching this function → status = valid
   if (existing) {
     await db.update(guideFinancialInfo).set({
       pixKeyType: data.pixKeyType,
       pixKey: encryptedPixKey,
       pixKeyHolderName: data.pixKeyHolderName,
+      pixKeyStatus: 'valid',
       updatedAt: new Date(),
     }).where(eq(guideFinancialInfo.guideId, guideId));
   } else {
@@ -1249,6 +1251,7 @@ export async function saveGuideFinancialInfo(guideId: number, data: {
       pixKeyType: data.pixKeyType,
       pixKey: encryptedPixKey,
       pixKeyHolderName: data.pixKeyHolderName,
+      pixKeyStatus: 'valid',
     });
   }
 }
@@ -1265,12 +1268,67 @@ export async function updateGuideFinancialInfo(guideId: number, data: {
   if (!existing) throw new Error('Nenhuma chave PIX cadastrada. Use o onboarding para cadastrar.');
 
   const encryptedPixKey = encrypt(data.pixKey) ?? data.pixKey;
+  // Story 9: re-saving resets status to valid (guide is asserting the key is correct)
   await db.update(guideFinancialInfo).set({
     pixKeyType: data.pixKeyType,
     pixKey: encryptedPixKey,
     pixKeyHolderName: data.pixKeyHolderName,
+    pixKeyStatus: 'valid',
     updatedAt: new Date(),
   }).where(eq(guideFinancialInfo.guideId, guideId));
+}
+
+// Story 13: Determine if a guide is eligible to receive payments.
+// Criteria: active guide account + valid Pix key in guide_financial_info.
+// Sets payment_enabled accordingly and returns the eligibility result.
+export async function checkAndUpdatePaymentEligibility(guideId: number): Promise<{
+  eligible: boolean;
+  reason?: string;
+}> {
+  const db = await getDb();
+  if (!db) return { eligible: false, reason: 'Database not available' };
+
+  const [user, financialInfo] = await Promise.all([
+    getUserById(guideId),
+    getGuideFinancialInfo(guideId),
+  ]);
+
+  let eligible = false;
+  let reason: string | undefined;
+
+  if (!user) {
+    reason = 'User not found';
+  } else if (user.userType !== 'guide') {
+    reason = 'Not a guide account';
+  } else if (user.archivedAt) {
+    reason = 'Account archived';
+  } else if (!financialInfo?.pixKey) {
+    reason = 'No Pix key configured';
+  } else if (financialInfo.pixKeyStatus !== 'valid') {
+    reason = `Pix key status: ${financialInfo.pixKeyStatus}`;
+  } else {
+    eligible = true;
+  }
+
+  if (financialInfo) {
+    await db.update(guideFinancialInfo)
+      .set({ paymentEnabled: eligible ? 1 : 0, updatedAt: new Date() })
+      .where(eq(guideFinancialInfo.guideId, guideId));
+  }
+
+  return { eligible, reason };
+}
+
+// Story 9: Admin/system transition for the Pix key status state machine
+export async function setGuidePixKeyStatus(
+  guideId: number,
+  status: 'pending' | 'valid' | 'invalid'
+) {
+  const db = await getDb();
+  if (!db) throw new Error('Database not available');
+  await db.update(guideFinancialInfo)
+    .set({ pixKeyStatus: status, updatedAt: new Date() })
+    .where(eq(guideFinancialInfo.guideId, guideId));
 }
 
 /**

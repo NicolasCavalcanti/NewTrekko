@@ -567,7 +567,7 @@ export type InsertPayout = typeof payouts.$inferInsert;
 // ---------------------------------------------------------------------------
 export const paymentAuditLog = mysqlTable("payment_audit_log", {
   id: int("id").autoincrement().primaryKey(),
-  entityType: mysqlEnum("entityType", ["reservation", "payment", "payout", "guide_verification"]).notNull(),
+  entityType: mysqlEnum("entityType", ["reservation", "payment", "payout", "guide_verification", "guide_financial_info"]).notNull(),
   entityId: int("entityId").notNull(),
   action: varchar("action", { length: 64 }).notNull(),
   previousValue: text("previousValue"),
@@ -725,6 +725,8 @@ export const guideFinancialInfo = mysqlTable("guide_financial_info", {
   // DB-SEC-01 /* ENCRYPTED */ — AES-256-GCM encrypted at application layer
   pixKey: varchar("pix_key", { length: 512 }),
   pixKeyHolderName: varchar("pix_key_holder_name", { length: 256 }),
+  // Story 9: simple state machine — pending → valid | invalid
+  pixKeyStatus: mysqlEnum("pix_key_status", ["pending", "valid", "invalid"]).default("pending").notNull(),
   pixKeyVerified: int("pix_key_verified").default(0),
   paymentEnabled: int("payment_enabled").default(0),
   ...timestamps,

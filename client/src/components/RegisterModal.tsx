@@ -13,8 +13,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import { useLocation } from "wouter";
-import { Loader2, User, Shield, CheckCircle, ArrowLeft, ArrowRight, Eye, EyeOff, Wallet } from "lucide-react";
+import { Loader2, User, Shield, CheckCircle, ArrowLeft, ArrowRight, Eye, EyeOff, Wallet, Info, Banknote, Lock } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 interface RegisterModalProps {
   open: boolean;
@@ -845,9 +846,27 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
   // Render Guide Step 3 - Pix key collection
   const renderGuideStep3 = () => (
     <div className="space-y-4 w-full overflow-visible">
-      <p className="text-sm text-muted-foreground">
-        Configure sua chave PIX para receber os pagamentos das expedições. Você pode atualizar isso depois no seu perfil.
-      </p>
+      {/* Story 12: explanation message — why guides need to provide Pix */}
+      <Alert className="border-blue-200 bg-blue-50 dark:border-blue-900 dark:bg-blue-950/40">
+        <Info className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+        <AlertTitle className="text-blue-900 dark:text-blue-100">
+          Por que informar sua chave PIX?
+        </AlertTitle>
+        <AlertDescription className="text-blue-800 dark:text-blue-200 space-y-2 mt-1">
+          <div className="flex items-start gap-2">
+            <Banknote className="w-4 h-4 mt-0.5 flex-shrink-0" />
+            <span>Receba automaticamente o valor das expedições na sua conta após a conclusão.</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <Lock className="w-4 h-4 mt-0.5 flex-shrink-0" />
+            <span>Seus dados são criptografados com AES-256 e nunca ficam expostos.</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <Wallet className="w-4 h-4 mt-0.5 flex-shrink-0" />
+            <span>Você pode atualizar sua chave a qualquer momento no seu perfil.</span>
+          </div>
+        </AlertDescription>
+      </Alert>
 
       <div className="space-y-2">
         <Label>Tipo de Chave PIX</Label>

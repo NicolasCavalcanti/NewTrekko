@@ -14,6 +14,9 @@ vi.mock("./db", () => ({
   savePixKeyData: vi.fn(),
   getGuideFinancialInfo: vi.fn(),
   updateGuideFinancialInfo: vi.fn(),
+  getGuideFinancialInfoDecrypted: vi.fn(),
+  createAuditLog: vi.fn().mockResolvedValue(1),
+  checkAndUpdatePaymentEligibility: vi.fn().mockResolvedValue({ eligible: true }),
 }));
 
 import * as db from "./db";
@@ -397,7 +400,7 @@ describe("guides.savePixKeyOnboarding", () => {
     vi.clearAllMocks();
   });
 
-  it("saves a CPF Pix key successfully", async () => {
+  it("saves a CPF Pix key successfully and logs audit entry", async () => {
     vi.mocked(db.savePixKeyData).mockResolvedValue(undefined);
 
     const ctx = createGuideContext();
@@ -416,6 +419,20 @@ describe("guides.savePixKeyOnboarding", () => {
       pixKey: "52998224725",
       pixKeyHolderName: "João Silva",
     });
+    // Story 7: audit log created on Pix key creation
+    expect(db.createAuditLog).toHaveBeenCalledWith(
+      expect.objectContaining({
+        entityType: "guide_financial_info",
+        entityId: 2,
+        action: "pix_key_created",
+        previousValue: null,
+        actorId: 2,
+        actorType: "guide",
+        source: "onboarding",
+      })
+    );
+    // Story 13: eligibility check runs after key is saved
+    expect(db.checkAndUpdatePaymentEligibility).toHaveBeenCalledWith(2);
   });
 
   it("saves an email Pix key successfully", async () => {
@@ -666,9 +683,20 @@ describe("guides.updatePixKey", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(db.updateGuideFinancialInfo).mockResolvedValue(undefined);
+    vi.mocked(db.getGuideFinancialInfoDecrypted).mockResolvedValue({
+      id: 1,
+      guideId: 2,
+      pixKeyType: "email",
+      pixKey: "antigo@example.com",
+      pixKeyHolderName: "Guide User",
+      pixKeyVerified: 1,
+      paymentEnabled: 1,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    } as any);
   });
 
-  it("updates Pix key with valid email", async () => {
+  it("updates Pix key with valid email and logs audit entry", async () => {
     const caller = appRouter.createCaller(createGuideContext());
 
     const result = await caller.guides.updatePixKey({
@@ -686,6 +714,25 @@ describe("guides.updatePixKey", () => {
         pixKeyHolderName: "Guide User",
       })
     );
+    // Story 7: audit log records old and new values (masked)
+    expect(db.createAuditLog).toHaveBeenCalledWith(
+      expect.objectContaining({
+        entityType: "guide_financial_info",
+        entityId: 2,
+        action: "pix_key_updated",
+        actorId: 2,
+        actorType: "guide",
+        source: "guide_portal",
+      })
+    );
+    const auditCall = vi.mocked(db.createAuditLog).mock.calls[0][0];
+    const prev = JSON.parse(auditCall.previousValue!);
+    const next = JSON.parse(auditCall.newValue!);
+    expect(prev.key).toBe("****@example.com");       // old masked
+    expect(next.key).toBe("****@example.com");        // new masked
+    expect(next.type).toBe("email");
+    // Story 13: eligibility check runs after key update
+    expect(db.checkAndUpdatePaymentEligibility).toHaveBeenCalledWith(2);
   });
 
   it("normalizes email to lowercase before saving", async () => {
