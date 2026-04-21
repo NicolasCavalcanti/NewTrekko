@@ -51,8 +51,8 @@ const apiBase = (import.meta.env.VITE_API_URL ?? "").replace(/\/$/, "");
 // In this state every tRPC call must be intercepted so we return a proper
 // JSON error instead of letting GitHub Pages serve its HTML 404 page,
 // which causes "Unexpected token '<'" parse crashes.
-const STATIC_NO_API =
-  import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
+const STATIC_MODE = import.meta.env.VITE_STATIC_MODE === "true";
+const STATIC_NO_API = STATIC_MODE;
 
 /** Returns a well-formed tRPC batch error response for N operations. */
 function makeStaticErrorResponse(url: string | URL | Request): Response {
