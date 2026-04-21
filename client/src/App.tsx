@@ -25,6 +25,7 @@ const Reservations = lazy(() => import("./pages/Reservations"));
 const Terms = lazy(() => import("./pages/Terms"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const EditorialPolicy = lazy(() => import("./pages/EditorialPolicy"));
+const TemplateEditorial = lazy(() => import("./pages/TemplateEditorial"));
 const Contact = lazy(() => import("./pages/Contact"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
@@ -53,6 +54,7 @@ function AppRoutes() {
           <Route path="/termos" component={Terms} />
           <Route path="/privacidade" component={Privacy} />
           <Route path="/politica-editorial" component={EditorialPolicy} />
+          <Route path="/template-editorial" component={TemplateEditorial} />
           <Route path="/contato" component={Contact} />
           <Route path="/404" component={NotFound} />
           <Route component={NotFound} />
