@@ -73,6 +73,8 @@ export async function supabaseRegister(data: {
   password: string;
   userType: "trekker" | "guide";
   cadasturNumber?: string;
+  pixKeyType?: string;
+  pixKeyValue?: string;
 }): Promise<{ user: SupabaseUser } | { error: string }> {
   if (!supabase) return { error: "Supabase não configurado" };
   const { data: auth, error } = await supabase.auth.signUp({
@@ -87,6 +89,10 @@ export async function supabaseRegister(data: {
         cadasturValidated: 0,
         bio: null,
         photoUrl: null,
+        // Store Pix in metadata as recovery backup for guides
+        ...(data.userType === "guide" && data.pixKeyType
+          ? { pixKeyType: data.pixKeyType, pixKeyValue: data.pixKeyValue ?? null }
+          : {}),
       },
     },
   });
