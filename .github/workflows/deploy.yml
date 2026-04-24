@@ -1,0 +1,119 @@
+name: Deploy
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Generate guides from the committed xlsx — no DATABASE_URL needed.
+      - name: Generate guides static data
+        run: node scripts/generate-guides-from-xlsx.cjs
+
+      - name: Export trails static data
+        run: pnpm tsx scripts/export-trails-static.ts
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Run Supabase migrations
+        run: |
+          run_migration() {
+            local file="$1"
+            local SQL
+            SQL=$(cat "$file")
+            local PAYLOAD
+            PAYLOAD=$(jq -n --arg q "$SQL" '{"query": $q}')
+            if [ -n "$SUPABASE_ACCESS_TOKEN" ]; then
+              echo "Running $file via Supabase Management API..."
+              curl -sf -X POST \
+                "https://api.supabase.com/v1/projects/nyvfwvydcwmbafzxfozk/database/query" \
+                -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+                -H "Content-Type: application/json" \
+                -d "$PAYLOAD" && echo "$file applied." || echo "$file failed (may already exist)."
+            elif [ -n "$DATABASE_URL" ]; then
+              echo "Running $file via psql..."
+              psql "$DATABASE_URL" -f "$file" || echo "psql migration $file failed."
+            else
+              echo "No DB credentials set — skipping $file."
+            fi
+          }
+          run_migration supabase/migrations/001_create_expeditions.sql
+          run_migration supabase/migrations/002_create_enrollments.sql
+          run_migration supabase/migrations/003_create_guide_pix.sql
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        continue-on-error: true
+
+      - name: Deploy Supabase Edge Functions
+        if: ${{ secrets.SUPABASE_ACCESS_TOKEN != '' }}
+        timeout-minutes: 3
+        run: |
+          if [ -z "$SUPABASE_ACCESS_TOKEN" ]; then
+            echo "SUPABASE_ACCESS_TOKEN not set — skipping edge function deploy."
+            exit 0
+          fi
+          npx --yes supabase@1 functions deploy create-mp-checkout \
+            --project-ref nyvfwvydcwmbafzxfozk \
+            --no-verify-jwt || echo "Edge function deploy failed."
+          if [ -n "$MERCADOPAGO_ACCESS_TOKEN" ]; then
+            npx supabase@1 secrets set MERCADOPAGO_ACCESS_TOKEN="$MERCADOPAGO_ACCESS_TOKEN" \
+              --project-ref nyvfwvydcwmbafzxfozk || echo "Secret set failed."
+          fi
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          MERCADOPAGO_ACCESS_TOKEN: ${{ secrets.MERCADOPAGO_ACCESS_TOKEN }}
+        continue-on-error: true
+
+      - name: Build frontend
+        run: pnpm vite build --base=/
+        env:
+          NODE_ENV: production
+          VITE_STATIC_MODE: "true"
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
+      - name: Copy index.html to 404.html (SPA routing)
+        run: cp dist/public/index.html dist/public/404.html
+
+      - name: Add CNAME
+        run: echo "www.trekko.com.br" > dist/public/CNAME
+
+      - name: Configure git
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist/public
+          force_orphan: true
