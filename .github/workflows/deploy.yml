@@ -65,6 +65,7 @@ jobs:
           }
           run_migration supabase/migrations/001_create_expeditions.sql
           run_migration supabase/migrations/002_create_enrollments.sql
+          run_migration supabase/migrations/003_create_guide_pix.sql
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}

@@ -3,6 +3,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { staticRegister } from "@/lib/staticAuth";
 import { USE_SUPABASE } from "@/lib/supabase";
 import { supabaseRegister } from "@/lib/supabaseAuth";
+import { saveGuidePix } from "@/lib/supabasePix";
+import {
+  validatePixKey,
+  formatPixKeyValue,
+  normalizePixKey,
+  getPixKeyPlaceholder,
+  type PixKeyType,
+} from "@/lib/pixValidation";
 
 const STATIC_NO_API =
   import.meta.env.VITE_STATIC_MODE === "true" && !import.meta.env.VITE_API_URL;
@@ -10,10 +18,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import { useLocation } from "wouter";
-import { Loader2, User, Shield, CheckCircle, ArrowLeft, ArrowRight, Eye, EyeOff } from "lucide-react";
+import { Loader2, User, Shield, CheckCircle, ArrowLeft, ArrowRight, Eye, EyeOff, Wallet } from "lucide-react";
 
 interface RegisterModalProps {
   open: boolean;
@@ -22,7 +31,7 @@ interface RegisterModalProps {
 }
 
 type UserType = "trekker" | "guide" | null;
-type GuideStep = 1 | 2;
+type GuideStep = 1 | 2 | 3;
 
 export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: RegisterModalProps) {
   const [, navigate] = useLocation();
@@ -54,6 +63,10 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  // Pix fields (guide only — step 3)
+  const [pixKeyType, setPixKeyType] = useState<PixKeyType>("cpf");
+  const [pixKeyValue, setPixKeyValue] = useState("");
 
   // Validation errors
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -91,6 +104,8 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
         setErrors({ email: error.message });
       } else if (error.message.includes("CADASTUR")) {
         setErrors({ cadastur: error.message });
+      } else if (error.message.includes("Pix") || error.message.includes("pix")) {
+        setErrors({ pixKeyValue: error.message });
       } else {
         toast.error(error.message);
       }
@@ -109,6 +124,8 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
     setConfirmPassword("");
     setBio("");
     setAcceptedTerms(false);
+    setPixKeyType("cpf");
+    setPixKeyValue("");
     setErrors({});
   };
 
@@ -173,6 +190,10 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
     );
   };
 
+  const isGuideStep3Valid = () => {
+    return !validatePixKey(pixKeyType, pixKeyValue);
+  };
+
   const [cadasturValidating, setCadasturValidating] = useState(false);
 
   // Handle CADASTUR validation
@@ -226,25 +247,25 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
     validateCadasturMutation.mutate({ cadasturNumber });
   };
 
-  // Handle form submission
+  // Handle Trekker form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     // Validate all fields
     const newErrors: Record<string, string> = {};
-    
+
     const nameError = validateName(name);
     if (nameError) newErrors.name = nameError;
-    
+
     const emailError = validateEmail(email);
     if (emailError) newErrors.email = emailError;
-    
+
     const passwordError = validatePassword(password);
     if (passwordError) newErrors.password = passwordError;
-    
+
     const confirmPasswordError = validateConfirmPassword(confirmPassword);
     if (confirmPasswordError) newErrors.confirmPassword = confirmPasswordError;
-    
+
     if (!acceptedTerms) newErrors.terms = "Você deve aceitar os termos";
 
     if (Object.keys(newErrors).length > 0) {
@@ -257,8 +278,7 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
         name: name.trim(),
         email: email.trim().toLowerCase(),
         password,
-        userType: userType as "trekker" | "guide",
-        cadasturNumber: userType === "guide" ? cadasturNumber : undefined,
+        userType: "trekker",
       }).then((result: any) => {
         if ("error" in result) {
           if (result.error.includes("e-mail") || result.error.includes("cadastrado")) {
@@ -290,8 +310,7 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
         name: name.trim(),
         email: email.trim().toLowerCase(),
         password,
-        userType: userType as "trekker" | "guide",
-        cadasturNumber: userType === "guide" ? cadasturNumber : undefined,
+        userType: "trekker",
       });
       if ("error" in result) {
         if (result.error.includes("e-mail") || result.error.includes("cadastrado")) {
@@ -312,14 +331,127 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
       name: name.trim(),
       email: email.trim().toLowerCase(),
       password,
-      userType: userType!,
-      cadasturNumber: userType === "guide" ? cadasturNumber : undefined,
+      userType: "trekker",
+    });
+  };
+
+  // Handle Guide Step 2 "Próximo" — validates account fields and advances to Pix step
+  const handleStep2Next = (e: React.FormEvent) => {
+    e.preventDefault();
+    const newErrors: Record<string, string> = {};
+
+    const nameError = validateName(name);
+    if (nameError) newErrors.name = nameError;
+    const emailError = validateEmail(email);
+    if (emailError) newErrors.email = emailError;
+    const passwordError = validatePassword(password);
+    if (passwordError) newErrors.password = passwordError;
+    const confirmPasswordError = validateConfirmPassword(confirmPassword);
+    if (confirmPasswordError) newErrors.confirmPassword = confirmPasswordError;
+    if (!acceptedTerms) newErrors.terms = "Você deve aceitar os termos";
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    setErrors({});
+    setGuideStep(3);
+  };
+
+  // Handle Guide final registration (Step 3) — validates Pix and creates account
+  const handleGuideRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const pixError = validatePixKey(pixKeyType, pixKeyValue);
+    if (pixError) {
+      setErrors({ pixKeyValue: pixError });
+      return;
+    }
+    setErrors({});
+
+    const normalizedPix = normalizePixKey(pixKeyType, pixKeyValue);
+
+    if (USE_SUPABASE) {
+      supabaseRegister({
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        password,
+        userType: "guide",
+        cadasturNumber: cadasturNumber,
+        pixKeyType,
+        pixKeyValue: normalizedPix,
+      }).then(async (result: any) => {
+        if ("error" in result) {
+          if (result.error.includes("e-mail") || result.error.includes("cadastrado")) {
+            setErrors({ email: result.error });
+          } else {
+            toast.error(result.error);
+          }
+          return;
+        }
+        if (result.confirmationRequired) {
+          toast.success(
+            "Cadastro realizado! Verifique seu e-mail e clique no link de confirmação para ativar sua conta.",
+            { duration: 8000 }
+          );
+          onOpenChange(false);
+          resetForm();
+          return;
+        }
+        // Session active: persist Pix key to guide_pix_keys table
+        const pixResult = await saveGuidePix({ pixKeyType, pixKeyValue: normalizedPix });
+        if ("error" in pixResult) {
+          // Non-blocking — account was created; guide can update Pix in profile
+          console.warn("Pix save failed:", pixResult.error);
+        }
+        toast.success("Conta criada com sucesso!");
+        onOpenChange(false);
+        resetForm();
+        window.location.reload();
+      });
+      return;
+    }
+
+    if (STATIC_NO_API) {
+      const result = staticRegister({
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        password,
+        userType: "guide",
+        cadasturNumber: cadasturNumber,
+      });
+      if ("error" in result) {
+        if (result.error.includes("e-mail") || result.error.includes("cadastrado")) {
+          setErrors({ email: result.error });
+        } else {
+          toast.error(result.error);
+        }
+        return;
+      }
+      toast.success("Conta criada com sucesso!");
+      onOpenChange(false);
+      resetForm();
+      window.location.href = `${import.meta.env.BASE_URL}perfil`;
+      return;
+    }
+
+    // tRPC path
+    registerMutation.mutate({
+      name: name.trim(),
+      email: email.trim().toLowerCase(),
+      password,
+      userType: "guide",
+      cadasturNumber: cadasturNumber,
+      pixKeyType,
+      pixKeyValue: normalizedPix,
     });
   };
 
   // Handle back navigation
   const handleBack = () => {
-    if (userType === "guide" && guideStep === 2) {
+    if (userType === "guide" && guideStep === 3) {
+      setGuideStep(2);
+    } else if (userType === "guide" && guideStep === 2) {
       setGuideStep(1);
     } else {
       setUserType(null);
@@ -612,9 +744,9 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
     </div>
   );
 
-  // Render Guide Step 2 - Account details
+  // Render Guide Step 2 - Account details (advances to step 3)
   const renderGuideStep2 = () => (
-    <form onSubmit={handleSubmit} className="space-y-4 w-full overflow-visible">
+    <form onSubmit={handleStep2Next} className="space-y-4 w-full overflow-visible">
       <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/10 text-primary mb-4">
         <CheckCircle className="w-5 h-5" />
         <span className="font-medium">CADASTUR: {cadasturNumber}</span>
@@ -750,7 +882,87 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
         </Button>
         <Button
           type="submit"
-          disabled={!isGuideStep2Valid() || registerMutation.isPending}
+          disabled={!isGuideStep2Valid()}
+          className="flex-1"
+        >
+          Próximo
+          <ArrowRight className="w-4 h-4 ml-2" />
+        </Button>
+      </div>
+    </form>
+  );
+
+  // Render Guide Step 3 - Pix key capture (mandatory)
+  const renderGuideStep3 = () => (
+    <form onSubmit={handleGuideRegister} className="space-y-4 w-full overflow-visible">
+      {/* Section header */}
+      <div className="flex items-start gap-3 p-4 rounded-lg border border-border bg-muted/30">
+        <Wallet className="w-5 h-5 text-primary mt-0.5 shrink-0" />
+        <div>
+          <p className="text-sm font-medium">Dados de recebimento</p>
+          <p className="text-xs text-muted-foreground mt-1">
+            Sua chave Pix é usada exclusivamente para receber os pagamentos das expedições
+            realizadas na plataforma. Você poderá atualizá-la a qualquer momento no seu perfil.
+          </p>
+        </div>
+      </div>
+
+      {/* Tipo de chave Pix */}
+      <div className="space-y-2">
+        <Label htmlFor="pixKeyType">
+          Tipo de chave Pix <span className="text-destructive">*</span>
+        </Label>
+        <Select
+          value={pixKeyType}
+          onValueChange={(v: PixKeyType) => {
+            setPixKeyType(v);
+            setPixKeyValue("");
+            if (errors.pixKeyValue) setErrors({ ...errors, pixKeyValue: "" });
+          }}
+        >
+          <SelectTrigger id="pixKeyType">
+            <SelectValue placeholder="Selecione o tipo de chave" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="cpf">CPF</SelectItem>
+            <SelectItem value="cnpj">CNPJ</SelectItem>
+            <SelectItem value="email">E-mail</SelectItem>
+            <SelectItem value="phone">Telefone</SelectItem>
+            <SelectItem value="random">Aleatória</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      {/* Chave Pix */}
+      <div className="space-y-2">
+        <Label htmlFor="pixKeyValue">
+          Chave Pix <span className="text-destructive">*</span>
+        </Label>
+        <Input
+          id="pixKeyValue"
+          type={pixKeyType === "email" ? "email" : "text"}
+          value={pixKeyValue}
+          onChange={(e) => {
+            setPixKeyValue(formatPixKeyValue(e.target.value, pixKeyType));
+            if (errors.pixKeyValue) setErrors({ ...errors, pixKeyValue: "" });
+          }}
+          placeholder={getPixKeyPlaceholder(pixKeyType)}
+          className={errors.pixKeyValue ? "border-destructive" : ""}
+          autoComplete="off"
+        />
+        {errors.pixKeyValue && (
+          <p className="text-sm text-destructive">{errors.pixKeyValue}</p>
+        )}
+      </div>
+
+      <div className="flex gap-3 pt-2">
+        <Button type="button" variant="outline" onClick={() => setGuideStep(2)} className="flex-1">
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Voltar
+        </Button>
+        <Button
+          type="submit"
+          disabled={!isGuideStep3Valid() || registerMutation.isPending}
           className="flex-1"
         >
           {registerMutation.isPending ? (
@@ -777,10 +989,9 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
     }
 
     if (userType === "guide") {
-      if (guideStep === 1) {
-        return renderGuideStep1();
-      }
-      return renderGuideStep2();
+      if (guideStep === 1) return renderGuideStep1();
+      if (guideStep === 2) return renderGuideStep2();
+      return renderGuideStep3();
     }
 
     return null;
@@ -792,9 +1003,16 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
     if (userType === "trekker") return "Cadastro de Trekker";
     if (userType === "guide") {
       if (guideStep === 1) return "Validação CADASTUR";
-      return "Dados da conta";
+      if (guideStep === 2) return "Dados da conta";
+      return "Dados de recebimento";
     }
     return "Criar conta";
+  };
+
+  // Guide step indicator label
+  const getGuideStepLabel = () => {
+    if (userType !== "guide") return null;
+    return `Etapa ${guideStep} de 3`;
   };
 
   return (
@@ -804,7 +1022,14 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
     }}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="font-heading text-xl">{getTitle()}</DialogTitle>
+          <div className="flex items-center justify-between">
+            <DialogTitle className="font-heading text-xl">{getTitle()}</DialogTitle>
+            {getGuideStepLabel() && (
+              <span className="text-xs text-muted-foreground font-medium bg-muted px-2 py-1 rounded-full">
+                {getGuideStepLabel()}
+              </span>
+            )}
+          </div>
         </DialogHeader>
         {renderContent()}
       </DialogContent>

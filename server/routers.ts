@@ -40,6 +40,30 @@ const guideProcedure = protectedProcedure.use(({ ctx, next }) => {
   return next({ ctx });
 });
 
+function validatePixKeyValue(type: string, value: string): string | null {
+  const digits = value.replace(/\D/g, '');
+  switch (type) {
+    case 'cpf':
+      if (digits.length !== 11) return 'CPF deve ter 11 dígitos';
+      return null;
+    case 'cnpj':
+      if (digits.length !== 14) return 'CNPJ deve ter 14 dígitos';
+      return null;
+    case 'email':
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return 'E-mail inválido';
+      return null;
+    case 'phone':
+      if (digits.length !== 11) return 'Telefone deve ter 11 dígitos com DDD';
+      return null;
+    case 'random':
+      if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value))
+        return 'Chave aleatória inválida';
+      return null;
+    default:
+      return 'Tipo de chave Pix inválido';
+  }
+}
+
 export const appRouter = router({
   system: systemRouter,
   
@@ -59,7 +83,12 @@ export const appRouter = router({
         password: z.string().min(8, 'Senha deve ter pelo menos 8 caracteres'),
         userType: z.enum(['trekker', 'guide']),
         cadasturNumber: z.string().optional(),
-      }))
+        pixKeyType: z.enum(['cpf', 'cnpj', 'email', 'phone', 'random']).optional(),
+        pixKeyValue: z.string().optional(),
+      }).refine(
+        (data) => data.userType !== 'guide' || (!!data.pixKeyType && !!data.pixKeyValue?.trim()),
+        { message: 'Chave Pix é obrigatória para guias', path: ['pixKeyValue'] }
+      ))
       .mutation(async ({ ctx, input }) => {
         const bcrypt = await import('bcryptjs');
         
@@ -96,6 +125,23 @@ export const appRouter = router({
             });
           }
           cadasturData = validation.data;
+
+          // Validate Pix key for guides (US 2.2 — backend validation)
+          if (!input.pixKeyType || !input.pixKeyValue?.trim()) {
+            throw new TRPCError({
+              code: 'BAD_REQUEST',
+              message: 'Chave Pix é obrigatória para guias',
+              cause: { code: 'INVALID_PIX_KEY', field: 'pixKeyValue' },
+            });
+          }
+          const pixError = validatePixKeyValue(input.pixKeyType, input.pixKeyValue);
+          if (pixError) {
+            throw new TRPCError({
+              code: 'BAD_REQUEST',
+              message: pixError,
+              cause: { code: 'INVALID_PIX_KEY', field: 'pixKeyValue' },
+            });
+          }
         }
 
         // Hash password
