@@ -5,6 +5,24 @@ Disallow: /reservas
 Disallow: /admin
 Disallow: /api/
 Disallow: /guia/
+Disallow: /guias
+Disallow: /expedicao/
 Disallow: /component-showcase
+
+# Explicit block for AdSense crawler (AdsBot ignores wildcard on some configs)
+User-agent: AdsBot-Google
+Disallow: /guia/
+Disallow: /guias
+Disallow: /expedicao/
+
+User-agent: AdsBot-Google-Mobile
+Disallow: /guia/
+Disallow: /guias
+Disallow: /expedicao/
+
+User-agent: Mediapartners-Google
+Disallow: /guia/
+Disallow: /guias
+Disallow: /expedicao/
 
 Sitemap: https://trekko.com.br/sitemap.xml
