@@ -4,5 +4,7 @@ Disallow: /checkout
 Disallow: /reservas
 Disallow: /admin
 Disallow: /api/
+Disallow: /guia/
+Disallow: /component-showcase
 
 Sitemap: https://trekko.com.br/sitemap.xml
