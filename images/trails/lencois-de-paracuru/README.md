@@ -1,10 +1,12 @@
 # Lençóis de Paracuru — mídia local
 
-Imagens enviadas pelo usuário foram incorporadas como **SVG com JPEG embutido em base64** (texto), evitando arquivos binários no diff.
+As artes SVG deste diretório eram usadas como fallback interno para a trilha 9.
 
-## Imagens importadas
+## Situação atual (abril/2026)
 
-- `paracuru-duna-mar-por-do-sol.svg`
-- `paracuru-dunas-oceano-panorama.svg` **(hero)**
-- `paracuru-vista-aerea-litoral.svg`
-- `paracuru-lagoas-dunas.svg`
+A imagem principal da trilha passou a usar uma foto pública licenciada no Wikimedia Commons (CC BY-SA 3.0):
+
+- Fonte: https://commons.wikimedia.org/wiki/File:Dunas_de_Paracuru.JPG
+- Arquivo público (hero): https://upload.wikimedia.org/wikipedia/commons/b/b9/Dunas_de_Paracuru.JPG
+
+Os SVGs locais foram mantidos apenas como material histórico e não são mais a origem principal da mídia no cadastro da trilha.
