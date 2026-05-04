@@ -16,8 +16,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Trekko Analytics Configuration -->
+<script>window.TREKKO_CONFIG={GA4_ID:'G-S816P190VN',GTM_ID:'',ADS_ID:''};</script>
+<script>(function(){var id=(window.TREKKO_CONFIG||{}).GTM_ID;if(!id)return;window.dataLayer=window.dataLayer||[];window.dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=document.getElementsByTagName('script')[0],j=document.createElement('script');j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+id;f.parentNode.insertBefore(j,f);})();</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-S816P190VN"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-S816P190VN');</script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-S816P190VN',{send_page_view:!(window.TREKKO_CONFIG&&window.TREKKO_CONFIG.GTM_ID)});</script>
+<script src="/assets/trekko-analytics.js"></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
 {"@type":"BreadcrumbList","itemListElement":[
@@ -563,9 +567,19 @@ footer{background:#1e293b;color:#94a3b8;padding:3rem 0 2rem}
 </footer>
 
 <script>
-function trackEvent(n,p){if(typeof gtag!=='undefined')gtag('event',n,Object.assign({page_path:'/trilhas/minas-gerais'},p||{}));}
-window.addEventListener('load',function(){trackEvent('page_view_trail_landing',{state:'minas-gerais'});});
-document.addEventListener('click',function(e){var el=e.target.closest('[data-event]');if(el)trackEvent(el.getAttribute('data-event'),{label:el.textContent.trim().substring(0,50)});});
+function trackEvent(n,p){
+  var base={page_path:'/trilhas/minas-gerais',page_type:'trail_state_landing',state:'minas-gerais'};
+  if(window.TrekkoAnalytics)window.TrekkoAnalytics.trackEvent(n,Object.assign(base,p||{}));
+  else if(typeof gtag!=='undefined')gtag('event',n,Object.assign(base,p||{}));
+}
+window.addEventListener('load',function(){
+  if(window.TrekkoAnalytics)window.TrekkoAnalytics.trackPageView({page_path:'/trilhas/minas-gerais',page_type:'trail_state_landing',content_group:'trail_state_landing'});
+  trackEvent('page_view_trail_landing',{state:'minas-gerais'});
+});
+document.addEventListener('click',function(e){
+  var el=e.target.closest('[data-event]');
+  if(el)trackEvent(el.getAttribute('data-event'),{cta_text:el.textContent.trim().substring(0,80)});
+});
 (function(){var h=document.getElementById('site-header');window.addEventListener('scroll',function(){h.classList.toggle('scrolled',window.scrollY>50);},{passive:true});})();
 (function(){document.querySelectorAll('.faq-q').forEach(function(btn){btn.addEventListener('click',function(){var item=this.closest('.faq-item');var isOpen=item.classList.contains('open');document.querySelectorAll('.faq-item.open').forEach(function(i){i.classList.remove('open');i.querySelector('.faq-q').setAttribute('aria-expanded','false');});if(!isOpen){item.classList.add('open');this.setAttribute('aria-expanded','true');}});});})();
 (function(){
@@ -580,12 +594,15 @@ if(type&&c.dataset.type!==type)ok=false;
 c.style.display=ok?'':'none';if(ok)vis++;});
 noRes.style.display=vis===0?'block':'none';
 cnt.textContent=vis===cards.length?'':('Exibindo '+vis+' de '+cards.length+' trilha'+(cards.length!==1?'s':''));
-if(diff||dist||type)trackEvent('filter_trails',{diff:diff,dist:dist,type:type});}
+if(diff||dist||type){
+  if(window.TrekkoAnalytics)window.TrekkoAnalytics.trackFilter({difficulty:diff,distance_range:dist,experience_type:type,state:'minas-gerais',results_count:vis,page_type:'trail_state_landing'});
+  else trackEvent('filter_trails',{difficulty:diff,distance_range:dist,experience_type:type,results_count:vis});
+}}
 [fD,fDi,fT].forEach(function(s){s.addEventListener('change',run);});
 document.getElementById('filter-reset').addEventListener('click',function(){fD.value='';fDi.value='';fT.value='';run();});
 run();
 })();
-(function(){var t50=false,t90=false;window.addEventListener('scroll',function(){var p=window.scrollY/(document.body.scrollHeight-window.innerHeight);if(!t50&&p>=.5){t50=true;trackEvent('scroll_50');}if(!t90&&p>=.9){t90=true;trackEvent('scroll_90');}},{passive:true});})();
+// Scroll depth handled by trekko-analytics.js
 </script>
 </body>
 </html>

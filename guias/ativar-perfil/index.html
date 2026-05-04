@@ -17,13 +17,36 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Trekko Analytics Configuration -->
+<script>
+window.TREKKO_CONFIG = {
+  GA4_ID: 'G-S816P190VN',
+  GTM_ID: '',          /* e.g. 'GTM-XXXXXXX'  — fill to activate GTM  */
+  ADS_ID: ''           /* e.g. 'AW-XXXXXXXXX' — fill to activate Ads  */
+};
+</script>
+<!-- Google Tag Manager (loads only when GTM_ID is configured) -->
+<script>
+(function(){
+  var id=(window.TREKKO_CONFIG||{}).GTM_ID;
+  if(!id)return;
+  window.dataLayer=window.dataLayer||[];
+  window.dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+  var f=document.getElementsByTagName('script')[0],j=document.createElement('script');
+  j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+id;
+  f.parentNode.insertBefore(j,f);
+})();
+</script>
+<!-- Google tag (gtag.js) — direct GA4 fallback while GTM is not configured -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-S816P190VN"></script>
 <script>
 window.dataLayer=window.dataLayer||[];
 function gtag(){dataLayer.push(arguments);}
 gtag('js',new Date());
-gtag('config','G-S816P190VN');
+gtag('config','G-S816P190VN',{send_page_view:!(window.TREKKO_CONFIG&&window.TREKKO_CONFIG.GTM_ID)});
 </script>
+<!-- Trekko centralized analytics helper -->
+<script src="/assets/trekko-analytics.js"></script>
 <script type="application/ld+json">
 {
   "@context":"https://schema.org",
@@ -587,16 +610,28 @@ footer{background:#1e293b;color:#94a3b8;padding:3rem 0 2rem}
 </footer>
 
 <script>
-// GA4 event helper
-function trackEvent(name,params){if(typeof gtag!=='undefined')gtag('event',name,Object.assign({page_path:'/guias/ativar-perfil'},params||{}));}
+// Thin shim so legacy data-event wiring still works via TrekkoAnalytics
+function trackEvent(name,params){
+  if(window.TrekkoAnalytics){window.TrekkoAnalytics.trackEvent(name,Object.assign({page_path:'/guias/ativar-perfil',page_type:'guide_activation_landing'},params||{}));}
+  else if(typeof gtag!=='undefined'){gtag('event',name,Object.assign({page_path:'/guias/ativar-perfil'},params||{}));}
+}
 
-// Track page view
-window.addEventListener('load',function(){trackEvent('page_view_guide_activation');});
+// Track page view on load (supplements the auto page_view from gtag config)
+window.addEventListener('load',function(){
+  if(window.TrekkoAnalytics){
+    window.TrekkoAnalytics.trackPageView({
+      page_path:'/guias/ativar-perfil',
+      page_type:'guide_activation_landing',
+      content_group:'guide_activation_landing'
+    });
+  }
+  trackEvent('page_view_guide_activation');
+});
 
-// Track CTA and link clicks via data-event
+// Track CTA and link clicks via data-event attribute
 document.addEventListener('click',function(e){
   var el=e.target.closest('[data-event]');
-  if(el){trackEvent(el.getAttribute('data-event'));}
+  if(el){trackEvent(el.getAttribute('data-event'),{cta_text:el.textContent.trim().substring(0,80)});}
 });
 
 // Sticky header
@@ -666,9 +701,13 @@ document.addEventListener('click',function(e){
   var errorMsg=document.getElementById('form-error');
   var formStarted=false;
 
-  // Track form start on first input
+  // Track form start on FIRST user interaction (microconversion)
   form.addEventListener('input',function(){
-    if(!formStarted){formStarted=true;trackEvent('form_start_guide_activation');}
+    if(!formStarted){
+      formStarted=true;
+      trackEvent('form_start_guide_activation',{form_name:'guide_activation',page_type:'guide_activation_landing'});
+      if(window.TrekkoAnalytics) window.TrekkoAnalytics.trackGuideSignupStart({cta_text:'form_input',source_page:'/guias/ativar-perfil',page_type:'guide_activation_landing'});
+    }
   },{once:true});
 
   function showError(id,msg){
@@ -715,8 +754,10 @@ document.addEventListener('click',function(e){
     successMsg.style.display='none';errorMsg.style.display='none';
     if(!validate())return;
     submitBtn.disabled=true;btnText.textContent='Enviando...';btnSpinner.style.display='inline-block';
-    trackEvent('form_submit_guide_activation');
+    // NOTE: conversion events are fired ONLY after confirmed server success below
     try{
+      // Collect form data — PII fields (email, whatsapp) go to the mail service only,
+      // NOT forwarded to analytics. Only safe metadata (state, city, has_cadastur) is tracked.
       var data={};
       var fd=new FormData(form);
       fd.forEach(function(v,k){if(data[k])data[k]+=' | '+v;else data[k]=v;});
@@ -726,6 +767,23 @@ document.addEventListener('click',function(e){
         body:JSON.stringify(data)
       });
       if(res.ok){
+        // ── PRIMARY CONVERSIONS — fire only on confirmed success ──────────
+        var state=(document.getElementById('estado')||{}).value||'';
+        var city=(document.getElementById('cidade')||{}).value||'';
+        var hasCadastur=(document.querySelector('input[name="cadastur"]:checked')||{}).value==='sim';
+
+        trackEvent('form_submit_guide_activation',{
+          form_name:'guide_activation',
+          state:state,city:city,has_cadastur:hasCadastur,
+          source_page:'/guias/ativar-perfil',page_type:'guide_activation_landing'
+        });
+        if(window.TrekkoAnalytics){
+          window.TrekkoAnalytics.trackGuideSignupComplete({
+            state:state,city:city,has_cadastur:hasCadastur,
+            source_page:'/guias/ativar-perfil',page_type:'guide_activation_landing'
+          });
+        }
+        // ─────────────────────────────────────────────────────────────────
         successMsg.style.display='block';
         form.reset();
         successMsg.scrollIntoView({behavior:'smooth',block:'center'});
