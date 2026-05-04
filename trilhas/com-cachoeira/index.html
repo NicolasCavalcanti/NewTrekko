@@ -16,8 +16,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Trekko Analytics Configuration -->
+<script>window.TREKKO_CONFIG={GA4_ID:'G-S816P190VN',GTM_ID:'',ADS_ID:''};</script>
+<script>(function(){var id=(window.TREKKO_CONFIG||{}).GTM_ID;if(!id)return;window.dataLayer=window.dataLayer||[];window.dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=document.getElementsByTagName('script')[0],j=document.createElement('script');j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+id;f.parentNode.insertBefore(j,f);})();</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-S816P190VN"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-S816P190VN');</script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-S816P190VN',{send_page_view:!(window.TREKKO_CONFIG&&window.TREKKO_CONFIG.GTM_ID)});</script>
+<script src="/assets/trekko-analytics.js"></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
 {"@type":"BreadcrumbList","itemListElement":[
@@ -626,13 +630,20 @@ p{color:var(--text-secondary);line-height:1.7}
 // Header scroll
 (function(){var h=document.getElementById('site-header');if(!h)return;window.addEventListener('scroll',function(){h.classList.toggle('scrolled',window.scrollY>10)},{passive:true});})();
 
-// GA4
-function trackEvent(n,p){if(typeof gtag!=='undefined')gtag('event',n,Object.assign({page_path:'/trilhas/com-cachoeira'},p||{}));}
-window.addEventListener('load',function(){trackEvent('page_view_trail_landing',{intent:'com-cachoeira'});});
-document.addEventListener('click',function(e){var el=e.target.closest('[data-event]');if(el)trackEvent(el.getAttribute('data-event'),{label:el.textContent.trim().substring(0,50)});});
-
-// Scroll depth
-(function(){var s50=false,s90=false;window.addEventListener('scroll',function(){var pct=(window.scrollY+window.innerHeight)/document.body.scrollHeight*100;if(!s50&&pct>=50){s50=true;trackEvent('scroll_50');}if(!s90&&pct>=90){s90=true;trackEvent('scroll_90');}},{passive:true});})();
+function trackEvent(n,p){
+  var base={page_path:'/trilhas/com-cachoeira',page_type:'trail_intent_landing',experience_type:'com-cachoeira'};
+  if(window.TrekkoAnalytics)window.TrekkoAnalytics.trackEvent(n,Object.assign(base,p||{}));
+  else if(typeof gtag!=='undefined')gtag('event',n,Object.assign(base,p||{}));
+}
+window.addEventListener('load',function(){
+  if(window.TrekkoAnalytics)window.TrekkoAnalytics.trackPageView({page_path:'/trilhas/com-cachoeira',page_type:'trail_intent_landing',content_group:'trail_intent_landing'});
+  trackEvent('page_view_trail_landing',{intent:'com-cachoeira'});
+});
+document.addEventListener('click',function(e){
+  var el=e.target.closest('[data-event]');
+  if(el)trackEvent(el.getAttribute('data-event'),{cta_text:el.textContent.trim().substring(0,80)});
+});
+// Scroll depth handled by trekko-analytics.js
 
 // FAQ accordion
 document.querySelectorAll('.faq-q').forEach(function(btn){btn.addEventListener('click',function(){var ans=this.nextElementSibling;var open=this.getAttribute('aria-expanded')==='true';document.querySelectorAll('.faq-q').forEach(function(b){b.setAttribute('aria-expanded','false');b.nextElementSibling.classList.remove('open');});if(!open){this.setAttribute('aria-expanded','true');ans.classList.add('open');}});});
@@ -657,7 +668,8 @@ document.querySelectorAll('.faq-q').forEach(function(btn){btn.addEventListener('
       if(ok)vis++;
     });
     countEl.textContent=vis+' trilha'+(vis!==1?'s':'')+' encontrada'+(vis!==1?'s':'');
-    trackEvent('filter_trails',{state:st,difficulty:df,distance:di});
+    if(window.TrekkoAnalytics)window.TrekkoAnalytics.trackFilter({state:st,difficulty:df,distance_range:di,experience_type:'com-cachoeira',results_count:vis,page_type:'trail_intent_landing'});
+    else trackEvent('filter_trails',{state:st,difficulty:df,distance_range:di,results_count:vis});
   }
   [fState,fDiff,fDist].forEach(function(s){s.addEventListener('change',applyFilters);});
   document.getElementById('btn-reset').addEventListener('click',function(){fState.value='';fDiff.value='';fDist.value='';cards.forEach(function(c){c.classList.remove('hidden');});countEl.textContent='';});
