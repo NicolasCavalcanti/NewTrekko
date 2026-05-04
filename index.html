@@ -4,14 +4,49 @@
   <head>
     <!-- Google AdSense account verification (script injected conditionally by AdSenseLoader) -->
     <meta name="google-adsense-account" content="ca-pub-2482023752745520">
-    <!-- Google tag (gtag.js) -->
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         TREKKO ANALYTICS CONFIGURATION
+         ─────────────────────────────────────────────────────────────────────
+         Fill GTM_ID with your Google Tag Manager container ID (GTM-XXXXXXX).
+         Fill ADS_ID with your Google Ads conversion account ID (AW-XXXXXXXXX).
+         GA4_ID is already active. When GTM_ID is set, all events route through
+         GTM instead of calling gtag() directly, eliminating duplicate hits.
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <script>
+      window.TREKKO_CONFIG = {
+        GA4_ID: 'G-S816P190VN',
+        GTM_ID: '',          /* e.g. 'GTM-XXXXXXX'  — set to activate GTM   */
+        ADS_ID: ''           /* e.g. 'AW-XXXXXXXXX' — set to activate Ads   */
+      };
+    </script>
+
+    <!-- Google Tag Manager (loads only when GTM_ID is configured above) -->
+    <script>
+      (function(){
+        var id = (window.TREKKO_CONFIG || {}).GTM_ID;
+        if (!id) return;
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
+        var f = document.getElementsByTagName('script')[0];
+        var j = document.createElement('script');
+        j.async = true;
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + id;
+        f.parentNode.insertBefore(j, f);
+      })();
+    </script>
+    <!-- End Google Tag Manager -->
+
+    <!-- Google tag (gtag.js) — direct GA4 fallback while GTM is not yet configured -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-S816P190VN"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-S816P190VN');
+      gtag('config', 'G-S816P190VN', { send_page_view: !(window.TREKKO_CONFIG && window.TREKKO_CONFIG.GTM_ID) });
     </script>
+    <!-- NOTE: once GTM is configured, set send_page_view: false above and let
+         GTM fire page_view via the History Change trigger to avoid duplicates. -->
     <meta charset="UTF-8" />
     <meta
       name="viewport"
@@ -38,6 +73,8 @@
     <script>
       (function(){var p=window.location.pathname,nx=["/guias","/trilhas","/component-showcase"],np=["/guia/","/expedicao/"];if(nx.indexOf(p)!==-1||np.some(function(x){return p===x||p.startsWith(x)})){var m=document.createElement("meta");m.name="robots";m.content="noindex, nofollow, nosnippet, max-snippet:0, noarchive";document.head.appendChild(m);}})();
     </script>
+    <!-- Trekko centralized analytics helper (must load before the React bundle) -->
+    <script src="/assets/trekko-analytics.js"></script>
     <script type="module" crossorigin src="/assets/index-DSKK19TW.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-DViTTRkQ.js">
     <link rel="modulepreload" crossorigin href="/assets/radix-ui-D-C9zAgG.js">
@@ -45,6 +82,13 @@
   </head>
 
   <body>
+    <!-- Google Tag Manager (noscript) — place immediately after <body> -->
+    <noscript>
+      <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+              height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <div id="root"></div>
   </body>
 
