@@ -182,8 +182,65 @@
 
 </main>
 
-<footer>
-  <p>© 2026 <a href="/">Trekko</a> — Guias, trilhas e expedições pelo Brasil</p>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Sora:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#15803d;--font-heading:'Sora',sans-serif;--font-body:'Inter',sans-serif;--text-primary:#1e293b;--border:#e2e8f0}
+.site-footer{background:#1e293b;color:rgba(255,255,255,.65);padding:3rem 0 2rem;font-family:var(--font-body)}
+.site-footer .container{max-width:1200px;margin:0 auto;padding:0 1.25rem}
+.footer-inner{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:2rem}
+.footer-logo{font-family:var(--font-heading);font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:.5rem}
+.footer-tagline{font-size:.85rem;line-height:1.6;margin-bottom:.75rem}
+.footer-email a{color:rgba(255,255,255,.6);font-size:.85rem;text-decoration:none}.footer-email a:hover{color:#fff}
+.footer-col h4{color:#fff;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem}
+.footer-col ul{list-style:none;padding:0;margin:0}
+.footer-col ul li+li{margin-top:.4rem}
+.footer-col a{font-size:.82rem;color:rgba(255,255,255,.6);text-decoration:none;transition:color .15s}.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.1);margin-top:2rem;padding-top:1.5rem;text-align:center;font-size:.8rem}
+@media(max-width:900px){.footer-inner{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.footer-inner{grid-template-columns:1fr}}
+</style>
+
+<footer class="site-footer">
+<div class="container">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <p class="footer-logo">Trekko</p>
+      <p class="footer-tagline">A plataforma para quem vive a trilha.<br>Descubra, planeje e conecte-se com guias.</p>
+      <p class="footer-email"><a href="mailto:contato@trekko.com.br">contato@trekko.com.br</a></p>
+    </div>
+    <div class="footer-col">
+      <h4>Trilhas</h4>
+      <ul>
+        <li><a href="/trilhas/sao-paulo">São Paulo</a></li>
+        <li><a href="/trilhas/rio-de-janeiro">Rio de Janeiro</a></li>
+        <li><a href="/trilhas/minas-gerais">Minas Gerais</a></li>
+        <li><a href="/trilhas/para-iniciantes">Para iniciantes</a></li>
+        <li><a href="/trilhas/com-guia">Com guia</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Trekko</h4>
+      <ul>
+        <li><a href="/sobre">Sobre o Trekko</a></li>
+        <li><a href="/contato">Contato</a></li>
+        <li><a href="/guias/ativar-perfil">Ativar perfil de guia</a></li>
+        <li><a href="/seguranca-em-trilhas">Segurança em trilhas</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="/privacidade">Política de Privacidade</a></li>
+        <li><a href="/termos-de-uso">Termos de Uso</a></li>
+        <li><a href="/politica-de-guias">Política de Guias</a></li>
+        <li><a href="/remocao-ou-atualizacao-de-dados">Remoção ou atualização de dados</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Trekko. Todos os direitos reservados.</p>
+  </div>
+</div>
 </footer>
 
 </body>

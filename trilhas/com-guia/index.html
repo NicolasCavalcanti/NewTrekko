@@ -151,13 +151,15 @@ p{color:var(--text-secondary);line-height:1.7}
 .cta-final .btn--outline{color:#fff;border-color:rgba(255,255,255,.6)}.cta-final .btn--outline:hover{background:rgba(255,255,255,.15)}
 /* Footer */
 .site-footer{background:var(--text-primary);color:rgba(255,255,255,.65);padding:3rem 0 2rem}
-.footer-inner{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2rem}
+.footer-inner{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:2rem}
 .footer-brand{grid-column:1/2}
 .footer-logo{font-family:var(--font-heading);font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:.5rem}
-.footer-tagline{font-size:.85rem;line-height:1.6}
-.footer-col h4{color:#fff;font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem}
+.footer-tagline{font-size:.85rem;line-height:1.6;margin-bottom:.75rem}
+.footer-email a{color:rgba(255,255,255,.6);font-size:.85rem}.footer-email a:hover{color:#fff}
+.footer-col h4{color:#fff;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem}
+.footer-col ul{list-style:none;padding:0;margin:0}
 .footer-col ul li+li{margin-top:.4rem}
-.footer-col a{font-size:.85rem;color:rgba(255,255,255,.6);transition:color .15s}.footer-col a:hover{color:#fff}
+.footer-col a{font-size:.82rem;color:rgba(255,255,255,.6);transition:color .15s}.footer-col a:hover{color:#fff}
 .footer-bottom{border-top:1px solid rgba(255,255,255,.1);margin-top:2rem;padding-top:1.5rem;text-align:center;font-size:.8rem}
 /* Related */
 .related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem}
@@ -176,6 +178,8 @@ p{color:var(--text-secondary);line-height:1.7}
   .filter-row{flex-direction:column}
   .header-cta .btn--outline{display:none}
 }
+@media(max-width:900px){.footer-inner{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.footer-inner{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -599,6 +603,7 @@ p{color:var(--text-secondary);line-height:1.7}
     <div class="footer-brand">
       <p class="footer-logo">Trekko</p>
       <p class="footer-tagline">A plataforma para quem vive a trilha.<br>Descubra, planeje e conecte-se com guias.</p>
+      <p class="footer-email"><a href="mailto:contato@trekko.com.br">contato@trekko.com.br</a></p>
     </div>
     <div class="footer-col">
       <h4>Trilhas</h4>
@@ -607,22 +612,30 @@ p{color:var(--text-secondary);line-height:1.7}
         <li><a href="/trilhas/rio-de-janeiro">Rio de Janeiro</a></li>
         <li><a href="/trilhas/minas-gerais">Minas Gerais</a></li>
         <li><a href="/trilhas/para-iniciantes">Para iniciantes</a></li>
-        <li><a href="/trilhas/com-cachoeira">Com cachoeira</a></li>
+        <li><a href="/trilhas/com-guia">Com guia</a></li>
       </ul>
     </div>
     <div class="footer-col">
       <h4>Trekko</h4>
       <ul>
-        <li><a href="/sobre">Sobre</a></li>
-        <li><a href="/guias">Para guias</a></li>
-        <li><a href="/guias/ativar-perfil">Ativar perfil</a></li>
-        <li><a href="/termos">Termos de uso</a></li>
-        <li><a href="/privacidade">Privacidade</a></li>
+        <li><a href="/sobre">Sobre o Trekko</a></li>
+        <li><a href="/contato">Contato</a></li>
+        <li><a href="/guias/ativar-perfil">Ativar perfil de guia</a></li>
+        <li><a href="/seguranca-em-trilhas">Segurança em trilhas</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="/privacidade">Política de Privacidade</a></li>
+        <li><a href="/termos-de-uso">Termos de Uso</a></li>
+        <li><a href="/politica-de-guias">Política de Guias</a></li>
+        <li><a href="/remocao-ou-atualizacao-de-dados">Remoção ou atualização de dados</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <p>© 2025 Trekko. Todos os direitos reservados.</p>
+    <p>© 2026 Trekko. Todos os direitos reservados.</p>
   </div>
 </div>
 </footer>
