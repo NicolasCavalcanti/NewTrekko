@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "slug": "rafael-dias",
+    "name": "Rafael Dias",
+    "role": "Trilheiro e Escritor de Montanha",
+    "bio": "Com mais de 15 anos percorrendo trilhas da Mata Atlântica, Rafael é colaborador técnico do Trekko especializado em rotas do Rio de Janeiro e do sul do Brasil. Já completou a Travessia Petrópolis-Teresópolis seis vezes e documenta suas expedições com foco em segurança e acessibilidade para trilheiros de todos os níveis.",
+    "credentials": "Certificação em Primeiros Socorros de Montanha (Cruz Vermelha) | Instrutor de Trekking formado pelo CBME",
+    "location": "Rio de Janeiro, RJ",
+    "specialties": ["Mata Atlântica", "Trilhas de longo curso", "Equipamentos de segurança"]
+  },
+  {
+    "id": 2,
+    "slug": "marcos-rodrigues",
+    "name": "Marcos Rodrigues",
+    "role": "Guia de Turismo CADASTUR | Expedições Amazônicas",
+    "bio": "Guia de turismo certificado com 12 anos de experiência em expedições pela região amazônica e ao Monte Roraima. Já conduziu mais de 40 grupos ao tepui e é referência em turismo sustentável com comunidades indígenas da região de Uiramutã (RR). Trabalha em parceria com guias indígenas locais valorizando o conhecimento tradicional.",
+    "credentials": "Guia CADASTUR nº 11.024.789/2014-RR | Técnico em Turismo (SENAC-RR) | Primeiros Socorros Avançado (SAMU-RR)",
+    "location": "Boa Vista, RR",
+    "specialties": ["Monte Roraima", "Tepuis", "Expedições multidias", "Turismo indígena"]
+  },
+  {
+    "id": 3,
+    "slug": "leticia-campos",
+    "name": "Letícia Campos",
+    "role": "Ecóloga e Guia de Ecoturismo",
+    "bio": "Ecóloga formada pela Universidade de Brasília com especialização em biomas do Brasil Central, Letícia é guia de ecoturismo certificada e pesquisadora voluntária do Instituto Chico Mendes de Conservação da Biodiversidade (ICMBio). Acompanha grupos na Chapada dos Veadeiros há 8 anos com foco em interpretação ambiental e turismo de baixo impacto.",
+    "credentials": "Biologia — UnB (2011) | Especialização em Ecoturismo — UnB | Guia CADASTUR nº 07.031.102/2016-GO | Pesquisadora Colaboradora ICMBio",
+    "location": "Alto Paraíso de Goiás, GO",
+    "specialties": ["Cerrado", "Chapada dos Veadeiros", "Conservação ambiental", "Planejamento de expedições"]
+  }
+]
