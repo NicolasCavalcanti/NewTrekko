@@ -154,6 +154,31 @@ p{color:var(--text-secondary);line-height:1.7}
 .related-link:hover{background:var(--primary-bg);border-color:var(--primary);color:var(--primary)}
 @media(max-width:900px){.footer-inner{grid-template-columns:1fr 1fr}}
 @media(max-width:600px){.footer-inner{grid-template-columns:1fr}}
+
+/* ── CRO: Mobile menu + Sticky bar ── */
+.header-cta-btn{display:none!important}
+@media(min-width:768px){.header-cta-btn{display:inline-flex!important}}
+.menu-toggle{display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;padding:.4rem;color:var(--text-primary,#1e293b);min-width:44px;min-height:44px;-webkit-tap-highlight-color:transparent;border-radius:6px}
+.menu-toggle:hover,.menu-toggle:focus-visible{background:var(--bg-light,#f8fafc)}
+.menu-toggle:focus-visible{outline:3px solid var(--accent,#f59e0b);outline-offset:2px}
+@media(min-width:768px){.menu-toggle{display:none}}
+.mm{position:fixed;inset:0;background:var(--white,#fff);z-index:9999;display:none;flex-direction:column;padding:1.25rem;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.mm.open{display:flex}
+.mm-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;gap:.5rem}
+.mm-close{background:none;border:none;cursor:pointer;padding:.4rem;border-radius:6px;color:var(--text-primary,#1e293b);min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent}
+.mm-close:focus-visible{outline:3px solid var(--accent,#f59e0b);outline-offset:2px}
+.mm-nav{display:flex;flex-direction:column;gap:.25rem;flex:1}
+.mm-nav a{display:flex;align-items:center;min-height:48px;padding:.75rem 1rem;border-radius:8px;font-size:1rem;font-weight:500;color:var(--text-primary,#1e293b);transition:background .15s;text-decoration:none}
+.mm-nav a:hover,.mm-nav a:focus-visible{background:var(--primary-bg,#f0fdf4);color:var(--primary,#15803d)}
+.mm-nav a:focus-visible{outline:3px solid var(--accent,#f59e0b);outline-offset:2px}
+.mm-nav .mm-hi{color:var(--primary,#15803d);font-weight:700;background:var(--primary-bg,#f0fdf4)}
+.mm-foot{padding-top:1.5rem;border-top:1px solid var(--border,#e2e8f0);margin-top:auto;display:flex;flex-direction:column;gap:.75rem}
+.sticky-bar{position:fixed;bottom:0;left:0;right:0;z-index:200;background:var(--white,#fff);border-top:2px solid var(--border,#e2e8f0);padding:.75rem 1rem;padding-bottom:calc(.75rem + env(safe-area-inset-bottom,0px));display:flex;gap:.5rem;box-shadow:0 -4px 20px rgba(0,0,0,.12);transition:opacity .25s,visibility .25s}
+.sticky-bar.hidden{opacity:0;visibility:hidden;pointer-events:none}
+@media(min-width:768px){.sticky-bar{display:none!important}}
+.sticky-bar .btn,.sticky-bar a.btn{flex:1;min-height:48px;font-size:.875rem;padding:.75rem .375rem;white-space:normal;text-align:center;line-height:1.3}
+@media(max-width:767px){body{padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}}
+.hero-support-sub{font-size:.8rem;color:rgba(255,255,255,.72);margin-top:.4rem;max-width:560px}
 </style>
 </head>
 <body>
@@ -170,9 +195,33 @@ p{color:var(--text-secondary);line-height:1.7}
       <a href="/blog">Blog</a>
       <a href="/contato">Contato</a>
     </nav>
-    <a href="#trilhas" class="btn btn--primary" data-event="click_header_cta">Explorar trilhas</a>
+    <a href="#trilhas" class="btn btn--primary header-cta-btn" data-event="click_find_trails" data-cta-location="header">Explorar trilhas</a>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="mobile-menu">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M3 6h16M3 11h16M3 16h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
   </div>
 </header>
+<div class="mm" id="mobile-menu" role="dialog" aria-modal="true" aria-label="Menu de navegação">
+  <div class="mm-head">
+    <a href="/" class="logo" aria-label="Trekko — página inicial">
+      <svg class="logo-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true"><circle cx="14" cy="14" r="14" fill="#dcfce7"/><path d="M7 20L12 10l3 5 2-3 4 8H7z" fill="#15803d"/><circle cx="18" cy="8" r="2" fill="#15803d"/></svg>
+      Trekko
+    </a>
+    <button class="mm-close" id="mm-close" aria-label="Fechar menu">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M4 4l14 14M18 4L4 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <nav class="mm-nav" aria-label="Navegação mobile">
+    <a href="/trilhas" class="mm-hi" data-event="click_find_trails">Encontrar trilhas</a>
+    <a href="/guias" data-event="click_view_guides">Ver guias</a>
+    <a href="/blog">Blog</a>
+    <a href="/sobre">Sobre o Trekko</a>
+    <a href="/contato">Contato</a>
+  </nav>
+  <div class="mm-foot">
+    <a href="/guias/ativar-perfil" class="btn btn--primary btn--full" data-event="click_activate_profile" style="display:flex;align-items:center;justify-content:center;min-height:48px;text-decoration:none">Ativar perfil de guia</a>
+  </div>
+</div>
 
 <nav class="breadcrumb" aria-label="Navegação estrutural">
   <div class="container">
@@ -194,10 +243,11 @@ p{color:var(--text-secondary);line-height:1.7}
       <h1 id="hero-h1">Trilhas no Rio de Janeiro para explorar</h1>
       <p class="hero-subtitle">Encontre trilhas reais no Rio de Janeiro por dificuldade, distância, região e tipo de experiência. Serra dos Órgãos, Itatiaia, Mata Atlântica e mais.</p>
       <div class="hero-ctas">
-        <a href="#trilhas" class="btn btn--white btn--lg" data-event="click_cta_primary">Explorar trilhas no Rio</a>
-        <a href="#guias" class="btn btn--outline-white btn--lg" data-event="click_cta_guides">Ver guias no Rio de Janeiro</a>
+        <a href="#trilhas" class="btn btn--white btn--lg" data-event="click_find_trails" data-cta-location="hero" data-page-type="trail_state_landing" data-state="rio-de-janeiro">Explorar trilhas no Rio</a>
+        <a href="#guias" class="btn btn--outline-white btn--lg" data-event="click_view_guides" data-cta-location="hero" data-page-type="trail_state_landing" data-state="rio-de-janeiro">Ver guias no Rio de Janeiro</a>
       </div>
       <p class="hero-trust">Informações detalhadas sobre dificuldade, distância, altimetria e necessidade de guia.</p>
+      <p class="hero-support-sub">Compare guias que atuam na região e escolha com mais informação.</p>
       <div class="hero-stats" aria-label="Destaque Rio de Janeiro">
         <div class="stat"><strong>Serra dos Órgãos</strong><span>travessia clássica</span></div>
         <div class="stat"><strong>Itatiaia</strong><span>altitude e natureza</span></div>
@@ -518,8 +568,8 @@ p{color:var(--text-secondary);line-height:1.7}
     <h2 id="cta-h2">Encontre sua próxima trilha no Rio de Janeiro</h2>
     <p>Compare opções, veja detalhes do percurso e planeje sua próxima experiência outdoor com mais informação e segurança.</p>
     <div class="cta-btns">
-      <a href="#trilhas" class="btn btn--white btn--lg" data-event="click_cta_final">Explorar trilhas no Rio</a>
-      <a href="#guias" class="btn btn--outline-white btn--lg" data-event="click_cta_final_guides">Ver guias no Rio de Janeiro</a>
+      <a href="#trilhas" class="btn btn--white btn--lg" data-event="click_find_trails" data-cta-location="section_footer" data-page-type="trail_state_landing" data-state="rio-de-janeiro">Explorar trilhas no Rio</a>
+      <a href="#guias" class="btn btn--outline-white btn--lg" data-event="click_view_guides" data-cta-location="section_footer" data-page-type="trail_state_landing" data-state="rio-de-janeiro">Ver guias no Rio de Janeiro</a>
     </div>
   </div>
 </section>
@@ -605,6 +655,43 @@ document.getElementById('filter-reset').addEventListener('click',function(){fD.v
 run();
 })();
 // Scroll depth handled by trekko-analytics.js
+
+// ── CRO: Mobile menu ──
+(function(){
+  var toggle=document.getElementById('menu-toggle');
+  var menu=document.getElementById('mobile-menu');
+  var close=document.getElementById('mm-close');
+  if(!toggle||!menu)return;
+  function openMenu(){
+    menu.classList.add('open');
+    document.body.style.overflow='hidden';
+    toggle.setAttribute('aria-expanded','true');
+    if(typeof trackEvent==='function')trackEvent('click_menu_mobile_open',{cta_location:'menu_mobile'});
+  }
+  function closeMenu(){
+    menu.classList.remove('open');
+    document.body.style.overflow='';
+    toggle.setAttribute('aria-expanded','false');
+  }
+  toggle.addEventListener('click',openMenu);
+  if(close)close.addEventListener('click',closeMenu);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&menu.classList.contains('open'))closeMenu();});
+  menu.addEventListener('click',function(e){if(e.target===menu)closeMenu();});
+}());
+// ── CRO: Sticky bar (hide on form focus) ──
+(function(){
+  var bar=document.getElementById('sticky-bar');
+  if(!bar)return;
+  document.querySelectorAll('input,select,textarea').forEach(function(inp){
+    inp.addEventListener('focus',function(){bar.classList.add('hidden');});
+    inp.addEventListener('blur',function(){setTimeout(function(){bar.classList.remove('hidden');},150);});
+  });
+}());
 </script>
+<!-- Sticky mobile CTA bar -->
+<div class="sticky-bar" id="sticky-bar" role="complementary" aria-label="Ações rápidas">
+  <a href="#trilhas" class="btn btn--primary" data-event="click_find_trails" data-cta-location="sticky_mobile" data-page-type="trail_state_landing" data-state="rio-de-janeiro">Explorar trilhas</a>
+  <a href="#guias" class="btn btn--outline" data-event="click_view_guides" data-cta-location="sticky_mobile" data-page-type="trail_state_landing" data-state="rio-de-janeiro">Ver guias</a>
+</div>
 </body>
 </html>
