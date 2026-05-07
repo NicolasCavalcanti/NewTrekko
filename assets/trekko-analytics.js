@@ -33,17 +33,22 @@
 
   /**
    * Core dispatcher.
+   * Skips silently when the user has not yet granted analytics consent
+   * (Google Consent Mode v2 also blocks collection at the network level,
+   * but we avoid filling dataLayer with events that won't be processed).
    * With GTM: pushes to dataLayer only (GTM forwards to GA4/Ads).
    * Without GTM: pushes to dataLayer AND fires gtag() directly.
    */
   function dispatch(eventName, params) {
     if (!eventName) return;
+    /* honour analytics consent — window.TrekkoConsent is set in index.html */
+    var consent = win.TrekkoConsent;
+    if (consent && consent.has && consent.has() && !consent.analytics()) return;
     safe(function () {
       var payload = Object.assign({}, params || {});
       payload.event = eventName;
       dlPush(payload);
       if (!hasGTM && typeof win.gtag === 'function') {
-        // direct GA4 fallback while GTM is not yet configured
         win.gtag('event', eventName, params || {});
       }
     });
