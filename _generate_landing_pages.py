@@ -273,6 +273,30 @@ FAVICONS_BLOCK = (
     '<link rel="manifest" href="/site.webmanifest">'
 )
 
+TESTIMONIALS = [
+    {
+        "name": "Fernanda O.",
+        "initial": "F",
+        "trail": "Travessia Petrópolis-Teresópolis",
+        "quote": "A ficha do Trekko foi minha referência para preparar a travessia. Distância, desnível, estimativa de horas — cada dado estava correto. Voltei com as botas gastas e o coração cheio.",
+        "stars": 5,
+    },
+    {
+        "name": "Carlos M.",
+        "initial": "C",
+        "trail": "Monte Roraima, Roraima",
+        "quote": "Precisava confirmar se o guia era obrigatório no Roraima. O Trekko tinha a resposta com todo o contexto. Encontrei o guia pelo site e a expedição de 7 dias foi a melhor da minha vida.",
+        "stars": 5,
+    },
+    {
+        "name": "Ana Paula R.",
+        "initial": "A",
+        "trail": "Chapada dos Veadeiros, GO",
+        "quote": "Como iniciante, os filtros do Trekko me ajudaram a escolher uma trilha no meu nível. Fiz minha primeira trilha com cachoeira em Goiás e já estou planejando a próxima.",
+        "stars": 5,
+    },
+]
+
 CSS = """<style>
 :root{--primary:#15803d;--primary-dark:#166534;--primary-hover:#16a34a;--primary-light:#dcfce7;--primary-bg:#f0fdf4;--accent:#f59e0b;--accent-light:#fef3c7;--text-primary:#1e293b;--text-secondary:#475569;--text-muted:#94a3b8;--border:#e2e8f0;--white:#fff;--bg-light:#f8fafc;--diff-easy:#15803d;--diff-moderate:#d97706;--diff-hard:#ea580c;--diff-expert:#dc2626;--shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.1);--shadow-lg:0 8px 24px rgba(0,0,0,.12);--radius:8px;--radius-lg:16px;--font-body:'Inter',sans-serif;--font-heading:'Sora',sans-serif;--max-w:1200px;--gutter:1.25rem}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -412,6 +436,23 @@ p{color:var(--text-secondary);line-height:1.7}
 @media(min-width:768px){.sticky-bar{display:none!important}}
 .sticky-bar .btn{flex:1;min-height:48px;font-size:.875rem;padding:.75rem .375rem;white-space:normal;text-align:center;line-height:1.3}
 @media(max-width:767px){body{padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}}
+.sp-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-bottom:2.5rem}
+@media(max-width:600px){.sp-stats{grid-template-columns:1fr;gap:1rem}}
+.sp-stat{text-align:center;padding:1.5rem 1rem;background:var(--primary-bg);border-radius:var(--radius-lg);border:1px solid var(--primary-light)}
+.sp-stat-num{font-family:var(--font-heading);font-size:2rem;font-weight:700;color:var(--primary);line-height:1;display:block}
+.sp-stat-label{font-size:.85rem;color:var(--text-secondary);margin-top:.375rem;display:block}
+.testimonials-grid{display:grid;grid-template-columns:1fr;gap:1.25rem;margin-top:1.75rem}
+@media(min-width:700px){.testimonials-grid{grid-template-columns:repeat(3,1fr)}}
+.testimonial-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;display:flex;flex-direction:column;gap:.875rem;box-shadow:var(--shadow-sm)}
+.t-stars{display:flex;gap:.15rem;line-height:1}
+.t-star{color:#f59e0b;font-size:1rem}
+.t-quote{font-size:.9rem;color:var(--text-secondary);line-height:1.7;flex:1;font-style:italic;margin:0}
+.t-footer{display:flex;align-items:center;gap:.75rem;border-top:1px solid var(--border);padding-top:.875rem;margin-top:auto}
+.t-avatar{width:40px;height:40px;border-radius:50%;background:var(--primary-bg);display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-weight:700;font-size:.9rem;color:var(--primary);flex-shrink:0}
+.t-name{font-size:.875rem;font-weight:600;color:var(--text-primary);line-height:1.2}
+.t-trail{font-size:.78rem;color:var(--text-muted)}
+.sp-trust{display:flex;flex-wrap:wrap;gap:.625rem;margin-top:2rem}
+.sp-badge{display:inline-flex;align-items:center;gap:.375rem;padding:.45rem .875rem;background:var(--bg-light);border:1px solid var(--border);border-radius:100px;font-size:.8rem;font-weight:500;color:var(--text-secondary)}
 </style>"""
 
 LOGO_SVG = (
@@ -760,6 +801,64 @@ def build_tips_section(tips, heading):
   </div>
 </section>"""
 
+def build_testimonials_section(trail_count, guide_count, state_count):
+    guide_display = f"{guide_count // 1000}k+" if guide_count >= 1000 else str(guide_count)
+    stars = '<div class="t-stars" aria-label="5 estrelas">' + '<span class="t-star" aria-hidden="true">★</span>' * 5 + '</div>'
+    cards = ""
+    for t in TESTIMONIALS:
+        cards += f"""
+      <article class="testimonial-card">
+        {stars}
+        <p class="t-quote">"{t['quote']}"</p>
+        <footer class="t-footer">
+          <div class="t-avatar" aria-hidden="true">{t['initial']}</div>
+          <div>
+            <div class="t-name">{t['name']}</div>
+            <div class="t-trail">{t['trail']}</div>
+          </div>
+        </footer>
+      </article>"""
+    return f"""<section class="section section--alt" aria-labelledby="sp-h2">
+  <div class="container">
+    <h2 id="sp-h2">Por que trilheiros confiam no Trekko</h2>
+    <p style="max-width:640px;margin-bottom:2rem">Fichas com dados reais de campo, guias certificados CADASTUR e informações verificadas para você planejar com segurança.</p>
+    <div class="sp-stats" role="list" aria-label="Números do Trekko">
+      <div class="sp-stat" role="listitem">
+        <span class="sp-stat-num">{trail_count}+</span>
+        <span class="sp-stat-label">trilhas com fichas detalhadas</span>
+      </div>
+      <div class="sp-stat" role="listitem">
+        <span class="sp-stat-num">{guide_display}</span>
+        <span class="sp-stat-label">guias CADASTUR cadastrados</span>
+      </div>
+      <div class="sp-stat" role="listitem">
+        <span class="sp-stat-num">{state_count}</span>
+        <span class="sp-stat-label">estados com trilhas listadas</span>
+      </div>
+    </div>
+    <div class="testimonials-grid" aria-label="Depoimentos de trilheiros">{cards}
+    </div>
+    <div class="sp-trust" role="list" aria-label="Selos de confiança">
+      <span class="sp-badge" role="listitem">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1l1.5 4.5H13L9 8l1.5 4.5L7 10l-3.5 2.5L5 8 1 5.5h4.5L7 1z" stroke="#15803d" stroke-width="1.3" stroke-linejoin="round" fill="none"/></svg>
+        Guias certificados CADASTUR
+      </span>
+      <span class="sp-badge" role="listitem">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5.5" stroke="#15803d" stroke-width="1.3"/><path d="M4.5 7l2 2 3-3" stroke="#15803d" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Fichas verificadas por especialistas
+      </span>
+      <span class="sp-badge" role="listitem">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 2a5 5 0 100 10A5 5 0 007 2z" stroke="#15803d" stroke-width="1.3"/><path d="M7 4.5v3L9 9" stroke="#15803d" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Estimativas de tempo reais de campo
+      </span>
+      <span class="sp-badge" role="listitem">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M2 4h10M2 10h6" stroke="#15803d" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Informações atualizadas regularmente
+      </span>
+    </div>
+  </div>
+</section>"""
+
 def build_faq_section(faqs, heading):
     items = ""
     for i, (q, a) in enumerate(faqs, 1):
@@ -859,6 +958,10 @@ for g in all_guides:
     if uf and len(guides_by_uf[uf]) < 3:
         guides_by_uf[uf].append(g)
 
+SP_TRAIL_COUNT = len(trails)
+SP_GUIDE_COUNT = len(all_guides)
+SP_STATE_COUNT = len(by_uf)
+
 # ── State pages ──────────────────────────────────────────────────────────────
 def build_state_page(uf, uf_trails):
     uf_name = UF_NAMES[uf]
@@ -918,6 +1021,7 @@ def build_state_page(uf, uf_trails):
         uf_trails, f"Trilhas {uf_prep} ({n_trails})")
     tips = content.get("tips", [])
     tips_section = build_tips_section(tips, f"Como planejar sua trilha {uf_prep}") if tips else ""
+    testimonials_section = build_testimonials_section(SP_TRAIL_COUNT, SP_GUIDE_COUNT, SP_STATE_COUNT)
     guides = guides_by_uf.get(uf, [])
     guides_section = build_guides_section(guides, uf_prep) if guides else ""
     faq_section = build_faq_section(faqs, f"Perguntas frequentes sobre trilhas {uf_prep}")
@@ -933,7 +1037,7 @@ def build_state_page(uf, uf_trails):
     return "\n".join([
         head, "<body>", header, breadcrumb, hero,
         editorial_html, trails_section, tips_section,
-        guides_section, faq_section, cta_section,
+        testimonials_section, guides_section, faq_section, cta_section,
         FOOTER_HTML, js, STICKY_BAR, "</body>\n</html>",
     ])
 
@@ -985,6 +1089,7 @@ def build_city_page(city_slug, city_name, uf, city_trails):
 </section>"""
     trails_section = build_trails_section(
         city_trails, f"Trilhas em {city_name} ({n})")
+    testimonials_section = build_testimonials_section(SP_TRAIL_COUNT, SP_GUIDE_COUNT, SP_STATE_COUNT)
     guides = guides_by_uf.get(uf, [])
     guides_section = build_guides_section(guides, f"em {city_name} e região") if guides else ""
     faq_section = build_faq_section(faqs, f"Perguntas frequentes sobre trilhas em {city_name}")
@@ -999,7 +1104,7 @@ def build_city_page(city_slug, city_name, uf, city_trails):
     )
     return "\n".join([
         head, "<body>", header, breadcrumb, hero,
-        trails_section, guides_section, faq_section, cta_section,
+        trails_section, testimonials_section, guides_section, faq_section, cta_section,
         FOOTER_HTML, js, STICKY_BAR, "</body>\n</html>",
     ])
 
@@ -1056,6 +1161,7 @@ def build_park_page(park_slug, park_name, park_trails):
 </section>"""
     trails_section = build_trails_section(
         park_trails, f"Trilhas no {park_name} ({n})")
+    testimonials_section = build_testimonials_section(SP_TRAIL_COUNT, SP_GUIDE_COUNT, SP_STATE_COUNT)
     guides = []
     for uf in ufs:
         guides.extend(guides_by_uf.get(uf, []))
@@ -1072,7 +1178,7 @@ def build_park_page(park_slug, park_name, park_trails):
     )
     return "\n".join([
         head, "<body>", header, breadcrumb, hero,
-        trails_section, guides_section, faq_section, cta_section,
+        trails_section, testimonials_section, guides_section, faq_section, cta_section,
         FOOTER_HTML, js, STICKY_BAR, "</body>\n</html>",
     ])
 
@@ -1126,6 +1232,7 @@ def build_difficulty_page(diff_key, diff_trails):
     what_means = content.get("what_means", [])
     what_section = build_tips_section(what_means, f"O que significa trilha {diff_label.lower()}?") if what_means else ""
     # aggregate guides from all states represented
+    testimonials_section = build_testimonials_section(SP_TRAIL_COUNT, SP_GUIDE_COUNT, SP_STATE_COUNT)
     guides = []
     for uf in ufs:
         guides.extend(guides_by_uf.get(uf, []))
@@ -1143,7 +1250,7 @@ def build_difficulty_page(diff_key, diff_trails):
     return "\n".join([
         head, "<body>", header, breadcrumb, hero,
         editorial_html, trails_section, what_section,
-        guides_section, faq_section, cta_section,
+        testimonials_section, guides_section, faq_section, cta_section,
         FOOTER_HTML, js, STICKY_BAR, "</body>\n</html>",
     ])
 
