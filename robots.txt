@@ -10,6 +10,9 @@ Disallow: /guias
 Disallow: /expedicao/
 Disallow: /component-showcase
 
+# Blog — fully crawlable editorial content
+Allow: /blog/
+
 # Local intent landing pages — explicitly allowed for indexing
 Allow: /trilhas/roraima
 Allow: /trilhas/goias
@@ -24,18 +27,21 @@ Allow: /trilhas/parques/
 
 # Explicit block for AdSense crawler (AdsBot ignores wildcard on some configs)
 User-agent: AdsBot-Google
+Allow: /blog/
 Disallow: /guia/
 Allow: /guias/ativar-perfil
 Disallow: /guias
 Disallow: /expedicao/
 
 User-agent: AdsBot-Google-Mobile
+Allow: /blog/
 Disallow: /guia/
 Allow: /guias/ativar-perfil
 Disallow: /guias
 Disallow: /expedicao/
 
 User-agent: Mediapartners-Google
+Allow: /blog/
 Disallow: /guia/
 Allow: /guias/ativar-perfil
 Disallow: /guias
