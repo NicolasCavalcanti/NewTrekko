@@ -10,6 +10,18 @@ Disallow: /guias
 Disallow: /expedicao/
 Disallow: /component-showcase
 
+# Local intent landing pages — explicitly allowed for indexing
+Allow: /trilhas/roraima
+Allow: /trilhas/goias
+Allow: /trilhas/rio-grande-do-sul
+Allow: /trilhas/santa-catarina
+Allow: /trilhas/ceara
+Allow: /trilhas/moderado
+Allow: /trilhas/dificil
+Allow: /trilhas/especialista
+Allow: /trilhas/cidades/
+Allow: /trilhas/parques/
+
 # Explicit block for AdSense crawler (AdsBot ignores wildcard on some configs)
 User-agent: AdsBot-Google
 Disallow: /guia/
