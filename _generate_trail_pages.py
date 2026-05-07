@@ -179,6 +179,7 @@ def build_numeric_page(t):
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <script src="/assets/trekko-analytics.js"></script>
+  <script src="/assets/trekko-seed-reviews.js"></script>
   <script type="module" crossorigin src="/assets/index-DSKK19TW.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/react-vendor-DViTTRkQ.js">
   <link rel="modulepreload" crossorigin href="/assets/radix-ui-D-C9zAgG.js">
