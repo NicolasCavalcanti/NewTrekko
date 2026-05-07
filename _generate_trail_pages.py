@@ -35,9 +35,20 @@ def slug_redirect_script(trails):
 def build_jsonld(t):
     slug = t["slug"]
     canonical = "https://trekko.com.br/trilha/" + slug
+    geo = {"@type": "GeoCoordinates"}
+    if t.get("lat") is not None and t.get("lng") is not None:
+        geo["latitude"] = t["lat"]
+        geo["longitude"] = t["lng"]
     data = {
         "@context": "https://schema.org",
         "@graph": [
+            {
+                "@type": "Organization",
+                "@id": "https://trekko.com.br/#organization",
+                "name": "Trekko",
+                "url": "https://trekko.com.br",
+                "logo": "https://trekko.com.br/android-chrome-512x512.png",
+            },
             {
                 "@type": "BreadcrumbList",
                 "itemListElement": [
@@ -47,13 +58,20 @@ def build_jsonld(t):
                 ],
             },
             {
-                "@type": "TouristDestination",
+                "@type": "TouristAttraction",
                 "@id": canonical,
                 "name": t["name"],
                 "description": t["shortDescription"],
                 "url": canonical,
                 "image": "https://trekko.com.br" + t["imageUrl"],
                 "touristType": "Trilha / Trekking",
+                "geo": geo,
+                "address": {
+                    "@type": "PostalAddress",
+                    "addressCountry": "BR",
+                    "addressRegion": t["uf"],
+                    "addressLocality": t["city"],
+                },
                 "containedInPlace": {
                     "@type": "Place",
                     "name": t["region"],
