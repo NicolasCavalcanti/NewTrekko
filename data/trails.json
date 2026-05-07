@@ -49,7 +49,9 @@
     ],
     "wiklocUrl": "https://pt.wikiloc.com/trilhas-trekking/monte-roraima-expedicao-de-8-dias-divisa-venezuela-brasil-guiana-9574288",
     "wiklocGpxUrl": "https://www.wikiloc.com/wikiloc/download.do?id=9574288",
-    "status": "published"
+    "status": "published",
+    "lat": 5.143,
+    "lng": -60.762
   },
   {
     "id": 2,
@@ -101,7 +103,9 @@
     ],
     "wiklocUrl": "https://pt.wikiloc.com/trilhas-trekking/travessia-petropolis-teresopolis-petro-x-tere-143686385",
     "wiklocGpxUrl": "https://www.wikiloc.com/wikiloc/download.do?id=143686385",
-    "status": "published"
+    "status": "published",
+    "lat": -22.508,
+    "lng": -43.179
   },
   {
     "id": 3,
@@ -149,7 +153,9 @@
     ],
     "wiklocUrl": "https://www.wikiloc.com/hiking-trails/vale-da-lua-chapada-dos-veadeiros-alto-paraiso-de-goias-go-br-116924015",
     "wiklocGpxUrl": "https://www.wikiloc.com/wikiloc/download.do?id=116924015",
-    "status": "published"
+    "status": "published",
+    "lat": -14.15,
+    "lng": -47.632
   },
   {
     "id": 4,
@@ -195,7 +201,9 @@
     ],
     "wiklocUrl": "https://www.wikiloc.com/hiking-trails/pedra-do-bau-sao-bento-do-sapucai-sao-paulo-brasil-150423736",
     "wiklocGpxUrl": "https://www.wikiloc.com/wikiloc/download.do?id=150423736",
-    "status": "published"
+    "status": "published",
+    "lat": -22.655,
+    "lng": -45.482
   },
   {
     "id": 5,
@@ -245,7 +253,9 @@
     ],
     "wiklocUrl": "https://www.wikiloc.com/hiking-trails/pico-da-bandeira-alto-caparao-mg-131170091",
     "wiklocGpxUrl": "https://www.wikiloc.com/wikiloc/download.do?id=131170091",
-    "status": "published"
+    "status": "published",
+    "lat": -20.439,
+    "lng": -41.789
   },
   {
     "id": 6,
@@ -291,7 +301,9 @@
     ],
     "wiklocUrl": "https://www.wikiloc.com/hiking-trails/trilha-do-vertice-canion-itaimbezinho-cambara-do-sul-rs-58394094",
     "wiklocGpxUrl": "https://www.wikiloc.com/wikiloc/download.do?id=58394094",
-    "status": "published"
+    "status": "published",
+    "lat": -29.047,
+    "lng": -50.099
   },
   {
     "id": 7,
@@ -337,7 +349,9 @@
     ],
     "wiklocUrl": "https://www.wikiloc.com/hiking-trails/rota-da-baleia-franca-praia-da-ferrugem-garopaba-praia-do-rosa-imbituba-sc-br-56187078",
     "wiklocGpxUrl": "https://www.wikiloc.com/wikiloc/download.do?id=56187078",
-    "status": "published"
+    "status": "published",
+    "lat": -28.13,
+    "lng": -48.658
   },
   {
     "id": 8,
@@ -387,7 +401,9 @@
     ],
     "wiklocUrl": "https://www.wikiloc.com/mountaineering-trails/travessia-serra-fina-mantiqueira-detalhada-25478843",
     "wiklocGpxUrl": "https://www.wikiloc.com/wikiloc/download.do?id=25478843",
-    "status": "published"
+    "status": "published",
+    "lat": -22.369,
+    "lng": -44.796
   },
   {
     "id": 9,
@@ -496,7 +512,9 @@
         "height": 340,
         "aspectRatio": "600:340"
       }
-    ]
+    ],
+    "lat": -3.418,
+    "lng": -38.967
   },
   {
     "id": 10,
@@ -543,6 +561,8 @@
     ],
     "wiklocUrl": "",
     "wiklocGpxUrl": "",
-    "status": "published"
+    "status": "published",
+    "lat": -22.373,
+    "lng": -44.62
   }
 ]
