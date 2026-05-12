@@ -1,0 +1,212 @@
+{
+  "version": "1.0",
+  "last_updated": "2026-05-12",
+  "categories": [
+    {"slug": "mochilas", "name": "Mochilas", "url": "/equipamentos/mochilas", "icon": "🎒"},
+    {"slug": "botas-e-tenis", "name": "Botas e Tênis", "url": "/equipamentos/botas-e-tenis", "icon": "👟"},
+    {"slug": "lanternas", "name": "Lanternas", "url": "/equipamentos/lanternas", "icon": "🔦"},
+    {"slug": "bastoes-de-caminhada", "name": "Bastões", "url": "/equipamentos/bastoes-de-caminhada", "icon": "🥾"},
+    {"slug": "hidratacao", "name": "Hidratação", "url": "/equipamentos/hidratacao", "icon": "💧"},
+    {"slug": "camping", "name": "Camping", "url": "/equipamentos/camping", "icon": "⛺"},
+    {"slug": "seguranca", "name": "Segurança", "url": "/equipamentos/seguranca", "icon": "🩹"},
+    {"slug": "pets-outdoor", "name": "Pets Outdoor", "url": "/equipamentos/pets-outdoor", "icon": "🐕"}
+  ],
+  "products": [
+    {
+      "id": "nautika-tramp-40l",
+      "slug": "nautika-tramp-40l",
+      "name": "Mochila de Trilha Nautika Tramp 40L",
+      "category": "mochilas",
+      "brand": "Nautika",
+      "short_description": "Mochila polivalente para trilhas de 2–3 dias com bom custo-benefício.",
+      "editorial_score": 8.5,
+      "editorial_badge": "melhor-custo-beneficio",
+      "pros": ["Capa de chuva inclusa", "Sistema de suspensão ajustável", "Bom custo-benefício", "Compartimentos organizados"],
+      "cons": ["Tecido básico", "Suporte lombar simples", "Sem porta-reservatório nativo"],
+      "specifications": {
+        "volume": "40L",
+        "weight_g": 1450,
+        "waterproof": false,
+        "rain_cover": true,
+        "hydration_compatible": false
+      },
+      "marketplaces": [
+        {"name": "amazon", "go_slug": "mochila-nautika-tramp-amazon", "verified_price_brl": 289, "verified_date": "2026-05-12"},
+        {"name": "mercadolivre", "go_slug": "mochila-nautika-tramp-ml", "verified_price_brl": 299, "verified_date": "2026-05-12"}
+      ]
+    },
+    {
+      "id": "deuter-futura-30sl",
+      "slug": "deuter-futura-30sl",
+      "name": "Mochila Deuter Futura 30 SL",
+      "category": "mochilas",
+      "brand": "Deuter",
+      "short_description": "Mochila técnica alemã com sistema Aircontact de ventilação dorsal.",
+      "editorial_score": 9.2,
+      "editorial_badge": "melhor-intermediario",
+      "pros": ["Aircontact ventila as costas", "Durabilidade alemã", "Compartimento hidratação", "Capa inclusa"],
+      "cons": ["Preço elevado", "Mais pesada que concorrentes", "Curva de ajuste"],
+      "specifications": {
+        "volume": "30L",
+        "weight_g": 1380,
+        "waterproof": false,
+        "rain_cover": true,
+        "hydration_compatible": true
+      },
+      "marketplaces": [
+        {"name": "amazon", "go_slug": "mochila-deuter-amazon", "verified_price_brl": 549, "verified_date": "2026-05-12"},
+        {"name": "mercadolivre", "go_slug": "mochila-deuter-ml", "verified_price_brl": 569, "verified_date": "2026-05-12"}
+      ]
+    },
+    {
+      "id": "osprey-atmos-65",
+      "slug": "osprey-atmos-65",
+      "name": "Mochila Osprey Atmos AG 65",
+      "category": "mochilas",
+      "brand": "Osprey",
+      "short_description": "A mochila mais premiada do mundo para trekking de múltiplos dias.",
+      "editorial_score": 9.6,
+      "editorial_badge": "melhor-premium",
+      "pros": ["Anti-Gravity elimina pressão nas costas", "Encaixe cirúrgico", "Construção impecável", "Garantia All Mighty"],
+      "cons": ["Alto custo", "Pesada para o volume", "Excesso de funções para trilhas simples"],
+      "specifications": {
+        "volume": "65L",
+        "weight_g": 2110,
+        "waterproof": false,
+        "rain_cover": true,
+        "hydration_compatible": true
+      },
+      "marketplaces": [
+        {"name": "amazon", "go_slug": "mochila-osprey-atmos-amazon", "verified_price_brl": 1299, "verified_date": "2026-05-12"}
+      ]
+    },
+    {
+      "id": "lanterna-frontal-basica-200lm",
+      "slug": "lanterna-frontal-basica-200lm",
+      "name": "Lanterna Frontal 200lm Básica",
+      "category": "lanternas",
+      "brand": "Genérico",
+      "short_description": "Entrada no mundo das lanternas frontais, adequada para trilhas curtas.",
+      "editorial_score": 7.5,
+      "editorial_badge": "entrada",
+      "pros": ["Preço acessível", "Leve", "Para trilhas curtas"],
+      "cons": ["Bateria fraca", "Sem modo red light", "IPX não certificado"],
+      "specifications": {
+        "lumens": 200,
+        "battery": "AAA x3",
+        "rechargeable": false,
+        "ipx_rating": "IPX4",
+        "weight_g": 85,
+        "autonomy_hours": 6
+      },
+      "marketplaces": [
+        {"name": "shopee", "go_slug": "lanterna-head-basica-shopee", "verified_price_brl": 35, "verified_date": "2026-05-12"},
+        {"name": "mercadolivre", "go_slug": "lanterna-head-basica-ml", "verified_price_brl": 39, "verified_date": "2026-05-12"}
+      ]
+    },
+    {
+      "id": "fenix-hl32r",
+      "slug": "fenix-hl32r",
+      "name": "Fenix HL32R-T Lanterna Frontal Recarregável",
+      "category": "lanternas",
+      "brand": "Fenix",
+      "short_description": "Padrão profissional recarregável USB-C com 800lm e IPX8.",
+      "editorial_score": 9.3,
+      "editorial_badge": "melhor-premium",
+      "pros": ["800lm potentes", "IPX8 submersível", "Recarregável USB-C", "Modo vermelho preserva visão noturna"],
+      "cons": ["Alto custo", "Peso maior que concorrentes", "Bateria proprietária"],
+      "specifications": {
+        "lumens": 800,
+        "battery": "Li-Ion recarregável",
+        "rechargeable": true,
+        "charging": "USB-C",
+        "ipx_rating": "IPX8",
+        "weight_g": 115,
+        "autonomy_hours": 10
+      },
+      "marketplaces": [
+        {"name": "amazon", "go_slug": "lanterna-fenix-hl32r-amazon", "verified_price_brl": 389, "verified_date": "2026-05-12"},
+        {"name": "mercadolivre", "go_slug": "lanterna-fenix-hl32r-ml", "verified_price_brl": 399, "verified_date": "2026-05-12"}
+      ]
+    },
+    {
+      "id": "stanley-classic-09",
+      "slug": "stanley-classic-09",
+      "name": "Garrafa Térmica Stanley Classic 0,9L",
+      "category": "hidratacao",
+      "brand": "Stanley",
+      "short_description": "Ícone entre trilheiros. Aço inox de dupla parede, durabilidade lendária.",
+      "editorial_score": 9.2,
+      "editorial_badge": "melhor-garrafa",
+      "pros": ["Durabilidade excepcional", "Mantém temperatura por horas", "Tampa-copo inclusa", "Resistente a impactos"],
+      "cons": ["Pesada", "Sem indicador de nível", "Abertura larga pode vazar"],
+      "specifications": {
+        "volume_ml": 900,
+        "material": "Aço inox 18/8",
+        "double_wall": true,
+        "bpa_free": true,
+        "cold_hours": 24,
+        "hot_hours": 12,
+        "weight_g": 540
+      },
+      "marketplaces": [
+        {"name": "amazon", "go_slug": "stanley-classic-amazon", "verified_price_brl": 179, "verified_date": "2026-05-12"},
+        {"name": "mercadolivre", "go_slug": "stanley-classic-ml", "verified_price_brl": 185, "verified_date": "2026-05-12"}
+      ]
+    },
+    {
+      "id": "sawyer-squeeze",
+      "slug": "sawyer-squeeze",
+      "name": "Filtro de Água Sawyer Squeeze",
+      "category": "hidratacao",
+      "brand": "Sawyer",
+      "short_description": "O filtro portátil mais eficiente. 85g, filtra 99.9999% de bactérias.",
+      "editorial_score": 9.5,
+      "editorial_badge": "melhor-filtro",
+      "pros": ["Ultraleve (85g)", "Filtragem eficiente", "Longa vida útil", "Versátil"],
+      "cons": ["Não filtra vírus", "Fluxo reduz com tempo", "Necessita back-flush"],
+      "specifications": {
+        "weight_g": 85,
+        "filtration": "0.1 micra hollow fiber",
+        "bacteria_removal_pct": 99.9999,
+        "protozoa_removal_pct": 99.9999,
+        "virus_removal": false,
+        "lifespan_liters": 1000000
+      },
+      "marketplaces": [
+        {"name": "amazon", "go_slug": "sawyer-squeeze-amazon", "verified_price_brl": 189, "verified_date": "2026-05-12"},
+        {"name": "mercadolivre", "go_slug": "sawyer-squeeze-ml", "verified_price_brl": 195, "verified_date": "2026-05-12"}
+      ]
+    },
+    {
+      "id": "fox40-classic",
+      "slug": "fox40-classic",
+      "name": "Apito de Emergência Fox 40 Classic",
+      "category": "seguranca",
+      "brand": "Fox 40",
+      "short_description": "O apito de referência em sinalizações de emergência. 115dB, 9g, sem rolha.",
+      "editorial_score": 9.5,
+      "editorial_badge": "essencial-absoluto",
+      "pros": ["Extremamente leve (9g)", "Som potentíssimo", "À prova d'água", "Preço muito acessível"],
+      "cons": [],
+      "specifications": {
+        "weight_g": 9,
+        "decibels": 115,
+        "rolha": false,
+        "waterproof": true
+      },
+      "marketplaces": [
+        {"name": "amazon", "go_slug": "fox40-classic-amazon", "verified_price_brl": 28, "verified_date": "2026-05-12"},
+        {"name": "shopee", "go_slug": "fox40-classic-shopee", "verified_price_brl": 22, "verified_date": "2026-05-12"},
+        {"name": "mercadolivre", "go_slug": "fox40-classic-ml", "verified_price_brl": 25, "verified_date": "2026-05-12"}
+      ]
+    }
+  ],
+  "guides": [
+    {"slug": "como-escolher-mochila-de-trilha", "title": "Como Escolher Mochila de Trilha", "url": "/equipamentos/guias/como-escolher-mochila-de-trilha", "category": "mochilas"},
+    {"slug": "o-que-levar-em-uma-trilha-de-um-dia", "title": "O Que Levar em uma Trilha de Um Dia", "url": "/equipamentos/guias/o-que-levar-em-uma-trilha-de-um-dia", "category": "geral"}
+  ],
+  "comparativos": [
+    {"slug": "melhores-mochilas-de-ataque", "title": "Melhores Mochilas de Ataque", "url": "/equipamentos/comparativos/melhores-mochilas-de-ataque", "category": "mochilas"}
+  ]
+}
