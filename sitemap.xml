@@ -491,5 +491,29 @@
       <news:title>Trekking com Cachorro: Tudo que Você Precisa Saber Antes de Ir</news:title>
     </news:news>
   </url>
+  <url>
+    <loc>https://trekko.com.br/equipamentos/primeiros-socorros</loc>
+    <lastmod>2026-05-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://trekko.com.br/equipamentos/guias/kit-primeiros-socorros-para-trilha</loc>
+    <lastmod>2026-05-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://trekko.com.br/equipamentos/comparativos/melhores-kits-primeiros-socorros-trilha</loc>
+    <lastmod>2026-05-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://trekko.com.br/admin</loc>
+    <lastmod>2026-05-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.10</priority>
+  </url>
 
 </urlset>
