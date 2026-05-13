@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Redirecionando... | Trekko</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="/favicon-48x48.png" type="image/png">
+<script>window.TREKKO_CONFIG={GA4_ID:'G-S816P190VN',GTM_ID:null,ADS_ID:'AW-355784943'};</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-S816P190VN"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-S816P190VN',{send_page_view:false});</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:#f8fafc;color:#1e293b;display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:1.5rem}
+.redirect-card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:2.5rem 2rem;max-width:440px;width:100%;box-shadow:0 4px 24px rgba(0,0,0,.08)}
+.logo{display:flex;align-items:center;justify-content:center;gap:.5rem;font-size:1.2rem;font-weight:700;color:#15803d;margin-bottom:1.5rem}
+.spinner{width:40px;height:40px;border:3px solid #e2e8f0;border-top-color:#2D6A4F;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1.25rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+h1{font-size:1.05rem;font-weight:600;margin-bottom:.5rem;color:#1e293b}
+p{font-size:.85rem;color:#64748b;line-height:1.6;margin-bottom:1rem}
+.dest-info{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:.75rem 1rem;font-size:.78rem;color:#94a3b8;word-break:break-all;margin-bottom:1.5rem;display:none}
+.redirect-btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.6rem 1.25rem;background:#2D6A4F;color:#fff;border-radius:8px;font-size:.85rem;font-weight:600;text-decoration:none;border:none;cursor:pointer;width:100%;transition:background .2s}
+.redirect-btn:hover{background:#1B4332}
+.back-link{display:inline-block;margin-top:.75rem;font-size:.78rem;color:#94a3b8;text-decoration:none}
+.back-link:hover{color:#2D6A4F}
+.affil-note{font-size:.72rem;color:#94a3b8;margin-top:1.25rem;padding-top:1rem;border-top:1px solid #e2e8f0;line-height:1.55}
+.affil-note a{color:#2D6A4F}
+.error-state{display:none}
+.error-state h1{color:#dc2626}
+</style>
+</head>
+<body>
+<div class="redirect-card">
+  <div class="logo">
+    <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><path d="M16 3L3 28h26L16 3z" fill="#15803d" opacity=".9"/><path d="M16 10l-7 18h14L16 10z" fill="#fff" opacity=".3"/></svg>
+    Trekko
+  </div>
+
+  <div id="loading-state">
+    <div class="spinner"></div>
+    <h1>Redirecionando para a oferta…</h1>
+    <p>Você será direcionado ao marketplace em instantes.</p>
+    <div class="dest-info" id="dest-url"></div>
+    <a href="#" id="manual-link" class="redirect-btn" style="display:none">Clique aqui se não for redirecionado</a>
+  </div>
+
+  <div class="error-state" id="error-state">
+    <h1>Link não encontrado</h1>
+    <p>O produto que você buscou pode ter sido removido ou o link está incorreto.</p>
+    <a href="/equipamentos" class="redirect-btn">Ver todos os equipamentos</a>
+  </div>
+
+  <a href="/equipamentos" class="back-link">← Voltar para a Trekko Store</a>
+
+  <p class="affil-note">
+    Link de afiliado — a Trekko pode receber comissão sobre compras qualificadas, sem custo adicional para você.
+    <a href="/divulgacao-de-afiliados">Saiba mais.</a>
+  </p>
+</div>
+
+<script>
+(function() {
+  var AFFILIATE_MAP = {
+    // Mochilas
+    'mochila-nautika-tramp-amazon': 'https://www.amazon.com.br/s?k=mochila+trilha+40l+nautika&tag=trekko-20',
+    'mochila-deuter-amazon': 'https://www.amazon.com.br/s?k=deuter+mochila+trilha&tag=trekko-20',
+    'mochila-osprey-atmos-amazon': 'https://www.amazon.com.br/s?k=osprey+atmos+65&tag=trekko-20',
+    'mochila-ataque-nautika-amazon': 'https://www.amazon.com.br/s?k=mochila+ataque+20l&tag=trekko-20',
+    'mochila-ataque-nautika-shopee': 'https://shopee.com.br/search?keyword=mochila+ataque+20l',
+    'mochila-ataque-nautika-ml': 'https://www.mercadolivre.com.br/q/mochila-ataque-20l',
+    // Lanternas
+    'lanterna-head-basica-shopee': 'https://shopee.com.br/search?keyword=lanterna+frontal+200+lumens',
+    'lanterna-head-basica-ml': 'https://www.mercadolivre.com.br/q/lanterna-frontal-trilha',
+    'lanterna-fenix-hl32r-amazon': 'https://www.amazon.com.br/s?k=fenix+lanterna+frontal+recarregavel&tag=trekko-20',
+    'lanterna-fenix-hl32r-ml': 'https://www.mercadolivre.com.br/q/fenix-lanterna-frontal',
+    'lanterna-petzl-tikkina-amazon': 'https://www.amazon.com.br/s?k=petzl+tikkina&tag=trekko-20',
+    'lanterna-petzl-tikkina-shopee': 'https://shopee.com.br/search?keyword=petzl+tikkina',
+    'fenix-headlamp-amazon': 'https://www.amazon.com.br/s?k=fenix+lanterna+frontal+recarregavel&tag=trekko-20',
+    // Botas e Tênis
+    'tenis-trilha-multilaser-amazon': 'https://www.amazon.com.br/s?k=tenis+trilha+masculino&tag=trekko-20',
+    'tenis-trilha-multilaser-shopee': 'https://shopee.com.br/search?keyword=tenis+trilha+masculino',
+    'tenis-trilha-multilaser-ml': 'https://www.mercadolivre.com.br/q/tenis-trilha-masculino',
+    'merrell-moab-amazon': 'https://www.amazon.com.br/s?k=merrell+moab+bota+trekking&tag=trekko-20',
+    'merrell-moab-ml': 'https://www.mercadolivre.com.br/q/merrell-moab-bota',
+    'salomon-speedcross-amazon': 'https://www.amazon.com.br/s?k=salomon+speedcross+6&tag=trekko-20',
+    'salomon-speedcross-ml': 'https://www.mercadolivre.com.br/q/salomon-speedcross-6',
+    // Bastões
+    'bastao-guepardo-amazon': 'https://www.amazon.com.br/s?k=bastao+trekking+aluminio&tag=trekko-20',
+    'bastao-guepardo-shopee': 'https://shopee.com.br/search?keyword=bastao+trekking+aluminio+par',
+    'bastao-guepardo-ml': 'https://www.mercadolivre.com.br/q/bastao-trekking-aluminio-par',
+    'bd-trail-cork-amazon': 'https://www.amazon.com.br/s?k=black+diamond+trail+cork&tag=trekko-20',
+    'bd-trail-cork-ml': 'https://www.mercadolivre.com.br/q/black-diamond-bastao-trekking',
+    'leki-micro-vario-amazon': 'https://www.amazon.com.br/s?k=leki+micro+vario+carbon&tag=trekko-20',
+    'leki-micro-vario-ml': 'https://www.mercadolivre.com.br/q/leki-bastao-carbono',
+    'bastao-par-shopee': 'https://shopee.com.br/search?keyword=bastao+caminhada+par+aluminio',
+    // Hidratação
+    'stanley-classic-amazon': 'https://www.amazon.com.br/s?k=stanley+classic+garrafa+termica&tag=trekko-20',
+    'stanley-classic-ml': 'https://www.mercadolivre.com.br/q/stanley-garrafa-termica',
+    'deuter-streamer-amazon': 'https://www.amazon.com.br/s?k=deuter+reservatorio+hidratacao&tag=trekko-20',
+    'deuter-streamer-shopee': 'https://shopee.com.br/search?keyword=reservatorio+hidratacao+3l',
+    'sawyer-squeeze-amazon': 'https://www.amazon.com.br/s?k=sawyer+squeeze+filtro+agua&tag=trekko-20',
+    'sawyer-squeeze-ml': 'https://www.mercadolivre.com.br/q/sawyer-squeeze-filtro-agua',
+    // Camping
+    'barraca-nautika-amazon': 'https://www.amazon.com.br/s?k=barraca+camping+3+lugares+nautika&tag=trekko-20',
+    'barraca-nautika-shopee': 'https://shopee.com.br/search?keyword=barraca+camping+3+lugares',
+    'barraca-nautika-ml': 'https://www.mercadolivre.com.br/q/barraca-camping-3-lugares',
+    'saco-dormir-amazon': 'https://www.amazon.com.br/s?k=saco+de+dormir+trilha&tag=trekko-20',
+    'isolante-termico-shopee': 'https://shopee.com.br/search?keyword=isolante+termico+camping+aluminizado',
+    // Segurança
+    'kit-primeiros-socorros-amazon': 'https://www.amazon.com.br/s?k=kit+primeiros+socorros+trilha&tag=trekko-20',
+    'kit-primeiros-socorros-shopee': 'https://shopee.com.br/search?keyword=kit+primeiros+socorros+portatil',
+    'kit-primeiros-socorros-ml': 'https://www.mercadolivre.com.br/q/kit-primeiros-socorros-portatil',
+    'fox40-classic-amazon': 'https://www.amazon.com.br/s?k=apito+fox+40+classic&tag=trekko-20',
+    'fox40-classic-shopee': 'https://shopee.com.br/search?keyword=apito+fox+40+emergencia',
+    'fox40-classic-ml': 'https://www.mercadolivre.com.br/q/apito-fox-40-classic',
+    'garmin-etrex-32x-amazon': 'https://www.amazon.com.br/s?k=garmin+etrex+32x&tag=trekko-20',
+    'garmin-etrex-32x-ml': 'https://www.mercadolivre.com.br/q/garmin-etrex-32x',
+    'kit-ps-shopee': 'https://shopee.com.br/search?keyword=kit+primeiros+socorros+compacto',
+    // Pets Outdoor
+    'colete-cao-outdoor-amazon': 'https://www.amazon.com.br/s?k=colete+peitoral+cao+outdoor&tag=trekko-20',
+    'colete-cao-outdoor-shopee': 'https://shopee.com.br/search?keyword=colete+peitoral+cachorro+trilha',
+    'colete-cao-outdoor-ml': 'https://www.mercadolivre.com.br/q/colete-peitoral-cao-trilha',
+    'bowl-dobravel-cao-amazon': 'https://www.amazon.com.br/s?k=vasilha+dobravel+cao+silicone&tag=trekko-20',
+    'bowl-dobravel-cao-shopee': 'https://shopee.com.br/search?keyword=vasilha+dobravel+silicone+cachorro',
+    'ruffwear-approach-amazon': 'https://www.amazon.com.br/s?k=ruffwear+approach+pack&tag=trekko-20',
+    'ruffwear-approach-ml': 'https://www.mercadolivre.com.br/q/ruffwear-mochila-cachorro',
+    // Ofertas
+    'nautika-tramp-amazon': 'https://www.amazon.com.br/s?k=mochila+trilha+40l+nautika+tramp&tag=trekko-20',
+    // Primeiros Socorros — kits prontos
+    'kit-ps-multilaser-amazon': 'https://www.amazon.com.br/s?k=kit+primeiros+socorros+multilaser&tag=trekko-20',
+    'kit-ps-multilaser-ml': 'https://www.mercadolivre.com.br/q/kit-primeiros-socorros-multilaser',
+    'lifesystems-trek-amazon': 'https://www.amazon.com.br/s?k=lifesystems+first+aid+kit+trek&tag=trekko-20',
+    // Primeiros Socorros — mantas e complementos
+    'manta-termica-amazon': 'https://www.amazon.com.br/s?k=manta+termica+emergencia+camping&tag=trekko-20',
+    'manta-termica-shopee': 'https://shopee.com.br/search?keyword=manta+termica+emergencia+aluminizada',
+    'compeed-bolhas-amazon': 'https://www.amazon.com.br/s?k=compeed+curativos+bolhas&tag=trekko-20',
+    'compeed-bolhas-ml': 'https://www.mercadolivre.com.br/q/compeed-bolhas-curativo',
+  };
+
+  function getParam(name) {
+    var params = new URLSearchParams(window.location.search);
+    return params.get(name);
+  }
+
+  function getSlugFromPath() {
+    var parts = window.location.pathname.split('/').filter(Boolean);
+    if (parts[0] === 'go' && parts.length > 1) {
+      return parts.slice(1).join('/');
+    }
+    return getParam('p') || getParam('slug') || null;
+  }
+
+  function trackAndRedirect(slug, url) {
+    var marketplace = 'unknown';
+    if (url.indexOf('amazon') > -1) marketplace = 'amazon';
+    else if (url.indexOf('shopee') > -1) marketplace = 'shopee';
+    else if (url.indexOf('mercadolivre') > -1) marketplace = 'mercadolivre';
+    else if (url.indexOf('aliexpress') > -1) marketplace = 'aliexpress';
+
+    if (typeof gtag === 'function') {
+      gtag('event', 'affiliate_redirect', {
+        product_slug: slug,
+        marketplace: marketplace,
+        referrer: document.referrer || 'direct',
+        destination: url
+      });
+      gtag('event', 'affiliate_click', {
+        product: slug,
+        marketplace: marketplace,
+        page: 'go-redirect'
+      });
+    }
+
+    document.getElementById('manual-link').href = url;
+    document.getElementById('manual-link').style.display = 'flex';
+    document.getElementById('dest-url').textContent = 'Destino: ' + marketplace;
+    document.getElementById('dest-url').style.display = 'block';
+
+    setTimeout(function() {
+      window.location.replace(url);
+    }, 600);
+  }
+
+  function showError() {
+    document.getElementById('loading-state').style.display = 'none';
+    document.getElementById('error-state').style.display = 'block';
+  }
+
+  var slug = getSlugFromPath();
+  if (!slug) {
+    showError();
+  } else {
+    var destUrl = AFFILIATE_MAP[slug];
+    if (destUrl) {
+      trackAndRedirect(slug, destUrl);
+    } else {
+      showError();
+    }
+  }
+})();
+</script>
+</body>
+</html>

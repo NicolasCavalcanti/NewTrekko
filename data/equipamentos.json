@@ -1,0 +1,32 @@
+{
+  "version": "1.0",
+  "last_updated": "2026-05-13",
+  "note": "Products are managed via /admin and added by the editorial team. This file is regenerated from the admin panel export.",
+  "categories": [
+    {"slug": "mochilas", "name": "Mochilas", "url": "/equipamentos/mochilas", "icon": "🎒"},
+    {"slug": "botas-e-tenis", "name": "Botas e Tênis", "url": "/equipamentos/botas-e-tenis", "icon": "👟"},
+    {"slug": "lanternas", "name": "Lanternas", "url": "/equipamentos/lanternas", "icon": "🔦"},
+    {"slug": "bastoes-de-caminhada", "name": "Bastões de Caminhada", "url": "/equipamentos/bastoes-de-caminhada", "icon": "🥾"},
+    {"slug": "hidratacao", "name": "Hidratação", "url": "/equipamentos/hidratacao", "icon": "💧"},
+    {"slug": "camping", "name": "Camping", "url": "/equipamentos/camping", "icon": "⛺"},
+    {"slug": "seguranca", "name": "Segurança", "url": "/equipamentos/seguranca", "icon": "🛡️"},
+    {"slug": "primeiros-socorros", "name": "Primeiros Socorros", "url": "/equipamentos/primeiros-socorros", "icon": "⚕️"},
+    {"slug": "pets-outdoor", "name": "Pets Outdoor", "url": "/equipamentos/pets-outdoor", "icon": "🐕"}
+  ],
+  "products": [],
+  "marketplaces": [
+    {"slug": "amazon", "name": "Amazon Brasil", "base_url": "https://www.amazon.com.br", "affiliate_tag": "trekko-20"},
+    {"slug": "mercadolivre", "name": "Mercado Livre", "base_url": "https://www.mercadolivre.com.br"},
+    {"slug": "shopee", "name": "Shopee", "base_url": "https://shopee.com.br"},
+    {"slug": "aliexpress", "name": "AliExpress", "base_url": "https://www.aliexpress.com"}
+  ],
+  "guides": [
+    {"slug": "como-escolher-mochila-de-trilha", "title": "Como Escolher Mochila de Trilha", "url": "/equipamentos/guias/como-escolher-mochila-de-trilha", "category": "mochilas"},
+    {"slug": "o-que-levar-em-uma-trilha-de-um-dia", "title": "O Que Levar em uma Trilha de Um Dia", "url": "/equipamentos/guias/o-que-levar-em-uma-trilha-de-um-dia", "category": "geral"},
+    {"slug": "kit-primeiros-socorros-para-trilha", "title": "Kit de Primeiros Socorros para Trilha", "url": "/equipamentos/guias/kit-primeiros-socorros-para-trilha", "category": "primeiros-socorros"}
+  ],
+  "comparativos": [
+    {"slug": "melhores-mochilas-de-ataque", "title": "Melhores Mochilas de Ataque", "url": "/equipamentos/comparativos/melhores-mochilas-de-ataque", "category": "mochilas"},
+    {"slug": "melhores-kits-primeiros-socorros-trilha", "title": "Melhores Kits de Primeiros Socorros para Trilha", "url": "/equipamentos/comparativos/melhores-kits-primeiros-socorros-trilha", "category": "primeiros-socorros"}
+  ]
+}
