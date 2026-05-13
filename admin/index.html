@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trekko Admin — Store Manager</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="/favicon-48x48.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@700;800&display=swap" rel="stylesheet">
+<style>
+/* ─── Reset ─── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:'Inter',sans-serif;font-size:14px;background:#f0f2f5;color:#1a2332}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:'Inter',sans-serif}
+input,select,textarea{font-family:'Inter',sans-serif;font-size:13px}
+
+/* ─── Login Screen ─── */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#0a4627 0%,#17653c 100%)}
+.login-card{background:#fff;border-radius:16px;padding:2.5rem 2rem;width:100%;max-width:360px;box-shadow:0 8px 40px rgba(0,0,0,.25)}
+.login-logo{display:flex;align-items:center;gap:.5rem;font-family:'Sora',sans-serif;font-size:1.4rem;font-weight:800;color:#0a4627;margin-bottom:1.75rem;justify-content:center}
+.login-card h2{font-family:'Sora',sans-serif;font-size:1.05rem;font-weight:700;color:#1a2332;margin-bottom:.4rem;text-align:center}
+.login-card p{font-size:.82rem;color:#6b7280;text-align:center;margin-bottom:1.5rem}
+.form-group{margin-bottom:1rem}
+.form-group label{display:block;font-size:.8rem;font-weight:600;color:#374151;margin-bottom:.35rem}
+.form-group input{width:100%;padding:.6rem .85rem;border:1px solid #d1d5db;border-radius:8px;font-size:.9rem;outline:none;transition:border .15s}
+.form-group input:focus{border-color:#17653c;box-shadow:0 0 0 3px rgba(23,101,60,.1)}
+.login-btn{width:100%;padding:.7rem;background:#17653c;color:#fff;border:none;border-radius:8px;font-weight:700;font-size:.9rem;margin-top:.5rem;transition:background .15s}
+.login-btn:hover{background:#0a4627}
+.login-error{background:#fef2f2;border:1px solid #fecaca;color:#dc2626;font-size:.8rem;padding:.5rem .75rem;border-radius:6px;margin-top:.75rem;display:none}
+
+/* ─── App Layout ─── */
+#app{display:none;height:100vh;overflow:hidden}
+.app-layout{display:flex;height:100%}
+
+/* ─── Sidebar ─── */
+.sidebar{width:220px;flex-shrink:0;background:#0a4627;display:flex;flex-direction:column;height:100%;overflow-y:auto}
+.sidebar-logo{display:flex;align-items:center;gap:.5rem;font-family:'Sora',sans-serif;font-size:1.15rem;font-weight:800;color:#fff;padding:1.25rem 1rem 1rem;border-bottom:1px solid rgba(255,255,255,.1)}
+.sidebar-logo-icon{font-size:1.1rem}
+.sidebar-section{padding:.75rem 0 .25rem;margin:0 .5rem}
+.sidebar-section-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.4);padding:.35rem .75rem;display:block}
+.nav-item{display:flex;align-items:center;gap:.6rem;padding:.6rem .85rem;border-radius:8px;margin:.1rem .5rem;font-size:.82rem;font-weight:500;color:rgba(255,255,255,.7);cursor:pointer;transition:all .15s;border:none;background:none;width:calc(100% - 1rem);text-align:left}
+.nav-item:hover{background:rgba(255,255,255,.1);color:#fff}
+.nav-item.active{background:#17653c;color:#fff;font-weight:600}
+.nav-item-icon{font-size:.9rem;flex-shrink:0;width:16px;text-align:center}
+.sidebar-footer{margin-top:auto;padding:.75rem;border-top:1px solid rgba(255,255,255,.1)}
+.sidebar-footer p{font-size:.7rem;color:rgba(255,255,255,.3);text-align:center}
+
+/* ─── Main area ─── */
+.main-area{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#f0f2f5}
+.topbar{height:52px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;flex-shrink:0}
+.topbar-title{font-family:'Sora',sans-serif;font-size:.95rem;font-weight:700;color:#1a2332}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:.75rem}
+.topbar-btn{padding:.35rem .85rem;background:#17653c;color:#fff;border:none;border-radius:6px;font-size:.78rem;font-weight:600;cursor:pointer;transition:background .15s}
+.topbar-btn:hover{background:#0a4627}
+.topbar-btn.secondary{background:#f0f2f5;color:#374151;border:1px solid #d1d5db}
+.topbar-btn.secondary:hover{background:#e5e7eb}
+.main-content{flex:1;overflow-y:auto;padding:1.5rem}
+
+/* ─── Panels ─── */
+.panel{display:none}
+.panel.active{display:block}
+
+/* ─── Stats grid ─── */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:1.5rem}
+.stat-card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:1rem 1.25rem;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.stat-label{font-size:.72rem;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.35rem}
+.stat-value{font-family:'Sora',sans-serif;font-size:1.6rem;font-weight:800;color:#1a2332;line-height:1}
+.stat-sub{font-size:.72rem;color:#9ca3af;margin-top:.25rem}
+
+/* ─── Section header ─── */
+.section-header{display:flex;align-items:center;gap:.75rem;margin-bottom:1rem}
+.section-header h2{font-family:'Sora',sans-serif;font-size:.95rem;font-weight:700;color:#1a2332}
+.section-header .spacer{flex:1}
+.btn-add{padding:.45rem 1rem;background:#17653c;color:#fff;border:none;border-radius:7px;font-size:.8rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:.4rem;transition:background .15s}
+.btn-add:hover{background:#0a4627}
+
+/* ─── Filter tabs ─── */
+.filter-tabs{display:flex;gap:.35rem;margin-bottom:1rem;flex-wrap:wrap}
+.filter-tab{padding:.35rem .8rem;border:1px solid #e5e7eb;border-radius:999px;font-size:.75rem;font-weight:500;color:#6b7280;background:#fff;cursor:pointer;transition:all .15s}
+.filter-tab:hover{border-color:#17653c;color:#17653c}
+.filter-tab.active{background:#17653c;color:#fff;border-color:#17653c;font-weight:600}
+
+/* ─── Tables ─── */
+.table-wrap{background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+thead th{background:#f8fafb;padding:.65rem 1rem;text-align:left;font-size:.72rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid #e5e7eb;white-space:nowrap}
+tbody td{padding:.7rem 1rem;border-bottom:1px solid #f3f4f6;vertical-align:middle;color:#374151}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:#f8fafb}
+.td-name{font-weight:600;color:#1a2332}
+.td-actions{display:flex;gap:.35rem;align-items:center}
+.action-btn{padding:.25rem .6rem;border-radius:5px;font-size:.72rem;font-weight:600;border:1px solid #e5e7eb;background:#fff;cursor:pointer;transition:all .15s;white-space:nowrap}
+.action-btn:hover{background:#f0f2f5}
+.action-btn.edit{color:#2563eb;border-color:#bfdbfe}.action-btn.edit:hover{background:#eff6ff}
+.action-btn.del{color:#dc2626;border-color:#fecaca}.action-btn.del:hover{background:#fef2f2}
+.action-btn.toggle-pub{color:#059669;border-color:#a7f3d0}.action-btn.toggle-pub:hover{background:#ecfdf5}
+.action-btn.toggle-unpub{color:#d97706;border-color:#fde68a}.action-btn.toggle-unpub:hover{background:#fffbeb}
+
+/* ─── Badges ─── */
+.badge{display:inline-block;padding:.18rem .6rem;border-radius:999px;font-size:.68rem;font-weight:700;white-space:nowrap}
+.badge-published{background:#d1fae5;color:#065f46}
+.badge-draft{background:#fef3c7;color:#92400e}
+.badge-inactive{background:#f3f4f6;color:#6b7280}
+.badge-yes{background:#d1fae5;color:#065f46}
+.badge-no{background:#f3f4f6;color:#6b7280}
+
+/* ─── Empty state ─── */
+.empty-state{text-align:center;padding:3rem 1rem;color:#9ca3af}
+.empty-state .empty-icon{font-size:2.5rem;margin-bottom:.75rem}
+.empty-state p{font-size:.85rem;line-height:1.55}
+.empty-state strong{color:#6b7280}
+
+/* ─── Cards ─── */
+.item-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:1rem}
+.item-card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:1rem;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.item-card-header{display:flex;align-items:flex-start;gap:.5rem;margin-bottom:.5rem}
+.item-icon{font-size:1.25rem;flex-shrink:0;line-height:1}
+.item-card-title{font-weight:700;font-size:.85rem;color:#1a2332;flex:1}
+.item-card-slug{font-size:.72rem;color:#9ca3af;font-family:monospace}
+.item-card-desc{font-size:.78rem;color:#6b7280;line-height:1.5;margin-bottom:.75rem}
+.item-card-actions{display:flex;gap:.35rem}
+
+/* ─── Export ─── */
+.export-wrap{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:1.25rem;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.export-wrap label{display:block;font-size:.78rem;font-weight:600;color:#374151;margin-bottom:.5rem}
+#export-json-area{width:100%;height:400px;font-family:monospace;font-size:.75rem;border:1px solid #e5e7eb;border-radius:6px;padding:.75rem;resize:vertical;color:#1a2332;background:#f8fafb}
+.export-actions{display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap}
+.export-info{font-size:.78rem;color:#6b7280;margin-top:.75rem;line-height:1.6;background:#f0fdf4;border:1px solid #d1fae5;border-radius:6px;padding:.75rem}
+
+/* ─── Settings ─── */
+.settings-section{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:1.25rem;margin-bottom:1rem;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.settings-section h3{font-family:'Sora',sans-serif;font-size:.88rem;font-weight:700;color:#1a2332;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid #f3f4f6}
+.danger-btn{padding:.45rem 1rem;background:#fee2e2;color:#dc2626;border:1px solid #fecaca;border-radius:7px;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .15s}
+.danger-btn:hover{background:#dc2626;color:#fff}
+.success-msg{display:none;background:#d1fae5;color:#065f46;border:1px solid #a7f3d0;border-radius:6px;padding:.5rem .85rem;font-size:.8rem;margin-top:.5rem}
+
+/* ─── Modal ─── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:14px;width:100%;max-width:600px;box-shadow:0 20px 60px rgba(0,0,0,.3);margin:auto}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid #e5e7eb}
+.modal-header h3{font-family:'Sora',sans-serif;font-size:.95rem;font-weight:700;color:#1a2332}
+.modal-close{background:none;border:none;font-size:1.2rem;color:#9ca3af;cursor:pointer;padding:.25rem;line-height:1;border-radius:4px}
+.modal-close:hover{color:#374151;background:#f3f4f6}
+.modal-body{padding:1.25rem 1.5rem;max-height:70vh;overflow-y:auto}
+.modal-footer{padding:1rem 1.5rem;border-top:1px solid #e5e7eb;display:flex;justify-content:flex-end;gap:.5rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-field{margin-bottom:.9rem}
+.form-field label{display:block;font-size:.75rem;font-weight:600;color:#374151;margin-bottom:.3rem}
+.form-field input,.form-field select,.form-field textarea{width:100%;padding:.5rem .75rem;border:1px solid #d1d5db;border-radius:7px;font-size:.82rem;outline:none;transition:border .15s;color:#1a2332;background:#fff}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:#17653c;box-shadow:0 0 0 3px rgba(23,101,60,.08)}
+.form-field textarea{resize:vertical;min-height:70px}
+.form-field small{font-size:.7rem;color:#9ca3af;display:block;margin-top:.2rem}
+.char-count{font-size:.68rem;color:#9ca3af}
+.form-toggle{display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:#374151}
+.form-toggle input[type=checkbox]{width:16px;height:16px;cursor:pointer;accent-color:#17653c}
+.specs-table .spec-row{display:flex;gap:.5rem;margin-bottom:.4rem;align-items:center}
+.specs-table .spec-row input{flex:1;padding:.4rem .6rem;border:1px solid #d1d5db;border-radius:5px;font-size:.78rem}
+.spec-del{background:none;border:none;color:#dc2626;cursor:pointer;font-size:.9rem;padding:.2rem;flex-shrink:0}
+.spec-add{background:none;border:1px solid #d1d5db;border-radius:5px;padding:.3rem .75rem;font-size:.75rem;color:#6b7280;cursor:pointer;margin-top:.25rem}
+.spec-add:hover{background:#f0f2f5}
+.btn-save{padding:.5rem 1.25rem;background:#17653c;color:#fff;border:none;border-radius:7px;font-size:.83rem;font-weight:700;cursor:pointer;transition:background .15s}
+.btn-save:hover{background:#0a4627}
+.btn-cancel{padding:.5rem 1rem;background:#f0f2f5;color:#374151;border:1px solid #e5e7eb;border-radius:7px;font-size:.83rem;font-weight:600;cursor:pointer}
+.btn-cancel:hover{background:#e5e7eb}
+
+/* ─── Responsive ─── */
+@media(max-width:768px){
+  .sidebar{width:56px}
+  .sidebar-logo span:not(.sidebar-logo-icon){display:none}
+  .nav-item span:not(.nav-item-icon){display:none}
+  .nav-item{justify-content:center;padding:.6rem}
+  .sidebar-section-label{display:none}
+  .sidebar-footer p{display:none}
+  .form-row{grid-template-columns:1fr}
+  thead th:nth-child(n+4){display:none}
+  tbody td:nth-child(n+4){display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ─── Login Screen ─── -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">🏔 Trekko Admin</div>
+    <h2>Acesso restrito</h2>
+    <p>Painel de gerenciamento da Trekko Store</p>
+    <div class="form-group">
+      <label for="login-pw">Senha</label>
+      <input type="password" id="login-pw" placeholder="Digite a senha" autocomplete="current-password">
+    </div>
+    <button class="login-btn" onclick="doLogin()">Entrar</button>
+    <div class="login-error" id="login-error">Senha incorreta. Tente novamente.</div>
+  </div>
+</div>
+
+<!-- ─── App ─── -->
+<div id="app">
+<div class="app-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo"><span class="sidebar-logo-icon">🏔</span><span>Trekko</span></div>
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Gestão</span>
+      <button class="nav-item active" data-panel="dashboard" onclick="switchPanel('dashboard',this)">
+        <span class="nav-item-icon">📊</span><span>Dashboard</span>
+      </button>
+      <button class="nav-item" data-panel="products" onclick="switchPanel('products',this)">
+        <span class="nav-item-icon">📦</span><span>Produtos</span>
+      </button>
+      <button class="nav-item" data-panel="categories" onclick="switchPanel('categories',this)">
+        <span class="nav-item-icon">🏷️</span><span>Categorias</span>
+      </button>
+      <button class="nav-item" data-panel="offers" onclick="switchPanel('offers',this)">
+        <span class="nav-item-icon">🔗</span><span>Links Afiliados</span>
+      </button>
+      <button class="nav-item" data-panel="articles" onclick="switchPanel('articles',this)">
+        <span class="nav-item-icon">📝</span><span>Artigos</span>
+      </button>
+    </div>
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Sistema</span>
+      <button class="nav-item" data-panel="export" onclick="switchPanel('export',this)">
+        <span class="nav-item-icon">⬇️</span><span>Exportar JSON</span>
+      </button>
+      <button class="nav-item" data-panel="settings" onclick="switchPanel('settings',this)">
+        <span class="nav-item-icon">⚙️</span><span>Configurações</span>
+      </button>
+    </div>
+    <div class="sidebar-footer"><p>v1.0 · Trekko Admin</p></div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main-area">
+    <div class="topbar">
+      <span class="topbar-title" id="topbar-title">Dashboard</span>
+      <div class="topbar-right">
+        <span id="topbar-date" style="font-size:.75rem;color:#9ca3af"></span>
+        <button class="topbar-btn secondary" onclick="doLogout()">Sair</button>
+      </div>
+    </div>
+
+    <div class="main-content">
+
+      <!-- DASHBOARD -->
+      <div class="panel active" id="panel-dashboard">
+        <div class="stats-grid" id="stats-grid"></div>
+        <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1.5rem">
+          <button class="btn-add" onclick="switchPanel('products',document.querySelector('[data-panel=products]'));openProductModal()">➕ Adicionar Produto</button>
+          <button class="btn-add" style="background:#2563eb" onclick="switchPanel('export',document.querySelector('[data-panel=export]'));renderExport()">⬇️ Exportar JSON</button>
+        </div>
+        <div style="font-family:'Sora',sans-serif;font-size:.8rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem">Últimos produtos</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Produto</th><th>Categoria</th><th>Status</th><th>Destaque</th></tr></thead>
+            <tbody id="dashboard-recent"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PRODUCTS -->
+      <div class="panel" id="panel-products">
+        <div class="section-header">
+          <h2>Produtos</h2>
+          <div class="spacer"></div>
+          <button class="btn-add" onclick="openProductModal()">➕ Novo Produto</button>
+        </div>
+        <div class="filter-tabs" id="product-filters">
+          <button class="filter-tab active" data-filter="all" onclick="setProductFilter('all',this)">Todos</button>
+          <button class="filter-tab" data-filter="published" onclick="setProductFilter('published',this)">Publicados</button>
+          <button class="filter-tab" data-filter="draft" onclick="setProductFilter('draft',this)">Rascunho</button>
+          <button class="filter-tab" data-filter="inactive" onclick="setProductFilter('inactive',this)">Inativos</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Nome</th><th>Categoria</th><th>Marca</th><th>Status</th><th>Destaque</th><th>Ações</th></tr></thead>
+            <tbody id="products-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- CATEGORIES -->
+      <div class="panel" id="panel-categories">
+        <div class="section-header">
+          <h2>Categorias</h2>
+          <div class="spacer"></div>
+          <button class="btn-add" onclick="openCategoryModal()">➕ Nova Categoria</button>
+        </div>
+        <div class="item-grid" id="categories-grid"></div>
+      </div>
+
+      <!-- OFFERS -->
+      <div class="panel" id="panel-offers">
+        <div class="section-header">
+          <h2>Links Afiliados</h2>
+          <div class="spacer"></div>
+          <button class="btn-add" onclick="openOfferModal()">➕ Novo Link</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Produto</th><th>Marketplace</th><th>Slug interno</th><th>Preço (R$)</th><th>Ativo</th><th>Verificado</th><th>Ações</th></tr></thead>
+            <tbody id="offers-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ARTICLES -->
+      <div class="panel" id="panel-articles">
+        <div class="section-header">
+          <h2>Artigos</h2>
+          <div class="spacer"></div>
+          <button class="btn-add" onclick="openArticleModal()">➕ Novo Artigo</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Título</th><th>Tipo</th><th>Categoria</th><th>URL</th><th>Publicado</th><th>Ações</th></tr></thead>
+            <tbody id="articles-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- EXPORT -->
+      <div class="panel" id="panel-export">
+        <div class="section-header"><h2>Exportar JSON</h2><div class="spacer"></div>
+          <button class="btn-add" onclick="renderExport()">🔄 Regenerar</button>
+        </div>
+        <div class="export-wrap">
+          <label>JSON exportável — cole em /data/equipamentos.json e faça commit</label>
+          <textarea id="export-json-area" readonly></textarea>
+          <div class="export-actions">
+            <button class="btn-add" onclick="copyExportJson()">📋 Copiar JSON</button>
+          </div>
+          <div class="export-info">
+            <strong>Como publicar:</strong> Copie o JSON acima, cole no arquivo <code>/data/equipamentos.json</code> do repositório e faça commit para publicar as alterações no site. As páginas públicas leem esse arquivo para exibir produtos, guias e comparativos.
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="panel" id="panel-settings">
+        <div class="settings-section">
+          <h3>Informações do site</h3>
+          <div class="form-field"><label>Nome do site</label><input type="text" id="cfg-site-name" value="Trekko Store"></div>
+          <div class="form-field"><label>Descrição</label><textarea id="cfg-site-desc" rows="2">Curadoria editorial de equipamentos outdoor para trilheiros brasileiros.</textarea></div>
+          <button class="btn-add" onclick="saveSettings()">Salvar configurações</button>
+          <div class="success-msg" id="settings-saved">Configurações salvas!</div>
+        </div>
+        <div class="settings-section">
+          <h3>Dados de exemplo</h3>
+          <p style="font-size:.82rem;color:#6b7280;margin-bottom:.75rem">Carrega as categorias e marketplaces padrão sem apagar produtos ou artigos existentes.</p>
+          <button class="btn-add" style="background:#2563eb" onclick="loadSampleData()">📥 Carregar dados de exemplo</button>
+        </div>
+        <div class="settings-section">
+          <h3 style="color:#dc2626">Zona de perigo</h3>
+          <p style="font-size:.82rem;color:#6b7280;margin-bottom:.75rem">Esta ação apaga <strong>todos os dados</strong> armazenados (produtos, categorias, links, artigos). Não pode ser desfeita.</p>
+          <button class="danger-btn" onclick="clearAllData()">🗑️ Limpar todos os dados</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- PRODUCT MODAL -->
+<div class="modal-overlay" id="product-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="product-modal-title">Novo Produto</h3>
+      <button class="modal-close" onclick="closeModal('product-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="pm-id">
+      <div class="form-row">
+        <div class="form-field"><label>Nome *</label><input type="text" id="pm-name" oninput="autoSlug()" placeholder="Ex: Mochila Osprey Talon 22"></div>
+        <div class="form-field"><label>Slug <span style="font-weight:400;font-size:.7rem">(auto)</span></label><input type="text" id="pm-slug" placeholder="mochila-osprey-talon-22"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-field"><label>Categoria *</label><select id="pm-category"><option value="">Selecione...</option></select></div>
+        <div class="form-field"><label>Marca</label><input type="text" id="pm-brand" placeholder="Ex: Osprey"></div>
+      </div>
+      <div class="form-field">
+        <label>Descrição curta <span class="char-count" id="pm-desc-count">0/160</span></label>
+        <textarea id="pm-desc-short" maxlength="160" rows="2" oninput="updateCharCount('pm-desc-short','pm-desc-count',160)" placeholder="Resumo em até 160 caracteres"></textarea>
+      </div>
+      <div class="form-field"><label>Descrição longa</label><textarea id="pm-desc-long" rows="4" placeholder="Descrição completa do produto..."></textarea></div>
+      <div class="form-row">
+        <div class="form-field"><label>Prós <span style="font-weight:400;font-size:.7rem">(um por linha)</span></label><textarea id="pm-pros" rows="3" placeholder="Leve&#10;Boa ventilação&#10;Resistente"></textarea></div>
+        <div class="form-field"><label>Contras <span style="font-weight:400;font-size:.7rem">(um por linha)</span></label><textarea id="pm-cons" rows="3" placeholder="Sem bolso frontal&#10;Preço elevado"></textarea></div>
+      </div>
+      <div class="form-field">
+        <label>Especificações técnicas <span style="font-weight:400;font-size:.7rem">(chave: valor)</span></label>
+        <div id="specs-rows" class="specs-table"></div>
+        <button class="spec-add" type="button" onclick="addSpecRow('','')">+ Adicionar especificação</button>
+      </div>
+      <div class="form-field"><label>URL da imagem</label><input type="url" id="pm-image" placeholder="https://..."></div>
+      <div class="form-row">
+        <div class="form-field"><label>SEO Title</label><input type="text" id="pm-seo-title" placeholder="Título para SEO"></div>
+        <div class="form-field"><label>SEO Description</label><input type="text" id="pm-seo-desc" placeholder="Até 160 chars"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Status</label>
+          <select id="pm-status">
+            <option value="draft">Rascunho</option>
+            <option value="published">Publicado</option>
+            <option value="inactive">Inativo</option>
+          </select>
+        </div>
+        <div class="form-field" style="display:flex;align-items:flex-end;padding-bottom:.25rem">
+          <label class="form-toggle"><input type="checkbox" id="pm-featured"> Produto em destaque</label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('product-modal')">Cancelar</button>
+      <button class="btn-save" onclick="saveProduct()">Salvar produto</button>
+    </div>
+  </div>
+</div>
+
+<!-- CATEGORY MODAL -->
+<div class="modal-overlay" id="category-modal">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-header">
+      <h3 id="cat-modal-title">Nova Categoria</h3>
+      <button class="modal-close" onclick="closeModal('category-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="cm-id">
+      <div class="form-field"><label>Nome *</label><input type="text" id="cm-name" oninput="autoCatSlug()" placeholder="Ex: Mochilas"></div>
+      <div class="form-field"><label>Slug</label><input type="text" id="cm-slug" placeholder="mochilas"></div>
+      <div class="form-row">
+        <div class="form-field"><label>Ícone (emoji)</label><input type="text" id="cm-icon" placeholder="🎒" maxlength="4"></div>
+        <div class="form-field"><label>Cor (hex)</label><input type="text" id="cm-color" placeholder="#17653c" maxlength="7"></div>
+      </div>
+      <div class="form-field"><label>Descrição</label><textarea id="cm-desc" rows="2" placeholder="Descreva a categoria..."></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('category-modal')">Cancelar</button>
+      <button class="btn-save" onclick="saveCategory()">Salvar categoria</button>
+    </div>
+  </div>
+</div>
+
+<!-- OFFER MODAL -->
+<div class="modal-overlay" id="offer-modal">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-header">
+      <h3 id="offer-modal-title">Novo Link Afiliado</h3>
+      <button class="modal-close" onclick="closeModal('offer-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="om-id">
+      <div class="form-field"><label>Produto *</label><select id="om-product"><option value="">Selecione um produto...</option></select></div>
+      <div class="form-field">
+        <label>Marketplace *</label>
+        <select id="om-marketplace">
+          <option value="">Selecione...</option>
+          <option value="amazon">Amazon Brasil</option>
+          <option value="shopee">Shopee</option>
+          <option value="mercadolivre">Mercado Livre</option>
+          <option value="aliexpress">AliExpress</option>
+        </select>
+      </div>
+      <div class="form-field"><label>URL de afiliado *</label><input type="url" id="om-url" placeholder="https://amzn.to/..."></div>
+      <div class="form-field"><label>Slug interno <span style="font-weight:400;font-size:.7rem">(para /go/)</span></label><input type="text" id="om-slug" placeholder="nome-do-produto-amazon"></div>
+      <div class="form-row">
+        <div class="form-field"><label>Preço (R$) <span style="font-weight:400;font-size:.7rem">opcional</span></label><input type="number" id="om-price" placeholder="199.90" step="0.01" min="0"></div>
+        <div class="form-field"><label>Data de verificação</label><input type="date" id="om-verified"></div>
+      </div>
+      <div class="form-field">
+        <label class="form-toggle"><input type="checkbox" id="om-active" checked> Link ativo</label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('offer-modal')">Cancelar</button>
+      <button class="btn-save" onclick="saveOffer()">Salvar link</button>
+    </div>
+  </div>
+</div>
+
+<!-- ARTICLE MODAL -->
+<div class="modal-overlay" id="article-modal">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-header">
+      <h3 id="art-modal-title">Novo Artigo</h3>
+      <button class="modal-close" onclick="closeModal('article-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="am-id">
+      <div class="form-field"><label>Título *</label><input type="text" id="am-title" oninput="autoArtSlug()" placeholder="Como Escolher Mochila de Trilha"></div>
+      <div class="form-field"><label>Slug</label><input type="text" id="am-slug" placeholder="como-escolher-mochila-de-trilha"></div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Tipo</label>
+          <select id="am-type">
+            <option value="guide">Guia</option>
+            <option value="comparative">Comparativo</option>
+          </select>
+        </div>
+        <div class="form-field"><label>Categoria</label><select id="am-category"><option value="">Nenhuma</option></select></div>
+      </div>
+      <div class="form-field"><label>Resumo</label><textarea id="am-summary" rows="2" placeholder="Breve descrição do artigo..."></textarea></div>
+      <div class="form-field"><label>URL da página</label><input type="text" id="am-url" placeholder="/equipamentos/guias/como-escolher-mochila-de-trilha"></div>
+      <div class="form-field">
+        <label class="form-toggle"><input type="checkbox" id="am-published" checked> Publicado</label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('article-modal')">Cancelar</button>
+      <button class="btn-save" onclick="saveArticle()">Salvar artigo</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════
+   CONSTANTS & DEFAULTS
+══════════════════════════════════ */
+var DB_KEY='trekko_store_db';
+var SESSION_KEY='trekko_admin_auth';
+var ADMIN_PASSWORD='trekko2026';
+
+var DEFAULT_CATEGORIES=[
+  {id:'cat-mochilas',slug:'mochilas',name:'Mochilas',icon:'🎒',color:'#17653c',description:'Mochilas de ataque, cargueiras e hydration packs'},
+  {id:'cat-botas',slug:'botas-e-tenis',name:'Botas e Tênis',icon:'👟',color:'#7f4413',description:'Calçados para trilha, trekking e outdoor'},
+  {id:'cat-lanternas',slug:'lanternas',name:'Lanternas',icon:'🔦',color:'#eeb400',description:'Lanternas frontais e de mão para trilhas'},
+  {id:'cat-bastoes',slug:'bastoes-de-caminhada',name:'Bastões de Caminhada',icon:'🥢',color:'#2563eb',description:'Bastões de carbono e alumínio para trekking'},
+  {id:'cat-hidratacao',slug:'hidratacao',name:'Hidratação',icon:'💧',color:'#0891b2',description:'Garrafas, reservatórios e sistemas de hidratação'},
+  {id:'cat-camping',slug:'camping',name:'Camping',icon:'⛺',color:'#65a30d',description:'Barracas, sacos de dormir, colchonetes e cozinha outdoor'},
+  {id:'cat-seguranca',slug:'seguranca',name:'Segurança',icon:'🛡️',color:'#dc2626',description:'EPIs e equipamentos de segurança para trilhas'},
+  {id:'cat-primeiros',slug:'primeiros-socorros',name:'Primeiros Socorros',icon:'🩹',color:'#e11d48',description:'Kits de primeiros socorros para trilhas e expedições'},
+  {id:'cat-pets',slug:'pets-outdoor',name:'Pets Outdoor',icon:'🐾',color:'#7c3aed',description:'Acessórios para cães e outros pets em trilhas'}
+];
+
+var DEFAULT_MARKETPLACES=[
+  {id:'mp-amazon',slug:'amazon',name:'Amazon Brasil',icon:'📦'},
+  {id:'mp-shopee',slug:'shopee',name:'Shopee',icon:'🛍️'},
+  {id:'mp-ml',slug:'mercadolivre',name:'Mercado Livre',icon:'🛒'},
+  {id:'mp-ali',slug:'aliexpress',name:'AliExpress',icon:'🌏'}
+];
+
+/* ══════════════════════════════════
+   UTILS
+══════════════════════════════════ */
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function slugify(s){return s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');}
+function now(){return new Date().toISOString();}
+function fmtDate(iso){if(!iso)return'—';return new Date(iso).toLocaleDateString('pt-BR');}
+function fmtPrice(n){if(n==null||n===''||isNaN(Number(n)))return'—';return'R$ '+Number(n).toFixed(2).replace('.',',');}
+function esc(s){if(s==null)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function statusBadge(s){
+  if(s==='published')return'<span class="badge badge-published">Publicado</span>';
+  if(s==='draft')return'<span class="badge badge-draft">Rascunho</span>';
+  return'<span class="badge badge-inactive">Inativo</span>';
+}
+function updateCharCount(inputId,countId,max){
+  var len=document.getElementById(inputId).value.length;
+  document.getElementById(countId).textContent=len+'/'+max;
+}
+
+/* ══════════════════════════════════
+   DATABASE
+══════════════════════════════════ */
+function loadDB(){
+  try{
+    var raw=localStorage.getItem(DB_KEY);
+    if(raw){var db=JSON.parse(raw);if(!db.marketplaces)db.marketplaces=[...DEFAULT_MARKETPLACES];if(!db.settings)db.settings={};return db;}
+  }catch(e){}
+  var fresh={products:[],categories:DEFAULT_CATEGORIES.map(function(c){return Object.assign({},c);}),marketplaces:DEFAULT_MARKETPLACES.map(function(m){return Object.assign({},m);}),offers:[],articles:[],settings:{site_name:'Trekko Store',site_desc:'Curadoria editorial de equipamentos outdoor para trilheiros brasileiros.'}};
+  saveDB(fresh);
+  return fresh;
+}
+function saveDB(db){localStorage.setItem(DB_KEY,JSON.stringify(db));}
+function getDB(){return loadDB();}
+
+/* ══════════════════════════════════
+   AUTH
+══════════════════════════════════ */
+function doLogin(){
+  var pw=document.getElementById('login-pw').value;
+  if(pw===ADMIN_PASSWORD){sessionStorage.setItem(SESSION_KEY,'1');showApp();}
+  else{var e=document.getElementById('login-error');e.style.display='block';setTimeout(function(){e.style.display='none';},3000);}
+}
+function doLogout(){sessionStorage.removeItem(SESSION_KEY);location.reload();}
+function showApp(){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').style.display='block';
+  document.getElementById('topbar-date').textContent=new Date().toLocaleDateString('pt-BR',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+  var db=getDB();
+  document.getElementById('cfg-site-name').value=db.settings.site_name||'Trekko Store';
+  document.getElementById('cfg-site-desc').value=db.settings.site_desc||'';
+  renderDashboard();
+}
+document.getElementById('login-pw').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
+(function(){if(sessionStorage.getItem(SESSION_KEY)==='1')showApp();})();
+
+/* ══════════════════════════════════
+   NAVIGATION
+══════════════════════════════════ */
+var currentPanel='dashboard';
+var panelLabels={dashboard:'Dashboard',products:'Produtos',categories:'Categorias',offers:'Links Afiliados',articles:'Artigos',export:'Exportar JSON',settings:'Configurações'};
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
+  document.getElementById('panel-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  currentPanel=id;
+  document.getElementById('topbar-title').textContent=panelLabels[id]||id;
+  var renders={dashboard:renderDashboard,products:renderProducts,categories:renderCategories,offers:renderOffers,articles:renderArticles,export:renderExport};
+  if(renders[id])renders[id]();
+}
+
+/* ══════════════════════════════════
+   DASHBOARD
+══════════════════════════════════ */
+function renderDashboard(){
+  var db=getDB();
+  var pub=db.products.filter(function(p){return p.status==='published';}).length;
+  var dft=db.products.filter(function(p){return p.status==='draft';}).length;
+  var ina=db.products.filter(function(p){return p.status==='inactive';}).length;
+  var activeOffers=db.offers.filter(function(o){return o.is_active;}).length;
+  var pubArticles=db.articles.filter(function(a){return a.published;}).length;
+  var stats=[
+    {label:'Total Produtos',value:db.products.length,sub:'todos os status'},
+    {label:'Publicados',value:pub,sub:'visíveis no site'},
+    {label:'Rascunho',value:dft,sub:'em edição'},
+    {label:'Inativos',value:ina,sub:'arquivados'},
+    {label:'Categorias',value:db.categories.length,sub:'ativas'},
+    {label:'Links Afiliados',value:db.offers.length,sub:activeOffers+' ativos'},
+    {label:'Artigos',value:db.articles.length,sub:pubArticles+' publicados'}
+  ];
+  document.getElementById('stats-grid').innerHTML=stats.map(function(s){
+    return '<div class="stat-card"><div class="stat-label">'+s.label+'</div><div class="stat-value">'+s.value+'</div><div class="stat-sub">'+s.sub+'</div></div>';
+  }).join('');
+  var recent=db.products.slice(-5).reverse();
+  var tbody=document.getElementById('dashboard-recent');
+  if(!recent.length){
+    tbody.innerHTML='<tr><td colspan="4"><div class="empty-state"><div class="empty-icon">📦</div><p>Nenhum produto cadastrado ainda.</p></div></td></tr>';
+    return;
+  }
+  tbody.innerHTML=recent.map(function(p){
+    var cat=db.categories.find(function(c){return c.slug===p.category;});
+    return '<tr><td class="td-name">'+esc(p.name)+'</td><td>'+(cat?esc(cat.icon||'')+'  '+esc(cat.name):esc(p.category||'—'))+'</td><td>'+statusBadge(p.status)+'</td><td>'+(p.is_featured?'<span class="badge badge-yes">Sim</span>':'<span class="badge badge-no">Não</span>')+'</td></tr>';
+  }).join('');
+}
+
+/* ══════════════════════════════════
+   PRODUCTS
+══════════════════════════════════ */
+var productFilter='all';
+function setProductFilter(f,btn){
+  productFilter=f;
+  document.querySelectorAll('.filter-tab').forEach(function(t){t.classList.remove('active');});
+  btn.classList.add('active');
+  renderProducts();
+}
+function renderProducts(){
+  var db=getDB();
+  var list=db.products.slice();
+  if(productFilter!=='all')list=list.filter(function(p){return p.status===productFilter;});
+  var tbody=document.getElementById('products-table-body');
+  if(!list.length){
+    tbody.innerHTML='<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📦</div><p><strong>Nenhum produto cadastrado.</strong><br>Adicione o primeiro produto clicando em "Novo Produto".</p></div></td></tr>';
+    return;
+  }
+  tbody.innerHTML=list.map(function(p){
+    var cat=db.categories.find(function(c){return c.slug===p.category;});
+    return '<tr>'+
+      '<td class="td-name">'+esc(p.name)+'</td>'+
+      '<td>'+(cat?esc(cat.icon||'')+'  '+esc(cat.name):esc(p.category||'—'))+'</td>'+
+      '<td>'+esc(p.brand||'—')+'</td>'+
+      '<td>'+statusBadge(p.status)+'</td>'+
+      '<td>'+(p.is_featured?'<span class="badge badge-yes">Sim</span>':'<span class="badge badge-no">Não</span>')+'</td>'+
+      '<td class="td-actions">'+
+        '<button class="action-btn edit" onclick="openProductModal(\''+p.id+'\')">Editar</button>'+
+        (p.status==='published'?
+          '<button class="action-btn toggle-unpub" onclick="togglePublish(\''+p.id+'\')">Despublicar</button>':
+          '<button class="action-btn toggle-pub" onclick="togglePublish(\''+p.id+'\')">Publicar</button>')+
+        '<button class="action-btn del" onclick="deleteProduct(\''+p.id+'\')">Excluir</button>'+
+      '</td>'+
+    '</tr>';
+  }).join('');
+}
+function togglePublish(id){
+  var db=getDB();
+  var p=db.products.find(function(x){return x.id===id;});
+  if(!p)return;
+  p.status=p.status==='published'?'draft':'published';
+  p.is_published=p.status==='published';
+  p.updated_at=now();
+  saveDB(db);renderProducts();if(currentPanel==='dashboard')renderDashboard();
+}
+function deleteProduct(id){
+  if(!confirm('Excluir este produto? Esta ação não pode ser desfeita.'))return;
+  var db=getDB();
+  db.products=db.products.filter(function(p){return p.id!==id;});
+  db.offers=db.offers.filter(function(o){return o.product_id!==id;});
+  saveDB(db);renderProducts();if(currentPanel==='dashboard')renderDashboard();
+}
+function openProductModal(id){
+  populateCategorySelect('pm-category',null);
+  document.getElementById('specs-rows').innerHTML='';
+  if(id){
+    var db=getDB();
+    var p=db.products.find(function(x){return x.id===id;});
+    if(!p)return;
+    document.getElementById('product-modal-title').textContent='Editar Produto';
+    document.getElementById('pm-id').value=p.id;
+    document.getElementById('pm-name').value=p.name||'';
+    document.getElementById('pm-slug').value=p.slug||'';
+    populateCategorySelect('pm-category',p.category);
+    document.getElementById('pm-brand').value=p.brand||'';
+    document.getElementById('pm-desc-short').value=p.description_short||'';
+    document.getElementById('pm-desc-long').value=p.description_long||'';
+    document.getElementById('pm-pros').value=(p.pros||[]).join('\n');
+    document.getElementById('pm-cons').value=(p.cons||[]).join('\n');
+    document.getElementById('pm-image').value=p.image_url||'';
+    document.getElementById('pm-seo-title').value=p.seo_title||'';
+    document.getElementById('pm-seo-desc').value=p.seo_description||'';
+    document.getElementById('pm-status').value=p.status||'draft';
+    document.getElementById('pm-featured').checked=!!p.is_featured;
+    updateCharCount('pm-desc-short','pm-desc-count',160);
+    var specs=p.specs||{};
+    Object.keys(specs).forEach(function(k){addSpecRow(k,specs[k]);});
+  } else {
+    document.getElementById('product-modal-title').textContent='Novo Produto';
+    document.getElementById('pm-id').value='';
+    ['pm-name','pm-slug','pm-brand','pm-desc-short','pm-desc-long','pm-pros','pm-cons','pm-image','pm-seo-title','pm-seo-desc'].forEach(function(i){document.getElementById(i).value='';});
+    document.getElementById('pm-status').value='draft';
+    document.getElementById('pm-featured').checked=false;
+    updateCharCount('pm-desc-short','pm-desc-count',160);
+  }
+  openModal('product-modal');
+}
+function saveProduct(){
+  var name=document.getElementById('pm-name').value.trim();
+  if(!name){alert('O nome do produto é obrigatório.');return;}
+  var db=getDB();
+  var id=document.getElementById('pm-id').value||uid();
+  var existing=db.products.find(function(p){return p.id===id;});
+  var specs={};
+  document.querySelectorAll('#specs-rows .spec-row').forEach(function(row){
+    var k=row.querySelector('.spec-key').value.trim();
+    var v=row.querySelector('.spec-val').value.trim();
+    if(k)specs[k]=v;
+  });
+  var status=document.getElementById('pm-status').value;
+  var product={
+    id:id,
+    slug:document.getElementById('pm-slug').value.trim()||slugify(name),
+    name:name,
+    category:document.getElementById('pm-category').value,
+    brand:document.getElementById('pm-brand').value.trim(),
+    description_short:document.getElementById('pm-desc-short').value.trim(),
+    description_long:document.getElementById('pm-desc-long').value.trim(),
+    pros:document.getElementById('pm-pros').value.split('\n').map(function(s){return s.trim();}).filter(Boolean),
+    cons:document.getElementById('pm-cons').value.split('\n').map(function(s){return s.trim();}).filter(Boolean),
+    specs:specs,
+    image_url:document.getElementById('pm-image').value.trim(),
+    is_featured:document.getElementById('pm-featured').checked,
+    is_published:status==='published',
+    status:status,
+    seo_title:document.getElementById('pm-seo-title').value.trim(),
+    seo_description:document.getElementById('pm-seo-desc').value.trim(),
+    created_at:existing?existing.created_at:now(),
+    updated_at:now()
+  };
+  if(existing){db.products=db.products.map(function(p){return p.id===id?product:p;});}
+  else{db.products.push(product);}
+  saveDB(db);
+  closeModal('product-modal');
+  renderProducts();
+  if(currentPanel==='dashboard')renderDashboard();
+}
+function autoSlug(){document.getElementById('pm-slug').value=slugify(document.getElementById('pm-name').value);}
+
+/* ══════════════════════════════════
+   SPECS
+══════════════════════════════════ */
+function addSpecRow(k,v){
+  var row=document.createElement('div');
+  row.className='spec-row';
+  row.innerHTML='<input type="text" class="spec-key" placeholder="Chave (ex: Peso)" value="'+esc(k||'')+'">'
+    +'<input type="text" class="spec-val" placeholder="Valor (ex: 450g)" value="'+esc(v||'')+'">'
+    +'<button class="spec-del" type="button" onclick="this.parentNode.remove()">✕</button>';
+  document.getElementById('specs-rows').appendChild(row);
+}
+
+/* ══════════════════════════════════
+   CATEGORIES
+══════════════════════════════════ */
+function renderCategories(){
+  var db=getDB();
+  var grid=document.getElementById('categories-grid');
+  if(!db.categories.length){
+    grid.innerHTML='<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🏷️</div><p>Nenhuma categoria cadastrada.</p></div>';
+    return;
+  }
+  grid.innerHTML=db.categories.map(function(c){
+    return '<div class="item-card">'+
+      '<div class="item-card-header"><span class="item-icon">'+esc(c.icon||'🏷️')+'</span><div><div class="item-card-title">'+esc(c.name)+'</div><div class="item-card-slug">/'+esc(c.slug)+'</div></div></div>'+
+      '<div class="item-card-desc">'+esc(c.description||'Sem descrição.')+'</div>'+
+      '<div class="item-card-actions">'+
+        '<button class="action-btn edit" onclick="openCategoryModal(\''+c.id+'\')">Editar</button>'+
+        '<button class="action-btn del" onclick="deleteCategory(\''+c.id+'\')">Excluir</button>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+function openCategoryModal(id){
+  if(id){
+    var db=getDB();
+    var c=db.categories.find(function(x){return x.id===id;});
+    if(!c)return;
+    document.getElementById('cat-modal-title').textContent='Editar Categoria';
+    document.getElementById('cm-id').value=c.id;
+    document.getElementById('cm-name').value=c.name||'';
+    document.getElementById('cm-slug').value=c.slug||'';
+    document.getElementById('cm-icon').value=c.icon||'';
+    document.getElementById('cm-color').value=c.color||'#17653c';
+    document.getElementById('cm-desc').value=c.description||'';
+  } else {
+    document.getElementById('cat-modal-title').textContent='Nova Categoria';
+    ['cm-id','cm-name','cm-slug','cm-icon','cm-desc'].forEach(function(i){document.getElementById(i).value='';});
+    document.getElementById('cm-color').value='#17653c';
+  }
+  openModal('category-modal');
+}
+function autoCatSlug(){document.getElementById('cm-slug').value=slugify(document.getElementById('cm-name').value);}
+function saveCategory(){
+  var name=document.getElementById('cm-name').value.trim();
+  if(!name){alert('O nome da categoria é obrigatório.');return;}
+  var db=getDB();
+  var id=document.getElementById('cm-id').value||uid();
+  var cat={id:id,slug:document.getElementById('cm-slug').value.trim()||slugify(name),name:name,icon:document.getElementById('cm-icon').value.trim(),color:document.getElementById('cm-color').value.trim(),description:document.getElementById('cm-desc').value.trim()};
+  var existing=db.categories.find(function(c){return c.id===id;});
+  if(existing){db.categories=db.categories.map(function(c){return c.id===id?cat:c;});}
+  else{db.categories.push(cat);}
+  saveDB(db);closeModal('category-modal');renderCategories();
+}
+function deleteCategory(id){
+  if(!confirm('Excluir esta categoria?'))return;
+  var db=getDB();
+  db.categories=db.categories.filter(function(c){return c.id!==id;});
+  saveDB(db);renderCategories();
+}
+function populateCategorySelect(selId,selectedSlug){
+  var db=getDB();
+  var sel=document.getElementById(selId);
+  sel.innerHTML='<option value="">Selecione...</option>'+db.categories.map(function(c){
+    return '<option value="'+esc(c.slug)+'"'+(c.slug===selectedSlug?' selected':'')+'>'+esc(c.icon||'')+'  '+esc(c.name)+'</option>';
+  }).join('');
+}
+
+/* ══════════════════════════════════
+   OFFERS
+══════════════════════════════════ */
+var MP_LABELS={amazon:'Amazon',shopee:'Shopee',mercadolivre:'Mercado Livre',aliexpress:'AliExpress'};
+var MP_BG={amazon:'#FF9900',shopee:'#EE4D2D',mercadolivre:'#ccaa00',aliexpress:'#FF4747'};
+function renderOffers(){
+  var db=getDB();
+  var tbody=document.getElementById('offers-table-body');
+  if(!db.offers.length){
+    tbody.innerHTML='<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">🔗</div><p><strong>Nenhum link cadastrado.</strong><br>Adicione o primeiro link afiliado.</p></div></td></tr>';
+    return;
+  }
+  tbody.innerHTML=db.offers.map(function(o){
+    var prod=db.products.find(function(p){return p.id===o.product_id;});
+    var bg=MP_BG[o.marketplace]||'#6b7280';
+    return '<tr>'+
+      '<td class="td-name">'+(prod?esc(prod.name):'<span style="color:#dc2626;font-size:.78rem">Produto removido</span>')+'</td>'+
+      '<td><span style="background:'+bg+';color:#fff;padding:.18rem .6rem;border-radius:999px;font-size:.68rem;font-weight:700">'+(MP_LABELS[o.marketplace]||esc(o.marketplace))+'</span></td>'+
+      '<td><code style="font-size:.72rem;color:#6b7280">/go/'+esc(o.internal_slug||'')+'</code></td>'+
+      '<td>'+fmtPrice(o.price_brl)+'</td>'+
+      '<td>'+(o.is_active?'<span class="badge badge-yes">Ativo</span>':'<span class="badge badge-no">Inativo</span>')+'</td>'+
+      '<td style="font-size:.75rem">'+fmtDate(o.verified_date)+'</td>'+
+      '<td class="td-actions">'+
+        '<button class="action-btn edit" onclick="openOfferModal(\''+o.id+'\')">Editar</button>'+
+        '<button class="action-btn del" onclick="deleteOffer(\''+o.id+'\')">Excluir</button>'+
+      '</td>'+
+    '</tr>';
+  }).join('');
+}
+function openOfferModal(id){
+  var db=getDB();
+  var sel=document.getElementById('om-product');
+  sel.innerHTML='<option value="">Selecione um produto...</option>'+db.products.map(function(p){return'<option value="'+p.id+'">'+esc(p.name)+'</option>';}).join('');
+  if(id){
+    var o=db.offers.find(function(x){return x.id===id;});
+    if(!o)return;
+    document.getElementById('offer-modal-title').textContent='Editar Link';
+    document.getElementById('om-id').value=o.id;
+    sel.value=o.product_id||'';
+    document.getElementById('om-marketplace').value=o.marketplace||'';
+    document.getElementById('om-url').value=o.affiliate_url||'';
+    document.getElementById('om-slug').value=o.internal_slug||'';
+    document.getElementById('om-price').value=o.price_brl!=null?o.price_brl:'';
+    document.getElementById('om-verified').value=o.verified_date?o.verified_date.slice(0,10):'';
+    document.getElementById('om-active').checked=!!o.is_active;
+  } else {
+    document.getElementById('offer-modal-title').textContent='Novo Link Afiliado';
+    document.getElementById('om-id').value='';
+    sel.value='';
+    document.getElementById('om-marketplace').value='';
+    document.getElementById('om-url').value='';
+    document.getElementById('om-slug').value='';
+    document.getElementById('om-price').value='';
+    document.getElementById('om-verified').value=new Date().toISOString().slice(0,10);
+    document.getElementById('om-active').checked=true;
+  }
+  openModal('offer-modal');
+}
+function saveOffer(){
+  var pid=document.getElementById('om-product').value;
+  var mp=document.getElementById('om-marketplace').value;
+  var url=document.getElementById('om-url').value.trim();
+  if(!pid||!mp||!url){alert('Produto, marketplace e URL são obrigatórios.');return;}
+  var db=getDB();
+  var id=document.getElementById('om-id').value||uid();
+  var priceVal=document.getElementById('om-price').value;
+  var offer={id:id,product_id:pid,marketplace:mp,affiliate_url:url,internal_slug:document.getElementById('om-slug').value.trim(),price_brl:priceVal!==''?Number(priceVal):null,is_active:document.getElementById('om-active').checked,verified_date:document.getElementById('om-verified').value||now().slice(0,10)};
+  var existing=db.offers.find(function(o){return o.id===id;});
+  if(existing){db.offers=db.offers.map(function(o){return o.id===id?offer:o;});}
+  else{db.offers.push(offer);}
+  saveDB(db);closeModal('offer-modal');renderOffers();
+}
+function deleteOffer(id){
+  if(!confirm('Excluir este link?'))return;
+  var db=getDB();
+  db.offers=db.offers.filter(function(o){return o.id!==id;});
+  saveDB(db);renderOffers();
+}
+
+/* ══════════════════════════════════
+   ARTICLES
+══════════════════════════════════ */
+function renderArticles(){
+  var db=getDB();
+  var tbody=document.getElementById('articles-table-body');
+  if(!db.articles.length){
+    tbody.innerHTML='<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📝</div><p><strong>Nenhum artigo cadastrado.</strong><br>Adicione guias e comparativos.</p></div></td></tr>';
+    return;
+  }
+  tbody.innerHTML=db.articles.map(function(a){
+    var cat=db.categories.find(function(c){return c.slug===a.category;});
+    var typeBg=a.type==='guide'?'#dbeafe':'#ede9fe';
+    var typeColor=a.type==='guide'?'#1e40af':'#5b21b6';
+    var typeLabel=a.type==='guide'?'Guia':'Comparativo';
+    return '<tr>'+
+      '<td class="td-name">'+esc(a.title)+'</td>'+
+      '<td><span class="badge" style="background:'+typeBg+';color:'+typeColor+'">'+typeLabel+'</span></td>'+
+      '<td>'+(cat?esc(cat.name):'—')+'</td>'+
+      '<td><span style="font-size:.75rem;color:#2563eb;word-break:break-all">'+esc(a.url||'—')+'</span></td>'+
+      '<td>'+(a.published?'<span class="badge badge-published">Sim</span>':'<span class="badge badge-draft">Não</span>')+'</td>'+
+      '<td class="td-actions">'+
+        '<button class="action-btn edit" onclick="openArticleModal(\''+a.id+'\')">Editar</button>'+
+        '<button class="action-btn del" onclick="deleteArticle(\''+a.id+'\')">Excluir</button>'+
+      '</td>'+
+    '</tr>';
+  }).join('');
+}
+function openArticleModal(id){
+  var db=getDB();
+  var catSel=document.getElementById('am-category');
+  catSel.innerHTML='<option value="">Nenhuma</option>'+db.categories.map(function(c){return'<option value="'+esc(c.slug)+'">'+esc(c.name)+'</option>';}).join('');
+  if(id){
+    var a=db.articles.find(function(x){return x.id===id;});
+    if(!a)return;
+    document.getElementById('art-modal-title').textContent='Editar Artigo';
+    document.getElementById('am-id').value=a.id;
+    document.getElementById('am-title').value=a.title||'';
+    document.getElementById('am-slug').value=a.slug||'';
+    document.getElementById('am-type').value=a.type||'guide';
+    catSel.value=a.category||'';
+    document.getElementById('am-summary').value=a.summary||'';
+    document.getElementById('am-url').value=a.url||'';
+    document.getElementById('am-published').checked=!!a.published;
+  } else {
+    document.getElementById('art-modal-title').textContent='Novo Artigo';
+    ['am-id','am-title','am-slug','am-summary','am-url'].forEach(function(i){document.getElementById(i).value='';});
+    document.getElementById('am-type').value='guide';
+    catSel.value='';
+    document.getElementById('am-published').checked=true;
+  }
+  openModal('article-modal');
+}
+function autoArtSlug(){document.getElementById('am-slug').value=slugify(document.getElementById('am-title').value);}
+function saveArticle(){
+  var title=document.getElementById('am-title').value.trim();
+  if(!title){alert('O título é obrigatório.');return;}
+  var db=getDB();
+  var id=document.getElementById('am-id').value||uid();
+  var art={id:id,title:title,slug:document.getElementById('am-slug').value.trim()||slugify(title),type:document.getElementById('am-type').value,category:document.getElementById('am-category').value,summary:document.getElementById('am-summary').value.trim(),url:document.getElementById('am-url').value.trim(),published:document.getElementById('am-published').checked};
+  var existing=db.articles.find(function(a){return a.id===id;});
+  if(existing){db.articles=db.articles.map(function(a){return a.id===id?art:a;});}
+  else{db.articles.push(art);}
+  saveDB(db);closeModal('article-modal');renderArticles();
+}
+function deleteArticle(id){
+  if(!confirm('Excluir este artigo?'))return;
+  var db=getDB();
+  db.articles=db.articles.filter(function(a){return a.id!==id;});
+  saveDB(db);renderArticles();
+}
+
+/* ══════════════════════════════════
+   EXPORT
+══════════════════════════════════ */
+function renderExport(){
+  var db=getDB();
+  var guides=db.articles.filter(function(a){return a.type==='guide';});
+  var comparativos=db.articles.filter(function(a){return a.type==='comparative';});
+  var products=db.products.map(function(p){
+    var offers=db.offers.filter(function(o){return o.product_id===p.id;}).map(function(o){
+      return{marketplace:o.marketplace,affiliate_url:o.affiliate_url,internal_slug:o.internal_slug,price_brl:o.price_brl,is_active:o.is_active,verified_date:o.verified_date};
+    });
+    var copy=Object.assign({},p);
+    copy.marketplaces=offers;
+    return copy;
+  });
+  var out={version:'1.0',last_updated:now(),categories:db.categories,products:products,guides:guides,comparativos:comparativos};
+  document.getElementById('export-json-area').value=JSON.stringify(out,null,2);
+}
+function copyExportJson(){
+  var ta=document.getElementById('export-json-area');
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(ta.value).then(function(){alert('JSON copiado para a área de transferência!');}).catch(function(){fallbackCopy(ta);});
+  } else {fallbackCopy(ta);}
+}
+function fallbackCopy(ta){ta.select();try{document.execCommand('copy');alert('JSON copiado!');}catch(e){alert('Selecione o texto manualmente e copie com Ctrl+C.');}}
+
+/* ══════════════════════════════════
+   SETTINGS
+══════════════════════════════════ */
+function saveSettings(){
+  var db=getDB();
+  if(!db.settings)db.settings={};
+  db.settings.site_name=document.getElementById('cfg-site-name').value.trim();
+  db.settings.site_desc=document.getElementById('cfg-site-desc').value.trim();
+  saveDB(db);
+  var msg=document.getElementById('settings-saved');
+  msg.style.display='block';
+  setTimeout(function(){msg.style.display='none';},2500);
+}
+function loadSampleData(){
+  if(!confirm('Adicionar categorias e marketplaces padrão sem apagar dados existentes. Continuar?'))return;
+  var db=getDB();
+  DEFAULT_CATEGORIES.forEach(function(dc){
+    if(!db.categories.find(function(c){return c.slug===dc.slug;}))db.categories.push(Object.assign({},dc));
+  });
+  DEFAULT_MARKETPLACES.forEach(function(dm){
+    if(!db.marketplaces)db.marketplaces=[];
+    if(!db.marketplaces.find(function(m){return m.slug===dm.slug;}))db.marketplaces.push(Object.assign({},dm));
+  });
+  saveDB(db);
+  alert('Dados de exemplo carregados!');
+  renderCategories();
+}
+function clearAllData(){
+  if(!confirm('ATENÇÃO: isso vai apagar TODOS os produtos, categorias, links e artigos. Esta ação não pode ser desfeita.\n\nTem certeza absoluta?'))return;
+  if(!confirm('Última confirmação. Todos os dados serão perdidos. Continuar?'))return;
+  localStorage.removeItem(DB_KEY);
+  alert('Todos os dados foram apagados. Recarregando...');
+  location.reload();
+}
+
+/* ══════════════════════════════════
+   MODAL UTILS
+══════════════════════════════════ */
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-overlay').forEach(function(overlay){
+  overlay.addEventListener('click',function(e){if(e.target===overlay)overlay.classList.remove('open');});
+});
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape')document.querySelectorAll('.modal-overlay.open').forEach(function(m){m.classList.remove('open');});
+});
+</script>
+</body>
+</html>

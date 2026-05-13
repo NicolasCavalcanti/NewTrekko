@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Trekko Store – Equipamentos para Trilha Selecionados com Cuidado</title>
+  <meta name="description" content="A Trekko Store reúne guias editoriais independentes sobre equipamentos para trilha. Mochilas, botas, lanternas, bastões e muito mais — com análises reais, sem patrocínio oculto.">
+  <link rel="canonical" href="https://trekko.com.br/equipamentos">
+  <meta name="robots" content="index,follow">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Trekko Store – Equipamentos para Trilha">
+  <meta property="og:description" content="Guias editoriais independentes sobre equipamentos para trilha. Análises reais, critérios claros, sem patrocínio oculto.">
+  <meta property="og:url" content="https://trekko.com.br/equipamentos">
+  <meta property="og:site_name" content="Trekko">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@700;800&display=swap" rel="stylesheet">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-S816P190VN"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent','default',{ad_storage:'denied',analytics_storage:'denied',wait_for_update:500});
+    gtag('js', new Date());
+    gtag('config','G-S816P190VN');
+    gtag('config','AW-355784943');
+  </script>
+
+  <style>
+    :root{--forest:#17653c;--forest-dark:#0a4627;--forest-light:#d1fae5;--forest-bg:#f0fdf4;--earth:#7f4413;--earth-light:#fef9ed;--highlight:#eeb400;--text:#1a2e1f;--text-muted:#6b7280;--border:#e5e7eb;--bg:#faf9f7;--radius:12px;--shadow:0 1px 4px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04)}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg);line-height:1.6}
+    a{color:var(--forest);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .container{max-width:1140px;margin:0 auto;padding:0 20px}
+    .site-header{background:var(--forest-dark);padding:14px 0;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+    .header-inner{display:flex;align-items:center;justify-content:space-between}
+    .logo{font-family:'Sora',sans-serif;font-size:1.25rem;font-weight:800;color:#fff;text-decoration:none;display:flex;align-items:center;gap:10px}
+    .logo-box{width:34px;height:34px;background:rgba(255,255,255,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem}
+    .nav-links{display:flex;gap:28px;list-style:none}
+    .nav-links a{color:rgba(255,255,255,.78);font-size:.88rem;font-weight:500;text-decoration:none;padding-bottom:2px}
+    .nav-links a:hover,.nav-links a.active-nav{color:#fff;text-decoration:none}
+    .nav-links a.active-nav{border-bottom:2px solid var(--highlight)}
+    @media(max-width:768px){.nav-links{display:none}}
+    .affiliate-banner{background:var(--earth-light);border-bottom:1px solid #e8d5a0;padding:8px 0;font-size:.78rem;color:#78530a;text-align:center}
+    .affiliate-banner a{color:var(--earth);font-weight:600}
+    .site-footer{background:var(--forest-dark);color:rgba(255,255,255,.7);padding:48px 0 24px;margin-top:80px}
+    .footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:32px;margin-bottom:40px}
+    @media(max-width:900px){.footer-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:480px){.footer-grid{grid-template-columns:1fr}}
+    .footer-brand p{font-size:.83rem;line-height:1.6;margin-top:10px;max-width:220px}
+    .footer-col h4{color:#fff;font-family:'Sora',sans-serif;font-weight:700;margin-bottom:14px;font-size:.88rem}
+    .footer-col ul{list-style:none}
+    .footer-col li{margin-bottom:8px}
+    .footer-col a{color:rgba(255,255,255,.6);font-size:.83rem}
+    .footer-col a:hover{color:#fff;text-decoration:none}
+    .footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:20px;font-size:.78rem;color:rgba(255,255,255,.4);text-align:center}
+
+    /* Hero */
+    .store-hero{background:linear-gradient(135deg,var(--forest-dark) 0%,var(--forest) 100%);color:#fff;padding:60px 0 50px}
+    .hero-tag{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:4px 14px;font-size:.75rem;font-weight:600;margin-bottom:14px}
+    .store-hero h1{font-family:'Sora',sans-serif;font-size:clamp(1.9rem,4.5vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:14px}
+    .store-hero p{font-size:1rem;color:rgba(255,255,255,.82);max-width:600px;line-height:1.65;margin-bottom:24px}
+    .hero-badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+    .hero-badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 14px;font-size:.8rem;color:rgba(255,255,255,.9)}
+
+    /* Category grid */
+    .section-heading{font-family:'Sora',sans-serif;font-size:1.4rem;font-weight:800;color:var(--text);margin-bottom:8px}
+    .section-sub{color:var(--text-muted);font-size:.9rem;margin-bottom:28px}
+    .categories-section{padding:56px 0 40px}
+    .cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:20px}
+    .cat-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:24px 20px;box-shadow:var(--shadow);transition:.18s;display:flex;flex-direction:column;gap:10px}
+    .cat-card:hover{box-shadow:0 4px 20px rgba(23,101,60,.12);border-color:var(--forest-light);transform:translateY(-2px)}
+    .cat-icon{font-size:2rem;line-height:1}
+    .cat-card h3{font-family:'Sora',sans-serif;font-size:1rem;font-weight:700;color:var(--text)}
+    .cat-card p{color:var(--text-muted);font-size:.82rem;line-height:1.55;flex:1}
+    .cat-link{font-size:.82rem;font-weight:600;color:var(--forest);display:flex;align-items:center;gap:4px;margin-top:4px}
+    .cat-link::after{content:' →'}
+
+    /* How we choose */
+    .how-section{background:var(--forest-bg);padding:52px 0}
+    .how-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:24px;margin-top:32px}
+    .how-card{background:#fff;border-radius:var(--radius);padding:24px;border:1px solid var(--border)}
+    .how-card .how-num{width:36px;height:36px;background:var(--forest);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.95rem;margin-bottom:12px}
+    .how-card h4{font-family:'Sora',sans-serif;font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:8px}
+    .how-card p{font-size:.85rem;color:var(--text-muted);line-height:1.6}
+
+    /* Trust section */
+    .trust-section{padding:52px 0}
+    .trust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:32px}
+    @media(max-width:768px){.trust-grid{grid-template-columns:1fr}}
+    .trust-card{background:#fff;border-radius:var(--radius);padding:28px 24px;border-left:4px solid var(--forest);box-shadow:var(--shadow)}
+    .trust-icon{font-size:1.7rem;margin-bottom:12px}
+    .trust-card h4{font-family:'Sora',sans-serif;font-size:1rem;font-weight:700;color:var(--text);margin-bottom:8px}
+    .trust-card p{font-size:.86rem;color:var(--text-muted);line-height:1.6}
+
+    /* Guides section */
+    .guides-section{padding:52px 0;background:var(--forest-bg)}
+    .guides-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;margin-top:28px}
+    .guide-item{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow)}
+    .guide-icon{font-size:1.6rem;flex-shrink:0;margin-top:2px}
+    .guide-item h4{font-family:'Sora',sans-serif;font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:6px}
+    .guide-item p{font-size:.82rem;color:var(--text-muted);line-height:1.55;margin-bottom:8px}
+    .guide-item a{font-size:.82rem;font-weight:600;color:var(--forest)}
+
+    /* FAQ */
+    .faq-section{padding:52px 0}
+    .faq-item{border:1px solid var(--border);border-radius:10px;margin-bottom:8px;overflow:hidden}
+    .faq-q{width:100%;background:#fff;border:none;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;font-size:.9rem;font-weight:600;color:var(--text);cursor:pointer;text-align:left;gap:12px}
+    .faq-q:hover{background:var(--forest-bg)}
+    .faq-icon{font-size:1rem;flex-shrink:0;transition:.2s;color:var(--forest)}
+    .faq-item.open .faq-icon{transform:rotate(45deg)}
+    .faq-a{display:none;padding:0 18px 14px;color:#374151;font-size:.88rem;line-height:1.65}
+    .faq-item.open .faq-a{display:block}
+    .faq-max{max-width:760px}
+  </style>
+
+  <script type="application/ld+json">
+  [
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type":"ListItem","position":1,"name":"Home","item":"https://trekko.com.br/"},
+        {"@type":"ListItem","position":2,"name":"Equipamentos","item":"https://trekko.com.br/equipamentos"}
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Trekko Store – Equipamentos para Trilha",
+      "description": "Guias editoriais independentes sobre equipamentos para trilha: mochilas, botas, lanternas, bastões e mais.",
+      "url": "https://trekko.com.br/equipamentos",
+      "publisher": {"@type":"Organization","name":"Trekko","url":"https://trekko.com.br"}
+    }
+  ]
+  </script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <div class="header-inner">
+      <a href="/" class="logo">
+        <span class="logo-box">🏔</span>
+        Trekko
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="/trilhas">Trilhas</a></li>
+          <li><a href="/guias">Guias</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/equipamentos" class="active-nav">Equipamentos</a></li>
+          <li><a href="/sobre">Sobre</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<div class="affiliate-banner">
+  <div class="container">
+    <p>Este conteúdo pode conter links de afiliado. Se você comprar por esses links, a Trekko pode receber uma comissão, sem custo adicional para você. <a href="/divulgacao-de-afiliados">Saiba mais.</a></p>
+  </div>
+</div>
+
+<!-- Hero -->
+<section class="store-hero">
+  <div class="container">
+    <span class="hero-tag">✦ Trekko Store</span>
+    <h1>Equipamentos para trilha,<br>escolhidos com critério</h1>
+    <p>Na Trekko Store você encontra guias editoriais independentes sobre os equipamentos que realmente fazem diferença em campo. Cada categoria tem análises baseadas em uso real, critérios técnicos e experiências de trilheiros brasileiros.</p>
+    <div class="hero-badges">
+      <span class="hero-badge">✓ Análises independentes</span>
+      <span class="hero-badge">✓ Sem patrocínio de marcas</span>
+      <span class="hero-badge">✓ Foco no trilheiro brasileiro</span>
+      <span class="hero-badge">✓ Transparência em afiliados</span>
+    </div>
+  </div>
+</section>
+
+<!-- Categories -->
+<section class="categories-section">
+  <div class="container">
+    <h2 class="section-heading">Categorias de equipamentos</h2>
+    <p class="section-sub">Selecione uma categoria para acessar guias editoriais, critérios de escolha e informações técnicas.</p>
+    <div class="cat-grid">
+      <a href="/equipamentos/mochilas" class="cat-card" style="text-decoration:none;color:inherit">
+        <div class="cat-icon">🎒</div>
+        <h3>Mochilas</h3>
+        <p>Do passeio de dia à expedição de múltiplos dias — como escolher volume, sistema de costas e recursos essenciais.</p>
+        <span class="cat-link">Explorar categoria</span>
+      </a>
+      <a href="/equipamentos/botas-e-tenis" class="cat-card" style="text-decoration:none;color:inherit">
+        <div class="cat-icon">👟</div>
+        <h3>Botas e Tênis</h3>
+        <p>Guia completo entre tênis de trilha e botas — quando usar cada um, como caçar o ajuste perfeito e quais terrenos exigem o quê.</p>
+        <span class="cat-link">Explorar categoria</span>
+      </a>
+      <a href="/equipamentos/lanternas" class="cat-card" style="text-decoration:none;color:inherit">
+        <div class="cat-icon">🔦</div>
+        <h3>Lanternas</h3>
+        <p>Lanternas frontais para trilha: lumens, autonomia, resistência à água e o que realmente importa quando a noite fecha.</p>
+        <span class="cat-link">Explorar categoria</span>
+      </a>
+      <a href="/equipamentos/bastoes-de-caminhada" class="cat-card" style="text-decoration:none;color:inherit">
+        <div class="cat-icon">🥢</div>
+        <h3>Bastões de Caminhada</h3>
+        <p>Alumínio ou carbono? Um ou dois bastões? Como regular a altura e por que seus joelhos agradecem na descida.</p>
+        <span class="cat-link">Explorar categoria</span>
+      </a>
+      <a href="/equipamentos/hidratacao" class="cat-card" style="text-decoration:none;color:inherit">
+        <div class="cat-icon">💧</div>
+        <h3>Hidratação</h3>
+        <p>Garrafas, reservatórios de hidratação e filtros de água — como se manter hidratado em trilhas de qualquer duração.</p>
+        <span class="cat-link">Explorar categoria</span>
+      </a>
+      <a href="/equipamentos/camping" class="cat-card" style="text-decoration:none;color:inherit">
+        <div class="cat-icon">⛺</div>
+        <h3>Camping</h3>
+        <p>Barracas, sacos de dormir e isolantes — guia técnico para bivaque leve e noites seguras em altitude.</p>
+        <span class="cat-link">Explorar categoria</span>
+      </a>
+      <a href="/equipamentos/seguranca" class="cat-card" style="text-decoration:none;color:inherit">
+        <div class="cat-icon">🛡️</div>
+        <h3>Segurança</h3>
+        <p>GPS, apitos, mantas de emergência e localização por satélite — o que levar quando a trilha fica séria.</p>
+        <span class="cat-link">Explorar categoria</span>
+      </a>
+      <a href="/equipamentos/primeiros-socorros" class="cat-card" style="text-decoration:none;color:inherit">
+        <div class="cat-icon">🩹</div>
+        <h3>Primeiros Socorros</h3>
+        <p>Kits de primeiros socorros para trilha: o que incluir, como montar um kit leve e quando cada item faz diferença.</p>
+        <span class="cat-link">Explorar categoria</span>
+      </a>
+      <a href="/equipamentos/pets-outdoor" class="cat-card" style="text-decoration:none;color:inherit">
+        <div class="cat-icon">🐾</div>
+        <h3>Pets Outdoor</h3>
+        <p>Equipamentos para levar cachorros na trilha com segurança: coleiras, mochilas para cães e kits de emergência pet.</p>
+        <span class="cat-link">Explorar categoria</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- How we choose -->
+<section class="how-section">
+  <div class="container">
+    <h2 class="section-heading">Como a Trekko escolhe os equipamentos</h2>
+    <p class="section-sub">Nossa curadoria segue um processo editorial rigoroso, sem influência de fabricantes ou distribuidores.</p>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-num">1</div>
+        <h4>Pesquisa técnica aprofundada</h4>
+        <p>Levantamos especificações técnicas, normas internacionais e padrões de qualidade relevantes para cada categoria antes de qualquer recomendação.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">2</div>
+        <h4>Consulta com trilheiros experientes</h4>
+        <p>Conversamos com guias certificados e trilheiros que usam os equipamentos em condições reais — serras, matas fechadas, chuva, altitude. A experiência prática pesa mais que o catálogo do fabricante.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">3</div>
+        <h4>Critérios editoriais independentes</h4>
+        <p>Nenhuma marca patrocina nossas análises. Quando há links de afiliado, indicamos claramente. Nosso critério é o que é melhor para o trilheiro, não o que paga mais comissão.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">4</div>
+        <h4>Revisão periódica do conteúdo</h4>
+        <p>Equipamentos evoluem, preços mudam e novos lançamentos surgem. Revisamos nossas recomendações regularmente para garantir que a informação permanece atual e relevante.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">5</div>
+        <h4>Foco no contexto brasileiro</h4>
+        <p>Trilhas no Brasil têm características próprias: umidade alta, variação de altitude, disponibilidade de marcas no mercado local. Nossas análises levam isso em conta.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">6</div>
+        <h4>Transparência total</h4>
+        <p>Indicamos quando somos remunerados por links, quais marcas eventualmente enviaram amostras para teste e qualquer conflito de interesse potencial.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Guides section -->
+<section class="guides-section">
+  <div class="container">
+    <h2 class="section-heading">Guias editoriais de equipamentos</h2>
+    <p class="section-sub">Artigos informativos para ajudar você a tomar decisões de compra mais conscientes.</p>
+    <div class="guides-list">
+      <div class="guide-item">
+        <div class="guide-icon">📋</div>
+        <div>
+          <h4>Lista completa de equipamentos para trilha de 1 dia</h4>
+          <p>O que colocar na mochila para um passeio de um dia com segurança e conforto, sem exagerar no peso.</p>
+          <a href="/blog">Ler no blog →</a>
+        </div>
+      </div>
+      <div class="guide-item">
+        <div class="guide-icon">⚖️</div>
+        <div>
+          <h4>Ultralight vs tradicional: filosofias de peso em trilha</h4>
+          <p>Quando sacrificar conforto por leveza faz sentido — e quando não faz. Um olhar honesto sobre as duas abordagens.</p>
+          <a href="/blog">Ler no blog →</a>
+        </div>
+      </div>
+      <div class="guide-item">
+        <div class="guide-icon">💰</div>
+        <div>
+          <h4>Equipamento para trilha com orçamento limitado</h4>
+          <p>Como montar um kit funcional e seguro sem gastar uma fortuna — prioridades para quem está começando.</p>
+          <a href="/blog">Ler no blog →</a>
+        </div>
+      </div>
+      <div class="guide-item">
+        <div class="guide-icon">🌧️</div>
+        <div>
+          <h4>Equipamentos para trilha na chuva</h4>
+          <p>Do impermeável à proteção da mochila: como se preparar para trilhas em condições úmidas no Brasil.</p>
+          <a href="/blog">Ler no blog →</a>
+        </div>
+      </div>
+      <div class="guide-item">
+        <div class="guide-icon">🏔️</div>
+        <div>
+          <h4>Equipamentos para trilhas de altitude no Brasil</h4>
+          <p>Picos acima de 2000 m exigem preparação diferente. Guia específico para serras brasileiras.</p>
+          <a href="/blog">Ler no blog →</a>
+        </div>
+      </div>
+      <div class="guide-item">
+        <div class="guide-icon">🔧</div>
+        <div>
+          <h4>Manutenção de equipamentos de trilha</h4>
+          <p>Como limpar, armazenar e preservar botas, mochilas e lanternas para durar muito mais tempo.</p>
+          <a href="/blog">Ler no blog →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Trust section -->
+<section class="trust-section">
+  <div class="container">
+    <h2 class="section-heading">Por que confiar na Trekko?</h2>
+    <p class="section-sub">Três pilares que guiam todo o nosso conteúdo sobre equipamentos.</p>
+    <div class="trust-grid">
+      <div class="trust-card">
+        <div class="trust-icon">📝</div>
+        <h4>Editorial independente</h4>
+        <p>Nenhum fabricante ou distribuidor determina o que escrevemos ou recomendamos. Nosso conteúdo é produzido por trilheiros que usam os equipamentos, não por equipes de marketing. Quando temos uma opinião negativa sobre um produto, ela aparece no texto — sem filtro.</p>
+      </div>
+      <div class="trust-card">
+        <div class="trust-icon">🔬</div>
+        <h4>Baseado em evidências</h4>
+        <p>Cada afirmação técnica que fazemos tem base em especificações verificáveis, normas de teste internacionais ou experiência documentada de uso em campo. Não repetimos claims de marketing sem checagem independente.</p>
+      </div>
+      <div class="trust-card">
+        <div class="trust-icon">🤝</div>
+        <h4>Transparência em afiliados</h4>
+        <p>Quando um link leva a um marketplace parceiro e a Trekko pode receber comissão, dizemos isso claramente — no topo da página, antes do conteúdo. A comissão nunca influencia qual produto indicamos, e pode ser zero se o produto não for bom o suficiente.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="container">
+    <h2 class="section-heading">Perguntas frequentes sobre a Trekko Store</h2>
+    <p class="section-sub" style="margin-bottom:24px">Dúvidas sobre como funcionamos e como usamos os links de afiliado.</p>
+    <div class="faq-max">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          A Trekko vende equipamentos diretamente?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Não. A Trekko é um portal editorial de guias e informações para trilheiros. Quando indicamos um produto, o link direciona para marketplaces parceiros (como Amazon, Mercado Livre ou lojas especializadas) onde a compra é realizada diretamente com o varejista. Não temos estoque, não processamos pagamentos e não somos responsáveis pela logística de entrega.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Os links de afiliado influenciam as recomendações?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Não. Nossa política editorial determina que as recomendações são baseadas em critérios técnicos e de uso em campo — independentemente de existir ou não um programa de afiliados disponível para aquele produto. Há casos em que indicamos equipamentos sem qualquer link de afiliado, simplesmente porque são os melhores para aquela finalidade. Quando há link de afiliado, indicamos claramente no topo da página.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Por que algumas categorias estão "em preparação"?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Preferimos publicar nada a publicar conteúdo de qualidade baixa. Cada categoria passa por um processo de pesquisa e curadoria que leva semanas — consultas com especialistas, testes em campo, verificação de especificações. Quando uma curadoria não está pronta para ser publicada com qualidade editorial satisfatória, mostramos o estado de preparação em vez de criar conteúdo genérico às pressas.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Posso sugerir um equipamento para análise?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Sim! Trilheiros que usam equipamentos no dia a dia são nossa fonte mais valiosa de feedback. Entre em contato pela página de <a href="/contato">Contato</a> descrevendo o equipamento, para que tipo de trilha você o usa e o que te chamou atenção nele — positivo ou negativo. Sugestões de leitores influenciam nosso calendário editorial, mas a decisão de publicar e o conteúdo produzido são sempre independentes.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="logo"><span class="logo-box">🏔</span> Trekko</a>
+        <p>Descubra as melhores trilhas do Brasil com guias certificados para aventuras inesquecíveis.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Explorar</h4>
+        <ul>
+          <li><a href="/trilhas">Trilhas</a></li>
+          <li><a href="/guias">Guias</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/equipamentos">Equipamentos</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Suporte</h4>
+        <ul>
+          <li><a href="/sobre">Sobre Nós</a></li>
+          <li><a href="/contato">Contato</a></li>
+          <li><a href="/termos-de-uso">Termos de Uso</a></li>
+          <li><a href="/privacidade">Privacidade</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Store</h4>
+        <ul>
+          <li><a href="/equipamentos/como-escolhemos">Como Escolhemos</a></li>
+          <li><a href="/divulgacao-de-afiliados">Afiliados</a></li>
+          <li><a href="/politica-de-cookies">Cookies</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Trekko · Conteúdo informativo · Compras realizadas diretamente nos marketplaces parceiros</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleFaq(btn){
+  const item=btn.closest('.faq-item');
+  item.classList.toggle('open');
+}
+</script>
+</body>
+</html>
