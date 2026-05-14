@@ -50,7 +50,7 @@
 (function(){
   var m=window.location.pathname.match(/^\/trilha\/([^/]+)\/?$/);
   if(m&&isNaN(parseInt(m[1],10))){
-    var map={'monte-roraima': 1, 'travessia-petropolis-teresopolis': 2, 'vale-da-lua-e-cachoeiras': 3, 'pedra-do-bau': 4, 'pico-da-bandeira': 5, 'canion-itaimbezinho': 6, 'trilha-das-praias-rosa-norte-sul': 7, 'travessia-serra-fina': 8, 'lencois-de-paracuru': 9, 'circuito-5-lagos-pedra-do-altar': 10, 'morro-do-pai-inacio': 11, 'cachoeira-da-fumaca': 12, 'travessia-lencois-maranhenses': 13, 'morro-dois-irmaos': 14, 'fernando-de-noronha-baia-do-sancho': 15, 'canion-fortaleza': 16, 'pedra-do-sino': 17, 'chapada-dos-guimaraes-circuito-cachoeiras': 18, 'pico-das-agulhas-negras': 19, 'travessia-vale-do-pati': 20};
+    var map={'monte-roraima': 1, 'travessia-petropolis-teresopolis': 2, 'vale-da-lua-e-cachoeiras': 3, 'pedra-do-bau': 4, 'pico-da-bandeira': 5, 'canion-itaimbezinho': 6, 'trilha-das-praias-rosa-norte-sul': 7, 'travessia-serra-fina': 8, 'lencois-de-paracuru': 9, 'circuito-5-lagos-pedra-do-altar': 10, 'morro-do-pai-inacio': 11, 'cachoeira-da-fumaca': 12, 'travessia-lencois-maranhenses': 13, 'morro-dois-irmaos': 14, 'fernando-de-noronha-baia-do-sancho': 15, 'canion-fortaleza': 16, 'pedra-do-sino': 17, 'chapada-dos-guimaraes-circuito-cachoeiras': 18, 'pico-das-agulhas-negras': 19, 'travessia-vale-do-pati': 20, 'trilha-cotovelo-vertice-itaimbezinho-cambara-do-sul-rs': 21};
     var id=map[m[1]];
     if(id)window.history.replaceState(null,'','/trilha/'+id);
   }

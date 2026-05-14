@@ -1031,4 +1031,53 @@
     "lat": -13.218,
     "lng": -41.605
   }
+,
+  {
+    "id": 21,
+    "name": "Trilha do Cotovelo e Vértice — Itaimbezinho",
+    "slug": "trilha-cotovelo-vertice-itaimbezinho-cambara-do-sul-rs",
+    "uf": "RS",
+    "city": "Cambará do Sul",
+    "region": "Cânion Itaimbezinho / Aparados da Serra",
+    "park": "Parque Nacional de Aparados da Serra",
+    "distanceKm": "7.5",
+    "elevationGain": 130,
+    "maxAltitude": 1000,
+    "difficulty": "easy",
+    "guideRequired": 0,
+    "entranceFee": "Pago (consulte valor atualizado)",
+    "estimatedTime": "2h30 a 3h30",
+    "trailType": "linear",
+    "bestSeason": "Outono e inverno, pela manhã",
+    "waterPoints": [
+      "Arroios na região (não considerar potável)"
+    ],
+    "campingPoints": [],
+    "highlights": [
+      "Mirante do Cotovelo",
+      "Mirante do Vértice",
+      "Araucárias centenárias",
+      "Cascata das Andorinhas",
+      "Véu de Noiva",
+      "Vista dos paredões do cânion"
+    ],
+    "shortDescription": "Trilha fácil na borda do Cânion Itaimbezinho com mirantes, araucárias e vistas dos paredões — ideal para iniciantes e famílias em Cambará do Sul.",
+    "hookText": "Caminhe pela borda do maior cânion da América Latina sem precisar de preparo técnico — a Trilha do Cotovelo e Vértice entrega mirantes amplos, araucárias e paredões de 720 metros com esforço mínimo.",
+    "ctaText": "Encontre guias locais para a Trilha do Cotovelo e Vértice no Cânion Itaimbezinho.",
+    "description": "A Trilha do Cotovelo e Vértice percorre a parte alta do Cânion Itaimbezinho, no Parque Nacional de Aparados da Serra, em Cambará do Sul (RS). Com cerca de 7,5 a 8 km somando os dois percursos, a trilha é classificada como fácil e indicada para iniciantes, famílias e viajantes em busca de alta recompensa visual com baixo esforço físico. O Vértice oferece mirantes para o início do cânion e quedas como a Cascata das Andorinhas e o Véu de Noiva; o Cotovelo revela a vista clássica dos paredões de basalto com o Rio do Boi lá embaixo.",
+    "imageUrl": "/trails/rXFyiCGZLcfZ.jpg",
+    "images": [
+      "/trails/rXFyiCGZLcfZ.jpg",
+      "/trails/HdnpZnaKd1yR.webp",
+      "/trails/P593n9nrOKST.jpg",
+      "/trails/BFrxUf5h1xR1.jpg",
+      "/trails/SmHDAcO40DOO.jpg",
+      "/trails/LkASnrPN5tj1.jpg"
+    ],
+    "wiklocUrl": "https://pt.wikiloc.com/trilhas-trekking/trilha-do-vertice-canion-itaimbezinho-cambara-do-sul-rs-58394094",
+    "wiklocGpxUrl": "",
+    "status": "published",
+    "lat": -29.158173,
+    "lng": -50.078742
+  }
 ]
