@@ -22,17 +22,17 @@ DIFF_SLUGS  = {"easy": "para-iniciantes", "moderate": "moderado", "hard": "dific
 UF_NAMES = {
     "RR": "Roraima", "RJ": "Rio de Janeiro", "GO": "Goiás",
     "SP": "São Paulo", "MG": "Minas Gerais", "RS": "Rio Grande do Sul",
-    "SC": "Santa Catarina", "CE": "Ceará",
+    "SC": "Santa Catarina", "CE": "Ceará", "PR": "Paraná",
 }
 UF_SLUGS = {
     "RR": "roraima",       "RJ": "rio-de-janeiro",  "GO": "goias",
     "SP": "sao-paulo",     "MG": "minas-gerais",     "RS": "rio-grande-do-sul",
-    "SC": "santa-catarina","CE": "ceara",
+    "SC": "santa-catarina","CE": "ceara",             "PR": "parana",
 }
 UF_PREP = {
     "RR": "em Roraima",         "RJ": "no Rio de Janeiro",  "GO": "em Goiás",
     "SP": "em São Paulo",       "MG": "em Minas Gerais",     "RS": "no Rio Grande do Sul",
-    "SC": "em Santa Catarina",  "CE": "no Ceará",
+    "SC": "em Santa Catarina",  "CE": "no Ceará",            "PR": "no Paraná",
 }
 # Pages that already exist — skip
 EXISTING_STATE_SLUGS = {"rio-de-janeiro", "sao-paulo", "minas-gerais"}
