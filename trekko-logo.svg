@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Trekko logo">
+  <title>Trekko logo</title>
+  <!-- Mountain silhouette -->
+  <path d="M14,100 C4,100 0,82 12,60 C26,36 60,10 96,4 C122,-1 152,6 168,28 C182,50 186,78 184,98 Z" fill="#2D6A4F"/>
+
+  <!-- T-letter ribbon — Layer 1: Green outer border -->
+  <path d="M16,88 C8,88 2,74 4,62 C6,52 16,48 24,56 C30,62 32,78 16,88"
+        stroke="#2D6A4F" stroke-width="20" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="16" y1="88" x2="172" y2="88" stroke="#2D6A4F" stroke-width="20" stroke-linecap="round"/>
+  <line x1="90" y1="88" x2="90" y2="160" stroke="#2D6A4F" stroke-width="20" stroke-linecap="round"/>
+  <path d="M90,160 C90,177 108,182 115,170"
+        stroke="#2D6A4F" stroke-width="20" fill="none" stroke-linecap="round"/>
+  <path d="M172,88 C178,84 182,76 180,68 C178,60 170,58 166,66 C162,74 165,82 172,88 Z" fill="#2D6A4F"/>
+
+  <!-- T-letter ribbon — Layer 2: White inner border -->
+  <path d="M16,88 C8,88 2,74 4,62 C6,52 16,48 24,56 C30,62 32,78 16,88"
+        stroke="#FFFFFF" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="16" y1="88" x2="172" y2="88" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round"/>
+  <line x1="90" y1="88" x2="90" y2="160" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round"/>
+  <path d="M90,160 C90,177 108,182 115,170"
+        stroke="#FFFFFF" stroke-width="12" fill="none" stroke-linecap="round"/>
+  <path d="M172,88 C178,84 182,76 180,68 C178,60 170,58 166,66 C162,74 165,82 172,88 Z" fill="#FFFFFF"/>
+
+  <!-- T-letter ribbon — Layer 3: Earth brown core -->
+  <path d="M16,88 C8,88 2,74 4,62 C6,52 16,48 24,56 C30,62 32,78 16,88"
+        stroke="#7C4B2A" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="16" y1="88" x2="172" y2="88" stroke="#7C4B2A" stroke-width="5" stroke-linecap="round"/>
+  <line x1="90" y1="88" x2="90" y2="160" stroke="#7C4B2A" stroke-width="5" stroke-linecap="round"/>
+  <path d="M90,160 C90,177 108,182 115,170"
+        stroke="#7C4B2A" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <path d="M172,88 C178,84 182,76 180,68 C178,60 170,58 166,66 C162,74 165,82 172,88 Z" fill="#7C4B2A"/>
+
+  <!-- Leaf at bottom-right of stem -->
+  <path d="M104,146 C110,132 128,134 124,150 C122,160 104,160 104,146 Z" fill="#2D6A4F"/>
+</svg>
