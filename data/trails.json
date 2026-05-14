@@ -1079,5 +1079,52 @@
     "status": "published",
     "lat": -29.158173,
     "lng": -50.078742
+  },
+  {
+    "id": 40,
+    "name": "Pico Paraná",
+    "slug": "pico-parana-serra-do-ibitiraquire",
+    "uf": "PR",
+    "city": "Campina Grande do Sul / Antonina",
+    "region": "Serra do Ibitiraquire",
+    "park": "Parque Estadual Pico Paraná",
+    "distanceKm": "15-17",
+    "elevationGain": 1300,
+    "maxAltitude": 1877,
+    "difficulty": "hard",
+    "guideRequired": 0,
+    "entranceFee": "Gratuito (possíveis taxas privadas de serviços)",
+    "estimatedTime": "10-14 horas (bate-volta) / 2 dias",
+    "trailType": "out-and-back",
+    "bestSeason": "Abril a Setembro",
+    "waterPoints": [
+      "Pontos relatados no percurso (não garantidos; tratar água)"
+    ],
+    "campingPoints": [
+      "Áreas autorizadas pelo IAT (confirmar regras vigentes)"
+    ],
+    "highlights": [
+      "Ponto mais alto da Região Sul (1.877 m)",
+      "Vista da Serra do Ibitiraquire",
+      "Mata Atlântica — Floresta Ombrófila Densa",
+      "Campos de altitude nos cumes",
+      "Maciço rochoso e mirantes épicos"
+    ],
+    "shortDescription": "O ponto mais alto da Região Sul do Brasil, com 1.877 m de altitude na Serra do Ibitiraquire, no Paraná. Alta montanha, Mata Atlântica e desafio real.",
+    "hookText": "Suba à maior montanha do Sul do Brasil e conquiste um dos cumes mais emblemáticos do montanhismo paranaense. A Serra do Ibitiraquire espera quem se prepara.",
+    "ctaText": "Planeje sua subida ao Pico Paraná com guia local e segurança. A maior montanha do Sul não perdoa o improviso.",
+    "description": "O Pico Paraná é a maior montanha da Região Sul do Brasil, com 1.877 metros de altitude no Parque Estadual Pico Paraná, na Serra do Ibitiraquire, entre Campina Grande do Sul e Antonina, no Paraná. A trilha clássica faz o percurso em ida e volta, com distância aproximada de 15 a 17 km e ganho acumulado entre 1.200 e 1.400 metros. O bate-volta exige de 10 a 14 horas; a opção em 2 dias com pernoite autorizado pelo IAT é mais segura e confortável.\n\nO percurso atravessa Mata Atlântica densa, trechos de raízes, barro, pedras e subidas persistentes. Conforme a altitude aumenta, a floresta muda e os mirantes revelam a imponência da Serra do Ibitiraquire. Não é uma trilha para iniciantes sem guia ou sem preparo: o Pico Paraná exige experiência, condicionamento físico, atenção ao clima e respeito às regras do parque.\n\nO cadastro de entrada é obrigatório na base do IAT. A visitação não é permitida em dias de chuva, com reabertura após 24 horas sem precipitação. O acesso oficial é pela BR-116, Posto do Tio Doca, Ponte do Rio Tucum, seguindo aproximadamente 6 km até a base do IAT.",
+    "imageUrl": "/trails/PPTrailPath01.jpg",
+    "images": [
+      "/trails/PPTrailPath01.jpg",
+      "/trails/PPRockyMass02.jpg",
+      "/trails/PPCloudsVw03.jpg",
+      "/trails/PPRouteMap04.jpg"
+    ],
+    "wiklocUrl": "https://pt.wikiloc.com/trilhas-trekking/pico-parana-54571218",
+    "wiklocGpxUrl": "",
+    "status": "published",
+    "lat": -25.264,
+    "lng": -48.835
   }
 ]
