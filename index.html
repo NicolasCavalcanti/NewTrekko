@@ -1,455 +1,726 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
-
-  <head>
-    <!-- Google AdSense account verification (script injected conditionally by AdSenseLoader) -->
-    <meta name="google-adsense-account" content="ca-pub-2482023752745520">
-
-    <!-- ═══════════════════════════════════════════════════════════════════════
-         TREKKO ANALYTICS CONFIGURATION
-         ─────────────────────────────────────────────────────────────────────
-         Fill GTM_ID with your Google Tag Manager container ID (GTM-XXXXXXX).
-         Fill ADS_ID with your Google Ads conversion account ID (AW-XXXXXXXXX).
-         GA4_ID is already active. When GTM_ID is set, all events route through
-         GTM instead of calling gtag() directly, eliminating duplicate hits.
-         ═══════════════════════════════════════════════════════════════════════ -->
-    <script>
-      window.TREKKO_CONFIG = {
-        GA4_ID: 'G-S816P190VN',
-        GTM_ID: null,          /* e.g. 'GTM-XXXXXXX'  — set to activate GTM   */
-        ADS_ID: 'AW-355784943'           /* e.g. 'AW-XXXXXXXXX' — set to activate Ads   */
-      };
-    </script>
-
-    <!-- ═══════════════════════════════════════════════════════════════════════
-         LGPD COOKIE CONSENT — Google Consent Mode v2
-         MUST run before GTM/GA4 scripts so consent defaults are applied
-         before any measurement tags fire.
-         ═══════════════════════════════════════════════════════════════════════ -->
-    <script>
-      (function () {
-        var KEY = 'trekko_lgpd_consent';
-        var stored = null;
-        try { var raw = localStorage.getItem(KEY); if (raw) stored = JSON.parse(raw); } catch (e) {}
-
-        /* Consent state API — consumed by the banner and trekko-analytics.js */
-        window.TrekkoConsent = {
-          _state: stored,
-          has: function () { return !!this._state; },
-          analytics: function () { return !!(this._state && this._state.analytics); },
-          ads: function () { return !!(this._state && this._state.ads); },
-          save: function (analytics, ads) {
-            this._state = { analytics: !!analytics, ads: !!ads, ts: new Date().toISOString() };
-            try { localStorage.setItem(KEY, JSON.stringify(this._state)); } catch (e) {}
-          }
-        };
-
-        /* dataLayer must exist before gtag() is defined */
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { window.dataLayer.push(arguments); }
-
-        /* Consent Mode v2 defaults — denied until user chooses */
-        var analyticsStorage = stored && stored.analytics ? 'granted' : 'denied';
-        var adStorage        = stored && stored.ads       ? 'granted' : 'denied';
-        gtag('consent', 'default', {
-          analytics_storage:  analyticsStorage,
-          ad_storage:         adStorage,
-          ad_user_data:       adStorage,
-          ad_personalization: adStorage,
-          wait_for_update:    stored ? 0 : 2000
-        });
-
-        /* Called by the banner after user makes a choice */
-        window._trekkoApplyConsent = function (analytics, ads) {
-          window.TrekkoConsent.save(analytics, ads);
-          if (typeof window.gtag === 'function') {
-            window.gtag('consent', 'update', {
-              analytics_storage:  analytics ? 'granted' : 'denied',
-              ad_storage:         ads       ? 'granted' : 'denied',
-              ad_user_data:       ads       ? 'granted' : 'denied',
-              ad_personalization: ads       ? 'granted' : 'denied'
-            });
-          }
-        };
-      })();
-    </script>
-    <!-- End LGPD Consent Mode setup -->
-
-    <!-- Google Tag Manager (loads only when GTM_ID is configured above) -->
-    <script>
-      (function(){
-        var id = (window.TREKKO_CONFIG || {}).GTM_ID;
-        if (!id) return;
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
-        var f = document.getElementsByTagName('script')[0];
-        var j = document.createElement('script');
-        j.async = true;
-        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + id;
-        f.parentNode.insertBefore(j, f);
-      })();
-    </script>
-    <!-- End Google Tag Manager -->
-
-    <!-- Google tag (gtag.js) — direct GA4 fallback while GTM is not yet configured -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-S816P190VN"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-S816P190VN', { send_page_view: !(window.TREKKO_CONFIG && window.TREKKO_CONFIG.GTM_ID) });
-    </script>
-    <!-- NOTE: once GTM is configured, set send_page_view: false above and let
-         GTM fire page_view via the History Change trigger to avoid duplicates. -->
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-    <title>Trekko</title>
-    <!-- Favicons - Google requires minimum 48x48px, recommends larger -->
-    <link rel="icon" href="/favicon-48x48.png" type="image/png" sizes="48x48" />
-    <link rel="icon" href="/android-chrome-192x192.png" type="image/png" sizes="192x192" />
-    <link rel="icon" href="/android-chrome-512x512.png" type="image/png" sizes="512x512" />
-    <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
-    <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
-    <link rel="shortcut icon" href="/favicon-48x48.png" type="image/png" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <meta name="description" content="Descubra as melhores trilhas do Brasil. Encontre guias certificados CADASTUR e participe de expedições incríveis." />
-    <meta name="keywords" content="trilhas, hiking, Brasil, ecoturismo, guias, expedições, trekking" />
-    <meta property="og:title" content="Trekko" />
-    <meta property="og:description" content="Descubra as melhores trilhas do Brasil" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://trekko.com.br/images/trekko_logo_horizontal_color_transparent.png" />
-    <meta property="og:image:width" content="1024" />
-    <meta property="og:image:height" content="1024" />
-    <meta property="og:image:alt" content="Trekko logo" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <script>
-      (function(){var p=window.location.pathname,nx=["/guias","/trilhas","/component-showcase"],np=["/guia/","/expedicao/"];if(nx.indexOf(p)!==-1||np.some(function(x){return p===x||p.startsWith(x)})){var m=document.createElement("meta");m.name="robots";m.content="noindex, nofollow, nosnippet, max-snippet:0, noarchive";document.head.appendChild(m);}})();
-    </script>
-    <!-- Trekko centralized analytics helper (must load before the React bundle) -->
-    <script src="/assets/trekko-analytics.js"></script>
-    <script type="application/ld+json">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trekko | Descubra as Melhores Trilhas do Brasil e Encontre Seu Guia Ideal</title>
+<meta name="description" content="Descubra as melhores trilhas do Brasil. Fichas técnicas detalhadas, guias CADASTUR verificados e conteúdo editorial para planejar sua aventura outdoor com segurança.">
+<link rel="canonical" href="https://trekko.com.br/">
+<meta property="og:title" content="Trekko | Descubra as Melhores Trilhas do Brasil e Encontre Seu Guia Ideal">
+<meta property="og:description" content="Fichas técnicas detalhadas, guias CADASTUR verificados e conteúdo editorial para planejar sua próxima aventura outdoor no Brasil.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://trekko.com.br/">
+<meta property="og:image" content="https://trekko.com.br/images/trekko_logo_horizontal_color_transparent.png">
+<meta property="og:image:width" content="1024">
+<meta property="og:image:height" content="1024">
+<meta property="og:image:alt" content="Trekko — Trilhas e Guias no Brasil">
+<link rel="icon" href="/favicon-48x48.png" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta name="google-adsense-account" content="ca-pub-2482023752745520">
+<script>window.TREKKO_CONFIG={GA4_ID:'G-S816P190VN',GTM_ID:null,ADS_ID:'AW-355784943'};</script>
+<script>
+(function(){
+  var KEY='trekko_lgpd_consent';var stored=null;
+  try{var raw=localStorage.getItem(KEY);if(raw)stored=JSON.parse(raw);}catch(e){}
+  window.TrekkoConsent={_state:stored,has:function(){return!!this._state;},analytics:function(){return!!(this._state&&this._state.analytics);},ads:function(){return!!(this._state&&this._state.ads);},save:function(a,d){this._state={analytics:!!a,ads:!!d,ts:new Date().toISOString()};try{localStorage.setItem(KEY,JSON.stringify(this._state));}catch(e){}}};
+  window.dataLayer=window.dataLayer||[];function gtag(){window.dataLayer.push(arguments);}
+  var as=stored&&stored.analytics?'granted':'denied';var ad=stored&&stored.ads?'granted':'denied';
+  gtag('consent','default',{analytics_storage:as,ad_storage:ad,ad_user_data:ad,ad_personalization:ad,wait_for_update:stored?0:2000});
+  window._trekkoApplyConsent=function(a,d){window.TrekkoConsent.save(a,d);if(typeof window.gtag==='function'){window.gtag('consent','update',{analytics_storage:a?'granted':'denied',ad_storage:d?'granted':'denied',ad_user_data:d?'granted':'denied',ad_personalization:d?'granted':'denied'});}};
+})();
+</script>
+<script>(function(){var id=(window.TREKKO_CONFIG||{}).GTM_ID;if(!id)return;window.dataLayer=window.dataLayer||[];window.dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=document.getElementsByTagName('script')[0],j=document.createElement('script');j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+id;f.parentNode.insertBefore(j,f);})();</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-S816P190VN"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-S816P190VN',{send_page_view:!(window.TREKKO_CONFIG&&window.TREKKO_CONFIG.GTM_ID)});</script>
+<script src="/assets/trekko-analytics.js"></script>
+<script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
 {"@type":"Organization","@id":"https://trekko.com.br/#organization","name":"Trekko","url":"https://trekko.com.br","logo":{"@type":"ImageObject","url":"https://trekko.com.br/images/trekko_logo_horizontal_color_transparent.png","width":1024,"height":1024},"description":"Plataforma de trilhas e guias outdoor certificados no Brasil. Encontre trilhas por estado, dificuldade e características.","contactPoint":{"@type":"ContactPoint","contactType":"customer support","email":"contato@trekko.com.br","url":"https://trekko.com.br/contato"},"areaServed":{"@type":"Country","name":"Brasil","identifier":"BR"}},
-{"@type":"WebSite","@id":"https://trekko.com.br/#website","url":"https://trekko.com.br","name":"Trekko","description":"Descubra as melhores trilhas do Brasil. Encontre guias certificados CADASTUR.","publisher":{"@id":"https://trekko.com.br/#organization"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://trekko.com.br/trilhas?q={search_term_string}"},"query-input":"required name=search_term_string"}}
+{"@type":"WebSite","@id":"https://trekko.com.br/#website","url":"https://trekko.com.br","name":"Trekko","description":"Descubra as melhores trilhas do Brasil. Encontre guias certificados CADASTUR.","publisher":{"@id":"https://trekko.com.br/#organization"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://trekko.com.br/trilhas?q={search_term_string}"},"query-input":"required name=search_term_string"}},
+{"@type":"ItemList","name":"Trilhas em Destaque no Brasil","itemListElement":[
+  {"@type":"ListItem","position":1,"name":"Travessia Petrópolis–Teresópolis","url":"https://trekko.com.br/blog/travessia-petropolis-teresopolis-guia-completo/"},
+  {"@type":"ListItem","position":2,"name":"Monte Roraima","url":"https://trekko.com.br/trilhas/roraima/"},
+  {"@type":"ListItem","position":3,"name":"Chapada dos Veadeiros","url":"https://trekko.com.br/trilhas/goias/"},
+  {"@type":"ListItem","position":4,"name":"Pico da Bandeira — Parque Nacional do Caparaó","url":"https://trekko.com.br/trilhas/minas-gerais/"},
+  {"@type":"ListItem","position":5,"name":"Cânion Fortaleza — Aparados da Serra","url":"https://trekko.com.br/trilhas/rio-grande-do-sul/"},
+  {"@type":"ListItem","position":6,"name":"Pico do Jaraguá","url":"https://trekko.com.br/trilhas/sao-paulo/"}
 ]}
-    </script>
-    <script type="module" crossorigin src="/assets/index-DSKK19TW.js"></script>
-    <link rel="modulepreload" crossorigin href="/assets/react-vendor-DViTTRkQ.js">
-    <link rel="modulepreload" crossorigin href="/assets/radix-ui-D-C9zAgG.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-CKkMVUOE.css">
+]}
+</script>
+<style>
+:root{--primary:#15803d;--primary-dark:#166534;--primary-hover:#16a34a;--primary-light:#dcfce7;--primary-bg:#f0fdf4;--accent:#f59e0b;--accent-light:#fef3c7;--text-primary:#1e293b;--text-secondary:#475569;--text-muted:#94a3b8;--border:#e2e8f0;--white:#fff;--bg-light:#f8fafc;--shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.1);--shadow-lg:0 8px 24px rgba(0,0,0,.12);--radius:8px;--radius-lg:16px;--font-body:'Inter',sans-serif;--font-heading:'Sora',sans-serif;--max-w:1200px;--gutter:1.25rem}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);color:var(--text-primary);line-height:1.6;background:var(--white)}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+.container{max-width:var(--max-w);margin:0 auto;padding:0 var(--gutter)}
+h1,h2,h3,h4{font-family:var(--font-heading);line-height:1.25;color:var(--text-primary)}
+h1{font-size:clamp(1.75rem,5vw,2.75rem);font-weight:700}
+h2{font-size:clamp(1.35rem,3.5vw,2rem);font-weight:700;margin-bottom:1rem}
+h3{font-size:1.1rem;font-weight:600;margin-bottom:.5rem}
+p{color:var(--text-secondary);line-height:1.7}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.75rem 1.5rem;border-radius:var(--radius);font-family:var(--font-body);font-weight:600;font-size:1rem;cursor:pointer;border:2px solid transparent;transition:all .2s;text-decoration:none;line-height:1}
+.btn--primary{background:var(--primary);color:var(--white);border-color:var(--primary)}.btn--primary:hover{background:var(--primary-hover)}
+.btn--outline{background:transparent;color:var(--primary);border-color:var(--primary)}.btn--outline:hover{background:var(--primary-light)}
+.btn--sm{padding:.5rem 1.1rem;font-size:.875rem}
+.btn--lg{padding:1rem 2rem;font-size:1.1rem}
 
-    <!-- ═══════════════════════════════════════════════════════════════════════
-         LGPD COOKIE CONSENT BANNER — styles
-         ═══════════════════════════════════════════════════════════════════════ -->
-    <style>
-      /* ── Reset inside banner ── */
-      #trekko-consent-wrap *,
-      #trekko-consent-wrap *::before,
-      #trekko-consent-wrap *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ── Header ── */
+.site-header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);transition:box-shadow .2s}
+.site-header.scrolled{box-shadow:var(--shadow-md)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{display:flex;align-items:center;gap:.5rem;font-family:var(--font-heading);font-size:1.35rem;font-weight:700;color:var(--primary)}
+.site-nav{display:none;gap:1.5rem;align-items:center}
+.site-nav a{font-size:.875rem;font-weight:500;color:var(--text-secondary);transition:color .15s}
+.site-nav a:hover{color:var(--primary)}
+.header-cta{display:flex;gap:.75rem;align-items:center}
+@media(min-width:768px){.site-nav{display:flex}}
 
-      /* ── Overlay (for settings panel on mobile) ── */
-      #trekko-consent-overlay {
-        position: fixed; inset: 0;
-        background: rgba(0,0,0,.45);
-        z-index: 99998;
-        display: none;
-      }
+/* ── Hero ── */
+.hero{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);color:var(--white);padding:5rem 0 4.5rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.hero-inner{position:relative;z-index:1;max-width:760px}
+.hero h1{color:var(--white);margin-bottom:1.25rem;font-size:clamp(1.9rem,5vw,3rem);line-height:1.15}
+.hero-subtitle{font-family:var(--font-body);font-size:1.15rem;color:rgba(255,255,255,.92);font-weight:500;margin-bottom:1.5rem;line-height:1.6}
+.hero-intro p{color:rgba(255,255,255,.82);font-size:1rem;line-height:1.75;margin-bottom:.75rem}
+.hero-intro p:last-child{margin-bottom:0}
+.hero-actions{display:flex;flex-wrap:wrap;gap:1rem;margin-top:2rem}
+.hero-actions .btn--white{background:var(--white);color:var(--primary);border-color:var(--white);font-weight:700}
+.hero-actions .btn--white:hover{background:var(--primary-light)}
+.hero-actions .btn--ghost{background:transparent;color:var(--white);border-color:rgba(255,255,255,.6)}
+.hero-actions .btn--ghost:hover{background:rgba(255,255,255,.12)}
+.hero-stats{display:flex;flex-wrap:wrap;gap:2.5rem;margin-top:3rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,.2)}
+.hero-stat{text-align:left}
+.hero-stat strong{display:block;font-family:var(--font-heading);font-size:1.75rem;font-weight:700;color:var(--white);line-height:1}
+.hero-stat span{font-size:.8rem;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.06em;margin-top:.25rem;display:block}
 
-      /* ── Main banner wrapper ── */
-      #trekko-consent-wrap {
-        position: fixed;
-        bottom: 0; left: 0; right: 0;
-        z-index: 99999;
-        font-family: 'Inter', system-ui, sans-serif;
-        font-size: 14px;
-        line-height: 1.5;
-        color: #1a1a19;
-      }
+/* ── Section base ── */
+.section{padding:4.5rem 0}
+.section--alt{background:var(--bg-light)}
+.section--green{background:var(--primary-bg)}
+.section-header{margin-bottom:2.5rem}
+.section-header h2{margin-bottom:.75rem}
+.section-header p{max-width:680px;font-size:1.05rem}
 
-      /* ── Banner card ── */
-      #trekko-consent-banner {
-        background: #fff;
-        border-top: 3px solid #2D6A4F;
-        box-shadow: 0 -4px 24px rgba(0,0,0,.12);
-        padding: 20px 24px;
-        display: none; /* shown by JS */
-      }
+/* ── Featured Trails ── */
+.trails-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem;margin-top:2rem}
+.trail-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;box-shadow:var(--shadow-sm);transition:box-shadow .2s,transform .2s;display:flex;flex-direction:column;gap:.75rem}
+.trail-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.trail-card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem}
+.trail-card h3{font-size:1rem;font-weight:700;color:var(--text-primary);line-height:1.35;margin:0}
+.trail-badge{display:inline-flex;align-items:center;padding:.25rem .65rem;border-radius:20px;font-size:.72rem;font-weight:700;white-space:nowrap;flex-shrink:0}
+.badge--easy{background:#dcfce7;color:#15803d}
+.badge--medium{background:#fef3c7;color:#92400e}
+.badge--hard{background:#fee2e2;color:#991b1b}
+.badge--expert{background:#ede9fe;color:#5b21b6}
+.trail-meta{display:flex;flex-wrap:wrap;gap:.5rem}
+.trail-meta-item{display:flex;align-items:center;gap:.3rem;font-size:.8rem;color:var(--text-muted)}
+.trail-meta-item svg{flex-shrink:0}
+.trail-card-link{margin-top:auto;font-size:.85rem;font-weight:600;color:var(--primary);display:inline-flex;align-items:center;gap:.3rem;transition:gap .15s}
+.trail-card-link:hover{gap:.6rem}
 
-      #trekko-consent-inner {
-        max-width: 1100px;
-        margin: 0 auto;
-        display: flex;
-        align-items: center;
-        gap: 24px;
-        flex-wrap: wrap;
-      }
+/* ── Why Trekko ── */
+.features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.75rem;margin-top:2rem}
+.feature-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2rem;box-shadow:var(--shadow-sm)}
+.feature-icon{width:56px;height:56px;background:var(--primary-bg);border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;font-size:1.75rem;margin-bottom:1.25rem}
+.feature-card h3{font-size:1.05rem;font-weight:700;margin-bottom:.6rem}
+.feature-card p{font-size:.9rem;color:var(--text-secondary);line-height:1.7;margin:0}
 
-      .trekko-consent-text { flex: 1 1 280px; }
-      .trekko-consent-text strong { font-size: 15px; color: #0d542b; display: block; margin-bottom: 4px; }
-      .trekko-consent-text p { color: #34322d; font-size: 13px; }
-      .trekko-consent-text a { color: #2D6A4F; text-decoration: underline; }
+/* ── Blog ── */
+.blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem;margin-top:2rem}
+.blog-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;box-shadow:var(--shadow-sm);transition:box-shadow .2s,transform .2s;display:flex;flex-direction:column;gap:.75rem}
+.blog-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.blog-card-meta{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+.blog-category{display:inline-block;font-size:.72rem;font-weight:700;padding:.2rem .6rem;border-radius:20px;background:var(--primary-bg);color:var(--primary);text-transform:uppercase;letter-spacing:.05em}
+.blog-date{font-size:.78rem;color:var(--text-muted)}
+.blog-card h3{font-size:.98rem;font-weight:700;color:var(--text-primary);line-height:1.4;margin:0}
+.blog-card-link{margin-top:auto;font-size:.85rem;font-weight:600;color:var(--primary);display:inline-flex;align-items:center;gap:.3rem;transition:gap .15s}
+.blog-card-link:hover{gap:.6rem}
+.blog-footer{margin-top:2rem;text-align:center}
 
-      .trekko-consent-btns {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-        align-items: center;
-        flex-shrink: 0;
-      }
+/* ── Regional Highlights ── */
+.regions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:1rem;margin-top:2rem}
+.region-link{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;padding:1.25rem 1rem;background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);text-align:center;transition:all .2s;box-shadow:var(--shadow-sm)}
+.region-link:hover{border-color:var(--primary);background:var(--primary-bg);box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.region-flag{font-size:1.5rem}
+.region-name{font-size:.82rem;font-weight:700;color:var(--text-primary)}
+.region-uf{font-size:.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em}
 
-      .trekko-consent-btns button {
-        cursor: pointer;
-        border-radius: 8px;
-        font-size: 13px;
-        font-weight: 600;
-        padding: 9px 18px;
-        border: none;
-        transition: opacity .15s;
-        white-space: nowrap;
-      }
-      .trekko-consent-btns button:hover { opacity: .85; }
+/* ── CTA Final ── */
+.cta-section{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);color:var(--white);text-align:center;padding:5rem 0}
+.cta-section h2{color:var(--white);margin-bottom:1rem;font-size:clamp(1.5rem,4vw,2.25rem)}
+.cta-section p{color:rgba(255,255,255,.88);margin-bottom:2rem;max-width:560px;margin-left:auto;margin-right:auto;font-size:1.05rem}
+.cta-actions{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center}
+.cta-actions .btn--white{background:var(--white);color:var(--primary);border-color:var(--white);font-weight:700}
+.cta-actions .btn--white:hover{background:var(--primary-light)}
+.cta-actions .btn--ghost{background:transparent;color:var(--white);border-color:rgba(255,255,255,.6)}
+.cta-actions .btn--ghost:hover{background:rgba(255,255,255,.12)}
 
-      #trekko-btn-accept  { background: #2D6A4F; color: #fff; }
-      #trekko-btn-reject  { background: #f8f8f7; color: #1a1a19; border: 1px solid #ccc; }
-      #trekko-btn-custom  { background: transparent; color: #2D6A4F; text-decoration: underline; font-weight: 500; padding: 9px 4px; }
+/* ── Footer ── */
+.site-footer{background:var(--text-primary);color:rgba(255,255,255,.65);padding:3rem 0 2rem}
+.footer-inner{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:2rem}
+.footer-brand{grid-column:1/2}
+.footer-logo{font-family:var(--font-heading);font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:.5rem}
+.footer-tagline{font-size:.85rem;line-height:1.6;margin-bottom:.75rem}
+.footer-email a{color:rgba(255,255,255,.6);font-size:.85rem}.footer-email a:hover{color:#fff}
+.footer-col h4{color:#fff;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem}
+.footer-col ul li+li{margin-top:.4rem}
+.footer-col a{font-size:.82rem;color:rgba(255,255,255,.6);transition:color .15s}.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.1);margin-top:2rem;padding-top:1.5rem;text-align:center;font-size:.8rem}
+.footer-social{display:flex;gap:1rem;justify-content:center;margin-top:.75rem;align-items:center}
+.footer-social a{display:flex;align-items:center;gap:.4rem;font-size:.8rem;color:rgba(255,255,255,.5);transition:color .15s}
+.footer-social a:hover{color:#fff}
 
-      /* ── Settings panel ── */
-      #trekko-consent-settings {
-        background: #fff;
-        border-top: 3px solid #2D6A4F;
-        box-shadow: 0 -4px 24px rgba(0,0,0,.15);
-        padding: 24px;
-        display: none;
-        max-height: 80vh;
-        overflow-y: auto;
-      }
+/* ── Cookie consent ── */
+#trekko-consent-wrap *,#trekko-consent-wrap *::before,#trekko-consent-wrap *::after{box-sizing:border-box;margin:0;padding:0}
+#trekko-consent-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:99998;display:none}
+#trekko-consent-wrap{position:fixed;bottom:0;left:0;right:0;z-index:99999;font-family:'Inter',system-ui,sans-serif;font-size:14px;line-height:1.5;color:#1a1a19}
+#trekko-consent-banner{background:#fff;border-top:3px solid #2D6A4F;box-shadow:0 -4px 24px rgba(0,0,0,.12);padding:20px 24px;display:none}
+#trekko-consent-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.trekko-consent-text{flex:1 1 280px}
+.trekko-consent-text strong{font-size:15px;color:#0d542b;display:block;margin-bottom:4px}
+.trekko-consent-text p{color:#34322d;font-size:13px}
+.trekko-consent-text a{color:#2D6A4F;text-decoration:underline}
+.trekko-consent-btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center;flex-shrink:0}
+.trekko-consent-btns button{cursor:pointer;border-radius:8px;font-size:13px;font-weight:600;padding:9px 18px;border:none;transition:opacity .15s;white-space:nowrap}
+.trekko-consent-btns button:hover{opacity:.85}
+#trekko-btn-accept{background:#2D6A4F;color:#fff}
+#trekko-btn-reject{background:#f8f8f7;color:#1a1a19;border:1px solid #ccc}
+#trekko-btn-custom{background:transparent;color:#2D6A4F;text-decoration:underline;font-weight:500;padding:9px 4px}
+#trekko-consent-settings{background:#fff;border-top:3px solid #2D6A4F;box-shadow:0 -4px 24px rgba(0,0,0,.15);padding:24px;display:none;max-height:80vh;overflow-y:auto}
+#trekko-consent-settings h3{font-size:16px;font-weight:700;color:#0d542b;margin-bottom:16px}
+.trekko-pref-row{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid #f0f0ee}
+.trekko-pref-row:last-of-type{border-bottom:none}
+.trekko-pref-info strong{font-size:14px;color:#1a1a19;display:block;margin-bottom:2px}
+.trekko-pref-info p{font-size:12px;color:#858481}
+.trekko-always-on{font-size:11px;font-weight:600;color:#258651;background:#e8f5ee;padding:4px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0;margin-top:2px}
+.trekko-toggle{position:relative;display:inline-block;width:44px;height:24px;flex-shrink:0;cursor:pointer}
+.trekko-toggle input{opacity:0;width:0;height:0}
+.trekko-slider{position:absolute;inset:0;background:#ccc;border-radius:24px;transition:background .2s}
+.trekko-slider::before{content:'';position:absolute;width:18px;height:18px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.trekko-toggle input:checked+.trekko-slider{background:#2D6A4F}
+.trekko-toggle input:checked+.trekko-slider::before{transform:translateX(20px)}
+.trekko-toggle input:focus-visible+.trekko-slider{outline:2px solid #2D6A4F;outline-offset:2px}
+.trekko-settings-btns{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+#trekko-btn-save{background:#2D6A4F;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;padding:10px 22px;cursor:pointer;transition:opacity .15s}
+#trekko-btn-save:hover{opacity:.85}
+#trekko-btn-back{background:transparent;color:#2D6A4F;border:1px solid #2D6A4F;border-radius:8px;font-size:13px;font-weight:600;padding:10px 18px;cursor:pointer;transition:opacity .15s}
+#trekko-btn-back:hover{opacity:.75}
 
-      #trekko-consent-settings h3 {
-        font-size: 16px;
-        font-weight: 700;
-        color: #0d542b;
-        margin-bottom: 16px;
-      }
+@media(max-width:900px){.footer-inner{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){.hero-stats{gap:1.5rem}.trails-grid,.features-grid,.blog-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.footer-inner{grid-template-columns:1fr}.footer-brand{grid-column:1/1}.header-cta .btn--outline{display:none}.trails-grid,.features-grid,.blog-grid{grid-template-columns:1fr}.regions-grid{grid-template-columns:repeat(4,1fr)}.hero-stats{flex-direction:row;justify-content:space-between}.trekko-consent-inner{flex-direction:column;align-items:stretch}.trekko-consent-btns{justify-content:stretch}.trekko-consent-btns button{flex:1;text-align:center}#trekko-btn-custom{flex:100%;text-align:center}}
+@media(max-width:400px){.regions-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
 
-      .trekko-pref-row {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 16px;
-        padding: 14px 0;
-        border-bottom: 1px solid #f0f0ee;
-      }
-      .trekko-pref-row:last-of-type { border-bottom: none; }
+<!-- ── Header ── -->
+<header class="site-header" id="site-header">
+<div class="container">
+  <div class="header-inner">
+    <a href="/" class="logo" aria-label="Trekko — página inicial">
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <path d="M16 3L3 28h26L16 3z" fill="#15803d" opacity=".9"/>
+        <path d="M16 10l-7 18h14L16 10z" fill="#fff" opacity=".3"/>
+      </svg>
+      Trekko
+    </a>
+    <nav class="site-nav" aria-label="Navegação principal">
+      <a href="/trilhas">Trilhas</a>
+      <a href="/guias">Guias</a>
+      <a href="/blog">Blog</a>
+      <a href="/sobre">Sobre</a>
+    </nav>
+    <div class="header-cta">
+      <a href="/trilhas" class="btn btn--outline btn--sm">Explorar trilhas</a>
+      <a href="/guias/ativar-perfil" class="btn btn--primary btn--sm">Sou guia</a>
+    </div>
+  </div>
+</div>
+</header>
 
-      .trekko-pref-info strong { font-size: 14px; color: #1a1a19; display: block; margin-bottom: 2px; }
-      .trekko-pref-info p { font-size: 12px; color: #858481; }
+<main id="main-content">
 
-      .trekko-always-on {
-        font-size: 11px;
-        font-weight: 600;
-        color: #258651;
-        background: #e8f5ee;
-        padding: 4px 10px;
-        border-radius: 20px;
-        white-space: nowrap;
-        flex-shrink: 0;
-        margin-top: 2px;
-      }
-
-      /* Toggle switch */
-      .trekko-toggle { position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0; cursor: pointer; }
-      .trekko-toggle input { opacity: 0; width: 0; height: 0; }
-      .trekko-slider {
-        position: absolute; inset: 0;
-        background: #ccc;
-        border-radius: 24px;
-        transition: background .2s;
-      }
-      .trekko-slider::before {
-        content: '';
-        position: absolute;
-        width: 18px; height: 18px;
-        left: 3px; top: 3px;
-        background: #fff;
-        border-radius: 50%;
-        transition: transform .2s;
-        box-shadow: 0 1px 3px rgba(0,0,0,.2);
-      }
-      .trekko-toggle input:checked + .trekko-slider { background: #2D6A4F; }
-      .trekko-toggle input:checked + .trekko-slider::before { transform: translateX(20px); }
-      .trekko-toggle input:focus-visible + .trekko-slider { outline: 2px solid #2D6A4F; outline-offset: 2px; }
-
-      /* Settings panel buttons */
-      .trekko-settings-btns {
-        display: flex;
-        gap: 10px;
-        margin-top: 20px;
-        flex-wrap: wrap;
-      }
-      #trekko-btn-save {
-        background: #2D6A4F; color: #fff;
-        border: none; border-radius: 8px;
-        font-size: 13px; font-weight: 600;
-        padding: 10px 22px;
-        cursor: pointer;
-        transition: opacity .15s;
-      }
-      #trekko-btn-save:hover { opacity: .85; }
-      #trekko-btn-back {
-        background: transparent; color: #2D6A4F;
-        border: 1px solid #2D6A4F; border-radius: 8px;
-        font-size: 13px; font-weight: 600;
-        padding: 10px 18px;
-        cursor: pointer;
-        transition: opacity .15s;
-      }
-      #trekko-btn-back:hover { opacity: .75; }
-
-      @media (max-width: 600px) {
-        #trekko-consent-inner { flex-direction: column; align-items: stretch; }
-        .trekko-consent-btns { justify-content: stretch; }
-        .trekko-consent-btns button { flex: 1; text-align: center; }
-        #trekko-btn-custom { flex: 100%; text-align: center; }
-      }
-    </style>
-  </head>
-
-  <body>
-    <!-- Google Tag Manager (noscript) — place immediately after <body> -->
-    <noscript>
-      <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
-              height="0" width="0" style="display:none;visibility:hidden"></iframe>
-    </noscript>
-    <!-- End Google Tag Manager (noscript) -->
-
-    <div id="root"></div>
-
-    <!-- ═══════════════════════════════════════════════════════════════════════
-         LGPD COOKIE CONSENT BANNER — markup
-         ═══════════════════════════════════════════════════════════════════════ -->
-    <div id="trekko-consent-overlay" aria-hidden="true"></div>
-
-    <!-- Main banner -->
-    <div id="trekko-consent-wrap">
-      <div id="trekko-consent-banner" role="dialog" aria-modal="true" aria-label="Preferências de privacidade e cookies">
-        <div id="trekko-consent-inner">
-          <div class="trekko-consent-text">
-            <strong>Sua privacidade importa</strong>
-            <p>
-              Usamos cookies para analytics e personalização de anúncios, em conformidade com a
-              <a href="/privacidade" target="_blank" rel="noopener">LGPD</a>.
-              Você tem controle total sobre suas preferências.
-            </p>
-          </div>
-          <div class="trekko-consent-btns">
-            <button id="trekko-btn-custom"  type="button">Personalizar</button>
-            <button id="trekko-btn-reject"  type="button">Recusar não essenciais</button>
-            <button id="trekko-btn-accept"  type="button">Aceitar todos</button>
-          </div>
-        </div>
+<!-- ── SEÇÃO 1: Hero ── -->
+<section class="hero" aria-labelledby="hero-heading">
+<div class="container">
+  <div class="hero-inner">
+    <h1 id="hero-heading">Descubra as Melhores Trilhas do Brasil e Encontre Seu Guia Ideal</h1>
+    <p class="hero-subtitle">Do litoral à Amazônia, do Cerrado à Mata Atlântica — o Trekko reúne trilhas, fichas técnicas e guias CADASTUR verificados para sua próxima aventura outdoor.</p>
+    <div class="hero-intro">
+      <p>O Trekko é uma plataforma brasileira dedicada à descoberta e ao planejamento de trilhas, trekking e experiências ecoturísticas. Reunimos informações detalhadas de percursos em todo o país — dificuldade, distância, acesso, altitude e condições — para que você chegue preparado a cada saída.</p>
+      <p>Além das trilhas, conectamos você a guias de turismo habilitados que conhecem cada região de perto. Aqui, aventura e informação confiável andam juntas, do planejamento à largada.</p>
+    </div>
+    <div class="hero-actions">
+      <a href="/trilhas" class="btn btn--white btn--lg" data-event="click_hero_explore_trails">Explorar trilhas</a>
+      <a href="/guias" class="btn btn--ghost btn--lg" data-event="click_hero_find_guides">Encontrar guias</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <strong>500+</strong>
+        <span>Trilhas catalogadas</span>
       </div>
-
-      <!-- Settings / customisation panel -->
-      <div id="trekko-consent-settings" role="dialog" aria-modal="true" aria-label="Configurar cookies">
-        <h3>Configurar cookies</h3>
-
-        <div class="trekko-pref-row">
-          <div class="trekko-pref-info">
-            <strong>Essenciais</strong>
-            <p>Necessários para o funcionamento do site. Não podem ser desativados.</p>
-          </div>
-          <span class="trekko-always-on" aria-label="Sempre ativo">Sempre ativo</span>
-        </div>
-
-        <div class="trekko-pref-row">
-          <div class="trekko-pref-info">
-            <strong>Analytics (GA4)</strong>
-            <p>Dados anônimos sobre uso do site para melhorarmos a experiência.</p>
-          </div>
-          <label class="trekko-toggle" aria-label="Ativar Analytics">
-            <input type="checkbox" id="trekko-chk-analytics">
-            <span class="trekko-slider"></span>
-          </label>
-        </div>
-
-        <div class="trekko-pref-row">
-          <div class="trekko-pref-info">
-            <strong>Publicidade (Google Ads)</strong>
-            <p>Permitem exibir anúncios relevantes e medir conversões de campanhas.</p>
-          </div>
-          <label class="trekko-toggle" aria-label="Ativar Publicidade">
-            <input type="checkbox" id="trekko-chk-ads">
-            <span class="trekko-slider"></span>
-          </label>
-        </div>
-
-        <div class="trekko-settings-btns">
-          <button id="trekko-btn-back" type="button">← Voltar</button>
-          <button id="trekko-btn-save" type="button">Salvar preferências</button>
-        </div>
+      <div class="hero-stat">
+        <strong>27</strong>
+        <span>Estados cobertos</span>
+      </div>
+      <div class="hero-stat">
+        <strong>100+</strong>
+        <span>Guias cadastrados</span>
+      </div>
+      <div class="hero-stat">
+        <strong>Grátis</strong>
+        <span>Acesso completo</span>
       </div>
     </div>
-    <!-- End LGPD Cookie Consent Banner -->
+  </div>
+</div>
+</section>
 
-    <!-- ═══════════════════════════════════════════════════════════════════════
-         LGPD COOKIE CONSENT BANNER — logic
-         ═══════════════════════════════════════════════════════════════════════ -->
-    <script>
-      (function () {
-        var consent = window.TrekkoConsent;
-        if (!consent || consent.has()) return; /* already decided — banner not needed */
+<!-- ── SEÇÃO 2: Trilhas em Destaque ── -->
+<section class="section section--alt" aria-labelledby="trails-heading">
+<div class="container">
+  <div class="section-header">
+    <h2 id="trails-heading">Trilhas em Destaque</h2>
+    <p>Do alto de Roraima ao litoral catarinense, o Brasil guarda percursos para todos os perfis de trilheiro. Selecionamos seis rotas que se destacam pela beleza, pelo desafio ou pela experiência única que proporcionam — com dados técnicos para você planejar com segurança.</p>
+  </div>
+  <div class="trails-grid">
 
-        var overlay   = document.getElementById('trekko-consent-overlay');
-        var banner    = document.getElementById('trekko-consent-banner');
-        var settings  = document.getElementById('trekko-consent-settings');
-        var chkAnalytics = document.getElementById('trekko-chk-analytics');
-        var chkAds       = document.getElementById('trekko-chk-ads');
+    <article class="trail-card">
+      <div class="trail-card-header">
+        <h3>Travessia Petrópolis–Teresópolis</h3>
+        <span class="trail-badge badge--hard">Difícil</span>
+      </div>
+      <div class="trail-meta">
+        <span class="trail-meta-item">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Rio de Janeiro
+        </span>
+        <span class="trail-meta-item">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+          30 km
+        </span>
+      </div>
+      <p style="font-size:.875rem;color:var(--text-secondary);margin:0">A travessia mais clássica do Brasil cruza a Serra dos Órgãos em 3 dias, com abrigos, vista de picos e desafio técnico real.</p>
+      <a href="/blog/travessia-petropolis-teresopolis-guia-completo/" class="trail-card-link" data-event="click_trail_card_petropolis">
+        Ver guia completo <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+    </article>
 
-        function showBanner() {
-          banner.style.display  = 'block';
-          overlay.style.display = 'none';
-          settings.style.display = 'none';
-        }
+    <article class="trail-card">
+      <div class="trail-card-header">
+        <h3>Monte Roraima</h3>
+        <span class="trail-badge badge--expert">Especialista</span>
+      </div>
+      <div class="trail-meta">
+        <span class="trail-meta-item">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Roraima
+        </span>
+        <span class="trail-meta-item">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+          60 km
+        </span>
+      </div>
+      <p style="font-size:.875rem;color:var(--text-secondary);margin:0">O tepui mais alto da América do Sul, na fronteira com Venezuela e Guiana. Paisagem única e exige guia local habilitado.</p>
+      <a href="/blog/monte-roraima-guia-completo/" class="trail-card-link" data-event="click_trail_card_roraima">
+        Ver guia completo <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+    </article>
 
-        function showSettings() {
-          chkAnalytics.checked = true;
-          chkAds.checked       = true;
-          banner.style.display   = 'none';
-          settings.style.display = 'block';
-          overlay.style.display  = 'block';
-        }
+    <article class="trail-card">
+      <div class="trail-card-header">
+        <h3>Chapada dos Veadeiros</h3>
+        <span class="trail-badge badge--medium">Moderado</span>
+      </div>
+      <div class="trail-meta">
+        <span class="trail-meta-item">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Goiás
+        </span>
+        <span class="trail-meta-item">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+          12 km
+        </span>
+      </div>
+      <p style="font-size:.875rem;color:var(--text-secondary);margin:0">Cerrado sagrado, cachoeiras cristalinas e trilhas no Patrimônio Mundial da UNESCO. Opções para todos os níveis em Alto Paraíso.</p>
+      <a href="/trilhas/goias/" class="trail-card-link" data-event="click_trail_card_chapada_veadeiros">
+        Ver trilhas em Goiás <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+    </article>
 
-        function applyAndClose(analytics, ads) {
-          if (typeof window._trekkoApplyConsent === 'function') {
-            window._trekkoApplyConsent(analytics, ads);
-          }
-          banner.style.display   = 'none';
-          settings.style.display = 'none';
-          overlay.style.display  = 'none';
-        }
+    <article class="trail-card">
+      <div class="trail-card-header">
+        <h3>Pico da Bandeira — Caparaó</h3>
+        <span class="trail-badge badge--hard">Difícil</span>
+      </div>
+      <div class="trail-meta">
+        <span class="trail-meta-item">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Minas Gerais
+        </span>
+        <span class="trail-meta-item">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+          14 km
+        </span>
+      </div>
+      <p style="font-size:.875rem;color:var(--text-secondary);margin:0">O terceiro pico mais alto do Brasil (2.892 m). Campos de altitude, vista panorâmica e a sensação de estar acima das nuvens.</p>
+      <a href="/trilhas/minas-gerais/" class="trail-card-link" data-event="click_trail_card_caparao">
+        Ver trilhas em MG <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+    </article>
 
-        document.getElementById('trekko-btn-accept').addEventListener('click', function () {
-          applyAndClose(true, true);
-        });
-        document.getElementById('trekko-btn-reject').addEventListener('click', function () {
-          applyAndClose(false, false);
-        });
-        document.getElementById('trekko-btn-custom').addEventListener('click', showSettings);
-        document.getElementById('trekko-btn-back').addEventListener('click', showBanner);
-        document.getElementById('trekko-btn-save').addEventListener('click', function () {
-          applyAndClose(chkAnalytics.checked, chkAds.checked);
-        });
+    <article class="trail-card">
+      <div class="trail-card-header">
+        <h3>Cânion Fortaleza — Aparados da Serra</h3>
+        <span class="trail-badge badge--medium">Moderado</span>
+      </div>
+      <div class="trail-meta">
+        <span class="trail-meta-item">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Rio Grande do Sul
+        </span>
+        <span class="trail-meta-item">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+          10 km
+        </span>
+      </div>
+      <p style="font-size:.875rem;color:var(--text-secondary);margin:0">Um dos maiores cânions da América do Sul, com paredes de 900 m e vista de tirar o fôlego em Cambará do Sul, no limite com SC.</p>
+      <a href="/trilhas/rio-grande-do-sul/" class="trail-card-link" data-event="click_trail_card_aparados">
+        Ver trilhas no RS <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+    </article>
 
-        /* Show after a short delay so the page isn't blocked on first paint */
-        setTimeout(showBanner, 600);
-      })();
-    </script>
-  </body>
+    <article class="trail-card">
+      <div class="trail-card-header">
+        <h3>Pico do Jaraguá</h3>
+        <span class="trail-badge badge--easy">Fácil</span>
+      </div>
+      <div class="trail-meta">
+        <span class="trail-meta-item">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          São Paulo
+        </span>
+        <span class="trail-meta-item">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+          8 km
+        </span>
+      </div>
+      <p style="font-size:.875rem;color:var(--text-secondary);margin:0">O ponto mais alto da Grande São Paulo (1.135 m), acessível por trilha com boa sinalização. Ótima opção para iniciantes na capital.</p>
+      <a href="/trilhas/sao-paulo/" class="trail-card-link" data-event="click_trail_card_jaragua">
+        Ver trilhas em SP <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+    </article>
 
+  </div>
+  <div style="margin-top:2.5rem;text-align:center">
+    <a href="/trilhas" class="btn btn--primary" data-event="click_all_trails">Ver todas as trilhas</a>
+  </div>
+</div>
+</section>
+
+<!-- ── SEÇÃO 3: Por que Planejar com o Trekko ── -->
+<section class="section section--green" aria-labelledby="why-heading">
+<div class="container">
+  <div class="section-header">
+    <h2 id="why-heading">Por que Planejar com o Trekko</h2>
+    <p>Planejamento é parte da aventura. O Trekko foi construído para que cada trilheiro chegue informado, conectado e em segurança.</p>
+  </div>
+  <div class="features-grid">
+
+    <div class="feature-card">
+      <div class="feature-icon" aria-hidden="true">📋</div>
+      <h3>Fichas técnicas detalhadas</h3>
+      <p>Cada trilha tem dados reais: distância total, desnível acumulado, tipo de terreno, pontos de acesso, época recomendada e cuidados específicos. Informação que faz diferença na hora de montar sua mochila e sair de casa preparado.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon" aria-hidden="true">🪪</div>
+      <h3>Guias CADASTUR verificados</h3>
+      <p>Conectamos trilheiros a guias de turismo habilitados pelo CADASTUR — o cadastro oficial do Ministério do Turismo. Profissionais que conhecem o percurso, a fauna, a flora e garantem mais segurança e qualidade à sua experiência.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon" aria-hidden="true">🌿</div>
+      <h3>Segurança e responsabilidade</h3>
+      <p>Promovemos condutas de baixo impacto, respeito a unidades de conservação e orientações práticas de segurança outdoor. Aqui você encontra dicas para curtir a natureza com consciência e preservar as trilhas para as próximas gerações.</p>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- ── SEÇÃO 4: Últimos do Blog ── -->
+<section class="section" aria-labelledby="blog-heading">
+<div class="container">
+  <div class="section-header">
+    <h2 id="blog-heading">Últimos do Blog</h2>
+    <p>No blog do Trekko você encontra guias completos de trilhas, dicas de equipamentos, segurança outdoor e planejamento de expedições. Conteúdo editorial produzido por trilheiros experientes para ajudar você a se preparar melhor para cada aventura.</p>
+  </div>
+  <div class="blog-grid">
+
+    <article class="blog-card">
+      <div class="blog-card-meta">
+        <span class="blog-category">Planejamento</span>
+        <time class="blog-date" datetime="2026-04-01">1 de abril de 2026</time>
+      </div>
+      <h3>Trekking com Cachorro: Tudo que Você Precisa Saber Antes de Ir</h3>
+      <a href="/blog/trekking-com-cachorro-guia-completo/" class="blog-card-link" data-event="click_blog_cachorro">
+        Ler artigo <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+    </article>
+
+    <article class="blog-card">
+      <div class="blog-card-meta">
+        <span class="blog-category">Segurança</span>
+        <time class="blog-date" datetime="2026-03-15">15 de março de 2026</time>
+      </div>
+      <h3>Como Escolher uma Trilha Segura no Brasil: Um Guia Prático</h3>
+      <a href="/blog/como-escolher-trilha-segura-brasil/" class="blog-card-link" data-event="click_blog_trilha_segura">
+        Ler artigo <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+    </article>
+
+    <article class="blog-card">
+      <div class="blog-card-meta">
+        <span class="blog-category">Planejamento</span>
+        <time class="blog-date" datetime="2026-03-01">1 de março de 2026</time>
+      </div>
+      <h3>Como Planejar uma Trilha de Longo Curso: Do Zero à Largada</h3>
+      <a href="/blog/planejamento-trilha-longo-curso-passo-a-passo/" class="blog-card-link" data-event="click_blog_longo_curso">
+        Ler artigo <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+    </article>
+
+  </div>
+  <div class="blog-footer">
+    <a href="/blog" class="btn btn--outline" data-event="click_all_blog">Ver todos os artigos</a>
+  </div>
+</div>
+</section>
+
+<!-- ── SEÇÃO 5: Destaques por Região ── -->
+<section class="section section--alt" aria-labelledby="regions-heading">
+<div class="container">
+  <div class="section-header">
+    <h2 id="regions-heading">Destaques por Região</h2>
+    <p>O Brasil é um dos países com maior biodiversidade do planeta, e cada região guarda trilhas únicas. Da Mata Atlântica ao Cerrado, dos cânions gaúchos à Caatinga nordestina, passando pelos campos de altitude mineiros e as serras amazônicas — há percursos para todos os níveis e todos os sonhos. Explore por região:</p>
+  </div>
+  <div class="regions-grid">
+
+    <a href="/trilhas/rio-de-janeiro/" class="region-link" data-event="click_region_rj">
+      <span class="region-flag" aria-hidden="true">🏖️</span>
+      <span class="region-name">Rio de Janeiro</span>
+      <span class="region-uf">RJ</span>
+    </a>
+
+    <a href="/trilhas/sao-paulo/" class="region-link" data-event="click_region_sp">
+      <span class="region-flag" aria-hidden="true">🌆</span>
+      <span class="region-name">São Paulo</span>
+      <span class="region-uf">SP</span>
+    </a>
+
+    <a href="/trilhas/minas-gerais/" class="region-link" data-event="click_region_mg">
+      <span class="region-flag" aria-hidden="true">⛰️</span>
+      <span class="region-name">Minas Gerais</span>
+      <span class="region-uf">MG</span>
+    </a>
+
+    <a href="/trilhas/goias/" class="region-link" data-event="click_region_go">
+      <span class="region-flag" aria-hidden="true">🌿</span>
+      <span class="region-name">Goiás</span>
+      <span class="region-uf">GO</span>
+    </a>
+
+    <a href="/trilhas/rio-grande-do-sul/" class="region-link" data-event="click_region_rs">
+      <span class="region-flag" aria-hidden="true">🏔️</span>
+      <span class="region-name">Rio Grande do Sul</span>
+      <span class="region-uf">RS</span>
+    </a>
+
+    <a href="/trilhas/santa-catarina/" class="region-link" data-event="click_region_sc">
+      <span class="region-flag" aria-hidden="true">🌊</span>
+      <span class="region-name">Santa Catarina</span>
+      <span class="region-uf">SC</span>
+    </a>
+
+    <a href="/trilhas/ceara/" class="region-link" data-event="click_region_ce">
+      <span class="region-flag" aria-hidden="true">🏜️</span>
+      <span class="region-name">Ceará</span>
+      <span class="region-uf">CE</span>
+    </a>
+
+    <a href="/trilhas/roraima/" class="region-link" data-event="click_region_rr">
+      <span class="region-flag" aria-hidden="true">🪨</span>
+      <span class="region-name">Roraima</span>
+      <span class="region-uf">RR</span>
+    </a>
+
+  </div>
+</div>
+</section>
+
+</main>
+
+<!-- ── SEÇÃO 6: CTA Final ── -->
+<section class="cta-section" aria-labelledby="cta-heading">
+<div class="container">
+  <h2 id="cta-heading">Pronto para a sua próxima trilha?</h2>
+  <p>Mais de 500 trilhas catalogadas, guias em todo o Brasil e conteúdo editorial feito por quem vive a montanha. Comece agora a planejar sua próxima aventura — é grátis, sem cadastro e sem complicação.</p>
+  <div class="cta-actions">
+    <a href="/trilhas" class="btn btn--white btn--lg" data-event="click_cta_explore_trails">Explorar trilhas</a>
+    <a href="/guias" class="btn btn--ghost btn--lg" data-event="click_cta_find_guides">Encontrar guias</a>
+  </div>
+</div>
+</section>
+
+<!-- ── Footer ── -->
+<footer class="site-footer">
+<div class="container">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <p class="footer-logo">Trekko</p>
+      <p class="footer-tagline">A plataforma para quem vive a trilha.<br>Descubra, planeje e conecte-se com guias.</p>
+      <p class="footer-email"><a href="mailto:contato@trekko.com.br">contato@trekko.com.br</a></p>
+    </div>
+    <div class="footer-col">
+      <h4>Trilhas</h4>
+      <ul>
+        <li><a href="/trilhas/sao-paulo">São Paulo</a></li>
+        <li><a href="/trilhas/rio-de-janeiro">Rio de Janeiro</a></li>
+        <li><a href="/trilhas/minas-gerais">Minas Gerais</a></li>
+        <li><a href="/trilhas/para-iniciantes">Para iniciantes</a></li>
+        <li><a href="/trilhas/com-guia">Com guia</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Trekko</h4>
+      <ul>
+        <li><a href="/sobre">Sobre o Trekko</a></li>
+        <li><a href="/contato">Contato</a></li>
+        <li><a href="/guias/ativar-perfil">Ativar perfil de guia</a></li>
+        <li><a href="/seguranca-em-trilhas">Segurança em trilhas</a></li>
+        <li><a href="/blog">Blog</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="/privacidade">Política de Privacidade</a></li>
+        <li><a href="/termos-de-uso">Termos de Uso</a></li>
+        <li><a href="/politica-de-guias">Política de Guias</a></li>
+        <li><a href="/politica-editorial">Política Editorial</a></li>
+        <li><a href="/remocao-ou-atualizacao-de-dados">Remoção ou atualização de dados</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Trekko. Todos os direitos reservados.</p>
+    <div class="footer-social">
+      <a href="https://www.instagram.com/trekko.com.br/" target="_blank" rel="noopener noreferrer" aria-label="Siga o Trekko no Instagram">
+        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd"/></svg>
+        @trekko.com.br
+      </a>
+      <a href="https://www.tiktok.com/@trekko.com.br" target="_blank" rel="noopener noreferrer" aria-label="Siga o Trekko no TikTok">
+        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+        @trekko.com.br
+      </a>
+    </div>
+  </div>
+</div>
+</footer>
+
+<!-- ── LGPD Cookie Consent Banner ── -->
+<div id="trekko-consent-overlay" aria-hidden="true"></div>
+<div id="trekko-consent-wrap">
+  <div id="trekko-consent-banner" role="dialog" aria-modal="true" aria-label="Preferências de privacidade e cookies">
+    <div id="trekko-consent-inner">
+      <div class="trekko-consent-text">
+        <strong>Sua privacidade importa</strong>
+        <p>Usamos cookies para analytics e personalização de anúncios, em conformidade com a <a href="/privacidade" target="_blank" rel="noopener">LGPD</a>. Você tem controle total sobre suas preferências.</p>
+      </div>
+      <div class="trekko-consent-btns">
+        <button id="trekko-btn-custom" type="button">Personalizar</button>
+        <button id="trekko-btn-reject" type="button">Recusar não essenciais</button>
+        <button id="trekko-btn-accept" type="button">Aceitar todos</button>
+      </div>
+    </div>
+  </div>
+  <div id="trekko-consent-settings" role="dialog" aria-modal="true" aria-label="Configurar cookies">
+    <h3>Configurar cookies</h3>
+    <div class="trekko-pref-row">
+      <div class="trekko-pref-info">
+        <strong>Essenciais</strong>
+        <p>Necessários para o funcionamento do site. Não podem ser desativados.</p>
+      </div>
+      <span class="trekko-always-on" aria-label="Sempre ativo">Sempre ativo</span>
+    </div>
+    <div class="trekko-pref-row">
+      <div class="trekko-pref-info">
+        <strong>Analytics (GA4)</strong>
+        <p>Dados anônimos sobre uso do site para melhorarmos a experiência.</p>
+      </div>
+      <label class="trekko-toggle" aria-label="Ativar Analytics">
+        <input type="checkbox" id="trekko-chk-analytics">
+        <span class="trekko-slider"></span>
+      </label>
+    </div>
+    <div class="trekko-pref-row">
+      <div class="trekko-pref-info">
+        <strong>Publicidade (Google Ads)</strong>
+        <p>Permitem exibir anúncios relevantes e medir conversões de campanhas.</p>
+      </div>
+      <label class="trekko-toggle" aria-label="Ativar Publicidade">
+        <input type="checkbox" id="trekko-chk-ads">
+        <span class="trekko-slider"></span>
+      </label>
+    </div>
+    <div class="trekko-settings-btns">
+      <button id="trekko-btn-back" type="button">← Voltar</button>
+      <button id="trekko-btn-save" type="button">Salvar preferências</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){var h=document.getElementById('site-header');if(!h)return;window.addEventListener('scroll',function(){h.classList.toggle('scrolled',window.scrollY>10);},{passive:true});})();
+
+window.addEventListener('load',function(){
+  if(window.TrekkoAnalytics)window.TrekkoAnalytics.trackPageView({page_path:'/',page_type:'homepage',content_group:'home'});
+  window.dataLayer=window.dataLayer||[];
+  window.dataLayer.push({event:'view_homepage',page_path:'/',page_type:'homepage'});
+});
+
+document.addEventListener('click',function(e){
+  var el=e.target.closest('[data-event]');
+  if(el){var ev=el.getAttribute('data-event');window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:ev,cta_text:el.textContent.trim().substring(0,80),page_path:'/'});}
+});
+
+(function(){
+  var consent=window.TrekkoConsent;
+  if(!consent||consent.has())return;
+  var overlay=document.getElementById('trekko-consent-overlay');
+  var banner=document.getElementById('trekko-consent-banner');
+  var settings=document.getElementById('trekko-consent-settings');
+  var chkAnalytics=document.getElementById('trekko-chk-analytics');
+  var chkAds=document.getElementById('trekko-chk-ads');
+  function showBanner(){banner.style.display='block';overlay.style.display='none';settings.style.display='none';}
+  function showSettings(){chkAnalytics.checked=true;chkAds.checked=true;banner.style.display='none';settings.style.display='block';overlay.style.display='block';}
+  function applyAndClose(a,d){if(typeof window._trekkoApplyConsent==='function')window._trekkoApplyConsent(a,d);banner.style.display='none';settings.style.display='none';overlay.style.display='none';}
+  document.getElementById('trekko-btn-accept').addEventListener('click',function(){applyAndClose(true,true);});
+  document.getElementById('trekko-btn-reject').addEventListener('click',function(){applyAndClose(false,false);});
+  document.getElementById('trekko-btn-custom').addEventListener('click',showSettings);
+  document.getElementById('trekko-btn-back').addEventListener('click',showBanner);
+  document.getElementById('trekko-btn-save').addEventListener('click',function(){applyAndClose(chkAnalytics.checked,chkAds.checked);});
+  setTimeout(showBanner,600);
+})();
+</script>
+</body>
 </html>
