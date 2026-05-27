@@ -465,48 +465,16 @@
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
-  <url>
-    <loc>https://trekko.com.br/equipamentos/lanternas</loc>
-    <lastmod>2026-05-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
+  <!-- DEV-04: /equipamentos/lanternas removida (prateleira vazia); readicionar quando RED-01 for concluída -->
   <url>
     <loc>https://trekko.com.br/equipamentos/bastoes-de-caminhada</loc>
     <lastmod>2026-05-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
-    <loc>https://trekko.com.br/equipamentos/hidratacao</loc>
-    <lastmod>2026-05-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/equipamentos/camping</loc>
-    <lastmod>2026-05-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/equipamentos/seguranca</loc>
-    <lastmod>2026-05-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/equipamentos/pets-outdoor</loc>
-    <lastmod>2026-05-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/equipamentos/ofertas</loc>
-    <lastmod>2026-05-01</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.85</priority>
-  </url>
+  <!-- DEV-04: URLs abaixo removidas (prateleira vazia); readicionar quando RED-01 for concluída:
+       /equipamentos/hidratacao, /equipamentos/camping, /equipamentos/seguranca,
+       /equipamentos/pets-outdoor, /equipamentos/ofertas -->
   <url>
     <loc>https://trekko.com.br/equipamentos/guias</loc>
     <lastmod>2026-05-01</lastmod>
@@ -677,12 +645,7 @@
       <news:title>Trekking com Cachorro: Tudo que Você Precisa Saber Antes de Ir</news:title>
     </news:news>
   </url>
-  <url>
-    <loc>https://trekko.com.br/equipamentos/primeiros-socorros</loc>
-    <lastmod>2026-05-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.90</priority>
-  </url>
+  <!-- DEV-04: /equipamentos/primeiros-socorros removida (prateleira vazia); readicionar quando RED-01 for concluída -->
   <url>
     <loc>https://trekko.com.br/equipamentos/guias/kit-primeiros-socorros-para-trilha</loc>
     <lastmod>2026-05-12</lastmod>
