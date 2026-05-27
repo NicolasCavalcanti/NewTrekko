@@ -2,6 +2,19 @@
 <html lang="en">
 
   <head>
+    <!-- Redirect .html URLs to canonical clean URLs (fixes duplicate indexing on Google) -->
+    <script>
+      (function(){
+        var path = window.location.pathname;
+        if (path.endsWith('.html')) {
+          var cleanPath = path.replace(/\.html$/, '');
+          window.location.replace(
+            window.location.origin + cleanPath + window.location.search + window.location.hash
+          );
+        }
+      })();
+    </script>
+
     <!-- Google AdSense account verification (script injected conditionally by AdSenseLoader) -->
     <meta name="google-adsense-account" content="ca-pub-2482023752745520">
 
