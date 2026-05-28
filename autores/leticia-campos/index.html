@@ -26,6 +26,7 @@
     "jobTitle": "Ecóloga e Guia de Ecoturismo",
     "description": "Ecóloga formada pela Universidade de Brasília com especialização em biomas do Brasil Central, Letícia é guia de ecoturismo certificada e pesquisadora voluntária do Instituto Chico Mendes de Conservação da Biodiversidade (ICMBio). Acompanha grupos na Chapada dos Veadeiros há 8 anos com foco em interpretação ambiental e turismo de baixo impacto.",
     "url": "https://trekko.com.br/autores/leticia-campos",
+    "image": "https://trekko.com.br/images/autores/leticia-campos-avatar.jpg",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Alto Paraíso de Goiás",
@@ -80,7 +81,7 @@
 
     .hero { background: linear-gradient(135deg, #14532d, #166534); padding: 3rem 1.5rem; }
     .hero-inner { max-width: 860px; margin: 0 auto; display: flex; align-items: center; gap: 2rem; }
-    .avatar { width: 96px; height: 96px; border-radius: 50%; background: #15803d; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 700; flex-shrink: 0; border: 3px solid #86efac; }
+    .avatar { width: 96px; height: 96px; border-radius: 50%; background: #15803d; color: #fff; object-fit: cover; flex-shrink: 0; border: 3px solid #86efac; }
     .hero-text h1 { font-family: 'Sora', sans-serif; color: #fff; font-size: 1.75rem; font-weight: 700; margin-bottom: .25rem; }
     .hero-text .role { color: #86efac; font-size: 1rem; font-weight: 500; margin-bottom: .5rem; }
     .hero-text .location { color: #bbf7d0; font-size: .875rem; }
@@ -116,7 +117,7 @@
 
     @media (max-width: 600px) {
       .hero-inner { flex-direction: column; text-align: center; }
-      .avatar { width: 72px; height: 72px; font-size: 1.5rem; }
+      .avatar { width: 72px; height: 72px; }
       .hero-text h1 { font-size: 1.4rem; }
     }
   </style>
@@ -133,7 +134,7 @@
 
 <div class="hero">
   <div class="hero-inner">
-    <div class="avatar" aria-hidden="true">LC</div>
+    <img src="/images/autores/leticia-campos-avatar.jpg" alt="Foto de Letícia Campos" class="avatar" width="96" height="96" loading="eager" decoding="async">
     <div class="hero-text">
       <h1>Letícia Campos</h1>
       <p class="role">Ecóloga e Guia de Ecoturismo</p>
