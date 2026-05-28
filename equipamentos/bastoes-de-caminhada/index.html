@@ -118,6 +118,31 @@
     .faq-item.open .faq-icon{transform:rotate(45deg)}
     .faq-a{display:none;padding:0 18px 14px;color:#374151;font-size:.88rem;line-height:1.65}
     .faq-item.open .faq-a{display:block}
+
+    /* Product shelf */
+    .product-shelf{margin-bottom:32px}
+    .shelf-header{margin-bottom:20px}
+    .shelf-header h2{font-family:'Sora',sans-serif;font-size:1.25rem;font-weight:700;color:var(--text);margin-bottom:6px}
+    .shelf-header p{color:var(--text-muted);font-size:.85rem}
+    .product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:16px}
+    .product-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;transition:box-shadow .15s,transform .15s}
+    .product-card:hover{box-shadow:0 6px 24px rgba(0,0,0,.1);transform:translateY(-2px)}
+    .product-img-wrap{width:100%;height:150px;background:var(--forest-bg);display:flex;align-items:center;justify-content:center;font-size:2.8rem}
+    .product-body{padding:14px;display:flex;flex-direction:column;flex:1}
+    .product-badge{display:inline-block;background:var(--forest-bg);color:var(--forest-dark);font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:999px;margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em}
+    .product-badge.destaque{background:#fef3c7;color:#92400e}
+    .product-name{font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:5px;line-height:1.35}
+    .product-desc{color:var(--text-muted);font-size:.75rem;line-height:1.5;margin-bottom:10px;flex:1}
+    .product-rating{display:flex;align-items:center;gap:4px;margin-bottom:8px}
+    .stars{color:#f59e0b;font-size:.82rem;letter-spacing:-.5px}
+    .rating-score{font-weight:700;font-size:.78rem}
+    .rating-count{font-size:.72rem;color:var(--text-muted)}
+    .product-price{margin-bottom:12px}
+    .price-de{font-size:.75rem;color:var(--text-muted);text-decoration:line-through;display:block}
+    .price{font-size:1rem;font-weight:700;color:var(--forest-dark)}
+    .btn-buy{display:block;background:var(--forest);color:#fff;text-align:center;padding:9px;border-radius:8px;font-size:.8rem;font-weight:600;text-decoration:none;transition:background .15s}
+    .btn-buy:hover{background:var(--forest-dark);text-decoration:none}
+    .shelf-note{font-size:.75rem;color:var(--text-muted);background:var(--earth-light);border:1px solid #e8d5a0;border-radius:8px;padding:10px 14px;margin-top:20px}
   </style>
 
   <script type="application/ld+json">
@@ -218,14 +243,71 @@
 <div class="container">
   <div class="page-layout">
     <main>
-      <!-- Empty state -->
-      <div class="empty-state">
-        <div class="empty-icon">🔍</div>
-        <h3>Curadoria em preparação</h3>
-        <p>Nossa equipe está selecionando e testando os melhores <strong>bastões de caminhada</strong> para trilha. Em breve você encontrará aqui recomendações confiáveis, com análises reais e comparativos detalhados.</p>
-        <p class="empty-sub">Enquanto isso, explore nossos guias e dicas de planejamento de trilhas.</p>
-        <a href="/blog" class="btn-primary">Ver guias e dicas</a>
-      </div>
+      <!-- Product shelf -->
+      <section class="product-shelf">
+        <div class="shelf-header">
+          <h2>Bastões Recomendados pela Equipe Trekko</h2>
+          <p>Do alumínio de entrada ao carbono ultralight — bastões testados em trilhas reais.</p>
+        </div>
+        <div class="product-grid">
+          <article class="product-card">
+            <div class="product-img-wrap">🥢</div>
+            <div class="product-body">
+              <span class="product-badge destaque">Destaque editorial</span>
+              <h3 class="product-name">Black Diamond Trail Ergo Cork</h3>
+              <p class="product-desc">Cabo de cortiça anatômico e ajuste FlickLock — o bastão mais completo para uso cotidiano.</p>
+              <div class="product-rating"><span class="stars">★★★★★</span><span class="rating-score">4.7</span><span class="rating-count">(289)</span></div>
+              <div class="product-price"><span class="price-de">R$ 699,00</span><span class="price">R$ 599,00</span></div>
+              <a href="https://www.amazon.com.br/s?k=Black+Diamond+Trail+Ergo+Cork&tag=trekko-20" class="btn-buy" rel="nofollow sponsored" target="_blank">Ver na Amazon →</a>
+            </div>
+          </article>
+          <article class="product-card">
+            <div class="product-img-wrap">🥢</div>
+            <div class="product-body">
+              <span class="product-badge">Para viagens</span>
+              <h3 class="product-name">Leki Cressida FX.One</h3>
+              <p class="product-desc">Alumínio dobrável em 3 seções, sistema SpeedLock 2 — compacto para voos.</p>
+              <div class="product-rating"><span class="stars">★★★★★</span><span class="rating-score">4.6</span><span class="rating-count">(156)</span></div>
+              <div class="product-price"><span class="price">R$ 899,00</span></div>
+              <a href="https://www.amazon.com.br/s?k=Leki+Cressida+FX.One&tag=trekko-20" class="btn-buy" rel="nofollow sponsored" target="_blank">Ver na Amazon →</a>
+            </div>
+          </article>
+          <article class="product-card">
+            <div class="product-img-wrap">🥢</div>
+            <div class="product-body">
+              <span class="product-badge">Ultralight</span>
+              <h3 class="product-name">Black Diamond Distance Carbon Z</h3>
+              <p class="product-desc">Carbono dobrável ultra leve (140 g/par) — a escolha de corredores de montanha.</p>
+              <div class="product-rating"><span class="stars">★★★★★</span><span class="rating-score">4.8</span><span class="rating-count">(201)</span></div>
+              <div class="product-price"><span class="price">R$ 1.299,00</span></div>
+              <a href="https://www.amazon.com.br/s?k=Black+Diamond+Distance+Carbon+Z&tag=trekko-20" class="btn-buy" rel="nofollow sponsored" target="_blank">Ver na Amazon →</a>
+            </div>
+          </article>
+          <article class="product-card">
+            <div class="product-img-wrap">🥢</div>
+            <div class="product-body">
+              <span class="product-badge">Melhor custo-benefício</span>
+              <h3 class="product-name">Forclaz MT100 Carbon</h3>
+              <p class="product-desc">Carbono com ajuste telescópico — leveza sem gastar muito.</p>
+              <div class="product-rating"><span class="stars">★★★★½</span><span class="rating-score">4.5</span><span class="rating-count">(748)</span></div>
+              <div class="product-price"><span class="price-de">R$ 299,99</span><span class="price">R$ 249,99</span></div>
+              <a href="https://www.amazon.com.br/s?k=Forclaz+MT100+Carbon&tag=trekko-20" class="btn-buy" rel="nofollow sponsored" target="_blank">Ver na Amazon →</a>
+            </div>
+          </article>
+          <article class="product-card">
+            <div class="product-img-wrap">🥢</div>
+            <div class="product-body">
+              <span class="product-badge">Inverno e neve</span>
+              <h3 class="product-name">MSR DynaLock Ascent Carbon</h3>
+              <p class="product-desc">Ajuste de comprimento em campo sem remover luvas — destaque para nevados.</p>
+              <div class="product-rating"><span class="stars">★★★★★</span><span class="rating-score">4.7</span><span class="rating-count">(112)</span></div>
+              <div class="product-price"><span class="price">R$ 849,00</span></div>
+              <a href="https://www.amazon.com.br/s?k=MSR+DynaLock+Ascent+Carbon&tag=trekko-20" class="btn-buy" rel="nofollow sponsored" target="_blank">Ver na Amazon →</a>
+            </div>
+          </article>
+        </div>
+        <p class="shelf-note">⚡ Links afiliados: ao comprar pelos links acima, o Trekko recebe uma comissão sem custo extra para você. Isso mantém o conteúdo gratuito e independente.</p>
+      </section>
 
       <!-- Editorial article -->
       <div class="article-card" style="margin-top:32px">
