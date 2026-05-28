@@ -104,7 +104,7 @@
     <meta charset="UTF-8" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+      content="width=device-width, initial-scale=1.0" />
     <title>Trekko</title>
     <!-- Favicons - Google requires minimum 48x48px, recommends larger -->
     <link rel="icon" href="/favicon-48x48.png" type="image/png" sizes="48x48" />
@@ -132,7 +132,7 @@
       (function(){var p=window.location.pathname,nx=["/guias","/trilhas","/component-showcase"],np=["/guia/","/expedicao/"];if(nx.indexOf(p)!==-1||np.some(function(x){return p===x||p.startsWith(x)})){var m=document.createElement("meta");m.name="robots";m.content="noindex, nofollow, nosnippet, max-snippet:0, noarchive";document.head.appendChild(m);}})();
     </script>
     <!-- Trekko centralized analytics helper (must load before the React bundle) -->
-    <script src="/assets/trekko-analytics.js"></script>
+    <script defer src="/assets/trekko-analytics.js"></script>
     <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
 {"@type":"Organization","@id":"https://trekko.com.br/#organization","name":"Trekko","url":"https://trekko.com.br","logo":{"@type":"ImageObject","url":"https://trekko.com.br/images/trekko_logo_horizontal_color_transparent.png","width":1024,"height":1024},"description":"Plataforma de trilhas e guias outdoor certificados no Brasil. Encontre trilhas por estado, dificuldade e características.","contactPoint":{"@type":"ContactPoint","contactType":"customer support","email":"contato@trekko.com.br","url":"https://trekko.com.br/contato"},"areaServed":{"@type":"Country","name":"Brasil","identifier":"BR"}},

@@ -256,14 +256,16 @@ ANALYTICS_BLOCK = (
     "<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}"
     "gtag('js',new Date());gtag('config','G-S816P190VN',"
     "{send_page_view:!(window.TREKKO_CONFIG&&window.TREKKO_CONFIG.GTM_ID)});</script>\n"
-    "<script src=\"/assets/trekko-analytics.js\"></script>"
+    "<script defer src=\"/assets/trekko-analytics.js\"></script>"
 )
 
 FONTS_BLOCK = (
     '<link rel="preconnect" href="https://fonts.googleapis.com">\n'
     '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
-    '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700'
-    '&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">'
+    '<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700'
+    '&family=Sora:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel=\'stylesheet\'">\n'
+    '<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700'
+    '&family=Sora:wght@400;500;600;700&display=swap"></noscript>'
 )
 
 FAVICONS_BLOCK = (
