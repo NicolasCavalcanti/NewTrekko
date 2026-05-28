@@ -27,6 +27,11 @@ Allow: /trilhas/parques/
 
 # Explicit block for AdSense crawler (AdsBot ignores wildcard on some configs)
 User-agent: AdsBot-Google
+Allow: /trilha/
+Allow: /trilhas/
+Allow: /equipamentos/
+Allow: /sobre
+Allow: /contato
 Allow: /blog/
 Disallow: /guia/
 Allow: /guias/ativar-perfil
@@ -34,6 +39,11 @@ Disallow: /guias
 Disallow: /expedicao/
 
 User-agent: AdsBot-Google-Mobile
+Allow: /trilha/
+Allow: /trilhas/
+Allow: /equipamentos/
+Allow: /sobre
+Allow: /contato
 Allow: /blog/
 Disallow: /guia/
 Allow: /guias/ativar-perfil
@@ -41,6 +51,11 @@ Disallow: /guias
 Disallow: /expedicao/
 
 User-agent: Mediapartners-Google
+Allow: /trilha/
+Allow: /trilhas/
+Allow: /equipamentos/
+Allow: /sobre
+Allow: /contato
 Allow: /blog/
 Disallow: /guia/
 Allow: /guias/ativar-perfil
