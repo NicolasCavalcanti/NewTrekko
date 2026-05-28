@@ -573,7 +573,7 @@ def build_slug_page(t, redirect_script):
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-S816P190VN"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','G-S816P190VN',{{send_page_view:!(window.TREKKO_CONFIG&&window.TREKKO_CONFIG.GTM_ID)}});</script>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
   <meta name="description" content="{desc}" />
   <link rel="canonical" href="{canonical}" />
@@ -593,9 +593,10 @@ def build_slug_page(t, redirect_script):
   <link rel="manifest" href="/site.webmanifest" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap" /></noscript>
   <script type="application/ld+json">{jsonld}</script>
-  <script src="/assets/trekko-analytics.js"></script>
+  <script defer src="/assets/trekko-analytics.js"></script>
 {EDITORIAL_CSS}
   {redirect_script}
   <script type="module" crossorigin src="/assets/index-DSKK19TW.js"></script>
@@ -632,7 +633,7 @@ def build_numeric_page(t):
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-S816P190VN"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','G-S816P190VN',{{send_page_view:!(window.TREKKO_CONFIG&&window.TREKKO_CONFIG.GTM_ID)}});</script>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
   <meta name="description" content="{t['shortDescription']}" />
   <link rel="canonical" href="{canonical_slug}" />
@@ -652,8 +653,9 @@ def build_numeric_page(t):
   <link rel="manifest" href="/site.webmanifest" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <script src="/assets/trekko-analytics.js"></script>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap" /></noscript>
+  <script defer src="/assets/trekko-analytics.js"></script>
   <script type="module" crossorigin src="/assets/index-DSKK19TW.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/react-vendor-DViTTRkQ.js">
   <link rel="modulepreload" crossorigin href="/assets/radix-ui-D-C9zAgG.js">
