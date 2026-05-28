@@ -26,6 +26,7 @@
     "jobTitle": "Guia de Turismo CADASTUR — Expedições Amazônicas",
     "description": "Guia de turismo certificado com 12 anos de experiência em expedições pela região amazônica e ao Monte Roraima. Já conduziu mais de 40 grupos ao tepui e é referência em turismo sustentável com comunidades indígenas da região de Uiramutã (RR).",
     "url": "https://trekko.com.br/autores/marcos-rodrigues",
+    "image": "https://trekko.com.br/images/autores/marcos-rodrigues-avatar.jpg",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Boa Vista",
@@ -75,7 +76,7 @@
 
     .hero { background: linear-gradient(135deg, #14532d, #166534); padding: 3rem 1.5rem; }
     .hero-inner { max-width: 860px; margin: 0 auto; display: flex; align-items: center; gap: 2rem; }
-    .avatar { width: 96px; height: 96px; border-radius: 50%; background: #15803d; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 700; flex-shrink: 0; border: 3px solid #86efac; }
+    .avatar { width: 96px; height: 96px; border-radius: 50%; background: #15803d; color: #fff; object-fit: cover; flex-shrink: 0; border: 3px solid #86efac; }
     .hero-text h1 { font-family: 'Sora', sans-serif; color: #fff; font-size: 1.75rem; font-weight: 700; margin-bottom: .25rem; }
     .hero-text .role { color: #86efac; font-size: 1rem; font-weight: 500; margin-bottom: .5rem; }
     .hero-text .location { color: #bbf7d0; font-size: .875rem; }
@@ -111,7 +112,7 @@
 
     @media (max-width: 600px) {
       .hero-inner { flex-direction: column; text-align: center; }
-      .avatar { width: 72px; height: 72px; font-size: 1.5rem; }
+      .avatar { width: 72px; height: 72px; }
       .hero-text h1 { font-size: 1.4rem; }
     }
   </style>
@@ -128,7 +129,7 @@
 
 <div class="hero">
   <div class="hero-inner">
-    <div class="avatar" aria-hidden="true">MR</div>
+    <img src="/images/autores/marcos-rodrigues-avatar.jpg" alt="Foto de Marcos Rodrigues" class="avatar" width="96" height="96" loading="eager" decoding="async">
     <div class="hero-text">
       <h1>Marcos Rodrigues</h1>
       <p class="role">Guia de Turismo CADASTUR | Expedições Amazônicas</p>
