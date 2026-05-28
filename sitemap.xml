@@ -455,25 +455,36 @@
   </url>
   <url>
     <loc>https://trekko.com.br/equipamentos/mochilas</loc>
-    <lastmod>2026-05-01</lastmod>
+    <lastmod>2026-05-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://trekko.com.br/equipamentos/botas-e-tenis</loc>
-    <lastmod>2026-05-01</lastmod>
+    <lastmod>2026-05-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
-  <!-- DEV-04: /equipamentos/lanternas removida (prateleira vazia); readicionar quando RED-01 for concluída -->
+  <url>
+    <loc>https://trekko.com.br/equipamentos/lanternas</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
   <url>
     <loc>https://trekko.com.br/equipamentos/bastoes-de-caminhada</loc>
-    <lastmod>2026-05-01</lastmod>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://trekko.com.br/equipamentos/hidratacao</loc>
+    <lastmod>2026-05-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <!-- DEV-04: URLs abaixo removidas (prateleira vazia); readicionar quando RED-01 for concluída:
-       /equipamentos/hidratacao, /equipamentos/camping, /equipamentos/seguranca,
+       /equipamentos/camping, /equipamentos/seguranca,
        /equipamentos/pets-outdoor, /equipamentos/ofertas -->
   <url>
     <loc>https://trekko.com.br/equipamentos/guias</loc>
