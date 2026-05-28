@@ -1,0 +1,3 @@
+# Redirect trailing slashes to canonical URLs (301 permanent)
+# Applies to all paths except the root homepage /
+/*/ /:splat 301!
