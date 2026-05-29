@@ -1,3 +1,27 @@
+# Redirects 301 das URLs numéricas de trilha para slugs canônicos
+/trilha/1    /trilha/monte-roraima    301
+/trilha/2    /trilha/travessia-petropolis-teresopolis    301
+/trilha/3    /trilha/vale-da-lua-e-cachoeiras    301
+/trilha/4    /trilha/pedra-do-bau    301
+/trilha/5    /trilha/pico-da-bandeira    301
+/trilha/6    /trilha/canion-itaimbezinho    301
+/trilha/7    /trilha/trilha-das-praias-rosa-norte-sul    301
+/trilha/8    /trilha/travessia-serra-fina    301
+/trilha/9    /trilha/lencois-de-paracuru    301
+/trilha/10   /trilha/circuito-5-lagos-pedra-do-altar    301
+/trilha/11   /trilha/morro-do-pai-inacio    301
+/trilha/12   /trilha/cachoeira-da-fumaca    301
+/trilha/13   /trilha/travessia-lencois-maranhenses    301
+/trilha/14   /trilha/morro-dois-irmaos    301
+/trilha/15   /trilha/fernando-de-noronha-baia-do-sancho    301
+/trilha/16   /trilha/canion-fortaleza    301
+/trilha/17   /trilha/pedra-do-sino    301
+/trilha/18   /trilha/chapada-dos-guimaraes-circuito-cachoeiras    301
+/trilha/19   /trilha/pico-das-agulhas-negras    301
+/trilha/20   /trilha/travessia-vale-do-pati    301
+/trilha/21   /trilha/trilha-cotovelo-vertice-itaimbezinho-cambara-do-sul-rs    301
+/trilha/40   /trilha/pico-parana-serra-do-ibitiraquire    301
+
 # Redirect trailing slashes to canonical URLs (301 permanent)
 # Applies to all paths except the root homepage /
 /*/ /:splat 301!
