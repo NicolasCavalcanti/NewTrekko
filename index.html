@@ -330,7 +330,81 @@
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
 
-    <div id="root"></div>
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         CONTEÚDO ESTÁTICO PRÉ-RENDERIZADO — visível para crawlers sem JS
+         React (ReactDOM.createRoot) substitui todo o conteúdo interno de #root
+         ao montar o bundle. Usuários com JS veem a SPA normalmente.
+         Usuários/crawlers sem JS (AdSense Mediapartners-Google) veem o HTML.
+         NÃO remova: necessário para indexação pelo AdSense e Google Search.
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <div id="root"><main id="trekko-static-content" aria-label="Conteúdo principal da Trekko">
+
+      <h1>Trekko — Trilhas e Guias Outdoor no Brasil</h1>
+
+      <p>A Trekko é a plataforma brasileira dedicada a conectar aventureiros às melhores trilhas do país e aos guias outdoor certificados pelo Ministério do Turismo via CADASTUR. Seja você um iniciante buscando a primeira caminhada na natureza ou um trekker experiente planejando uma expedição de múltiplos dias, a Trekko oferece as ferramentas, o conteúdo e a comunidade que você precisa para explorar o Brasil com segurança e consciência ambiental.</p>
+
+      <p>Com mais de 500 trilhas catalogadas em todos os biomas brasileiros — Mata Atlântica, Cerrado, Amazônia, Caatinga, Pampa e Pantanal — a Trekko é o maior acervo digital de rotas de trekking do país. Cada trilha conta com ficha técnica detalhada: distância total, desnível acumulado, grau de dificuldade, época ideal para visita, fauna e flora de destaque, pontos de água e abrigos, e orientações de segurança específicas para o terreno.</p>
+
+      <h2>Encontre Trilhas por Todo o Brasil</h2>
+
+      <p>Do Pico da Neblina no Amazonas às Aparados da Serra no Rio Grande do Sul, a Trekko mapeia trilhas em todos os 26 estados e no Distrito Federal. Nossa base de dados cobre desde caminhadas de meio dia em parques urbanos até travessias técnicas de 10 dias em parques nacionais remotos. Você pode filtrar rotas por estado, nível de dificuldade (fácil, moderado, difícil, técnico), comprimento, tipo de terreno e requisito de guia obrigatório.</p>
+
+      <p>Entre os destinos mais procurados pelos usuários da Trekko estão o Parque Nacional da Chapada Diamantina na Bahia, com trilhas icônicas como a Cachoeira da Fumaça e o Vale do Pati; o Parque Nacional de Itatiaia no Rio de Janeiro e Minas Gerais, porta de entrada para o Pico das Agulhas Negras; a Chapada dos Veadeiros em Goiás, com suas cachoeiras e campos rupestres; e a Serra do Cipó em Minas Gerais, paraíso de biodiversidade e waterfalls no Cerrado.</p>
+
+      <h2>Guias Certificados CADASTUR: Sua Segurança em Primeiro Lugar</h2>
+
+      <p>A Trekko acredita que a experiência nas trilhas é incomparavelmente melhor — e muito mais segura — quando acompanhada de um guia profissional certificado. Por isso, nossa rede conta com mais de 200 guias de turismo especializados em atividades outdoor, todos com registro ativo no CADASTUR, o Cadastro de Prestadores de Serviços Turísticos do Governo Federal.</p>
+
+      <p>Além da certificação obrigatória, os guias da Trekko passam por um processo de curadoria que avalia: anos de experiência nas rotas que conduzem, formação em primeiros socorros e wilderness medicine, conhecimento de flora e fauna locais, avaliações de usuários verificados e comprometimento com as boas práticas de Leave No Trace (Não Deixe Rastros). Cada perfil de guia exibe o número CADASTUR, especializações, regiões de atuação e agenda de disponibilidade.</p>
+
+      <p>Para trilhas em áreas de proteção integral e em rotas de alto risco, a lei brasileira exige a presença de guia habilitado. A Trekko facilita esse processo: você encontra o guia ideal, entra em contato diretamente e garante sua vaga em expedições regulares ou agenda um serviço exclusivo para seu grupo.</p>
+
+      <h2>Expedições e Eventos de Trekking</h2>
+
+      <p>Além do catálogo de trilhas e guias, a Trekko reúne a agenda de expedições coletivas organizadas por guias parceiros. São saídas regulares para destinos como o Caminho do Ouro em Paraty, a Travessia Petrópolis–Teresópolis, o Cânion Fortaleza em Santa Catarina, o Monte Roraima na tríplice fronteira Brasil–Venezuela–Guiana e muitos outros roteiros exclusivos que você não encontra em agências convencionais.</p>
+
+      <p>Participar de uma expedição coletiva oferece vantagens claras: custo dividido, a segurança de um grupo, o prazer de fazer novas amizades com pessoas que compartilham o mesmo amor pela natureza, e a certeza de que toda a logística — transporte, alimentação, equipamentos coletivos e pernoites — já foi planejada pelo guia. Ideal para quem viaja sozinho ou não quer se preocupar com a organização de uma viagem técnica.</p>
+
+      <h2>Conteúdo Editorial: Aprenda Antes de Sair</h2>
+
+      <p>O Blog da Trekko publica semanalmente artigos educativos e inspiradores sobre o universo outdoor brasileiro. Nossa equipe editorial cobre temas como: como escolher as botas certas para diferentes tipos de trilha; dicas de alimentação para trekking de longa distância; guia completo para trilhas com crianças; como se preparar fisicamente para trilhas de altitude; flora e fauna ameaçadas que você pode observar nos parques nacionais; impacto do ecoturismo e boas práticas ambientais; e entrevistas com guias e aventureiros de destaque.</p>
+
+      <p>Também mantemos guias completos de equipamentos, com resenhas imparciais de mochilas, tendas, sleeping bags, bastões, filtros de água e vestuário técnico. Nosso objetivo é ajudar você a montar um kit adequado ao seu perfil e orçamento, sem exageros nem falta de itens essenciais para a sua segurança.</p>
+
+      <h2>Segurança nas Trilhas: Informação que Salva Vidas</h2>
+
+      <p>A Trekko mantém uma seção dedicada à segurança em trilhas, com protocolos de emergência, lista de equipamentos obrigatórios por nível de dificuldade, orientações sobre hipotermia, insolação e desidratação, e guias de identificação de riscos como abelhas, cobras e plantas urticantes presentes nos diferentes biomas brasileiros.</p>
+
+      <p>Acreditamos que informação preventiva é o melhor equipamento de segurança que um trilheiro pode ter. Por isso, todo o conteúdo de segurança da Trekko é gratuito, revisado por profissionais de medicina de wilderness e atualizado regularmente com base nos incidentes registrados nos parques nacionais brasileiros.</p>
+
+      <h2>Para Guias e Operadoras de Turismo</h2>
+
+      <p>Se você é guia de turismo certificado pelo CADASTUR ou opera um negócio de ecoturismo, a Trekko oferece um espaço gratuito para divulgar seu trabalho para milhares de aventureiros ativos em nossa plataforma. Crie seu perfil, liste suas expedições, compartilhe sua agenda e receba mensagens diretamente de clientes qualificados que já estão planejando sua próxima aventura.</p>
+
+      <p>Nossa plataforma não cobra comissão sobre as vendas: o contato entre guia e cliente é direto, preservando a autonomia dos profissionais e garantindo a melhor relação custo-benefício para os aventureiros. Junte-se a mais de 200 guias que já usam a Trekko para crescer seu negócio de turismo outdoor.</p>
+
+      <h2>Explore o Brasil que Poucos Conhecem</h2>
+
+      <p>O Brasil tem mais de 8,5 milhões de km² de território, com uma diversidade geográfica e biológica sem paralelo no mundo. Temos a maior floresta tropical do planeta, o maior cerrado, a maior área úmida continental, serras milenares, praias paradisíacas, cânions esculpidos por milênios de erosão e cachoeiras que figuram entre as mais altas do mundo. E a maior parte desse patrimônio natural está acessível por trilhas — você só precisa saber onde procurar.</p>
+
+      <p>A Trekko nasceu com a missão de democratizar o acesso ao trekking no Brasil, tornando mais fácil para qualquer pessoa — independente de experiência prévia ou orçamento — planejar uma aventura segura, responsável e inesquecível na natureza brasileira. Explore nosso catálogo de trilhas, conheça nossos guias e comece hoje mesmo a planejar sua próxima expedição.</p>
+
+      <nav aria-label="Navegação rápida para trilhas e conteúdo">
+        <ul>
+          <li><a href="/trilhas">Ver todas as trilhas do Brasil</a></li>
+          <li><a href="/guias">Encontrar guias certificados CADASTUR</a></li>
+          <li><a href="/blog">Ler artigos sobre trekking e natureza</a></li>
+          <li><a href="/seguranca-em-trilhas">Guia de segurança em trilhas</a></li>
+          <li><a href="/equipamentos">Dicas de equipamentos para trilhas</a></li>
+          <li><a href="/trilhas?estado=BA">Trilhas na Bahia — Chapada Diamantina</a></li>
+          <li><a href="/trilhas?estado=RJ">Trilhas no Rio de Janeiro — Serra dos Órgãos e Itatiaia</a></li>
+          <li><a href="/trilhas?estado=MG">Trilhas em Minas Gerais — Serra do Cipó e Ibitipoca</a></li>
+          <li><a href="/trilhas?estado=SC">Trilhas em Santa Catarina — Cânions e Serra Catarinense</a></li>
+          <li><a href="/trilhas?estado=GO">Trilhas em Goiás — Chapada dos Veadeiros</a></li>
+        </ul>
+      </nav>
+
+    </main></div>
 
     <!-- ═══════════════════════════════════════════════════════════════════════
          LGPD COOKIE CONSENT BANNER — markup
