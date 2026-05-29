@@ -15,6 +15,26 @@ jobs:
           echo "zone_id=609ad498e4f2043864d25384832d9d15" >> $GITHUB_OUTPUT
           echo "Zone: trekko.com.br (609ad498e4f2043864d25384832d9d15)"
 
+      - name: Verify token permissions
+        env:
+          CF_TOKEN: ${{ secrets.CF_API_TOKEN }}
+        run: |
+          VERIFY=$(curl -s "https://api.cloudflare.com/client/v4/user/tokens/verify" \
+            -H "Authorization: Bearer $CF_TOKEN")
+          echo "Token verify: $(echo "$VERIFY" | jq -r '.result.status // .errors[0].message')"
+
+      - name: List existing Page Rules
+        env:
+          CF_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          ZONE_ID: ${{ steps.zone.outputs.zone_id }}
+        run: |
+          EXISTING=$(curl -s \
+            "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/pagerules?status=active" \
+            -H "Authorization: Bearer $CF_TOKEN")
+          COUNT=$(echo "$EXISTING" | jq '.result | length')
+          echo "Existing active page rules: $COUNT"
+          echo "$EXISTING" | jq -r '.result[]? | "  - [\(.id)] \(.targets[0].constraint.value) → \(.actions[0].value.url // .actions[0].id)"'
+
       - name: Create Page Rule — /path/ → /path (301)
         env:
           CF_TOKEN: ${{ secrets.CF_API_TOKEN }}
@@ -43,14 +63,19 @@ jobs:
                   }
                 }
               ],
+              "priority": 1,
               "status": "active"
             }')
 
-          echo "Page Rule response: $(echo "$RESPONSE" | jq -r '.success')"
+          echo "success: $(echo "$RESPONSE" | jq -r '.success')"
           SUCCESS=$(echo "$RESPONSE" | jq -r '.success')
           if [ "$SUCCESS" != "true" ]; then
-            echo "ERROR: Failed to create Page Rule"
+            echo "--- errors ---"
             echo "$RESPONSE" | jq '.errors'
+            echo "--- messages ---"
+            echo "$RESPONSE" | jq '.messages'
+            echo "--- full response ---"
+            echo "$RESPONSE" | jq '.'
             exit 1
           fi
           RULE_ID=$(echo "$RESPONSE" | jq -r '.result.id')
