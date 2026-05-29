@@ -15,44 +15,44 @@ jobs:
           echo "zone_id=609ad498e4f2043864d25384832d9d15" >> $GITHUB_OUTPUT
           echo "Zone: trekko.com.br (609ad498e4f2043864d25384832d9d15)"
 
-      - name: Create Redirect Rule — /path/ → /path (301)
+      - name: Create Page Rule — /path/ → /path (301)
         env:
           CF_TOKEN: ${{ secrets.CF_API_TOKEN }}
           ZONE_ID: ${{ steps.zone.outputs.zone_id }}
         run: |
-          RESPONSE=$(curl -s -X PUT \
-            "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/rulesets/phases/http_request_dynamic_redirect/entrypoint" \
+          RESPONSE=$(curl -s -X POST \
+            "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/pagerules" \
             -H "Authorization: Bearer $CF_TOKEN" \
             -H "Content-Type: application/json" \
             -d '{
-              "name": "Redirect Rules Entrypoint",
-              "description": "Redirect trailing slashes to canonical URLs",
-              "rules": [
+              "targets": [
                 {
-                  "description": "Remove trailing slash — 301",
-                  "expression": "ends_with(http.request.uri.path, \"/\") and http.request.uri.path != \"/\"",
-                  "action": "redirect",
-                  "action_parameters": {
-                    "from_value": {
-                      "status_code": 301,
-                      "target_url": {
-                        "expression": "concat(\"https://\", http.host, substring(http.request.uri.path, 0, len(http.request.uri.path) - 1))"
-                      },
-                      "preserve_query_string": true
-                    }
+                  "target": "url",
+                  "constraint": {
+                    "operator": "matches",
+                    "value": "*trekko.com.br/*/"
                   }
                 }
-              ]
+              ],
+              "actions": [
+                {
+                  "id": "forwarding_url",
+                  "value": {
+                    "url": "https://trekko.com.br/$2",
+                    "status_code": 301
+                  }
+                }
+              ],
+              "status": "active"
             }')
 
-          echo "Ruleset response success: $(echo "$RESPONSE" | jq -r '.success')"
+          echo "Page Rule response: $(echo "$RESPONSE" | jq -r '.success')"
           SUCCESS=$(echo "$RESPONSE" | jq -r '.success')
           if [ "$SUCCESS" != "true" ]; then
-            echo "ERROR: Failed to create redirect rule"
+            echo "ERROR: Failed to create Page Rule"
             echo "$RESPONSE" | jq '.errors'
             exit 1
           fi
-          RULE_ID=$(echo "$RESPONSE" | jq -r '.result.rules[0].id')
-          echo "Redirect rule active. ID: $RULE_ID"
-          echo ""
-          echo "Rule: ends_with(path, '/') AND path != '/' → 301 to same path without trailing slash"
+          RULE_ID=$(echo "$RESPONSE" | jq -r '.result.id')
+          echo "Page Rule active. ID: $RULE_ID"
+          echo "Rule: *trekko.com.br/*/ → 301 → https://trekko.com.br/\$2"
