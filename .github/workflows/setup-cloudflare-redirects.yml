@@ -1,4 +1,4 @@
-name: Setup Cloudflare Trailing Slash Redirects
+name: Remove Cloudflare Trailing Slash Page Rule
 
 on:
   push:
@@ -6,65 +6,38 @@ on:
       - claude/optimistic-bohr-z8CKE
 
 jobs:
-  configure-cloudflare:
+  remove-cloudflare-rule:
     runs-on: ubuntu-latest
     steps:
-      - name: Set Zone ID (trekko.com.br)
-        id: zone
-        run: |
-          echo "zone_id=609ad498e4f2043864d25384832d9d15" >> $GITHUB_OUTPUT
-
-      - name: Upsert Page Rule — *trekko.com.br/*/ → 301 → /path
+      - name: Delete Page Rule *trekko.com.br/*/
         env:
           CF_TOKEN: ${{ secrets.CF_API_TOKEN }}
-          ZONE_ID: ${{ steps.zone.outputs.zone_id }}
+          ZONE_ID: 609ad498e4f2043864d25384832d9d15
         run: |
-          PATTERN="*trekko.com.br/*/"
-
-          RULE_BODY='{
-            "targets": [{"target":"url","constraint":{"operator":"matches","value":"*trekko.com.br/*/"}}],
-            "actions": [{"id":"forwarding_url","value":{"url":"https://trekko.com.br/$2","status_code":301}}],
-            "priority": 1,
-            "status": "active"
-          }'
-
-          # Find existing rule with same pattern
+          # Find the rule with pattern *trekko.com.br/*/
           EXISTING=$(curl -s \
-            "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/pagerules?status=active" \
+            "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/pagerules" \
             -H "Authorization: Bearer $CF_TOKEN")
 
-          EXISTING_ID=$(echo "$EXISTING" | jq -r \
+          RULE_ID=$(echo "$EXISTING" | jq -r \
             '.result[]? | select(.targets[0].constraint.value == "*trekko.com.br/*/") | .id' | head -1)
 
-          if [ -n "$EXISTING_ID" ] && [ "$EXISTING_ID" != "null" ]; then
-            echo "Rule already exists (ID: $EXISTING_ID). Updating..."
-            RESPONSE=$(curl -s -X PUT \
-              "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/pagerules/${EXISTING_ID}" \
-              -H "Authorization: Bearer $CF_TOKEN" \
-              -H "Content-Type: application/json" \
-              -d "$RULE_BODY")
-          else
-            echo "No existing rule found. Creating..."
-            RESPONSE=$(curl -s -X POST \
-              "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/pagerules" \
-              -H "Authorization: Bearer $CF_TOKEN" \
-              -H "Content-Type: application/json" \
-              -d "$RULE_BODY")
+          if [ -z "$RULE_ID" ] || [ "$RULE_ID" = "null" ]; then
+            echo "No matching Page Rule found — nothing to delete."
+            echo "$EXISTING" | jq -r '.result[]? | "  existing: [\(.id)] \(.targets[0].constraint.value)"'
+            exit 0
           fi
 
-          SUCCESS=$(echo "$RESPONSE" | jq -r '.success')
-          RULE_ID=$(echo "$RESPONSE" | jq -r '.result.id')
-          RULE_URL=$(echo "$RESPONSE" | jq -r '.result.actions[0].value.url')
-          RULE_STATUS=$(echo "$RESPONSE" | jq -r '.result.status')
+          echo "Found rule ID: $RULE_ID — deleting..."
+          DEL=$(curl -s -X DELETE \
+            "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/pagerules/${RULE_ID}" \
+            -H "Authorization: Bearer $CF_TOKEN")
 
-          if [ "$SUCCESS" != "true" ]; then
-            echo "FAILED:"
-            echo "$RESPONSE" | jq '{errors, messages}'
+          SUCCESS=$(echo "$DEL" | jq -r '.success')
+          if [ "$SUCCESS" = "true" ]; then
+            echo "Page Rule deleted successfully. Redirect loop removed."
+          else
+            echo "Delete failed:"
+            echo "$DEL" | jq '.'
             exit 1
           fi
-
-          echo "Page Rule active."
-          echo "  ID     : $RULE_ID"
-          echo "  Status : $RULE_STATUS"
-          echo "  Pattern: $PATTERN"
-          echo "  Dest   : $RULE_URL (301)"
