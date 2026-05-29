@@ -13,71 +13,58 @@ jobs:
         id: zone
         run: |
           echo "zone_id=609ad498e4f2043864d25384832d9d15" >> $GITHUB_OUTPUT
-          echo "Zone: trekko.com.br (609ad498e4f2043864d25384832d9d15)"
 
-      - name: Verify token permissions
-        env:
-          CF_TOKEN: ${{ secrets.CF_API_TOKEN }}
-        run: |
-          VERIFY=$(curl -s "https://api.cloudflare.com/client/v4/user/tokens/verify" \
-            -H "Authorization: Bearer $CF_TOKEN")
-          echo "Token verify: $(echo "$VERIFY" | jq -r '.result.status // .errors[0].message')"
-
-      - name: List existing Page Rules
+      - name: Upsert Page Rule — *trekko.com.br/*/ → 301 → /path
         env:
           CF_TOKEN: ${{ secrets.CF_API_TOKEN }}
           ZONE_ID: ${{ steps.zone.outputs.zone_id }}
         run: |
+          PATTERN="*trekko.com.br/*/"
+
+          RULE_BODY='{
+            "targets": [{"target":"url","constraint":{"operator":"matches","value":"*trekko.com.br/*/"}}],
+            "actions": [{"id":"forwarding_url","value":{"url":"https://trekko.com.br/$2","status_code":301}}],
+            "priority": 1,
+            "status": "active"
+          }'
+
+          # Find existing rule with same pattern
           EXISTING=$(curl -s \
             "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/pagerules?status=active" \
             -H "Authorization: Bearer $CF_TOKEN")
-          COUNT=$(echo "$EXISTING" | jq '.result | length')
-          echo "Existing active page rules: $COUNT"
-          echo "$EXISTING" | jq -r '.result[]? | "  - [\(.id)] \(.targets[0].constraint.value) → \(.actions[0].value.url // .actions[0].id)"'
 
-      - name: Create Page Rule — /path/ → /path (301)
-        env:
-          CF_TOKEN: ${{ secrets.CF_API_TOKEN }}
-          ZONE_ID: ${{ steps.zone.outputs.zone_id }}
-        run: |
-          RESPONSE=$(curl -s -X POST \
-            "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/pagerules" \
-            -H "Authorization: Bearer $CF_TOKEN" \
-            -H "Content-Type: application/json" \
-            -d '{
-              "targets": [
-                {
-                  "target": "url",
-                  "constraint": {
-                    "operator": "matches",
-                    "value": "*trekko.com.br/*/"
-                  }
-                }
-              ],
-              "actions": [
-                {
-                  "id": "forwarding_url",
-                  "value": {
-                    "url": "https://trekko.com.br/$2",
-                    "status_code": 301
-                  }
-                }
-              ],
-              "priority": 1,
-              "status": "active"
-            }')
+          EXISTING_ID=$(echo "$EXISTING" | jq -r \
+            '.result[]? | select(.targets[0].constraint.value == "*trekko.com.br/*/") | .id' | head -1)
 
-          echo "success: $(echo "$RESPONSE" | jq -r '.success')"
+          if [ -n "$EXISTING_ID" ] && [ "$EXISTING_ID" != "null" ]; then
+            echo "Rule already exists (ID: $EXISTING_ID). Updating..."
+            RESPONSE=$(curl -s -X PUT \
+              "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/pagerules/${EXISTING_ID}" \
+              -H "Authorization: Bearer $CF_TOKEN" \
+              -H "Content-Type: application/json" \
+              -d "$RULE_BODY")
+          else
+            echo "No existing rule found. Creating..."
+            RESPONSE=$(curl -s -X POST \
+              "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/pagerules" \
+              -H "Authorization: Bearer $CF_TOKEN" \
+              -H "Content-Type: application/json" \
+              -d "$RULE_BODY")
+          fi
+
           SUCCESS=$(echo "$RESPONSE" | jq -r '.success')
+          RULE_ID=$(echo "$RESPONSE" | jq -r '.result.id')
+          RULE_URL=$(echo "$RESPONSE" | jq -r '.result.actions[0].value.url')
+          RULE_STATUS=$(echo "$RESPONSE" | jq -r '.result.status')
+
           if [ "$SUCCESS" != "true" ]; then
-            echo "--- errors ---"
-            echo "$RESPONSE" | jq '.errors'
-            echo "--- messages ---"
-            echo "$RESPONSE" | jq '.messages'
-            echo "--- full response ---"
-            echo "$RESPONSE" | jq '.'
+            echo "FAILED:"
+            echo "$RESPONSE" | jq '{errors, messages}'
             exit 1
           fi
-          RULE_ID=$(echo "$RESPONSE" | jq -r '.result.id')
-          echo "Page Rule active. ID: $RULE_ID"
-          echo "Rule: *trekko.com.br/*/ → 301 → https://trekko.com.br/\$2"
+
+          echo "Page Rule active."
+          echo "  ID     : $RULE_ID"
+          echo "  Status : $RULE_STATUS"
+          echo "  Pattern: $PATTERN"
+          echo "  Dest   : $RULE_URL (301)"
