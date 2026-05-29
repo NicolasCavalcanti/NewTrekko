@@ -8,7 +8,6 @@
   ],
   "rewrites": [
     { "source": "/trilhas", "destination": "/index.html" },
-    { "source": "/sobre", "destination": "/index.html" },
     { "source": "/blog", "destination": "/index.html" }
   ],
   "cleanUrls": true,
