@@ -6,7 +6,6 @@ Disallow: /admin
 Disallow: /api/
 Disallow: /guia/
 Allow: /guias/ativar-perfil
-Disallow: /guias
 Disallow: /expedicao/
 Disallow: /component-showcase
 
@@ -35,7 +34,6 @@ Allow: /contato
 Allow: /blog/
 Disallow: /guia/
 Allow: /guias/ativar-perfil
-Disallow: /guias
 Disallow: /expedicao/
 
 User-agent: AdsBot-Google-Mobile
@@ -47,7 +45,6 @@ Allow: /contato
 Allow: /blog/
 Disallow: /guia/
 Allow: /guias/ativar-perfil
-Disallow: /guias
 Disallow: /expedicao/
 
 User-agent: Mediapartners-Google
@@ -59,7 +56,6 @@ Allow: /contato
 Allow: /blog/
 Disallow: /guia/
 Allow: /guias/ativar-perfil
-Disallow: /guias
 Disallow: /expedicao/
 
 Sitemap: https://trekko.com.br/sitemap.xml
