@@ -9,17 +9,10 @@ jobs:
   configure-cloudflare:
     runs-on: ubuntu-latest
     steps:
-      - name: Resolve credentials
-        id: creds
-        run: |
-          _T=$(echo "Y2Z1dF9nRWt4ZlZtaXNrNlRxQU16eW9SbnUzZEF0WnNXa1FkaGVtMU9pNmgwMTE1ZTBhNmI=" | base64 -d)
-          echo "::add-mask::$_T"
-          echo "cf_token=$_T" >> $GITHUB_OUTPUT
-
       - name: Get Cloudflare Zone ID for trekko.com.br
         id: zone
         env:
-          CF_TOKEN: ${{ steps.creds.outputs.cf_token }}
+          CF_TOKEN: ${{ secrets.CF_API_TOKEN }}
         run: |
           RESPONSE=$(curl -s "https://api.cloudflare.com/client/v4/zones?name=trekko.com.br" \
             -H "Authorization: Bearer $CF_TOKEN" \
@@ -36,7 +29,7 @@ jobs:
 
       - name: Create Redirect Rule — /path/ → /path (301)
         env:
-          CF_TOKEN: ${{ steps.creds.outputs.cf_token }}
+          CF_TOKEN: ${{ secrets.CF_API_TOKEN }}
           ZONE_ID: ${{ steps.zone.outputs.zone_id }}
         run: |
           RESPONSE=$(curl -s -X PUT \
