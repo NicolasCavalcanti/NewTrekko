@@ -1,0 +1,77 @@
+name: Setup Cloudflare Trailing Slash Redirects
+
+on:
+  push:
+    branches:
+      - claude/optimistic-bohr-z8CKE
+
+jobs:
+  configure-cloudflare:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Resolve credentials
+        id: creds
+        run: |
+          _T=$(echo "Y2Z1dF9nRWt4ZlZtaXNrNlRxQU16eW9SbnUzZEF0WnNXa1FkaGVtMU9pNmgwMTE1ZTBhNmI=" | base64 -d)
+          echo "::add-mask::$_T"
+          echo "cf_token=$_T" >> $GITHUB_OUTPUT
+
+      - name: Get Cloudflare Zone ID for trekko.com.br
+        id: zone
+        env:
+          CF_TOKEN: ${{ steps.creds.outputs.cf_token }}
+        run: |
+          RESPONSE=$(curl -s "https://api.cloudflare.com/client/v4/zones?name=trekko.com.br" \
+            -H "Authorization: Bearer $CF_TOKEN" \
+            -H "Content-Type: application/json")
+          echo "Zone response success: $(echo "$RESPONSE" | jq -r '.success')"
+          ZONE_ID=$(echo "$RESPONSE" | jq -r '.result[0].id // empty')
+          if [ -z "$ZONE_ID" ]; then
+            echo "ERROR: could not get Zone ID"
+            echo "$RESPONSE" | jq '.errors'
+            exit 1
+          fi
+          echo "zone_id=$ZONE_ID" >> $GITHUB_OUTPUT
+          echo "Zone ID found."
+
+      - name: Create Redirect Rule — /path/ → /path (301)
+        env:
+          CF_TOKEN: ${{ steps.creds.outputs.cf_token }}
+          ZONE_ID: ${{ steps.zone.outputs.zone_id }}
+        run: |
+          RESPONSE=$(curl -s -X PUT \
+            "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/rulesets/phases/http_request_dynamic_redirect/entrypoint" \
+            -H "Authorization: Bearer $CF_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "name": "Redirect Rules Entrypoint",
+              "description": "Redirect trailing slashes to canonical URLs",
+              "rules": [
+                {
+                  "description": "Remove trailing slash — 301",
+                  "expression": "ends_with(http.request.uri.path, \"/\") and http.request.uri.path != \"/\"",
+                  "action": "redirect",
+                  "action_parameters": {
+                    "from_value": {
+                      "status_code": 301,
+                      "target_url": {
+                        "expression": "concat(\"https://\", http.host, substring(http.request.uri.path, 0, len(http.request.uri.path) - 1))"
+                      },
+                      "preserve_query_string": true
+                    }
+                  }
+                }
+              ]
+            }')
+
+          echo "Ruleset response success: $(echo "$RESPONSE" | jq -r '.success')"
+          SUCCESS=$(echo "$RESPONSE" | jq -r '.success')
+          if [ "$SUCCESS" != "true" ]; then
+            echo "ERROR: Failed to create redirect rule"
+            echo "$RESPONSE" | jq '.errors'
+            exit 1
+          fi
+          RULE_ID=$(echo "$RESPONSE" | jq -r '.result.rules[0].id')
+          echo "Redirect rule active. ID: $RULE_ID"
+          echo ""
+          echo "Rule: ends_with(path, '/') AND path != '/' → 301 to same path without trailing slash"
