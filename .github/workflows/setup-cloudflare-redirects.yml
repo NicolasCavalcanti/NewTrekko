@@ -9,39 +9,11 @@ jobs:
   configure-cloudflare:
     runs-on: ubuntu-latest
     steps:
-      - name: Get Cloudflare Zone ID for trekko.com.br
+      - name: Set Zone ID (trekko.com.br)
         id: zone
-        env:
-          CF_TOKEN: ${{ secrets.CF_API_TOKEN }}
         run: |
-          # List all zones to diagnose which domains are in this account
-          ALL_ZONES=$(curl -s "https://api.cloudflare.com/client/v4/zones?per_page=50" \
-            -H "Authorization: Bearer $CF_TOKEN" \
-            -H "Content-Type: application/json")
-          echo "All zones in account:"
-          echo "$ALL_ZONES" | jq -r '.result[] | "\(.id) \(.name) (\(.status))"' 2>/dev/null || echo "(none or error)"
-
-          # Try exact match on trekko.com.br
-          RESPONSE=$(curl -s "https://api.cloudflare.com/client/v4/zones?name=trekko.com.br" \
-            -H "Authorization: Bearer $CF_TOKEN" \
-            -H "Content-Type: application/json")
-          ZONE_ID=$(echo "$RESPONSE" | jq -r '.result[0].id // empty')
-
-          # Fallback: try www.trekko.com.br or any zone containing trekko
-          if [ -z "$ZONE_ID" ]; then
-            ZONE_ID=$(echo "$ALL_ZONES" | jq -r '.result[] | select(.name | contains("trekko")) | .id' | head -1)
-            ZONE_NAME=$(echo "$ALL_ZONES" | jq -r '.result[] | select(.name | contains("trekko")) | .name' | head -1)
-            if [ -n "$ZONE_ID" ]; then
-              echo "Found zone via fallback: $ZONE_NAME ($ZONE_ID)"
-            fi
-          fi
-
-          if [ -z "$ZONE_ID" ]; then
-            echo "ERROR: trekko.com.br zone not found. Check the zones listed above."
-            exit 1
-          fi
-          echo "zone_id=$ZONE_ID" >> $GITHUB_OUTPUT
-          echo "Zone ID: $ZONE_ID"
+          echo "zone_id=609ad498e4f2043864d25384832d9d15" >> $GITHUB_OUTPUT
+          echo "Zone: trekko.com.br (609ad498e4f2043864d25384832d9d15)"
 
       - name: Create Redirect Rule — /path/ → /path (301)
         env:
