@@ -1,5 +1,8 @@
 {
   "redirects": [
+    { "source": "/trilhas", "destination": "/", "permanent": true },
+    { "source": "/sobre", "destination": "/", "permanent": true },
+    { "source": "/blog", "destination": "/", "permanent": true },
     {
       "source": "/:path+/",
       "destination": "/:path+",
