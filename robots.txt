@@ -1,61 +1,34 @@
 User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /dashboard/
 Disallow: /perfil
 Disallow: /checkout
 Disallow: /reservas
-Disallow: /admin
-Disallow: /api/
 Disallow: /guia/
-Allow: /guias/
 Disallow: /expedicao/
 Disallow: /component-showcase
 
-# Blog — fully crawlable editorial content
-Allow: /blog/
-
-# Local intent landing pages — explicitly allowed for indexing
-Allow: /trilhas/roraima
-Allow: /trilhas/goias
-Allow: /trilhas/rio-grande-do-sul
-Allow: /trilhas/santa-catarina
-Allow: /trilhas/ceara
-Allow: /trilhas/moderado
-Allow: /trilhas/dificil
-Allow: /trilhas/especialista
-Allow: /trilhas/cidades/
-Allow: /trilhas/parques/
-
-# Explicit block for AdSense crawler (AdsBot ignores wildcard on some configs)
-User-agent: AdsBot-Google
-Allow: /trilha/
-Allow: /trilhas/
-Allow: /equipamentos/
-Allow: /sobre
-Allow: /contato
-Allow: /blog/
-Allow: /guias/
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /dashboard/
+Disallow: /perfil
+Disallow: /checkout
+Disallow: /reservas
 Disallow: /guia/
 Disallow: /expedicao/
+Disallow: /component-showcase
+
+User-agent: AdsBot-Google
+Allow: /
 
 User-agent: AdsBot-Google-Mobile
-Allow: /trilha/
-Allow: /trilhas/
-Allow: /equipamentos/
-Allow: /sobre
-Allow: /contato
-Allow: /blog/
-Allow: /guias/
-Disallow: /guia/
-Disallow: /expedicao/
+Allow: /
 
 User-agent: Mediapartners-Google
-Allow: /trilha/
-Allow: /trilhas/
-Allow: /equipamentos/
-Allow: /sobre
-Allow: /contato
-Allow: /blog/
-Allow: /guias/
-Disallow: /guia/
-Disallow: /expedicao/
+Allow: /
 
-Sitemap: https://trekko.com.br/sitemap.xml
+Sitemap: https://www.trekko.com.br/sitemap.xml
