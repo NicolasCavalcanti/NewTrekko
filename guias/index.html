@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="pt-BR">
+
+  <head>
+    <!-- Google AdSense account verification -->
+    <meta name="google-adsense-account" content="ca-pub-2482023752745520">
+
+    <script>
+      window.TREKKO_CONFIG = {
+        GA4_ID: 'G-S816P190VN',
+        GTM_ID: null,
+        ADS_ID: 'AW-355784943'
+      };
+    </script>
+
+    <script>
+      (function () {
+        var KEY = 'trekko_lgpd_consent';
+        var stored = null;
+        try { var raw = localStorage.getItem(KEY); if (raw) stored = JSON.parse(raw); } catch (e) {}
+        window.TrekkoConsent = {
+          _state: stored,
+          has: function () { return !!this._state; },
+          analytics: function () { return !!(this._state && this._state.analytics); },
+          ads: function () { return !!(this._state && this._state.ads); },
+          save: function (analytics, ads) {
+            this._state = { analytics: !!analytics, ads: !!ads, ts: new Date().toISOString() };
+            try { localStorage.setItem(KEY, JSON.stringify(this._state)); } catch (e) {}
+          }
+        };
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { window.dataLayer.push(arguments); }
+        var analyticsStorage = stored && stored.analytics ? 'granted' : 'denied';
+        var adStorage        = stored && stored.ads       ? 'granted' : 'denied';
+        gtag('consent', 'default', {
+          analytics_storage:  analyticsStorage,
+          ad_storage:         adStorage,
+          ad_user_data:       adStorage,
+          ad_personalization: adStorage,
+          wait_for_update:    stored ? 0 : 2000
+        });
+        window._trekkoApplyConsent = function (analytics, ads) {
+          window.TrekkoConsent.save(analytics, ads);
+          if (typeof window.gtag === 'function') {
+            window.gtag('consent', 'update', {
+              analytics_storage:  analytics ? 'granted' : 'denied',
+              ad_storage:         ads       ? 'granted' : 'denied',
+              ad_user_data:       ads       ? 'granted' : 'denied',
+              ad_personalization: ads       ? 'granted' : 'denied'
+            });
+          }
+        };
+      })();
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-S816P190VN"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-S816P190VN', { send_page_view: true });
+    </script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guias de Trekking Certificados CADASTUR — Trekko</title>
+    <link rel="icon" href="/favicon-48x48.png" type="image/png" sizes="48x48" />
+    <link rel="icon" href="/android-chrome-192x192.png" type="image/png" sizes="192x192" />
+    <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <meta name="description" content="Encontre guias de trekking certificados CADASTUR em todo o Brasil. Guias locais, de trekking e de expedição com registro ativo no Ministério do Turismo." />
+    <meta name="keywords" content="guias CADASTUR, guias de trekking, guias outdoor, guia certificado, trekking Brasil, expedição, guia de turismo" />
+    <meta property="og:title" content="Guias de Trekking Certificados CADASTUR — Trekko" />
+    <meta property="og:description" content="Encontre guias de trekking certificados CADASTUR em todo o Brasil. Profissionais verificados com registro ativo no Ministério do Turismo." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://trekko.com.br/images/og-homepage.jpg" />
+    <link rel="canonical" href="https://trekko.com.br/guias" />
+    <link rel="alternate" hreflang="pt-BR" href="https://trekko.com.br/guias" />
+    <link rel="alternate" hreflang="x-default" href="https://trekko.com.br/guias" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <script defer src="/assets/trekko-analytics.js"></script>
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://trekko.com.br/#organization",
+      "name": "Trekko",
+      "url": "https://trekko.com.br"
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://trekko.com.br/guias",
+      "url": "https://trekko.com.br/guias",
+      "name": "Guias de Trekking Certificados CADASTUR",
+      "description": "Diretório de guias de trekking e turismo outdoor certificados pelo CADASTUR em todo o Brasil.",
+      "isPartOf": { "@id": "https://trekko.com.br/#website" },
+      "publisher": { "@id": "https://trekko.com.br/#organization" },
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Início", "item": "https://trekko.com.br" },
+          { "@type": "ListItem", "position": 2, "name": "Guias CADASTUR", "item": "https://trekko.com.br/guias" }
+        ]
+      }
+    }
+  ]
+}
+    </script>
+
+    <script type="module" crossorigin src="/assets/index-DSKK19TW.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/react-vendor-DViTTRkQ.js">
+    <link rel="modulepreload" crossorigin href="/assets/radix-ui-D-C9zAgG.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-CKkMVUOE.css">
+
+    <style>
+      /* LGPD Banner styles */
+      #trekko-consent-wrap *,
+      #trekko-consent-wrap *::before,
+      #trekko-consent-wrap *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      #trekko-consent-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 99998; display: none; }
+      #trekko-consent-wrap { position: fixed; bottom: 0; left: 0; right: 0; z-index: 99999; font-family: 'Inter', system-ui, sans-serif; font-size: 14px; line-height: 1.5; color: #1a1a19; }
+      #trekko-consent-banner { background: #fff; border-top: 3px solid #2D6A4F; box-shadow: 0 -4px 24px rgba(0,0,0,.12); padding: 20px 24px; display: none; }
+      #trekko-consent-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+      .trekko-consent-text { flex: 1 1 280px; }
+      .trekko-consent-text strong { font-size: 15px; color: #0d542b; display: block; margin-bottom: 4px; }
+      .trekko-consent-text p { color: #34322d; font-size: 13px; }
+      .trekko-consent-text a { color: #2D6A4F; text-decoration: underline; }
+      .trekko-consent-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+      .trekko-consent-btns button { padding: 10px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; }
+      #trekko-btn-accept { background: #2D6A4F; color: #fff; }
+      #trekko-btn-reject { background: transparent; color: #2D6A4F; border: 1px solid #2D6A4F !important; }
+      #trekko-btn-custom { background: transparent; color: #666; border: 1px solid #ccc !important; }
+      #trekko-consent-settings { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 3px solid #2D6A4F; padding: 24px; max-height: 80vh; overflow-y: auto; z-index: 99999; }
+      .trekko-pref-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
+      .trekko-pref-info { flex: 1; }
+      .trekko-pref-info strong { display: block; font-size: 14px; margin-bottom: 2px; }
+      .trekko-pref-info p { font-size: 12px; color: #666; }
+      .trekko-always-on { font-size: 12px; color: #2D6A4F; font-weight: 600; }
+      .trekko-toggle { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+      .trekko-toggle input { opacity: 0; width: 0; height: 0; }
+      .trekko-slider { position: absolute; inset: 0; background: #ccc; border-radius: 24px; cursor: pointer; transition: .2s; }
+      .trekko-slider::before { content: ''; position: absolute; width: 18px; height: 18px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: .2s; box-shadow: 0 1px 3px rgba(0,0,0,.2); }
+      .trekko-toggle input:checked + .trekko-slider { background: #2D6A4F; }
+      .trekko-toggle input:checked + .trekko-slider::before { transform: translateX(20px); }
+      .trekko-settings-btns { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+      #trekko-btn-save { background: #2D6A4F; color: #fff; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; padding: 10px 22px; cursor: pointer; }
+      #trekko-btn-back { background: transparent; color: #2D6A4F; border: 1px solid #2D6A4F; border-radius: 8px; font-size: 13px; font-weight: 600; padding: 10px 18px; cursor: pointer; }
+
+      /* Static page styles */
+      .static-page { font-family: 'Inter', system-ui, sans-serif; max-width: 900px; margin: 0 auto; padding: 24px 16px 80px; color: #1a1a19; line-height: 1.7; }
+      .static-page h1 { font-family: 'Sora', system-ui, sans-serif; font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 700; color: #0d542b; margin-bottom: 16px; }
+      .static-page h2 { font-family: 'Sora', system-ui, sans-serif; font-size: clamp(1.2rem, 3vw, 1.6rem); font-weight: 600; color: #1a5c3a; margin-top: 40px; margin-bottom: 12px; }
+      .static-page h3 { font-size: 1.1rem; font-weight: 600; color: #2D6A4F; margin-top: 28px; margin-bottom: 8px; }
+      .static-page p { margin-bottom: 14px; font-size: 1rem; }
+      .static-page a { color: #2D6A4F; text-decoration: underline; }
+      .static-page a:hover { color: #1a5c3a; }
+
+      .site-header { background: #fff; border-bottom: 2px solid #e8f5e9; padding: 12px 16px; }
+      .site-header-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+      .site-header a.logo { font-family: 'Sora', system-ui, sans-serif; font-size: 1.3rem; font-weight: 700; color: #0d542b; text-decoration: none; }
+      .site-header nav a { color: #2D6A4F; text-decoration: none; font-size: 0.9rem; margin-left: 16px; font-weight: 500; }
+      .site-header nav a:hover { text-decoration: underline; }
+
+      .breadcrumb { font-size: 0.85rem; color: #666; margin-bottom: 20px; }
+      .breadcrumb a { color: #2D6A4F; text-decoration: none; }
+      .breadcrumb a:hover { text-decoration: underline; }
+      .breadcrumb span { margin: 0 6px; }
+
+      .filter-bar { background: #f0f9f4; border: 1px solid #c8e6c9; border-radius: 10px; padding: 16px 20px; margin-bottom: 32px; }
+      .filter-bar h3 { font-size: 0.95rem; font-weight: 600; color: #1a5c3a; margin-bottom: 10px; }
+      .filter-bar ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+      .filter-bar ul li a { display: inline-block; background: #fff; border: 1px solid #2D6A4F; color: #2D6A4F; border-radius: 20px; padding: 4px 14px; font-size: 0.85rem; text-decoration: none; font-weight: 500; transition: background .15s, color .15s; }
+      .filter-bar ul li a:hover { background: #2D6A4F; color: #fff; }
+
+      .guides-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; margin-bottom: 40px; }
+      .guide-card { background: #fff; border: 1px solid #e0efe7; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(45,106,79,.07); transition: box-shadow .2s, transform .2s; }
+      .guide-card:hover { box-shadow: 0 4px 16px rgba(45,106,79,.15); transform: translateY(-2px); }
+      .guide-card-header { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+      .guide-avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #2D6A4F 0%, #52b788 100%); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 700; color: #fff; flex-shrink: 0; }
+      .guide-name { font-weight: 600; font-size: 1rem; color: #1a1a19; }
+      .guide-state { font-size: 0.82rem; color: #666; margin-top: 2px; }
+      .guide-tag { display: inline-block; background: #e8f5e9; color: #1a5c3a; border-radius: 6px; font-size: 0.78rem; font-weight: 500; padding: 2px 8px; margin-right: 4px; margin-bottom: 4px; }
+      .guide-tag.cadastur { background: #fff3e0; color: #e65100; }
+      .guide-specialties { margin-top: 8px; }
+      .guide-cta { display: inline-block; margin-top: 14px; background: #2D6A4F; color: #fff; border-radius: 8px; padding: 8px 16px; font-size: 0.85rem; font-weight: 600; text-decoration: none; transition: opacity .15s; }
+      .guide-cta:hover { opacity: .85; color: #fff; }
+
+      .cta-banner { background: linear-gradient(135deg, #2D6A4F 0%, #1a5c3a 100%); border-radius: 12px; padding: 28px 24px; text-align: center; color: #fff; margin-bottom: 40px; }
+      .cta-banner h2 { color: #fff; margin-top: 0; font-size: 1.3rem; }
+      .cta-banner p { color: rgba(255,255,255,.9); margin-bottom: 18px; }
+      .cta-banner a { display: inline-block; background: #fff; color: #2D6A4F; border-radius: 8px; padding: 10px 24px; font-weight: 700; text-decoration: none; font-size: 0.95rem; }
+
+      @media (max-width: 600px) {
+        .guides-grid { grid-template-columns: 1fr; }
+        .site-header nav { display: none; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="site-header">
+      <div class="site-header-inner">
+        <a href="/" class="logo">Trekko</a>
+        <nav aria-label="Menu principal">
+          <a href="/trilhas">Trilhas</a>
+          <a href="/guias">Guias</a>
+          <a href="/blog">Blog</a>
+          <a href="/equipamentos">Equipamentos</a>
+          <a href="/sobre">Sobre</a>
+        </nav>
+      </div>
+    </header>
+
+    <div id="root">
+      <main id="trekko-static-content" class="static-page" aria-label="Guias de trekking certificados CADASTUR">
+
+        <nav class="breadcrumb" aria-label="Caminho da página">
+          <a href="/">Início</a>
+          <span aria-hidden="true">›</span>
+          <span aria-current="page">Guias CADASTUR</span>
+        </nav>
+
+        <h1>Guias de Trekking Certificados CADASTUR no Brasil</h1>
+
+        <p>A Trekko reúne mais de 56 mil guias de turismo com registro ativo no CADASTUR — o Cadastro de Prestadores de Serviços Turísticos do Ministério do Turismo. Encontre guias locais, de trekking, de expedição e de ecoturismo em todos os estados brasileiros, verificados e prontos para conduzir você em segurança pelas melhores rotas do país.</p>
+
+        <!-- Filter by state -->
+        <div class="filter-bar" aria-label="Filtrar guias por estado">
+          <h3>Filtrar por estado</h3>
+          <ul>
+            <li><a href="/guias?estado=AM">Amazonas</a></li>
+            <li><a href="/guias?estado=BA">Bahia</a></li>
+            <li><a href="/guias?estado=CE">Ceará</a></li>
+            <li><a href="/guias?estado=ES">Espírito Santo</a></li>
+            <li><a href="/guias?estado=GO">Goiás</a></li>
+            <li><a href="/guias?estado=MG">Minas Gerais</a></li>
+            <li><a href="/guias?estado=MS">Mato Grosso do Sul</a></li>
+            <li><a href="/guias?estado=MT">Mato Grosso</a></li>
+            <li><a href="/guias?estado=PA">Pará</a></li>
+            <li><a href="/guias?estado=PR">Paraná</a></li>
+            <li><a href="/guias?estado=RJ">Rio de Janeiro</a></li>
+            <li><a href="/guias?estado=RN">Rio Grande do Norte</a></li>
+            <li><a href="/guias?estado=RO">Rondônia</a></li>
+            <li><a href="/guias?estado=RR">Roraima</a></li>
+            <li><a href="/guias?estado=RS">Rio Grande do Sul</a></li>
+            <li><a href="/guias?estado=SC">Santa Catarina</a></li>
+            <li><a href="/guias?estado=SP">São Paulo</a></li>
+            <li><a href="/guias?estado=TO">Tocantins</a></li>
+          </ul>
+        </div>
+
+        <h2>Guias em Destaque</h2>
+
+        <p>Conheça alguns dos guias CADASTUR verificados pela Trekko. Cada profissional passou pelo processo de curadoria da plataforma, com análise de anos de experiência, formação em primeiros socorros, avaliações de clientes verificados e conhecimento comprovado das rotas que conduzem.</p>
+
+        <section class="guides-grid" aria-label="Lista de guias em destaque">
+
+          <article class="guide-card">
+            <div class="guide-card-header">
+              <div class="guide-avatar" aria-hidden="true">CM</div>
+              <div>
+                <div class="guide-name">Carlos Mendes</div>
+                <div class="guide-state">Bahia — Chapada Diamantina</div>
+              </div>
+            </div>
+            <div class="guide-specialties">
+              <span class="guide-tag">Trekking de longa distância</span>
+              <span class="guide-tag">Cachoeiras</span>
+              <span class="guide-tag cadastur">CADASTUR ativo</span>
+            </div>
+            <p style="font-size:.85rem;color:#555;margin-top:10px;">14 anos conduzindo trilhas na Chapada Diamantina. Especialista na Cachoeira da Fumaça e Vale do Pati.</p>
+            <a class="guide-cta" href="/guias">Ver perfil</a>
+          </article>
+
+          <article class="guide-card">
+            <div class="guide-card-header">
+              <div class="guide-avatar" aria-hidden="true">AS</div>
+              <div>
+                <div class="guide-name">Ana Santos</div>
+                <div class="guide-state">Minas Gerais — Serra do Cipó</div>
+              </div>
+            </div>
+            <div class="guide-specialties">
+              <span class="guide-tag">Guia local</span>
+              <span class="guide-tag">Flora do Cerrado</span>
+              <span class="guide-tag cadastur">CADASTUR ativo</span>
+            </div>
+            <p style="font-size:.85rem;color:#555;margin-top:10px;">Bióloga e guia certificada. Conduz grupos na Serra do Cipó com foco em flora e fauna do Cerrado mineiro.</p>
+            <a class="guide-cta" href="/guias">Ver perfil</a>
+          </article>
+
+          <article class="guide-card">
+            <div class="guide-card-header">
+              <div class="guide-avatar" aria-hidden="true">RF</div>
+              <div>
+                <div class="guide-name">Ricardo Fonseca</div>
+                <div class="guide-state">Rio de Janeiro — Serra dos Órgãos</div>
+              </div>
+            </div>
+            <div class="guide-specialties">
+              <span class="guide-tag">Escalada</span>
+              <span class="guide-tag">Alta montanha</span>
+              <span class="guide-tag cadastur">CADASTUR ativo</span>
+            </div>
+            <p style="font-size:.85rem;color:#555;margin-top:10px;">Guia de montanha com formação técnica em alpinismo. Especialista na Travessia Petrópolis–Teresópolis e Pico do Papagaio.</p>
+            <a class="guide-cta" href="/guias">Ver perfil</a>
+          </article>
+
+          <article class="guide-card">
+            <div class="guide-card-header">
+              <div class="guide-avatar" aria-hidden="true">PL</div>
+              <div>
+                <div class="guide-name">Patrícia Lima</div>
+                <div class="guide-state">Santa Catarina — Serra Catarinense</div>
+              </div>
+            </div>
+            <div class="guide-specialties">
+              <span class="guide-tag">Expedição</span>
+              <span class="guide-tag">Cânions</span>
+              <span class="guide-tag cadastur">CADASTUR ativo</span>
+            </div>
+            <p style="font-size:.85rem;color:#555;margin-top:10px;">10 anos guiando nos cânions do sul do Brasil. Referência no Cânion Fortaleza e Cânion Itaimbezinho em SC e RS.</p>
+            <a class="guide-cta" href="/guias">Ver perfil</a>
+          </article>
+
+          <article class="guide-card">
+            <div class="guide-card-header">
+              <div class="guide-avatar" aria-hidden="true">JO</div>
+              <div>
+                <div class="guide-name">João Oliveira</div>
+                <div class="guide-state">Goiás — Chapada dos Veadeiros</div>
+              </div>
+            </div>
+            <div class="guide-specialties">
+              <span class="guide-tag">Ecoturismo</span>
+              <span class="guide-tag">Cerrado</span>
+              <span class="guide-tag cadastur">CADASTUR ativo</span>
+            </div>
+            <p style="font-size:.85rem;color:#555;margin-top:10px;">Natural de Alto Paraíso de Goiás, conduz visitantes nas cachoeiras e campos rupestres da Chapada dos Veadeiros há 12 anos.</p>
+            <a class="guide-cta" href="/guias">Ver perfil</a>
+          </article>
+
+          <article class="guide-card">
+            <div class="guide-card-header">
+              <div class="guide-avatar" aria-hidden="true">MR</div>
+              <div>
+                <div class="guide-name">Mariana Ribeiro</div>
+                <div class="guide-state">Amazonas — Manaus e entorno</div>
+              </div>
+            </div>
+            <div class="guide-specialties">
+              <span class="guide-tag">Amazônia</span>
+              <span class="guide-tag">Sobrevivência</span>
+              <span class="guide-tag cadastur">CADASTUR ativo</span>
+            </div>
+            <p style="font-size:.85rem;color:#555;margin-top:10px;">Guia bilíngue (PT/EN) especializada em ecoturismo amazônico. Conduz expedições ao Pico da Neblina e trilhas ribeirinhas.</p>
+            <a class="guide-cta" href="/guias">Ver perfil</a>
+          </article>
+
+          <article class="guide-card">
+            <div class="guide-card-header">
+              <div class="guide-avatar" aria-hidden="true">FP</div>
+              <div>
+                <div class="guide-name">Fernando Pereira</div>
+                <div class="guide-state">Rio Grande do Sul — Aparados da Serra</div>
+              </div>
+            </div>
+            <div class="guide-specialties">
+              <span class="guide-tag">Cânions</span>
+              <span class="guide-tag">Trekking moderado</span>
+              <span class="guide-tag cadastur">CADASTUR ativo</span>
+            </div>
+            <p style="font-size:.85rem;color:#555;margin-top:10px;">Especialista nos cânions gaúchos. Conduz grupos semanalmente no Itaimbezinho e Malacara com total segurança.</p>
+            <a class="guide-cta" href="/guias">Ver perfil</a>
+          </article>
+
+          <article class="guide-card">
+            <div class="guide-card-header">
+              <div class="guide-avatar" aria-hidden="true">LC</div>
+              <div>
+                <div class="guide-name">Luciana Costa</div>
+                <div class="guide-state">São Paulo — Vale do Ribeira</div>
+              </div>
+            </div>
+            <div class="guide-specialties">
+              <span class="guide-tag">Mata Atlântica</span>
+              <span class="guide-tag">Espeleologia</span>
+              <span class="guide-tag cadastur">CADASTUR ativo</span>
+            </div>
+            <p style="font-size:.85rem;color:#555;margin-top:10px;">Guia credenciada no PETAR e Parque Estadual do Alto Ribeira. Especialista em trilhas de cavernas e Mata Atlântica preservada.</p>
+            <a class="guide-cta" href="/guias">Ver perfil</a>
+          </article>
+
+          <article class="guide-card">
+            <div class="guide-card-header">
+              <div class="guide-avatar" aria-hidden="true">EA</div>
+              <div>
+                <div class="guide-name">Eduardo Alves</div>
+                <div class="guide-state">Paraná — Guarapuava e Campos Gerais</div>
+              </div>
+            </div>
+            <div class="guide-specialties">
+              <span class="guide-tag">Expedição</span>
+              <span class="guide-tag">Rapel</span>
+              <span class="guide-tag cadastur">CADASTUR ativo</span>
+            </div>
+            <p style="font-size:.85rem;color:#555;margin-top:10px;">8 anos de experiência nos Campos Gerais paranaenses. Guia no Parque Estadual de Vila Velha e Guartelá.</p>
+            <a class="guide-cta" href="/guias">Ver perfil</a>
+          </article>
+
+          <article class="guide-card">
+            <div class="guide-card-header">
+              <div class="guide-avatar" aria-hidden="true">SC</div>
+              <div>
+                <div class="guide-name">Sílvia Carvalho</div>
+                <div class="guide-state">Ceará — Chapada do Araripe</div>
+              </div>
+            </div>
+            <div class="guide-specialties">
+              <span class="guide-tag">Caatinga</span>
+              <span class="guide-tag">Patrimônio paleontológico</span>
+              <span class="guide-tag cadastur">CADASTUR ativo</span>
+            </div>
+            <p style="font-size:.85rem;color:#555;margin-top:10px;">Guia no Geopark Araripe — primeiro geoparque das Américas. Especialista em trilhas de paleontologia e geodiversidade da Caatinga.</p>
+            <a class="guide-cta" href="/guias">Ver perfil</a>
+          </article>
+
+          <article class="guide-card">
+            <div class="guide-card-header">
+              <div class="guide-avatar" aria-hidden="true">BN</div>
+              <div>
+                <div class="guide-name">Bruno Nascimento</div>
+                <div class="guide-state">Mato Grosso — Pantanal Norte</div>
+              </div>
+            </div>
+            <div class="guide-specialties">
+              <span class="guide-tag">Pantanal</span>
+              <span class="guide-tag">Observação de fauna</span>
+              <span class="guide-tag cadastur">CADASTUR ativo</span>
+            </div>
+            <p style="font-size:.85rem;color:#555;margin-top:10px;">Guia fotográfico especializado em fauna do Pantanal. Conduz safáris a pé e de barco na planície pantaneira do Mato Grosso.</p>
+            <a class="guide-cta" href="/guias">Ver perfil</a>
+          </article>
+
+          <article class="guide-card">
+            <div class="guide-card-header">
+              <div class="guide-avatar" aria-hidden="true">GT</div>
+              <div>
+                <div class="guide-name">Gabriela Torres</div>
+                <div class="guide-state">Espírito Santo — Pedra Azul e Forno Grande</div>
+              </div>
+            </div>
+            <div class="guide-specialties">
+              <span class="guide-tag">Montanhismo</span>
+              <span class="guide-tag">Iniciantes</span>
+              <span class="guide-tag cadastur">CADASTUR ativo</span>
+            </div>
+            <p style="font-size:.85rem;color:#555;margin-top:10px;">Especializada em grupos de iniciantes. Conduz trilhas na Pedra Azul, Forno Grande e Parque Nacional do Caparaó, incluindo o Pico da Bandeira.</p>
+            <a class="guide-cta" href="/guias">Ver perfil</a>
+          </article>
+
+        </section>
+
+        <div class="cta-banner">
+          <h2>Você é guia CADASTUR?</h2>
+          <p>Cadastre seu perfil gratuitamente na Trekko e alcance milhares de aventureiros que buscam guias certificados. Sem comissão — contato direto com o cliente.</p>
+          <a href="/guias/ativar-perfil">Ativar meu perfil gratuito</a>
+        </div>
+
+        <h2>O que é um Guia CADASTUR e por que Importa</h2>
+
+        <p>O CADASTUR — Cadastro de Prestadores de Serviços Turísticos — é o sistema oficial do Ministério do Turismo do Brasil para registro e controle dos profissionais que atuam no setor. Para guias de turismo, o registro no CADASTUR não é apenas uma formalidade: é o reconhecimento legal de que o profissional possui formação técnica adequada, está habilitado pelo Conselho Regional de Turismo (Crefito) e cumpre com as obrigações previstas na Lei Geral do Turismo (Lei nº 11.771/2008).</p>
+
+        <p>A certificação CADASTUR garante que o guia passou por formação específica, conhece as normas de condução segura de grupos em ambientes naturais e está apto a atuar em parques nacionais, áreas de proteção ambiental e roteiros regulamentados. Para o aventureiro, contratar um guia CADASTUR significa segurança jurídica, profissional treinado e um parceiro que conhece as regras de conduta ambiental para preservar os ecossistemas visitados.</p>
+
+        <p>Na Trekko, todos os guias listados passam por verificação do número CADASTUR antes de aparecerem na plataforma. Além disso, nossa curadoria analisa avaliações de clientes verificados, histórico de incidentes e nível de atualização de primeiros socorros. Acreditamos que guias bem preparados são o fator mais importante para uma experiência outdoor segura, inesquecível e ambientalmente responsável.</p>
+
+        <h2>Como Usar a Plataforma para Encontrar um Guia</h2>
+
+        <p>A Trekko foi desenhada para tornar a busca pelo guia ideal simples e eficiente. Você pode navegar pela lista de guias filtrando por estado, tipo de atividade (trekking, escalada, expedição, ecoturismo), nível de dificuldade das trilhas que o guia conduz e idiomas de atendimento. Cada perfil de guia exibe o número CADASTUR para verificação independente, as regiões e trilhas onde o profissional atua, as especialidades técnicas, as avaliações deixadas por clientes anteriores e a agenda de disponibilidade.</p>
+
+        <p>Para entrar em contato com um guia, basta acessar o perfil e usar o botão de contato direto — a Trekko não cobra comissão sobre as reservas e não intermedeia o pagamento, preservando a autonomia do profissional e a melhor relação custo-benefício para o aventureiro. Recomendamos sempre confirmar a disponibilidade com antecedência mínima de 15 dias para trilhas populares e de 30 dias para expedições de múltiplos dias ou grupos acima de 8 pessoas.</p>
+
+        <p>Use os filtros de estado nos links acima para encontrar guias certificados na sua região de interesse: <a href="/guias?estado=BA">Bahia</a>, <a href="/guias?estado=MG">Minas Gerais</a>, <a href="/guias?estado=SC">Santa Catarina</a>, <a href="/guias?estado=GO">Goiás</a>, <a href="/guias?estado=RJ">Rio de Janeiro</a>, <a href="/guias?estado=AM">Amazonas</a> e todos os demais estados brasileiros.</p>
+
+        <h2>Tipos de Guia Disponíveis na Plataforma</h2>
+
+        <p>A Trekko organiza os guias em três categorias principais, de acordo com a natureza das atividades que conduzem:</p>
+
+        <h3>Guia Local</h3>
+        <p>O guia local é um especialista em uma região ou trilha específica. Geralmente nascido ou radicado na área, possui conhecimento profundo da geologia, flora, fauna, história e cultura local. É a melhor opção para visitas a parques nacionais, cachoeiras e destinos consolidados como a Chapada Diamantina, a Serra do Cipó e a Chapada dos Veadeiros. O guia local costuma ter tarifas mais acessíveis e conexões diretas com a comunidade receptora, enriquecendo a experiência além do aspecto natural.</p>
+
+        <h3>Guia de Trekking</h3>
+        <p>O guia de trekking é habilitado para conduzir grupos em trilhas de um ou mais dias, incluindo travessias e rotas que exigem pernoite em abrigos ou acampamentos. Possui formação específica em orientação por mapa e GPS, gestão de grupos em terrenos variados, nutrição e hidratação em campo e tomada de decisão em situações de emergência. É a escolha certa para travessias como Petrópolis–Teresópolis, a Trilha do Ouro em Paraty e as travessias de múltiplos dias na Serra Gaúcha e nos cânions catarinenses.</p>
+
+        <h3>Guia de Expedição</h3>
+        <p>O guia de expedição atua em roteiros de alta complexidade logística e técnica: travessias de mais de 5 dias, ascensões a picos acima de 2.000 metros, expedições na Amazônia profunda e ambientes extremos como o Pantanal de inundação ou o cerrado de altitude. Possui formação avançada em wilderness medicine, gerenciamento de risco em ambientes remotos, comunicação via rádio e satélite e coordenação de equipes de apoio. Para o Monte Roraima, o Pico da Neblina e expedições técnicas em geral, o guia de expedição é indispensável.</p>
+
+        <h2>Como Verificar a Certificação de um Guia</h2>
+
+        <p>Verificar a autenticidade do registro CADASTUR de um guia de turismo é simples e pode ser feito diretamente no portal do governo federal em cadastur.turismo.gov.br. No campo de busca, insira o nome completo do guia ou o número de registro CADASTUR exibido no perfil da Trekko. O sistema retornará a situação atual do cadastro: ativo, suspenso, cancelado ou em análise. Recomendamos fazer essa verificação antes de contratar qualquer guia, mesmo que ele esteja listado em plataformas como a Trekko.</p>
+
+        <p>Além do CADASTUR, você pode pedir ao guia os seguintes documentos complementares: certificado de formação em primeiros socorros (válido, com no máximo 2 anos de emissão), credencial emitida pelo Conselho Regional de Turismo do estado de atuação, comprovante de seguro de responsabilidade civil profissional (não obrigatório por lei, mas altamente recomendado) e atestado de conduta de trilhas de longa distância ou em áreas de proteção integral, quando aplicável.</p>
+
+        <p>Na Trekko, o número CADASTUR de cada guia é verificado periodicamente pela nossa equipe. Guias com registros vencidos ou suspensos são removidos automaticamente da lista de destaque e sinalizados na plataforma até que a situação seja regularizada. Nosso compromisso é oferecer apenas guias com certificação ativa e histórico positivo de conduções seguras.</p>
+
+        <nav aria-label="Links rápidos para guias por estado">
+          <ul>
+            <li><a href="/guias?estado=BA">Guias na Bahia — Chapada Diamantina</a></li>
+            <li><a href="/guias?estado=MG">Guias em Minas Gerais — Serra do Cipó e Ibitipoca</a></li>
+            <li><a href="/guias?estado=RJ">Guias no Rio de Janeiro — Serra dos Órgãos e Itatiaia</a></li>
+            <li><a href="/guias?estado=SC">Guias em Santa Catarina — Cânions e Serra Catarinense</a></li>
+            <li><a href="/guias?estado=GO">Guias em Goiás — Chapada dos Veadeiros</a></li>
+            <li><a href="/guias?estado=AM">Guias no Amazonas — Expedições na Amazônia</a></li>
+            <li><a href="/guias?estado=RS">Guias no Rio Grande do Sul — Cânions e Serra Gaúcha</a></li>
+            <li><a href="/guias?estado=SP">Guias em São Paulo — Vale do Ribeira e Serra da Mantiqueira</a></li>
+            <li><a href="/trilhas">Ver todas as trilhas do Brasil</a></li>
+            <li><a href="/blog">Ler artigos sobre trekking e segurança</a></li>
+          </ul>
+        </nav>
+
+      </main>
+    </div>
+
+    <!-- LGPD Cookie Consent Banner -->
+    <div id="trekko-consent-overlay" aria-hidden="true"></div>
+    <div id="trekko-consent-wrap">
+      <div id="trekko-consent-banner" role="dialog" aria-modal="true" aria-label="Preferências de privacidade e cookies">
+        <div id="trekko-consent-inner">
+          <div class="trekko-consent-text">
+            <strong>Sua privacidade importa</strong>
+            <p>Usamos cookies para analytics e personalização de anúncios, em conformidade com a <a href="/privacidade" target="_blank" rel="noopener">LGPD</a>. Você tem controle total sobre suas preferências.</p>
+          </div>
+          <div class="trekko-consent-btns">
+            <button id="trekko-btn-custom" type="button">Personalizar</button>
+            <button id="trekko-btn-reject" type="button">Recusar não essenciais</button>
+            <button id="trekko-btn-accept" type="button">Aceitar todos</button>
+          </div>
+        </div>
+      </div>
+      <div id="trekko-consent-settings" role="dialog" aria-modal="true" aria-label="Configurar cookies">
+        <h3>Configurar cookies</h3>
+        <div class="trekko-pref-row">
+          <div class="trekko-pref-info"><strong>Essenciais</strong><p>Necessários para o funcionamento do site.</p></div>
+          <span class="trekko-always-on" aria-label="Sempre ativo">Sempre ativo</span>
+        </div>
+        <div class="trekko-pref-row">
+          <div class="trekko-pref-info"><strong>Analytics (GA4)</strong><p>Dados anônimos sobre uso do site.</p></div>
+          <label class="trekko-toggle" aria-label="Ativar Analytics"><input type="checkbox" id="trekko-chk-analytics"><span class="trekko-slider"></span></label>
+        </div>
+        <div class="trekko-pref-row">
+          <div class="trekko-pref-info"><strong>Publicidade (Google Ads)</strong><p>Permitem exibir anúncios relevantes.</p></div>
+          <label class="trekko-toggle" aria-label="Ativar Publicidade"><input type="checkbox" id="trekko-chk-ads"><span class="trekko-slider"></span></label>
+        </div>
+        <div class="trekko-settings-btns">
+          <button id="trekko-btn-back" type="button">← Voltar</button>
+          <button id="trekko-btn-save" type="button">Salvar preferências</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        var consent = window.TrekkoConsent;
+        if (!consent || consent.has()) return;
+        var overlay = document.getElementById('trekko-consent-overlay');
+        var banner = document.getElementById('trekko-consent-banner');
+        var settings = document.getElementById('trekko-consent-settings');
+        var chkAnalytics = document.getElementById('trekko-chk-analytics');
+        var chkAds = document.getElementById('trekko-chk-ads');
+        function showBanner() { banner.style.display = 'block'; overlay.style.display = 'none'; settings.style.display = 'none'; }
+        function showSettings() { chkAnalytics.checked = true; chkAds.checked = true; settings.style.display = 'block'; banner.style.display = 'none'; overlay.style.display = 'block'; }
+        function hideBanner() { banner.style.display = 'none'; settings.style.display = 'none'; overlay.style.display = 'none'; }
+        document.getElementById('trekko-btn-accept').addEventListener('click', function () { window._trekkoApplyConsent(true, true); hideBanner(); });
+        document.getElementById('trekko-btn-reject').addEventListener('click', function () { window._trekkoApplyConsent(false, false); hideBanner(); });
+        document.getElementById('trekko-btn-custom').addEventListener('click', showSettings);
+        document.getElementById('trekko-btn-back').addEventListener('click', showBanner);
+        document.getElementById('trekko-btn-save').addEventListener('click', function () { window._trekkoApplyConsent(chkAnalytics.checked, chkAds.checked); hideBanner(); });
+        overlay.addEventListener('click', showBanner);
+        showBanner();
+      })();
+    </script>
+  </body>
+</html>
