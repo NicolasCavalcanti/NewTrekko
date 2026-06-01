@@ -637,6 +637,7 @@ def build_head(title, desc, canonical, og_image, jsonld, extra_jsonld=None):
 <meta property="og:type" content="website">
 <meta property="og:url" content="{canonical}">
 <meta property="og:image" content="https://trekko.com.br{og_image}">
+<link rel="preload" as="image" href="{og_image}" fetchpriority="high">
 {FAVICONS_BLOCK}
 {FONTS_BLOCK}
 {ANALYTICS_BLOCK}
