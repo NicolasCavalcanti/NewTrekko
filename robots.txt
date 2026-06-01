@@ -5,7 +5,7 @@ Disallow: /reservas
 Disallow: /admin
 Disallow: /api/
 Disallow: /guia/
-Allow: /guias/ativar-perfil
+Allow: /guias/
 Disallow: /expedicao/
 Disallow: /component-showcase
 
@@ -32,8 +32,8 @@ Allow: /equipamentos/
 Allow: /sobre
 Allow: /contato
 Allow: /blog/
+Allow: /guias/
 Disallow: /guia/
-Allow: /guias/ativar-perfil
 Disallow: /expedicao/
 
 User-agent: AdsBot-Google-Mobile
@@ -43,8 +43,8 @@ Allow: /equipamentos/
 Allow: /sobre
 Allow: /contato
 Allow: /blog/
+Allow: /guias/
 Disallow: /guia/
-Allow: /guias/ativar-perfil
 Disallow: /expedicao/
 
 User-agent: Mediapartners-Google
@@ -54,8 +54,8 @@ Allow: /equipamentos/
 Allow: /sobre
 Allow: /contato
 Allow: /blog/
+Allow: /guias/
 Disallow: /guia/
-Allow: /guias/ativar-perfil
 Disallow: /expedicao/
 
 Sitemap: https://trekko.com.br/sitemap.xml
