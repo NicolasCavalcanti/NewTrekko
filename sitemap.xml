@@ -4,13 +4,7 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 
   <!-- Core pages -->
-  <url>
-    <loc>https://trekko.com.br/sobre</loc>
-    <lastmod>2026-05-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
+<url>
     <loc>https://trekko.com.br/</loc>
     <lastmod>2026-05-28</lastmod>
     <changefreq>weekly</changefreq>
