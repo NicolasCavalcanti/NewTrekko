@@ -1,3 +1,21 @@
+# Googlebot — full crawl access (explicit, required for Search Console + AdSense review)
+User-agent: Googlebot
+Allow: /
+Disallow: /perfil
+Disallow: /checkout
+Disallow: /reservas
+Disallow: /admin
+Disallow: /api/
+Disallow: /component-showcase
+
+# Googlebot-Image — allow product/trail images
+User-agent: Googlebot-Image
+Allow: /
+
+# APIs-Google — used for structured data / rich results testing
+User-agent: APIs-Google
+Allow: /
+
 User-agent: *
 Allow: /
 Disallow: /admin/
