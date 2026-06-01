@@ -621,7 +621,8 @@ def write_file(path, content):
         f.write(content)
     print(f"  wrote {path.replace(BASE, '')}")
 
-def build_head(title, desc, canonical, og_image, jsonld):
+def build_head(title, desc, canonical, og_image, jsonld, extra_jsonld=None):
+    extra_block = f'\n<script type="application/ld+json">{extra_jsonld}</script>' if extra_jsonld else ""
     return f"""<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -639,7 +640,7 @@ def build_head(title, desc, canonical, og_image, jsonld):
 {FAVICONS_BLOCK}
 {FONTS_BLOCK}
 {ANALYTICS_BLOCK}
-<script type="application/ld+json">{jsonld}</script>
+<script type="application/ld+json">{jsonld}</script>{extra_block}
 {CSS}
 </head>"""
 
@@ -1001,7 +1002,8 @@ def build_state_page(uf, uf_trails):
          "A melhor época varia por trilha e região. Consulte a seção 'Melhor época' em cada ficha de trilha para informação específica."),
     ])
     jsonld = build_faq_jsonld(faqs, canonical_path)
-    head = build_head(title, desc, canonical, hero_img, jsonld)
+    item_list_jsonld = build_item_list_jsonld(uf_trails, canonical_path, f"Trilhas {uf_prep}")
+    head = build_head(title, desc, canonical, hero_img, jsonld, extra_jsonld=item_list_jsonld)
     header = build_header()
     breadcrumb = build_breadcrumb([
         ("Trekko", "/"), ("Trilhas", "/trilhas"), (f"Trilhas {uf_prep}", canonical_path)
