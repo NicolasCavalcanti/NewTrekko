@@ -3,526 +3,689 @@
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 
-  <!-- Core pages -->
   <url>
-    <loc>https://trekko.com.br/sobre</loc>
+    <loc>https://www.trekko.com.br/</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/blog</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/sobre</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://trekko.com.br/</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/contato</loc>
+    <loc>https://www.trekko.com.br/contato</loc>
     <lastmod>2026-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://trekko.com.br/seguranca-em-trilhas</loc>
+    <loc>https://www.trekko.com.br/seguranca-em-trilhas</loc>
     <lastmod>2026-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://trekko.com.br/privacidade</loc>
+    <loc>https://www.trekko.com.br/privacidade</loc>
     <lastmod>2026-01-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://trekko.com.br/termos-de-uso</loc>
+    <loc>https://www.trekko.com.br/termos-de-uso</loc>
     <lastmod>2026-01-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://trekko.com.br/politica-de-guias</loc>
+    <loc>https://www.trekko.com.br/politica-de-guias</loc>
     <lastmod>2026-01-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://trekko.com.br/politica-editorial</loc>
+    <loc>https://www.trekko.com.br/politica-editorial</loc>
     <lastmod>2026-01-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://trekko.com.br/remocao-ou-atualizacao-de-dados</loc>
+    <loc>https://www.trekko.com.br/remocao-ou-atualizacao-de-dados</loc>
     <lastmod>2026-01-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://trekko.com.br/guias/ativar-perfil</loc>
+    <loc>https://www.trekko.com.br/politica-de-cookies</loc>
     <lastmod>2026-01-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-
-  <!-- Trilhas por estado -->
-  <url>
-    <loc>https://trekko.com.br/trilhas/rio-de-janeiro</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://trekko.com.br/trilhas/sao-paulo</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilhas/minas-gerais</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilhas/goias</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilhas/roraima</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilhas/rio-grande-do-sul</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilhas/santa-catarina</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilhas/ceara</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilhas/parana</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.80</priority>
-  </url>
-
-  <!-- Trilhas por dificuldade -->
-  <url>
-    <loc>https://trekko.com.br/trilhas/para-iniciantes</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilhas/moderado</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilhas/dificil</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilhas/especialista</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilhas/com-guia</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilhas/com-cachoeira</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.75</priority>
-  </url>
-
-  <!-- Trilhas por cidade -->
-  <url>
-    <loc>https://trekko.com.br/trilhas/cidades/alto-caparao</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilhas/cidades/alto-paraiso-de-goias</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilhas/cidades/cambara-do-sul</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilhas/cidades/imbituba</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilhas/cidades/itatiaia</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilhas/cidades/paracuru</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilhas/cidades/passa-quatro-itamonte</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilhas/cidades/petropolis-teresopolis</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilhas/cidades/sao-bento-do-sapucai</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilhas/cidades/uiramuta</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-
-  <!-- Trilhas por parque -->
-  <url>
-    <loc>https://trekko.com.br/trilhas/parques/apa-da-baleia-franca</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilhas/parques/apa-da-serra-da-mantiqueira</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilhas/parques/apa-das-dunas-de-paracuru</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilhas/parques/complexo-do-bau</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilhas/parques/parque-nacional-da-chapada-dos-veadeiros</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilhas/parques/parque-nacional-da-serra-dos-orgaos</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilhas/parques/parque-nacional-de-aparados-da-serra</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilhas/parques/parque-nacional-do-caparao</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilhas/parques/parque-nacional-do-itatiaia</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilhas/parques/parque-nacional-monte-roraima</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Trilhas individuais (slug) -->
-  <url>
-    <loc>https://trekko.com.br/trilha/travessia-petropolis-teresopolis</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilha/monte-roraima</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilha/travessia-serra-fina</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilha/pico-da-bandeira</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilha/pico-das-agulhas-negras</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilha/pedra-do-sino</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilha/pedra-do-bau</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilha/vale-da-lua-e-cachoeiras</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilha/travessia-vale-do-pati</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilha/chapada-dos-guimaraes-circuito-cachoeiras</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilha/canion-itaimbezinho</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilha/canion-fortaleza</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilha/cachoeira-da-fumaca</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilha/circuito-5-lagos-pedra-do-altar</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilha/morro-do-pai-inacio</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilha/morro-dois-irmaos</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilha/trilha-das-praias-rosa-norte-sul</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilha/travessia-lencois-maranhenses</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilha/lencois-de-paracuru</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilha/fernando-de-noronha-baia-do-sancho</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <!-- Trilhas individuais ausentes -->
-  <url>
-    <loc>https://trekko.com.br/trilha/trilha-cotovelo-vertice-itaimbezinho-cambara-do-sul-rs</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/trilha/pico-parana-serra-do-ibitiraquire</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
-  </url>
-
-  <!-- Autores -->
-  <url>
-    <loc>https://trekko.com.br/autores/rafael-dias</loc>
+    <loc>https://www.trekko.com.br/divulgacao-de-afiliados</loc>
     <lastmod>2026-01-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.65</priority>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://trekko.com.br/autores/marcos-rodrigues</loc>
-    <lastmod>2026-01-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.65</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/autores/leticia-campos</loc>
-    <lastmod>2026-01-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.65</priority>
-  </url>
-
-  <!-- Trekko Store / Equipamentos -->
-  <url>
-    <loc>https://trekko.com.br/equipamentos</loc>
-    <lastmod>2026-05-28</lastmod>
+    <loc>https://www.trekko.com.br/equipamentos</loc>
+    <lastmod>2026-06-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
   <url>
-    <loc>https://trekko.com.br/equipamentos/mochilas</loc>
-    <lastmod>2026-05-28</lastmod>
+    <loc>https://www.trekko.com.br/equipamentos/mochilas</loc>
+    <lastmod>2026-06-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://trekko.com.br/equipamentos/botas-e-tenis</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <!-- DEV-04: /equipamentos/lanternas removida (prateleira vazia); readicionar quando RED-01 for concluída -->
-  <url>
-    <loc>https://trekko.com.br/equipamentos/bastoes-de-caminhada</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- DEV-04: URLs abaixo removidas (prateleira vazia); readicionar quando RED-01 for concluída:
-       /equipamentos/hidratacao, /equipamentos/camping, /equipamentos/seguranca,
-       /equipamentos/pets-outdoor, /equipamentos/ofertas -->
-  <url>
-    <loc>https://trekko.com.br/equipamentos/guias</loc>
-    <lastmod>2026-05-28</lastmod>
+    <loc>https://www.trekko.com.br/equipamentos/botas-e-tenis</loc>
+    <lastmod>2026-06-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://trekko.com.br/equipamentos/guias/como-escolher-mochila-de-trilha</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/equipamentos/guias/o-que-levar-em-uma-trilha-de-um-dia</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/equipamentos/comparativos</loc>
-    <lastmod>2026-05-28</lastmod>
+    <loc>https://www.trekko.com.br/equipamentos/bastoes-de-caminhada</loc>
+    <lastmod>2026-06-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://trekko.com.br/equipamentos/comparativos/melhores-mochilas-de-ataque</loc>
+    <loc>https://www.trekko.com.br/equipamentos/guias</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/equipamentos/guias/como-escolher-mochila-de-trilha</loc>
     <lastmod>2026-05-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://trekko.com.br/equipamentos/como-escolhemos</loc>
+    <loc>https://www.trekko.com.br/equipamentos/guias/o-que-levar-em-uma-trilha-de-um-dia</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/equipamentos/guias/kit-primeiros-socorros-para-trilha</loc>
+    <lastmod>2026-05-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/equipamentos/comparativos</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/equipamentos/comparativos/melhores-mochilas-de-ataque</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/equipamentos/comparativos/melhores-kits-primeiros-socorros-trilha</loc>
+    <lastmod>2026-05-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/equipamentos/como-escolhemos</loc>
     <lastmod>2026-05-28</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://trekko.com.br/divulgacao-de-afiliados</loc>
+    <loc>https://www.trekko.com.br/guias/ativar-perfil</loc>
     <lastmod>2026-01-01</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/politica-de-cookies</loc>
-    <lastmod>2026-01-01</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.4</priority>
-  </url>
-
-  <!-- Blog posts -->
-  <url>
-    <loc>https://trekko.com.br/blog/travessia-petropolis-teresopolis-guia-completo</loc>
-    <lastmod>2026-04-01</lastmod>
     <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/autores/rafael-dias</loc>
+    <lastmod>2026-01-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.65</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/autores/marcos-rodrigues</loc>
+    <lastmod>2026-01-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.65</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/autores/leticia-campos</loc>
+    <lastmod>2026-01-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.65</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/ceara</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/goias</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/minas-gerais</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/parana</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/rio-de-janeiro</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/rio-grande-do-sul</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/roraima</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/santa-catarina</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/sao-paulo</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/para-iniciantes</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/moderado</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/dificil</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/especialista</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/com-guia</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/com-cachoeira</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/cidades/alto-caparao</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/cidades/alto-paraiso-de-goias</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/cidades/andarai-mucuge</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/cidades/barreirinhas-atins</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/cidades/cambara-do-sul</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/cidades/campina-grande-do-sul-antonina</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/cidades/chapada-dos-guimaraes</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/cidades/fernando-de-noronha</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/cidades/imbituba</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/cidades/itatiaia</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/cidades/palmeiras</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/cidades/paracuru</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/cidades/passa-quatro-itamonte</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/cidades/petropolis-teresopolis</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/cidades/praia-grande</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/cidades/rio-de-janeiro</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/cidades/sao-bento-do-sapucai</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/cidades/teresopolis</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/cidades/uiramuta</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/cidades/vale-do-capao-palmeiras</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/parques/apa-da-baleia-franca</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/parques/apa-da-serra-da-mantiqueira</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/parques/apa-das-dunas-de-paracuru</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/parques/area-de-protecao-ambiental-da-orla-maritima</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/parques/complexo-do-bau</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/parques/parque-estadual-pico-parana</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/parques/parque-nacional-da-chapada-diamantina</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/parques/parque-nacional-da-chapada-dos-guimaraes</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/parques/parque-nacional-da-chapada-dos-veadeiros</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/parques/parque-nacional-da-serra-dos-orgaos</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/parques/parque-nacional-de-aparados-da-serra</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/parques/parque-nacional-de-aparados-da-serra-e-serra-geral</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/parques/parque-nacional-do-caparao</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/parques/parque-nacional-do-itatiaia</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/parques/parque-nacional-dos-lencois-maranhenses</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/parques/parque-nacional-marinho-de-fernando-de-noronha</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilhas/parques/parque-nacional-monte-roraima</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/monte-roraima</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/travessia-petropolis-teresopolis</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/vale-da-lua-e-cachoeiras</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/pedra-do-bau</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/pico-da-bandeira</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/canion-itaimbezinho</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/trilha-das-praias-rosa-norte-sul</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/travessia-serra-fina</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/lencois-de-paracuru</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/circuito-5-lagos-pedra-do-altar</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/morro-do-pai-inacio</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/cachoeira-da-fumaca</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/travessia-lencois-maranhenses</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/morro-dois-irmaos</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/fernando-de-noronha-baia-do-sancho</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/canion-fortaleza</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/pedra-do-sino</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/chapada-dos-guimaraes-circuito-cachoeiras</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/pico-das-agulhas-negras</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/travessia-vale-do-pati</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/trilha-cotovelo-vertice-itaimbezinho-cambara-do-sul-rs</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/pico-parana-serra-do-ibitiraquire</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/chapada-diamantina-vale-do-capao</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/pico-dos-marins</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/gruta-do-lapao</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/canion-do-sumidouro</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/serra-da-canastra</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/parque-nacional-superagui</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/pico-do-caraca</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/lagoa-azul-bonito</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/pedra-azul</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/trilha/pedra-da-gavea</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/blog/travessia-petropolis-teresopolis-guia-completo</loc>
+    <lastmod>2026-01-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
     <news:news>
       <news:publication>
         <news:name>Blog do Trekko</news:name>
@@ -533,10 +696,10 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/monte-roraima-guia-completo</loc>
-    <lastmod>2026-04-01</lastmod>
+    <loc>https://www.trekko.com.br/blog/monte-roraima-guia-completo</loc>
+    <lastmod>2026-01-20</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.8</priority>
     <news:news>
       <news:publication>
         <news:name>Blog do Trekko</news:name>
@@ -547,8 +710,8 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/10-itens-essenciais-mochila-trekking</loc>
-    <lastmod>2026-04-01</lastmod>
+    <loc>https://www.trekko.com.br/blog/10-itens-essenciais-mochila-trekking</loc>
+    <lastmod>2026-02-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <news:news>
@@ -561,8 +724,8 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/por-que-contratar-guia-cadastur</loc>
-    <lastmod>2026-04-01</lastmod>
+    <loc>https://www.trekko.com.br/blog/por-que-contratar-guia-cadastur</loc>
+    <lastmod>2026-02-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <news:news>
@@ -575,8 +738,8 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/chapada-dos-veadeiros-cerrado-sagrado</loc>
-    <lastmod>2026-04-01</lastmod>
+    <loc>https://www.trekko.com.br/blog/chapada-dos-veadeiros-cerrado-sagrado</loc>
+    <lastmod>2026-02-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <news:news>
@@ -589,8 +752,8 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/planejamento-trilha-longo-curso-passo-a-passo</loc>
-    <lastmod>2026-04-01</lastmod>
+    <loc>https://www.trekko.com.br/blog/planejamento-trilha-longo-curso-passo-a-passo</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <news:news>
@@ -603,7 +766,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/como-escolher-trilha-segura-brasil</loc>
+    <loc>https://www.trekko.com.br/blog/como-escolher-trilha-segura-brasil</loc>
     <lastmod>2026-04-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -617,7 +780,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/trekking-com-cachorro-guia-completo</loc>
+    <loc>https://www.trekko.com.br/blog/trekking-com-cachorro-guia-completo</loc>
     <lastmod>2026-04-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -630,23 +793,8 @@
       <news:title>Trekking com Cachorro: Tudo que Você Precisa Saber Antes de Ir</news:title>
     </news:news>
   </url>
-  <!-- DEV-04: /equipamentos/primeiros-socorros removida (prateleira vazia); readicionar quando RED-01 for concluída -->
   <url>
-    <loc>https://trekko.com.br/equipamentos/guias/kit-primeiros-socorros-para-trilha</loc>
-    <lastmod>2026-05-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/equipamentos/comparativos/melhores-kits-primeiros-socorros-trilha</loc>
-    <lastmod>2026-05-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-
-
-  <url>
-    <loc>https://trekko.com.br/blog/como-comecar-trekking-iniciante</loc>
+    <loc>https://www.trekko.com.br/blog/como-comecar-trekking-iniciante</loc>
     <lastmod>2026-05-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -660,7 +808,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/trilhas-faceis-sao-paulo</loc>
+    <loc>https://www.trekko.com.br/blog/trilhas-faceis-sao-paulo</loc>
     <lastmod>2026-05-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -674,7 +822,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/trilhas-faceis-rio-de-janeiro</loc>
+    <loc>https://www.trekko.com.br/blog/trilhas-faceis-rio-de-janeiro</loc>
     <lastmod>2026-05-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -688,7 +836,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/kit-primeiros-socorros-trilha</loc>
+    <loc>https://www.trekko.com.br/blog/kit-primeiros-socorros-trilha</loc>
     <lastmod>2026-05-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -702,7 +850,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/animais-perigosos-trilhas-brasil</loc>
+    <loc>https://www.trekko.com.br/blog/animais-perigosos-trilhas-brasil</loc>
     <lastmod>2026-05-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -716,7 +864,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/melhores-trilhas-minas-gerais</loc>
+    <loc>https://www.trekko.com.br/blog/melhores-trilhas-minas-gerais</loc>
     <lastmod>2026-05-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -730,7 +878,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/trilhas-chapada-diamantina</loc>
+    <loc>https://www.trekko.com.br/blog/trilhas-chapada-diamantina</loc>
     <lastmod>2026-05-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -744,7 +892,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/melhor-epoca-trilhas-brasil</loc>
+    <loc>https://www.trekko.com.br/blog/melhor-epoca-trilhas-brasil</loc>
     <lastmod>2026-05-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -758,7 +906,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/o-que-e-trekking-diferenca-caminhada</loc>
+    <loc>https://www.trekko.com.br/blog/o-que-e-trekking-diferenca-caminhada</loc>
     <lastmod>2026-05-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -772,7 +920,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/bota-ou-tenis-trilha</loc>
+    <loc>https://www.trekko.com.br/blog/bota-ou-tenis-trilha</loc>
     <lastmod>2026-05-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -786,7 +934,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/trilhas-santa-catarina</loc>
+    <loc>https://www.trekko.com.br/blog/trilhas-santa-catarina</loc>
     <lastmod>2026-05-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -800,7 +948,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/seguranca-trilha-regras</loc>
+    <loc>https://www.trekko.com.br/blog/seguranca-trilha-regras</loc>
     <lastmod>2026-05-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -814,7 +962,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/trilha-com-cachorro-regras</loc>
+    <loc>https://www.trekko.com.br/blog/trilha-com-cachorro-regras</loc>
     <lastmod>2026-05-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -828,7 +976,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/hidratacao-trilha-quantos-litros</loc>
+    <loc>https://www.trekko.com.br/blog/hidratacao-trilha-quantos-litros</loc>
     <lastmod>2026-05-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -842,7 +990,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/sistema-camadas-roupa-trekking</loc>
+    <loc>https://www.trekko.com.br/blog/sistema-camadas-roupa-trekking</loc>
     <lastmod>2026-05-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -856,7 +1004,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/como-planejar-trilha-grupo</loc>
+    <loc>https://www.trekko.com.br/blog/como-planejar-trilha-grupo</loc>
     <lastmod>2026-05-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -870,7 +1018,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/guia-cadastur-como-encontrar</loc>
+    <loc>https://www.trekko.com.br/blog/guia-cadastur-como-encontrar</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -884,7 +1032,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/melhores-trilhas-rs-canyons</loc>
+    <loc>https://www.trekko.com.br/blog/melhores-trilhas-rs-canyons</loc>
     <lastmod>2026-05-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -898,7 +1046,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/preparo-fisico-trekking</loc>
+    <loc>https://www.trekko.com.br/blog/preparo-fisico-trekking</loc>
     <lastmod>2026-05-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -912,7 +1060,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/trilhas-nordeste-brasil</loc>
+    <loc>https://www.trekko.com.br/blog/trilhas-nordeste-brasil</loc>
     <lastmod>2026-05-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -926,7 +1074,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/planejamento-primeira-trilha-longa</loc>
+    <loc>https://www.trekko.com.br/blog/planejamento-primeira-trilha-longa</loc>
     <lastmod>2026-06-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -936,11 +1084,11 @@
         <news:language>pt</news:language>
       </news:publication>
       <news:publication_date>2026-06-01</news:publication_date>
-      <news:title>Como Planejar sua Primeira Trilha de Múltiplos Dias no Brasil</news:title>
+      <news:title>Planejamento da Primeira Trilha Longa: Do Sofá à Montanha em 8 Semanas</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/melhores-trilhas-parana</loc>
+    <loc>https://www.trekko.com.br/blog/melhores-trilhas-parana</loc>
     <lastmod>2026-06-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -950,11 +1098,11 @@
         <news:language>pt</news:language>
       </news:publication>
       <news:publication_date>2026-06-02</news:publication_date>
-      <news:title>Melhores Trilhas do Paraná: Serra do Mar e Litoral</news:title>
+      <news:title>As Melhores Trilhas do Paraná: Do Litoral à Serra</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/o-que-levar-trilha-um-dia</loc>
+    <loc>https://www.trekko.com.br/blog/o-que-levar-trilha-um-dia</loc>
     <lastmod>2026-06-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -964,11 +1112,11 @@
         <news:language>pt</news:language>
       </news:publication>
       <news:publication_date>2026-06-03</news:publication_date>
-      <news:title>O Que Levar em uma Trilha de Um Dia: Lista Completa</news:title>
+      <news:title>O Que Levar em Uma Trilha de Um Dia: Lista Completa e Sem Exageros</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/pico-da-bandeira-guia-completo</loc>
+    <loc>https://www.trekko.com.br/blog/pico-da-bandeira-guia-completo</loc>
     <lastmod>2026-06-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -978,11 +1126,11 @@
         <news:language>pt</news:language>
       </news:publication>
       <news:publication_date>2026-06-04</news:publication_date>
-      <news:title>Pico da Bandeira: Como Conquistar o Terceiro Ponto Mais Alto do Brasil</news:title>
+      <news:title>Pico da Bandeira: Guia Completo para o Topo do Leste Brasileiro</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/trilhas-inverno-como-se-preparar</loc>
+    <loc>https://www.trekko.com.br/blog/trilhas-inverno-como-se-preparar</loc>
     <lastmod>2026-06-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -992,12 +1140,12 @@
         <news:language>pt</news:language>
       </news:publication>
       <news:publication_date>2026-06-05</news:publication_date>
-      <news:title>Trilhas no Inverno: Como se Preparar para o Frio na Montanha</news:title>
+      <news:title>Trilhas no Inverno: Como Se Preparar para o Frio nas Serras Brasileiras</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trekko.com.br/blog/canion-itaimbezinho-guia-completo</loc>
-    <lastmod>2026-06-06</lastmod>
+    <loc>https://www.trekko.com.br/blog/canion-itaimbezinho-guia-completo</loc>
+    <lastmod>2026-05-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <news:news>
@@ -1005,8 +1153,64 @@
         <news:name>Blog do Trekko</news:name>
         <news:language>pt</news:language>
       </news:publication>
-      <news:publication_date>2026-06-06</news:publication_date>
-      <news:title>Guia Completo: Cânion Itaimbezinho em Aparados da Serra</news:title>
+      <news:publication_date>2026-05-30</news:publication_date>
+      <news:title>Cânion Itaimbezinho: Guia Completo do Cânion Mais Famoso do Brasil</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/blog/trilhas-espirito-santo-guia-completo</loc>
+    <lastmod>2026-06-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Blog do Trekko</news:name>
+        <news:language>pt</news:language>
+      </news:publication>
+      <news:publication_date>2026-06-02</news:publication_date>
+      <news:title>Melhores Trilhas do Espírito Santo: Pedra Azul, Forno Grande e Muito Mais</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/blog/orientacao-sem-gps-trilha</loc>
+    <lastmod>2026-06-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Blog do Trekko</news:name>
+        <news:language>pt</news:language>
+      </news:publication>
+      <news:publication_date>2026-06-05</news:publication_date>
+      <news:title>Como se Orientar em Trilhas Sem GPS ou Celular</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/blog/pedra-do-bau-guia-completo</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Blog do Trekko</news:name>
+        <news:language>pt</news:language>
+      </news:publication>
+      <news:publication_date>2026-06-09</news:publication_date>
+      <news:title>Pedra do Baú: Guia Completo para a Trilha Mais Alta de São Paulo</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/blog/hipotermia-trilha-prevencao-tratamento</loc>
+    <lastmod>2026-06-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Blog do Trekko</news:name>
+        <news:language>pt</news:language>
+      </news:publication>
+      <news:publication_date>2026-06-12</news:publication_date>
+      <news:title>Hipotermia em Trilhas: Como Prevenir e Agir em Caso de Emergência</news:title>
     </news:news>
   </url>
 </urlset>
