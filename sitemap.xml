@@ -927,7 +927,7 @@
   </url>
   <url>
     <loc>https://trekko.com.br/blog/planejamento-primeira-trilha-longa</loc>
-    <lastmod>2026-05-25</lastmod>
+    <lastmod>2026-06-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <news:news>
@@ -935,13 +935,13 @@
         <news:name>Blog do Trekko</news:name>
         <news:language>pt</news:language>
       </news:publication>
-      <news:publication_date>2026-05-25</news:publication_date>
+      <news:publication_date>2026-06-01</news:publication_date>
       <news:title>Como Planejar sua Primeira Trilha de Múltiplos Dias no Brasil</news:title>
     </news:news>
   </url>
   <url>
     <loc>https://trekko.com.br/blog/melhores-trilhas-parana</loc>
-    <lastmod>2026-05-26</lastmod>
+    <lastmod>2026-06-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <news:news>
@@ -949,13 +949,13 @@
         <news:name>Blog do Trekko</news:name>
         <news:language>pt</news:language>
       </news:publication>
-      <news:publication_date>2026-05-26</news:publication_date>
+      <news:publication_date>2026-06-02</news:publication_date>
       <news:title>Melhores Trilhas do Paraná: Serra do Mar e Litoral</news:title>
     </news:news>
   </url>
   <url>
     <loc>https://trekko.com.br/blog/o-que-levar-trilha-um-dia</loc>
-    <lastmod>2026-05-27</lastmod>
+    <lastmod>2026-06-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <news:news>
@@ -963,13 +963,13 @@
         <news:name>Blog do Trekko</news:name>
         <news:language>pt</news:language>
       </news:publication>
-      <news:publication_date>2026-05-27</news:publication_date>
+      <news:publication_date>2026-06-03</news:publication_date>
       <news:title>O Que Levar em uma Trilha de Um Dia: Lista Completa</news:title>
     </news:news>
   </url>
   <url>
     <loc>https://trekko.com.br/blog/pico-da-bandeira-guia-completo</loc>
-    <lastmod>2026-05-28</lastmod>
+    <lastmod>2026-06-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <news:news>
@@ -977,13 +977,13 @@
         <news:name>Blog do Trekko</news:name>
         <news:language>pt</news:language>
       </news:publication>
-      <news:publication_date>2026-05-28</news:publication_date>
+      <news:publication_date>2026-06-04</news:publication_date>
       <news:title>Pico da Bandeira: Como Conquistar o Terceiro Ponto Mais Alto do Brasil</news:title>
     </news:news>
   </url>
   <url>
     <loc>https://trekko.com.br/blog/trilhas-inverno-como-se-preparar</loc>
-    <lastmod>2026-05-29</lastmod>
+    <lastmod>2026-06-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <news:news>
@@ -991,13 +991,13 @@
         <news:name>Blog do Trekko</news:name>
         <news:language>pt</news:language>
       </news:publication>
-      <news:publication_date>2026-05-29</news:publication_date>
+      <news:publication_date>2026-06-05</news:publication_date>
       <news:title>Trilhas no Inverno: Como se Preparar para o Frio na Montanha</news:title>
     </news:news>
   </url>
   <url>
     <loc>https://trekko.com.br/blog/canion-itaimbezinho-guia-completo</loc>
-    <lastmod>2026-05-30</lastmod>
+    <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <news:news>
@@ -1005,38 +1005,8 @@
         <news:name>Blog do Trekko</news:name>
         <news:language>pt</news:language>
       </news:publication>
-      <news:publication_date>2026-05-30</news:publication_date>
+      <news:publication_date>2026-06-06</news:publication_date>
       <news:title>Guia Completo: Cânion Itaimbezinho em Aparados da Serra</news:title>
     </news:news>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/guia/adriana-lima-da-silva</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/guia/abel-nascimento-junior</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/guia/adna-andreia-bernardes-rabelo</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/guia/aaron-wesley-wilber-lopes</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://trekko.com.br/guia/ada-katia-aparecida-dos-santos</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
 </urlset>
