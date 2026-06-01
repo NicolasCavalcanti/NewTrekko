@@ -926,6 +926,7 @@ def build_slug_page(t, redirect_script):
   <meta property="og:type" content="website" />
   <meta property="og:url" content="{canonical}" />
   <meta property="og:image" content="{image}" />
+  <link rel="preload" as="image" href="{t['imageUrl']}" fetchpriority="high">
   <link rel="icon" href="/favicon-48x48.png" type="image/png" sizes="48x48" />
   <link rel="icon" href="/android-chrome-192x192.png" type="image/png" sizes="192x192" />
   <link rel="icon" href="/android-chrome-512x512.png" type="image/png" sizes="512x512" />
@@ -941,6 +942,7 @@ def build_slug_page(t, redirect_script):
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap" /></noscript>
   <script type="application/ld+json">{jsonld}</script>
   <script defer src="/assets/trekko-analytics.js"></script>
+  <style>#root{{min-height:100svh}}</style>
 {EDITORIAL_CSS}
 {FAQ_CSS}
   {redirect_script}
@@ -988,6 +990,7 @@ def build_numeric_page(t):
   <meta property="og:type" content="website" />
   <meta property="og:url" content="{canonical_slug}" />
   <meta property="og:image" content="{image}" />
+  <link rel="preload" as="image" href="{t['imageUrl']}" fetchpriority="high">
   <link rel="icon" href="/favicon-48x48.png" type="image/png" sizes="48x48" />
   <link rel="icon" href="/android-chrome-192x192.png" type="image/png" sizes="192x192" />
   <link rel="icon" href="/android-chrome-512x512.png" type="image/png" sizes="512x512" />
@@ -1002,6 +1005,7 @@ def build_numeric_page(t):
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap" /></noscript>
   <script defer src="/assets/trekko-analytics.js"></script>
+  <style>#root{{min-height:100svh}}</style>
   <script type="module" crossorigin src="/assets/index-DSKK19TW.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/react-vendor-DViTTRkQ.js">
   <link rel="modulepreload" crossorigin href="/assets/radix-ui-D-C9zAgG.js">
