@@ -449,6 +449,315 @@ TRAIL_EDITORIAL = {
 
 }  # end TRAIL_EDITORIAL
 
+# ---------------------------------------------------------------------------
+# Per-trail FAQ content — 5–7 Q&A pairs, answers ≥ 60 words each
+# ---------------------------------------------------------------------------
+TRAIL_FAQ = {
+
+"monte-roraima": [
+    {
+        "q": "Precisa de guia para fazer o Monte Roraima?",
+        "a": "Sim, o guia é obrigatório por lei. A trilha atravessa a Terra Indígena Raposa Serra do Sol e o Parque Nacional do Monte Roraima, e a contratação de um guia Pemón é exigida para entrar na área. Além da exigência legal, o guia é indispensável na prática: a navegação no planalto nevado de névoa constante é inviável sem alguém que conheça os marcos. Os guias são contratados na aldeia de Paraitepui, ponto de partida oficial da expedição.",
+    },
+    {
+        "q": "Quanto custa a entrada no Monte Roraima?",
+        "a": "Não existe cobrança de ingresso federal avulso para o Monte Roraima, mas os custos envolvem a contratação obrigatória do guia Pemón (valores negociados diretamente na aldeia de Paraitepui, geralmente entre R$ 200 e R$ 400 por dia por grupo), além de transporte até a aldeia e alimentação ao longo dos 6 a 8 dias de expedição. Há também a taxa de uso de acampamento no parque, cobrada pela ICMBio. Confirme os valores atualizados diretamente com operadoras locais em Boa Vista (RR).",
+    },
+    {
+        "q": "Qual a melhor época para visitar o Monte Roraima?",
+        "a": "O período mais favorável vai de outubro a abril, quando as chuvas são menos frequentes e os rios da rota estão em nível seguro para vadeamento. A estação chuvosa, entre maio e setembro, torna os vaus mais perigosos e a subida pela Rampa escorregadia. O topo do tepui tem microclima próprio com neblina e garoa praticamente o ano todo, então não espere dias completamente secos mesmo na alta temporada. Leve equipamento impermeável independentemente da época.",
+    },
+    {
+        "q": "É possível acampar no Monte Roraima?",
+        "a": "Sim, o acampamento é parte essencial da expedição. O roteiro padrão prevê pelo menos duas noites no próprio planalto, com pernoite no abrigo natural chamado de 'Hotel', uma gruta que protege do vento e da garoa. Durante a aproximação, há áreas de acampamento às margens dos rios Tek e Kukenán. Os guias Pemón indicam os locais permitidos; montar barraca fora das áreas estabelecidas é proibido. Fogueiras abertas são vetadas; use fogareiro.",
+    },
+    {
+        "q": "Qual a dificuldade real do Monte Roraima para iniciantes?",
+        "a": "O Monte Roraima é classificado como nível especialista e não é recomendado para iniciantes. A combinação de 6 a 8 dias de caminhada com mochila pesada, altitude de 2.810 metros, travessias de rios, trechos íngremes na Rampa e temperaturas noturnas abaixo de 10 °C exige experiência prévia em trekking de longa duração. A recomendação mínima é ter completado ao menos uma travessia de três dias antes, com treinamento aeróbico consistente por quatro meses.",
+    },
+    {
+        "q": "Quantos dias dura a expedição ao Monte Roraima?",
+        "a": "O roteiro completo leva de 6 a 8 dias. Os dois primeiros são de aproximação pelas savanas até a base do tepui; o terceiro é a subida pela Rampa até o planalto. Os dias seguintes são dedicados à exploração do topo — piscinas naturais, labirinto de cânions, ponto tríplice fronteira — antes da descida e retorno à aldeia. Planejar 8 dias dá margem de segurança para dias de mau tempo ou imprevistos no percurso.",
+    },
+    {
+        "q": "O que levar na mochila para o Monte Roraima?",
+        "a": "Os itens essenciais incluem: botas impermeáveis com bom agarre (prioritário para a Rampa), camadas térmicas para temperaturas abaixo de 10 °C à noite, capa de chuva e proteção impermeável para mochila, filtro ou purificador de água, protetor solar fator alto para as savanas, barraca de três estações resistente ao vento, saco de dormir para temperaturas negativas, liofilizados para complementar a alimentação preparada pelos guias, kit de primeiros socorros e lanterna frontal com baterias extras.",
+    },
+],
+
+"travessia-petropolis-teresopolis": [
+    {
+        "q": "Precisa de guia para a Travessia Petrópolis–Teresópolis?",
+        "a": "Não é obrigatório por lei, mas é fortemente recomendado para quem faz a travessia pela primeira vez. O percurso atravessa o interior do Parque Nacional da Serra dos Órgãos, com bifurcações que podem confundir mesmo trilheiros experientes. Um guia credenciado pelo ICMBio garante segurança na orientação, conhece os pontos de água, os refúgios e as saídas de emergência. Para grupos iniciantes ou em qualquer época de chuva intensa, a presença de guia é praticamente indispensável.",
+    },
+    {
+        "q": "Quanto custa a entrada na Travessia Petrópolis–Teresópolis?",
+        "a": "A entrada no Parque Nacional da Serra dos Órgãos é cobrada separadamente em cada sede: a taxa de acesso ao parque gira em torno de R$ 30 a R$ 40 por pessoa (valores sujeitos a reajuste pela ICMBio). A travessia exige pagamento adicional específico para pernoite nos refúgios ou acampamentos ao longo do percurso. Confirme os valores e disponibilidade de vagas diretamente no portal do ICMBio ou nas sedes do parque, pois há limite de visitantes por dia.",
+    },
+    {
+        "q": "Qual a melhor época para a Travessia Petrópolis–Teresópolis?",
+        "a": "Os meses de abril a setembro, período mais seco na Serra dos Órgãos, oferecem as melhores condições. O verão serrano (dezembro a março) traz chuvas intensas e frequentes, que transformam trechos de terra em lamaçais e aumentam o risco de deslizamentos e enchentes súbitas nos córregos. Mesmo na seca, leve equipamento impermeável: a neblina matinal é constante na altitude. Verifique sempre o boletim meteorológico antes de partir e consulte se o parque está aberto.",
+    },
+    {
+        "q": "É possível acampar na Travessia Petrópolis–Teresópolis?",
+        "a": "Sim. O percurso tem dois dias de duração padrão, com pernoite obrigatório nos refúgios ou áreas de acampamento credenciadas dentro do parque — o Refúgio dos Buracos e o Refúgio Rebouças são os mais utilizados. O acampamento selvagem fora das áreas delimitadas é proibido. As vagas nos refúgios são limitadas e devem ser reservadas com antecedência. Fogueiras abertas são vetadas em todo o parque; leve fogareiro e combustível sólido.",
+    },
+    {
+        "q": "Qual a dificuldade real da Travessia Petrópolis–Teresópolis para iniciantes?",
+        "a": "A travessia é classificada como difícil e não é ideal para quem nunca fez trekking com mochila carregada. O percurso de aproximadamente 42 quilômetros concentra desníveis acentuados, especialmente nos trechos de acesso ao Nariz do Frade e ao Dedo de Deus. A altitude média acima de 1.000 metros e o terreno rochoso exigem boa condição física e botas de cano alto. Iniciantes devem fazer ao menos algumas trilhas de dia inteiro antes de tentar a travessia.",
+    },
+    {
+        "q": "Quantos dias dura a Travessia Petrópolis–Teresópolis?",
+        "a": "O roteiro padrão leva dois dias completos. O primeiro dia cobre a entrada pela sede de Petrópolis até o acampamento ou refúgio de pernoite. O segundo dia conclui o percurso com chegada à sede de Teresópolis. Grupos mais lentos ou que desejam explorar desvios opcionais podem estender para três dias. O transporte de retorno entre as cidades deve ser planejado com antecedência, pois as sedes ficam a cerca de 60 km entre si.",
+    },
+    {
+        "q": "Onde comprar o ingresso para a Travessia Petrópolis–Teresópolis?",
+        "a": "As entradas e reservas de pernoite são feitas pelo sistema online do ICMBio (gov.br/icmbio) com antecedência, especialmente nos fins de semana e feriados, quando as vagas esgotam rapidamente. Também é possível comprar presencialmente nas sedes do parque, sujeito à disponibilidade do dia. O número de visitantes é limitado por dia para preservação ambiental, por isso reserve com pelo menos uma semana de antecedência em períodos de alta demanda.",
+    },
+],
+
+"pico-da-bandeira": [
+    {
+        "q": "Precisa de guia para fazer o Pico da Bandeira?",
+        "a": "Não é obrigatório, mas é recomendado para quem não tem experiência em trekking de altitude. O acesso principal é pela Vila do Caparaó (MG), dentro do Parque Nacional do Caparaó. A trilha é bem sinalizada até o pico, mas os trechos acima de 2.500 metros exigem atenção ao microclima e à orientação em dias com neblina. Para grupos com crianças ou pessoas sem experiência prévia, contratar um guia local aumenta significativamente a segurança.",
+    },
+    {
+        "q": "Quanto custa a entrada no Pico da Bandeira?",
+        "a": "O Parque Nacional do Caparaó cobra taxa de entrada por pessoa, atualmente em torno de R$ 30 a R$ 40 (valor sujeito a reajuste anual pelo ICMBio). Há também cobrança de estacionamento e, para quem deseja pernoitar nos abrigos dentro do parque, é necessário fazer reserva e pagar taxa adicional de acampamento. Confirme os valores atualizados e a disponibilidade de vagas diretamente no portal do ICMBio ou na portaria do parque antes de planejar a visita.",
+    },
+    {
+        "q": "Qual a melhor época para visitar o Pico da Bandeira?",
+        "a": "Maio a setembro é o período ideal: dias mais secos, visibilidade excelente no cume e menor risco de temporais elétricos. O verão capixaba-mineiro (novembro a março) traz chuvas pesadas à tarde, com raios que representam risco real acima de 2.800 metros — o cume é o ponto mais alto da região e atrai descargas com frequência. Mesmo na seca, inicie a caminhada cedo para descer antes de qualquer formação de nuvens no período da tarde.",
+    },
+    {
+        "q": "É possível acampar no Pico da Bandeira?",
+        "a": "Sim, o parque oferece áreas de acampamento credenciadas e abrigos para pernoite ao longo da trilha. Os abrigos Tronqueira e Terreirão são os mais usados para quem faz o pico em dois dias. As vagas são limitadas e precisam ser reservadas previamente pelo sistema do ICMBio. Acampamento selvagem fora das áreas designadas é proibido. Fogueiras abertas também são vetadas em todo o parque; leve fogareiro com combustível sólido para preparar refeições.",
+    },
+    {
+        "q": "Qual a dificuldade real do Pico da Bandeira para iniciantes?",
+        "a": "O Pico da Bandeira é classificado como moderado a difícil. O percurso de subida tem aproximadamente 17 quilômetros de ida e volta com ganho de altitude significativo, chegando a 2.892 metros — o terceiro ponto mais alto do Brasil. Iniciantes com boa condição física conseguem completar o percurso em um dia longo, mas devem estar preparados para desconforto com altitude, frio inesperado e terreno rochoso no trecho final. Experiência prévia em trilhas de dia inteiro é recomendada.",
+    },
+    {
+        "q": "Qual a altitude do Pico da Bandeira e há risco de mal de altitude?",
+        "a": "O Pico da Bandeira tem 2.892 metros de altitude, sendo o terceiro pico mais alto do Brasil. Nessa altitude, o mal de montanha grave é raro mas não impossível — alguns visitantes relatam dor de cabeça, náusea e tontura no cume, especialmente se subiram muito rápido sem aclimatação. O segredo é subir em ritmo moderado, manter boa hidratação e não forçar o ritmo nos trechos finais. Pessoas com condições cardiorrespiratórias devem consultar médico antes.",
+    },
+    {
+        "q": "Quanto tempo leva para subir e descer o Pico da Bandeira?",
+        "a": "A partir do Abrigo Tronqueira, a subida até o cume leva entre 3 e 4 horas para um ritmo médio; a descida, cerca de 2 a 3 horas. Quem faz o percurso completo a partir da portaria principal deve considerar entre 8 e 12 horas de caminhada no total, dependendo do ritmo e paradas. A maioria dos trilheiros opta por pernoitar em um dos abrigos para distribuir o esforço em dois dias e aproveitar o amanhecer no cume.",
+    },
+],
+
+"canion-itaimbezinho": [
+    {
+        "q": "Precisa de guia para visitar o Cânion Itaimbezinho?",
+        "a": "Não é obrigatório para as trilhas de borda (Trilha do Vértice e Trilha da Cotovias), que são auto-guiadas e bem sinalizadas dentro do Parque Nacional dos Aparados da Serra. Para a descida ao interior do cânion — percurso técnico que exige rapel — o guia especializado é indispensável e deve ser contratado com antecedência. Essa modalidade de descida só é permitida com empresa credenciada pelo ICMBio e condições climáticas favoráveis.",
+    },
+    {
+        "q": "Quanto custa a entrada no Cânion Itaimbezinho?",
+        "a": "A entrada no Parque Nacional dos Aparados da Serra custa em torno de R$ 25 a R$ 35 por pessoa (valor atualizado pelo ICMBio anualmente). O parque também cobra estacionamento. Para a descida técnica ao interior do cânion, as empresas credenciadas cobram valores extras que variam conforme o pacote e o número de participantes. Reserve sempre com antecedência, especialmente em fins de semana e feriados, quando o limite de visitantes é atingido rapidamente.",
+    },
+    {
+        "q": "Qual a melhor época para visitar o Cânion Itaimbezinho?",
+        "a": "O outono e o inverno sul-brasileiros (abril a agosto) oferecem a melhor visibilidade e menor incidência de neblina densa, que pode cobrir completamente o cânion nos meses mais úmidos. A primavera (setembro a novembro) é agradável, mas já traz chuvas. O verão (dezembro a março) tem risco de chuvas fortes que fecham o parque por segurança. Em qualquer época, vá cedo pela manhã: a neblina matinal costuma dissipar entre 9h e 10h, revelando a paisagem completa.",
+    },
+    {
+        "q": "É possível acampar no Cânion Itaimbezinho?",
+        "a": "O camping dentro do Parque Nacional dos Aparados da Serra é permitido apenas nas áreas credenciadas. Não há estrutura de acampamento próxima às bordas do cânion. A maioria dos visitantes se hospeda nas pousadas de Cambará do Sul (RS), cidade-base a cerca de 18 km do parque, que oferece boa infraestrutura com opções para todos os bolsos. A cidade é ponto de partida para outros cânions da região, como o Fortaleza.",
+    },
+    {
+        "q": "Qual a dificuldade real do Cânion Itaimbezinho para iniciantes?",
+        "a": "As trilhas de borda são acessíveis para iniciantes com boa condição física. A Trilha do Vértice (1,4 km) e a Trilha da Cotovias (3,8 km) são caminhadas relativamente planas ao longo das bordas do cânion, sem trechos técnicos. O terreno de grama e pedras é estável na seca. Já a descida ao interior do cânion tem grau técnico elevado e exige treinamento em rapel — não é recomendada para iniciantes sem experiência prévia em escalada ou rappel.",
+    },
+    {
+        "q": "Quanto tempo leva para visitar o Cânion Itaimbezinho?",
+        "a": "As trilhas de borda levam entre 2 e 4 horas para completar com tranquilidade, incluindo paradas para fotografar e apreciar as vistas. É possível fazer a visita em meio dia. Para quem deseja fazer a descida técnica ao interior do cânion, reserve o dia inteiro — o percurso leva entre 6 e 8 horas com as empresas credenciadas. A visita ao cânion vizinho, Fortaleza, pode ser combinada no mesmo dia ou no dia seguinte.",
+    },
+],
+
+"travessia-serra-fina": [
+    {
+        "q": "Precisa de guia para a Travessia Serra Fina?",
+        "a": "Sim, o guia é fortemente recomendado e praticamente indispensável. A Travessia Serra Fina é uma das mais exigentes de São Paulo e Minas Gerais, com trechos sem trilha definida, navegação em campo de altitude e passagens expostas em cristas estreitas. O Agulhas Negras e os trechos acima de 2.700 metros de altitude exigem habilidade de orientação mesmo com GPS. Muitos grupos contratam guias especializados em trekking de altitude para garantir segurança e logística adequada.",
+    },
+    {
+        "q": "Quanto custa fazer a Travessia Serra Fina?",
+        "a": "Não há ingresso único: a travessia começa em Passa Quatro (MG) ou Piquete (SP) e termina no lado oposto, cruzando áreas de diferentes gestores. Os custos incluem transporte até os pontos de entrada e saída, alimentação e equipamento para dois a três dias, guia especializado (preço varia por empresa e tamanho do grupo) e eventual taxa de acesso em propriedades privadas que margeiam o percurso. O custo total por pessoa gira em torno de R$ 800 a R$ 2.000 dependendo da organização.",
+    },
+    {
+        "q": "Qual a melhor época para a Travessia Serra Fina?",
+        "a": "Junho a agosto é o período mais seguro: menor precipitação, campos abertos com visibilidade máxima e ventos moderados. O verão serrano (dezembro a março) é proibido na prática: chuvas diárias intensas, raios em altitude e solo encharcado tornam os trechos expostos extremamente perigosos. Maio e setembro são meses de transição aceitáveis, mas exigem monitoramento do tempo. O inverno pode ter temperaturas próximas a 0 °C no bivaque — prepare equipamento térmico adequado.",
+    },
+    {
+        "q": "É possível acampar na Travessia Serra Fina?",
+        "a": "Sim, o pernoite em bivaque é parte obrigatória da travessia. Não há refúgios estruturados ao longo do percurso, então cada grupo monta acampamento nas áreas planas nos campos de altitude. O local mais comum de bivaque fica próximo à borda do planalto, com visão privilegiada. Fogueiras são proibidas pelo risco de incêndio nos campos. Leve fogareiro a gás, saco de dormir de frio extremo e barraca resistente a ventos fortes.",
+    },
+    {
+        "q": "Qual a dificuldade real da Travessia Serra Fina para iniciantes?",
+        "a": "A Travessia Serra Fina é classificada como extremamente difícil e não é adequada para iniciantes em hipótese alguma. O percurso exige experiência comprovada em trekking de múltiplos dias, navegação por bússola e GPS em terreno sem trilha, passagens em cristas expostas com risco de queda, resistência para carregar mochila pesada em altitudes acima de 2.700 metros e capacidade de improviso em emergências longe de qualquer resgate rápido. Pré-requisito mínimo: dois anos de prática regular em trekking.",
+    },
+    {
+        "q": "Qual a distância e o desnível da Travessia Serra Fina?",
+        "a": "A distância total varia entre 25 e 35 quilômetros dependendo da variante escolhida, com desnível acumulado de aproximadamente 2.000 metros. O ponto mais alto ultrapassa os 2.700 metros de altitude. O terreno inclui campos rupestres, trechos de mata de altitude, cristas rochosas e zonas de difícil orientação. O percurso não deve ser subestimado pela distância — a combinação de desnível, altitude e ausência de trilha definida torna o esforço muito superior a trilhas de mesma extensão no litoral.",
+    },
+],
+
+"trilha-das-praias-rosa-norte-sul": [
+    {
+        "q": "Precisa de guia para a Trilha das Praias Rosa Norte–Sul?",
+        "a": "Não é obrigatório. A Trilha das Praias, que conecta diversas praias selvagens ao longo do litoral sul de Santa Catarina, é auto-guiada e relativamente bem sinalizada nos trechos principais. No entanto, alguns trechos pelo costão rochoso e pela mata atlântica fechada podem confundir. Para quem faz o percurso completo de vários dias pela primeira vez, um guia local ou o uso de aplicativo de trilhas offline com as rotas salvas é altamente recomendado.",
+    },
+    {
+        "q": "Quanto custa fazer a Trilha das Praias Rosa Norte–Sul?",
+        "a": "O acesso às praias em si é gratuito. Os custos envolvem transporte até o ponto de partida (Praia do Rosa), alimentação (há pousadas e restaurantes ao longo do percurso em algumas praias), equipamento para pernoite se optar por acampar e transporte de retorno do ponto final. Não há taxa de entrada específica para a trilha. O custo total varia muito conforme a escolha entre acampar ou se hospedar nas pousadas das praias intermediárias.",
+    },
+    {
+        "q": "Qual a melhor época para a Trilha das Praias Rosa Norte–Sul?",
+        "a": "Março a junho e setembro a novembro são os períodos ideais: o mar costuma estar mais calmo para as travessias de costão, o calor é suportável e as praias estão menos lotadas. O verão (dezembro a fevereiro) é alta temporada com grande concentração de turistas, especialmente na Praia do Rosa. O inverno pode ter vento sul intenso e mar agitado que dificulta ou impossibilita o percurso nos trechos de costão. Verifique a previsão do mar antes de sair.",
+    },
+    {
+        "q": "É possível acampar na Trilha das Praias Rosa Norte–Sul?",
+        "a": "Há áreas de acampamento em algumas praias ao longo do percurso, mas a situação de cada ponto muda com frequência de acordo com regulamentações municipais e ambientais. Algumas praias têm camping estruturado com banheiro e chuveiro; outras permitem acampamento rústico na praia ou na mata. Confirme os locais permitidos antes de sair e respeite as sinalizações de área de proteção ambiental. Muitos trilheiros optam pelas pousadas simples das comunidades locais.",
+    },
+    {
+        "q": "Qual a dificuldade real da Trilha das Praias Rosa Norte–Sul para iniciantes?",
+        "a": "A trilha tem dificuldade moderada e é acessível para pessoas com condição física razoável. Os trechos pelo costão rochoso exigem atenção ao estado do mar e ao horário da maré — alguns pontos só são passáveis com maré baixa. A mata atlântica entre praias pode ser úmida e escorregadia. Não há altitudes elevadas, mas o terreno variado entre areia, pedras e floresta cansa mais do que parece em um dia longo. Verifique a tabua de marés antes de sair.",
+    },
+    {
+        "q": "Quantos dias dura a Trilha das Praias Rosa Norte–Sul?",
+        "a": "O percurso completo pode ser feito em 2 a 4 dias dependendo do ritmo e do número de praias visitadas. A versão mais curta, entre as duas ou três praias mais próximas, pode ser feita em um único dia. O roteiro estendido que conecta todas as praias de Rosa até o sul exige pelo menos três dias com pernoite. É possível fragmentar o percurso e fazer cada trecho em visitas separadas, voltando por trilha ou barco entre os pontos.",
+    },
+],
+
+"vale-da-lua-e-cachoeiras": [
+    {
+        "q": "Precisa de guia para visitar o Vale da Lua e Cachoeiras?",
+        "a": "Não é obrigatório para o Vale da Lua, que fica dentro da Chapada dos Veadeiros (GO) com acesso bem demarcado. Para as cachoeiras mais remotas da região, como o Salto do Rio Preto e as cachoeiras do Parque Estadual, um guia local é recomendado. Algumas cachoeiras fora do parque nacional ficam em propriedades privadas que exigem contratação de guia para acesso legal e seguro. Informe-se sobre cada ponto específico antes de partir.",
+    },
+    {
+        "q": "Quanto custa a entrada no Vale da Lua e Cachoeiras?",
+        "a": "O Vale da Lua fica dentro do Parque Nacional da Chapada dos Veadeiros; a entrada custa em torno de R$ 25 a R$ 35 por pessoa (valor ICMBio, sujeito a reajuste). As cachoeiras do parque estão incluídas no mesmo ingresso. Cachoeiras fora do parque, em propriedades privadas ou áreas de acesso pago, têm cobranças separadas que variam entre R$ 15 e R$ 50 por ponto. São Jorge (GO) é a vila base; há passeios organizados saindo de lá com preços por pessoa.",
+    },
+    {
+        "q": "Qual a melhor época para visitar o Vale da Lua e Cachoeiras?",
+        "a": "Maio a setembro é a melhor época: o período seco do cerrado garante rios com água cristalina, sem a turbidez que as chuvas provocam. O Vale da Lua fica ainda mais bonito com a água baixa, que expõe as formações rochosas completamente. O verão (novembro a março) tem chuvas que podem fechar o parque por dias. Dezembro a março têm menor visibilidade nas formações e maior risco de enchentes rápidas nas trilhas próximas ao Rio Preto.",
+    },
+    {
+        "q": "É possível acampar no Vale da Lua e Cachoeiras?",
+        "a": "O camping dentro do Parque Nacional da Chapada dos Veadeiros é permitido apenas em áreas designadas e com reserva prévia pelo sistema ICMBio. Não é possível acampar às margens do Rio Preto ou no Vale da Lua diretamente. A vila de São Jorge tem campings particulares bem estruturados a poucos quilômetros da entrada do parque, que servem como base para visitar o Vale da Lua, o Salto do Rio Preto e as cachoeiras. Fogueiras são proibidas no parque.",
+    },
+    {
+        "q": "Qual a dificuldade real do Vale da Lua para iniciantes?",
+        "a": "O Vale da Lua é acessível para a maioria dos visitantes. A trilha até as formações rochosas é curta e relativamente plana, com cerca de 1 a 2 quilômetros de caminhada leve. O desafio está nas pedras escorregadias próximas à água — sandálias com aderência ou tênis de borracha são melhores que chinelos. Para as cachoeiras mais distantes do parque, a dificuldade aumenta para moderada, com trechos de mata e desníveis. Crianças e idosos conseguem visitar o Vale com tranquilidade.",
+    },
+    {
+        "q": "O que visitar além do Vale da Lua na Chapada dos Veadeiros?",
+        "a": "A região concentra alguns dos mais belos atrativos do cerrado brasileiro. O Salto do Rio Preto, com queda de 120 metros, é considerado um dos mais impressionantes do Brasil. As Cariocas, as cachoeiras do Garimpão e os cânions do São Miguel completam o roteiro dentro do parque. Fora dele, a Chapada tem cachoeiras particulares como a Santa Bárbara (acesso pago), os cerradões da APA e as trilhas noturnas de observação de pirilampos, únicas no mundo.",
+    },
+],
+
+"pico-parana-serra-do-ibitiraquire": [
+    {
+        "q": "Precisa de guia para o Pico Paraná?",
+        "a": "Não é legalmente obrigatório, mas é altamente recomendado. O Pico Paraná, o mais alto do sul do Brasil com 1.877 metros, fica em área de mata atlântica densa com trilha parcialmente sinalizada. Trechos acima de 1.600 metros na Serra do Ibitiraquire podem perder marcação em dias com neblina intensa, que é frequente. Para quem faz o percurso pela primeira vez, um guia credenciado aumenta muito a segurança — especialmente nos campos de altitude do último terço da subida.",
+    },
+    {
+        "q": "Quanto custa fazer o Pico Paraná?",
+        "a": "Não há ingresso formal para o acesso ao Pico Paraná via a trilha principal que sai de Campina Grande do Sul (PR). Os custos envolvem transporte até o ponto de partida (Véu da Noiva), alimentação para o dia ou os dias de percurso e, se contratar guia, os honorários do profissional. Algumas pousadas na região oferecem pacotes com guia incluso. Verifique se o acesso pela propriedade privada que margeia a trilha cobra taxa — esse status muda com frequência.",
+    },
+    {
+        "q": "Qual a melhor época para o Pico Paraná?",
+        "a": "Junho a setembro oferece as melhores condições: frio seco, chance de geada nos campos de altitude (o que é uma atração em si) e menor precipitação. A mata atlântica paranaense tem chuva distribuída o ano todo, mas o inverno é visivelmente mais seco. O verão (novembro a março) traz chuvas torrenciais e neblina quase constante, que frequentemente fecham a visibilidade no cume a menos de 10 metros. Para quem quer ver o Paraná inteiro a seus pés, o inverno é a única opção segura.",
+    },
+    {
+        "q": "É possível acampar no Pico Paraná?",
+        "a": "Sim. A maioria dos trilheiros faz o Pico Paraná em dois dias com acampamento na Serra do Ibitiraquire, em área plana nos campos de altitude antes do cume. O camping selvagem é tolerado nesses campos, mas fogueiras são proibidas pelo risco de incêndio na vegetação de altitude. Leve fogareiro e combustível. Saco de dormir para temperaturas negativas é obrigatório no inverno — já foram registradas temperaturas de -5 °C nos campos. A opção de um dia exige saída antes das 5h.",
+    },
+    {
+        "q": "Qual a dificuldade real do Pico Paraná para iniciantes?",
+        "a": "O Pico Paraná é classificado como difícil e não é recomendado para iniciantes absolutos. A subida tem aproximadamente 10 quilômetros de ida com ganho de altitude de cerca de 800 metros, trechos de mata fechada com raízes e pedras e passagens expostas nos campos de altitude. A altitude de 1.877 metros é relativamente baixa para altitude sickness, mas a umidade da mata atlântica e o esforço físico acumulado são subestimados. Tenha pelo menos 6 meses de prática regular antes de tentar.",
+    },
+    {
+        "q": "Qual é o ponto de partida para o Pico Paraná?",
+        "a": "O acesso mais utilizado é pela cachoeira Véu da Noiva, em Campina Grande do Sul (PR), a cerca de 60 quilômetros de Curitiba. Outro acesso existe pelo lado de Antonina, mais longo e menos utilizado. O ponto de partida fica a cerca de 1 hora de carro do centro de Curitiba, tornando a trilha uma das mais acessíveis do Paraná em termos de logística. O estacionamento na base é informal; grupos grandes devem combinar transporte com antecedência.",
+    },
+],
+
+"morro-dois-irmaos": [
+    {
+        "q": "Precisa de guia para o Morro Dois Irmãos?",
+        "a": "Sim, o guia é obrigatório para a trilha que sobe ao topo do Morro Dois Irmãos, em Fernando de Noronha (PE). O percurso atravessa área de preservação ambiental permanente e o acesso só é permitido com guia credenciado pela administração do Parque Nacional Marinho de Fernando de Noronha. A contratação deve ser feita com antecedência, pois o número de visitantes por dia é limitado e as vagas esgotam rapidamente na alta temporada.",
+    },
+    {
+        "q": "Quanto custa a entrada no Morro Dois Irmãos?",
+        "a": "Além da Taxa de Preservação Ambiental (TPA) obrigatória para todos os visitantes de Fernando de Noronha — cobrada diariamente em valores progressivos — o acesso ao Morro Dois Irmãos exige o pagamento adicional ao guia credenciado, que varia entre R$ 150 e R$ 300 por pessoa dependendo do grupo e da empresa. A TPA começa em torno de R$ 100 por dia e aumenta conforme o número de dias na ilha. Verifique os valores atualizados no site oficial da Administração de Fernando de Noronha.",
+    },
+    {
+        "q": "Qual a melhor época para visitar o Morro Dois Irmãos?",
+        "a": "Agosto a fevereiro é a estação seca de Noronha, com menor precipitação e mar mais tranquilo. O período de dezembro a março tem visibilidade excepcional e é ideal para quem quer aproveitar o visual do topo do Morro Dois Irmãos. A estação chuvosa (março a julho) traz chuvas diárias que podem cancelar a subida por segurança. A trilha só é feita em condições de visibilidade segura; a administração da ilha pode vetar o acesso em dias de chuva intensa ou vento forte.",
+    },
+    {
+        "q": "É possível acampar no Morro Dois Irmãos?",
+        "a": "Não. O camping em Fernando de Noronha é proibido em toda a ilha — não há áreas de acampamento credenciadas. Os visitantes se hospedam nas pousadas da ilha, que vão de opções simples a resorts de luxo. A hospedagem é parte importante do custo da viagem: Fernando de Noronha é um dos destinos mais caros do Brasil, e os preços das pousadas, especialmente na alta temporada, podem ultrapassar R$ 1.000 a diária por pessoa em pacotes.",
+    },
+    {
+        "q": "Qual a dificuldade real do Morro Dois Irmãos para iniciantes?",
+        "a": "A trilha ao Morro Dois Irmãos tem dificuldade moderada e é acessível para pessoas com boa condição física. O percurso de subida leva cerca de 1 hora em ritmo tranquilo, com trechos de terra e rocha que exigem atenção. A altitude máxima é 325 metros, sem risco de altitude sickness. O trecho mais desafiador é o final, com inclinação acentuada e terreno instável. Use tênis de trilha — sandálias e chinelos são inadequados para o percurso.",
+    },
+    {
+        "q": "O que ver no topo do Morro Dois Irmãos?",
+        "a": "O topo do Morro Dois Irmãos oferece um dos panoramas mais fotografados do Brasil: de lá é possível ver a Baía do Sancho — frequentemente eleita a praia mais bonita do mundo —, a Praia do Leão, a Enseada dos Golfinhos, o Arquipélago das Rocas ao fundo e todo o perímetro da ilha em 360 graus. Nos meses de dezembro a fevereiro, a visibilidade pode alcançar dezenas de quilômetros em dias sem neblina. Leve câmera com lente grande-angular.",
+    },
+],
+
+"fernando-de-noronha-baia-do-sancho": [
+    {
+        "q": "Precisa de guia para ir à Baía do Sancho em Fernando de Noronha?",
+        "a": "Não é obrigatório para a descida à praia pela trilha (via escadaria na rocha) ou pelo barco. O acesso à Baía do Sancho é controlado pelo Parque Nacional Marinho, mas não exige guia para a visita simples à praia. Contudo, o número de visitantes simultâneos é limitado e a entrada pode ser negada se o limite do dia já tiver sido atingido. Para atividades como snorkeling guiado, mergulho com cilindro e trilhas ecológicas dentro do parque, guia credenciado é obrigatório.",
+    },
+    {
+        "q": "Quanto custa visitar a Baía do Sancho em Fernando de Noronha?",
+        "a": "Além da Taxa de Preservação Ambiental (TPA), cobrada diariamente para todos os visitantes da ilha (valores progressivos a partir de aproximadamente R$ 100 por dia), há taxa de entrada ao Parque Nacional Marinho que deve ser paga por visita. O acesso pelo barco inclui o custo da embarcação, em geral parte de passeios de volta à ilha que custam entre R$ 200 e R$ 400 por pessoa. Verifique os valores atualizados no portal da Administração de Fernando de Noronha.",
+    },
+    {
+        "q": "Qual a melhor época para visitar a Baía do Sancho?",
+        "a": "Agosto a fevereiro é a estação seca, com mares calmos, água cristalina e visibilidade subaquática excepcional — chegando a 30 metros em dias ideais. O período de agosto a outubro ainda tem ondas menores e menos turistas que dezembro e janeiro. A estação chuvosa (março a julho) tem mar mais agitado, menor visibilidade para mergulho e mais dias encobertos, mas preços de hospedagem mais baixos. Mesmo na seca, vá cedo à praia: o limite de visitantes é atingido antes do meio-dia na alta temporada.",
+    },
+    {
+        "q": "É possível acampar em Fernando de Noronha ou na Baía do Sancho?",
+        "a": "Não. O camping é absolutamente proibido em Fernando de Noronha, incluindo qualquer praia ou área do parque. Não existem campings nem áreas de bivaque na ilha. A hospedagem é feita exclusivamente nas pousadas e hotéis credenciados, que têm capacidade limitada como parte do controle ambiental da ilha. Essa é uma das medidas de preservação do arquipélago, que recebe número máximo de visitantes por dia. O custo de hospedagem é significativamente mais alto que em outros destinos brasileiros.",
+    },
+    {
+        "q": "Qual a dificuldade real de chegar à Baía do Sancho?",
+        "a": "A Baía do Sancho tem dois acessos: pela trilha com descida por uma fenda na rocha com escadas (fácil a moderado, cerca de 15 minutos de caminhada) ou pelo mar via passeio de barco. A descida pela fenda rochosa é a experiência clássica e acessível para a maioria das pessoas com mobilidade normal. Crianças pequenas e pessoas com dificuldade de mobilidade devem usar o acesso por barco. O principal desafio é o sol intenso e o calor — vá cedo e use protetor solar fator 50+.",
+    },
+    {
+        "q": "O que fazer além da Baía do Sancho em Fernando de Noronha?",
+        "a": "Fernando de Noronha concentra experiências únicas: observação de golfinhos-rotadores na Enseada dos Golfinhos ao amanhecer (gratuita e sem entrada na água), mergulho com cilindro nas Pedras Secas e na Laje Dois Irmãos, snorkeling na Praia do Atalaia (vagas limitadas, acesso controlado), trilha ao Morro Dois Irmãos com guia, passeio histórico às ruínas do Forte dos Remédios e observação de tartarugas nas praias do Leão e da Conceição nos meses de reprodução (novembro a março).",
+    },
+    {
+        "q": "Como chegar a Fernando de Noronha e à Baía do Sancho?",
+        "a": "Fernando de Noronha só tem acesso aéreo: voos saem de Recife (PE) e Natal (RN) com duração de aproximadamente 1h30. As companhias que operam a rota mudam conforme a temporada; reserve com antecedência, especialmente na alta temporada (dezembro a fevereiro), quando as passagens dobram de preço. Dentro da ilha, o deslocamento é feito por buggy alugado (limitado a visitantes cadastrados), moto, bicicleta elétrica ou transporte coletivo. Não existe acesso por barco de passageiros de forma regular.",
+    },
+],
+
+}  # end TRAIL_FAQ
+
+
+FAQ_CSS = """\
+  <style>
+    #trekko-faq{font-family:Inter,system-ui,sans-serif;background:#fff;border-top:4px solid #15803d;padding:3rem 1rem 4rem;color:#1e293b;line-height:1.8}
+    #trekko-faq .fq{max-width:800px;margin:0 auto}
+    #trekko-faq h2{font-family:Sora,system-ui,sans-serif;font-size:1.35rem;font-weight:700;color:#0f172a;margin:0 0 1.5rem}
+    #trekko-faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;overflow:hidden}
+    #trekko-faq details[open]{border-color:#15803d}
+    #trekko-faq summary{font-weight:600;font-size:.97rem;color:#0f172a;padding:.9rem 1.1rem;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:.5rem}
+    #trekko-faq summary::-webkit-details-marker{display:none}
+    #trekko-faq summary::after{content:'+';font-size:1.25rem;color:#15803d;flex-shrink:0;transition:transform .2s}
+    #trekko-faq details[open] summary::after{content:'−'}
+    #trekko-faq .fa{padding:.1rem 1.1rem 1rem;font-size:.93rem;color:#334155}
+    @media(max-width:640px){#trekko-faq{padding:2rem .75rem 3rem}#trekko-faq h2{font-size:1.15rem}#trekko-faq summary{font-size:.92rem}}
+  </style>"""
+
 
 def slug_redirect_script(trails):
     pairs = ", ".join(f"'{t['slug']}': {t['id']}" for t in trails)
@@ -473,52 +782,86 @@ def build_jsonld(t):
     if t.get("lat") is not None and t.get("lng") is not None:
         geo["latitude"] = t["lat"]
         geo["longitude"] = t["lng"]
-    data = {
-        "@context": "https://schema.org",
-        "@graph": [
-            {
-                "@type": "Organization",
-                "@id": "https://trekko.com.br/#organization",
-                "name": "Trekko",
-                "url": "https://trekko.com.br",
-                "logo": "https://trekko.com.br/android-chrome-512x512.png",
+    graph = [
+        {
+            "@type": "Organization",
+            "@id": "https://trekko.com.br/#organization",
+            "name": "Trekko",
+            "url": "https://trekko.com.br",
+            "logo": "https://trekko.com.br/android-chrome-512x512.png",
+        },
+        {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": "Trekko", "item": "https://trekko.com.br"},
+                {"@type": "ListItem", "position": 2, "name": "Trilhas", "item": "https://trekko.com.br/trilhas"},
+                {"@type": "ListItem", "position": 3, "name": t["name"], "item": canonical},
+            ],
+        },
+        {
+            "@type": "TouristAttraction",
+            "@id": canonical,
+            "name": t["name"],
+            "description": t["shortDescription"],
+            "url": canonical,
+            "image": "https://trekko.com.br" + t["imageUrl"],
+            "touristType": "Trilha / Trekking",
+            "geo": geo,
+            "address": {
+                "@type": "PostalAddress",
+                "addressCountry": "BR",
+                "addressRegion": t["uf"],
+                "addressLocality": t["city"],
             },
-            {
-                "@type": "BreadcrumbList",
-                "itemListElement": [
-                    {"@type": "ListItem", "position": 1, "name": "Trekko", "item": "https://trekko.com.br"},
-                    {"@type": "ListItem", "position": 2, "name": "Trilhas", "item": "https://trekko.com.br/trilhas"},
-                    {"@type": "ListItem", "position": 3, "name": t["name"], "item": canonical},
-                ],
-            },
-            {
-                "@type": "TouristAttraction",
-                "@id": canonical,
-                "name": t["name"],
-                "description": t["shortDescription"],
-                "url": canonical,
-                "image": "https://trekko.com.br" + t["imageUrl"],
-                "touristType": "Trilha / Trekking",
-                "geo": geo,
+            "containedInPlace": {
+                "@type": "Place",
+                "name": t["region"],
                 "address": {
                     "@type": "PostalAddress",
                     "addressCountry": "BR",
                     "addressRegion": t["uf"],
-                    "addressLocality": t["city"],
-                },
-                "containedInPlace": {
-                    "@type": "Place",
-                    "name": t["region"],
-                    "address": {
-                        "@type": "PostalAddress",
-                        "addressCountry": "BR",
-                        "addressRegion": t["uf"],
-                    },
                 },
             },
-        ],
-    }
+        },
+    ]
+    faqs = TRAIL_FAQ.get(slug)
+    if faqs:
+        graph.append({
+            "@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": faq["q"],
+                    "acceptedAnswer": {"@type": "Answer", "text": faq["a"]},
+                }
+                for faq in faqs
+            ],
+        })
+    data = {"@context": "https://schema.org", "@graph": graph}
     return json.dumps(data, ensure_ascii=False)
+
+
+def build_faq_section(t):
+    faqs = TRAIL_FAQ.get(t["slug"])
+    if not faqs:
+        return ""
+    items = "\n".join(
+        f'  <details itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">\n'
+        f'    <summary itemprop="name">{faq["q"]}</summary>\n'
+        f'    <div class="fa" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">'
+        f'<p itemprop="text">{faq["a"]}</p></div>\n'
+        f'  </details>'
+        for faq in faqs
+    )
+    return (
+        f'<section id="trekko-faq" aria-label="Perguntas frequentes sobre {t["name"]}"'
+        f' itemscope itemtype="https://schema.org/FAQPage">\n'
+        f'  <div class="fq">\n'
+        f'    <h2>Perguntas frequentes sobre {t["name"]}</h2>\n'
+        f'{items}\n'
+        f'  </div>\n'
+        f'</section>'
+    )
 
 
 def build_editorial_section(t):
@@ -557,6 +900,7 @@ def build_slug_page(t, redirect_script):
     image = "https://trekko.com.br" + t["imageUrl"]
     jsonld = build_jsonld(t)
     editorial = build_editorial_section(t)
+    faq = build_faq_section(t)
 
     return f"""<!doctype html>
 <html lang="pt-BR">
@@ -598,6 +942,7 @@ def build_slug_page(t, redirect_script):
   <script type="application/ld+json">{jsonld}</script>
   <script defer src="/assets/trekko-analytics.js"></script>
 {EDITORIAL_CSS}
+{FAQ_CSS}
   {redirect_script}
   <script type="module" crossorigin src="/assets/index-DSKK19TW.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/react-vendor-DViTTRkQ.js">
@@ -608,6 +953,7 @@ def build_slug_page(t, redirect_script):
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div id="root"></div>
   {editorial}
+  {faq}
 </body>
 </html>"""
 
