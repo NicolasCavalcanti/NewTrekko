@@ -1,24 +1,29 @@
 {
-  "headers": [
-    {
-      "source": "/ads.txt",
-      "headers": [
-        { "key": "Content-Type", "value": "text/plain; charset=utf-8" },
-        { "key": "Cache-Control", "value": "public, max-age=86400" }
-      ]
-    }
-  ],
   "redirects": [
     {
       "source": "/:path+/",
       "destination": "/:path+",
       "permanent": true
-    }
+    },
+    { "source": "/sobre.html",                      "destination": "/sobre",                      "permanent": true },
+    { "source": "/blog.html",                        "destination": "/blog",                        "permanent": true },
+    { "source": "/trilhas.html",                     "destination": "/trilhas",                     "permanent": true },
+    { "source": "/contato.html",                     "destination": "/contato",                     "permanent": true },
+    { "source": "/privacidade.html",                 "destination": "/privacidade",                 "permanent": true },
+    { "source": "/termos-de-uso.html",               "destination": "/termos-de-uso",               "permanent": true },
+    { "source": "/politica-de-cookies.html",         "destination": "/politica-de-cookies",         "permanent": true },
+    { "source": "/politica-de-guias.html",           "destination": "/politica-de-guias",           "permanent": true },
+    { "source": "/politica-editorial.html",          "destination": "/politica-editorial",          "permanent": true },
+    { "source": "/seguranca-em-trilhas.html",        "destination": "/seguranca-em-trilhas",        "permanent": true },
+    { "source": "/divulgacao-de-afiliados.html",     "destination": "/divulgacao-de-afiliados",     "permanent": true },
+    { "source": "/remocao-ou-atualizacao-de-dados.html", "destination": "/remocao-ou-atualizacao-de-dados", "permanent": true },
+    { "source": "/guias.html",                       "destination": "/guias",                       "permanent": true },
+    { "source": "/equipamentos.html",                "destination": "/equipamentos",                "permanent": true }
   ],
   "rewrites": [
     { "source": "/trilhas", "destination": "/index.html" },
-    { "source": "/sobre", "destination": "/index.html" },
-    { "source": "/blog", "destination": "/index.html" }
+    { "source": "/sobre",   "destination": "/index.html" },
+    { "source": "/blog",    "destination": "/index.html" }
   ],
   "cleanUrls": true,
   "trailingSlash": false,
@@ -26,23 +31,30 @@
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Robots-Tag", "value": "index, follow" },
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "SAMEORIGIN" }
+        { "key": "X-Robots-Tag",           "value": "index, follow" },
+        { "key": "X-Content-Type-Options",  "value": "nosniff" },
+        { "key": "X-Frame-Options",         "value": "SAMEORIGIN" }
+      ]
+    },
+    {
+      "source": "/ads.txt",
+      "headers": [
+        { "key": "Content-Type",   "value": "text/plain; charset=utf-8" },
+        { "key": "Cache-Control",  "value": "public, max-age=86400" }
       ]
     },
     {
       "source": "/robots.txt",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=86400" },
-        { "key": "X-Robots-Tag", "value": "noindex" }
+        { "key": "X-Robots-Tag",  "value": "noindex" }
       ]
     },
     {
       "source": "/sitemap.xml",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=3600" },
-        { "key": "Content-Type", "value": "application/xml; charset=utf-8" }
+        { "key": "Cache-Control",  "value": "public, max-age=3600" },
+        { "key": "Content-Type",   "value": "application/xml; charset=utf-8" }
       ]
     }
   ]
