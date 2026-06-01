@@ -447,6 +447,188 @@ TRAIL_EDITORIAL = {
 <h2>Pontos de água e camping</h2>
 <p>Existem pontos de água relatados ao longo do percurso, mas não devem ser considerados garantidos. Leve água suficiente desde a base e trate toda água coletada em córregos. O acampamento é permitido apenas nas áreas estabelecidas pelo IAT. Fogueiras são proibidas; fogareiro é permitido com afastamento mínimo de vegetação; o kit dejetos é obrigatório para pernoites e travessias. Confirme quais áreas estão liberadas antes de ir.</p>""",
 
+
+"chapada-diamantina-vale-do-capao": """\
+<h2>O que esperar da trilha</h2>
+<p>O Vale do Capão é a porta de entrada mais selvagem da Chapada Diamantina. Diferente da movimentada Lençóis, a Vila de Capão tem uma atmosfera própria — uma comunidade alternativa aninhada num vale cercado por paredões de arenito que fazem a paisagem parecer pintada à mão. A trilha principal do vale conecta esse refúgio à Cachoeira da Fumaça, o maior salto livre do Brasil, com 340 metros de queda que só podem ser vistos por inteiro de cima — do mirante do Pai Inácio — ou de baixo, onde a névoa de água cria um microclima permanentemente úmido.</p>
+<p>O percurso de 18 quilômetros é circular e pode ser feito em dois a três dias, com acampamento no próprio vale ou nas proximidades da cachoeira. A densidade de paisagens é extraordinária: em um único trecho é possível ver paredões de quartzito avermelhado, campos rupestres com orquídeas e canelas-de-ema, nascentes de água cristalina e o som constante do Rio Capão que atravessa a vila. O guia é obrigatório dentro do parque e essencial para navegar os atalhos que encurtam a rota sem sacrificar os melhores pontos.</p>
+<h2>Como é a experiência no percurso</h2>
+<p>A partida da Vila de Capão já é uma experiência em si: ruas de terra, casas coloridas, uma praça onde permacultores e mochileiros se misturam com moradores nativos. A trilha sai pelo fundo da vila e começa subindo entre cercas de pedra seca até abrir nos campos rupestres. A vegetação baixa dos campos permite visões dos paredões de arenito que enquadram o vale como uma catedral natural.</p>
+<p>O trecho mais longo vai em direção à Cachoeira da Fumaça, passando por trechos de mata ciliar ao longo do Rio Capão. A aproximação pela base da cachoeira é feita por uma trilha íngreme que termina num anfiteatro de rocha úmido e nebuloso — mesmo em dias de sol, a névoa gerada pelos 340 metros de queda cria um ambiente permanentemente suave e difuso. Quem sobe ao mirante superior (trecho separado de 8 km) tem uma perspectiva completamente diferente: o volume d'água visto de cima parece uma fita branca desaparecendo no abismo.</p>
+<h2>Principais trechos e pontos de atenção</h2>
+<p>A subida para o mirante da Fumaça é o trecho mais exigente, com desnível de cerca de 600 metros em terreno irregular de campos rupestres. No período seco, a cachoeira pode estar com volume muito reduzido ou quase seca — o nome "Fumaça" vem da névoa gerada pelo impacto com o ar, que persiste mesmo com pouca água, mas o visual é muito mais dramático na estação chuvosa. Verifique as condições com o guia antes de definir o roteiro.</p>
+<p>Na Vila de Capão, a orientação para trilhas começa nas agências locais ou com guias independentes cadastrados pelo ICMBio. Não entre no parque por trilhas não sinalizadas sem guia — o território é vasto, a vegetação rupestre dificulta a orientação e os parques da Chapada têm histórico de visitantes perdidos que tentaram economizar no guia.</p>
+<h2>Melhor época para visitar</h2>
+<p>Abril a outubro é a estação seca, com trilhas transitáveis, água cristalina nos rios e temperatura mais amena — as noites no vale podem ser frias, especialmente em julho. A Cachoeira da Fumaça atinge seu pico de volume entre janeiro e março, logo após as chuvas, mas o acesso é mais difícil. Junho e julho concentram o maior número de visitantes na Chapada; se buscar silêncio, vá em setembro ou outubro, quando o fluxo cai e as flores dos campos rupestres ainda estão no auge.</p>
+<h2>Dicas de segurança</h2>
+<p>Protetor solar de alto fator é indispensável nos campos rupestres — a vegetação baixa não oferece sombra e o sol da Bahia é intenso durante todo o ano. Leve pelo menos dois litros de água para os trechos entre pontos de abastecimento. O calçado mais importante é a bota de trilha: as pedras de quartzito são cortantes e o terreno irregular castiga tornozelos sem suporte adequado. No camping, guarde alimentos em sacos herméticos — as cutias do parque são especialistas em acessar mochilas abertas.</p>
+<h2>Nível de preparo recomendado</h2>
+<p>Nível moderado, mas o acúmulo de dois a três dias com mochila carregada eleva a exigência. Caminhantes com experiência em trilhas de um dia conseguem adaptar o ritmo, especialmente se dividirem o percurso em etapas curtas. A Vila de Capão tem ótima infraestrutura de pousadas para quem prefere fazer as trilhas mais leves sem carregar equipamento de camping.</p>
+<h2>Pontos de água e camping</h2>
+<p>O Rio Capão é a principal fonte de água ao longo do percurso. Os campings mais utilizados ficam na própria vila e nas proximidades da base da cachoeira. Trate sempre a água coletada nos rios — a Chapada recebe cada vez mais visitantes e a contaminação por coliformes tem sido registrada em pontos de maior frequência. Fogareiro e kit dejetos são obrigatórios para pernoites fora de área urbana.</p>
+<h2>Contexto local: bioma e comunidade</h2>
+<p>A Vila de Capão — oficialmente Caeté-Açu — é uma das comunidades mais peculiares do interior da Bahia: mistura de agricultores tradicionais, artistas, permacultores e praticantes de espiritualidades alternativas que chegaram nos anos 1980 e 1990 fugindo do ritmo urbano. Hoje convivem em harmonia razoável e criaram uma rede de pousadas, restaurantes e artesanato que sustenta a economia local sem destruir o que os trouxe até ali. O bioma é o Cerrado da Chapada — uma das formações mais biodiversas do planeta, com flora e fauna altamente endêmicas e ameaçadas.""",
+
+"pico-dos-marins": """\
+<h2>O que esperar da trilha</h2>
+<p>O Pico dos Marins, segundo ponto mais alto de São Paulo com 2.420 metros, é um dos grandes segredos do montanhismo paulistano. Enquanto o Pico do Papagaio e a Serra Fina acumulam fama e filas de espera, os Marins permanece relativamente pouco visitado — o que significa silêncio nos campos de altitude, acesso descomplicado e a sensação genuína de conquista que se perde nos destinos mais turísticos. A trilha de 14 quilômetros (ida e volta) com 1.250 metros de desnível é uma das mais exigentes de São Paulo, mas também uma das mais recompensadoras.</p>
+<p>O percurso começa em Piquete, município no Vale do Paraíba paulista na divisa com Minas Gerais, e sobe consistentemente por Mata Atlântica de altitude e campos rupestres até o cume com visão de 360° sobre a Mantiqueira. A trilha pode ser feita como bate-volta exigente (8-10 horas) ou em dois dias com bivaque próximo ao cume — a segunda opção é muito superior para quem quer viver o nascer do sol no topo.</p>
+<h2>Como é a experiência no percurso</h2>
+<p>O começo da trilha atravessa propriedades rurais e mata secundária, com subida progressiva que vai abrindo a vegetação conforme a altitude aumenta. Na faixa dos 1.500 metros, a Mata Atlântica começa a se transformar: árvores menores, mais retorcidas pelo vento, cobertas de musgos e bromélias. Aos 1.800 metros, o ambiente muda completamente — campos rupestres abertos com visão para os vales abaixo e, em dias claros, para o Pico da Bandeira ao sudeste.</p>
+<p>O trecho final ao cume é o mais exposto e, por isso, o mais emocionante. As últimas centenas de metros sobem por um campo aberto onde o vento domina e o horizonte vai se expandindo em todas as direções. No cume, a vista abrange a Serra da Mantiqueira em toda a sua extensão — um horizonte de serras sobrepostas que se estende até onde a névoa permite ver. Em dias de clareza excepcional, é possível identificar o Pico do Papagaio, o Pico da Bandeira e a Serra do Papagaio numa única volta de 360°.</p>
+<h2>Principais trechos e pontos de atenção</h2>
+<p>O trecho entre 1.800 metros e o cume não tem sombra e é totalmente exposto ao vento. Em dias de vento forte, a progressão fica lenta e a sensação térmica cai muito abaixo da temperatura marcada no termômetro. Capa impermeável e camadas térmicas devem estar acessíveis na mochila em qualquer época do ano. A trilha não tem marcação profissional em toda a extensão — GPS com rota carregada é recomendado para o trecho superior.</p>
+<h2>Melhor época para visitar</h2>
+<p>Abril a setembro é a janela ideal: estação seca com trilha mais firme, vento moderado e clareza superior para as vistas. O inverno (junho-agosto) pode trazer geada no cume — temperaturas abaixo de zero são registradas em noites claras de julho. O verão (dezembro-fevereiro) traz chuvas periódicas, trovões em altitude e solo enlameado que dificultam a subida. Setembro e outubro têm floração intensa nos campos de altitude, transformando o percurso em uma galeria de cores.</p>
+<h2>Dicas de segurança</h2>
+<p>Saia antes das 7h para bate-volta: a janela segura de 10 horas é justa e qualquer imprevisto com saída tardia coloca o retorno no escuro. Para quem vai bivouacar, leve saco de dormir para temperaturas negativas e barraca com bom sistema de tensionamento — o vento em altitude nos Marins é real e forte. Não há serviço de emergência próximo ao cume; grupo mínimo recomendado é de duas pessoas.</p>
+<h2>Nível de preparo recomendado</h2>
+<p>Nível difícil. O desnível de 1.250 metros em 7 quilômetros de subida é o parâmetro principal: não é uma trilha para quem está começando. Caminhantes que já fizeram travessias de dois dias e dominam o ritmo de mochila pesada conseguem concluir o bate-volta confortavelmente. Para a opção de dois dias com bivaque, acrescente experiência em camping de altitude e leitura de tempo de montanha.</p>
+<h2>Contexto local: Mantiqueira e Piquete</h2>
+<p>Piquete é uma cidade do Vale do Paraíba com história ligada à aviação — sede do Instituto de Fomento e Coordenação Industrial (IFI) do Exército. A cidade tem boa infraestrutura de hospedagem e serve de ponto logístico para o pico. A APA da Serra da Mantiqueira, onde o pico está inserido, é uma das áreas de proteção mais importantes do corredor ecológico da Mata Atlântica do Sudeste, conectando fragmentos florestais de São Paulo, Minas Gerais e Rio de Janeiro.""",
+
+"gruta-do-lapao": """\
+<h2>O que esperar da trilha</h2>
+<p>A Gruta do Lapão é um destino que surpreende até quem já visitou outras grutas e cavernas brasileiras. Diferente das cavernas calcárias com suas estalactites e estalagmites, o Lapão foi esculpido inteiramente no arenito — processo geológico raro que cria cavidades com geometrias e texturas completamente diferentes. Com 1.120 metros de extensão e galeria principal de até 70 metros de largura, o Lapão é a maior gruta em arenito do Brasil e uma das maiores do mundo nessa categoria de rocha.</p>
+<p>A trilha de acesso tem apenas 4 quilômetros (ida e volta) e parte diretamente da cidade de Lençóis, tornando o Lapão acessível para praticamente todos os perfis de visitante — famílias com crianças, idosos com boa condição física e grupos sem experiência em trilhas de montanha. Mas a simplicidade do acesso não prepara ninguém para a escala da experiência dentro da gruta: entrar na galeria principal é como entrar numa catedral que a natureza levou milhões de anos para construir.</p>
+<h2>Como é a experiência no percurso</h2>
+<p>A trilha começa na orla de Lençóis e sobe suavemente por mata ciliar às margens de um riacho de água clara. O arenito avermelhado aparece gradualmente, primeiro como blocos soltos entre as raízes das árvores, depois como paredões que crescem à medida que a trilha sobe. A entrada da gruta é identificada pelo som — um silêncio diferente, abafado, que se contrapõe ao canto dos pássaros da floresta em volta.</p>
+<p>A galeria principal é longa o suficiente para que a luz natural do exterior suma completamente antes de chegar ao fundo. O guia é obrigatório e leva lanternas para iluminar as formações internas: colunas de arenito, nichos escavados pela água, pontos de luz que entram por fraturas no teto criando efeitos de iluminação únicos. A "Janela" — uma abertura natural na parede da gruta — enquadra a paisagem da chapada como uma pintura. Sentar em frente a ela e olhar para fora é um dos momentos mais silenciosos e contemplativos que a Chapada Diamantina oferece.</p>
+<h2>Principais trechos e pontos de atenção</h2>
+<p>O interior da gruta tem trechos com piso irregular e pedras soltas — calçado fechado de solado firme é obrigatório. O guia orienta os pontos seguros de pisada e as formações que não devem ser tocadas. No período das chuvas, o nível de água dentro da gruta pode subir e fechar o acesso a alguns trechos internos; o guia verifica as condições antes de avançar. Fotografia interna é permitida — leve lanterna própria para complementar a iluminação do guia e conseguir fotos melhores.</p>
+<h2>Melhor época para visitar</h2>
+<p>A Gruta do Lapão pode ser visitada durante o ano inteiro, mas a estação seca (abril a outubro) oferece melhores condições de acesso ao interior. No período das chuvas (novembro a março), o piso interno fica mais escorregadio e alguns trechos podem ficar alagados. A trilha externa é sombreada e agradável em qualquer época. O horário mais recomendado é o período da manhã, quando a luz que entra pela Janela da gruta cria os melhores efeitos fotográficos.</p>
+<h2>Dicas de segurança</h2>
+<p>Nunca entre na Gruta do Lapão sem guia — o interior tem ramificações e trechos escuros onde a desorientação é rápida sem referências externas. Não toque nas paredes da gruta: os óleos da pele aceleram a erosão do arenito, que é muito mais frágil que o calcário. Evite luz de flash direta nas formações para fotografar — use iluminação indireta. Crianças menores de 5 anos têm acesso restrito a alguns trechos internos.</p>
+<h2>Nível de preparo recomendado</h2>
+<p>Nível fácil. A trilha de acesso é curta e de baixo desnível, acessível para qualquer pessoa com mobilidade básica. O interior da gruta exige apenas atenção para onde pisar. O Lapão é uma das poucas atrações da Chapada Diamantina que combina acessibilidade total com impacto visual de primeiríssima linha — um destino perfeito para quem viaja com crianças ou com pessoas que não praticam trekking regularmente.</p>
+<h2>Contexto local: Lençóis e a Chapada</h2>
+<p>Lençóis é o principal centro de visitação da Chapada Diamantina, com infraestrutura completa de pousadas, restaurantes, agências de turismo e guias credenciados. A cidade histórica, com casarões do século XIX da era do garimpo de diamantes, é Patrimônio Histórico Nacional e vale ser explorada antes ou depois das trilhas. A Gruta do Lapão fica a apenas 2 quilômetros do centro histórico — é possível ir caminhando diretamente do centro da cidade, tornando-a ideal como primeira atividade ao chegar ou última antes de partir.""",
+
+"canion-do-sumidouro": """\
+<h2>O que esperar da trilha</h2>
+<p>O Cânion do Sumidouro é um segredo geográfico guardado pela Serra Gaúcha que ainda não entrou no roteiro massificado do turismo sul-brasileiro. Escavado pelo Rio Antas ao longo de milhões de anos no basalto da Serra Geral, o cânion tem paredões que atingem 150 metros e uma extensão de vários quilômetros onde o rio desaparece literalmente sob as rochas — daí o nome "Sumidouro". A trilha de 8 quilômetros atravessa mata nativa de araucárias e campos de altitude até os mirantes que revelam a magnitude do corte geológico.</p>
+<p>O acesso é feito por propriedade privada na região de São Marcos, cidade no meio da Serra Gaúcha entre Caxias do Sul e Bento Gonçalves. A área é menos estruturada que o Cânion Itaimbezinho, mas essa rusticidade é parte do apelo — o Sumidouro ainda tem aquele caráter de descoberta que os destinos mais famosos perderam. O percurso combina floresta de araucária, campos abertos com visão panorâmica e o próprio cânion, cujo silêncio só é quebrado pelo som distante do rio no fundo.</p>
+<h2>Como é a experiência no percurso</h2>
+<p>A trilha começa na beira da propriedade de acesso, atravessa uma porteira de madeira e entra imediatamente em floresta de araucária — uma das formações vegetais mais características e ameaçadas do Sul do Brasil. O piso é de agulhas de araucária sobre um colchão de musgo, macio e silencioso. A medida que a trilha avança, a floresta abre espaço para clareiras com visão das bordas do cânion ao longe.</p>
+<p>O primeiro mirante chega após cerca de 3 quilômetros e a vista é imediata: o cânion se abre abruptamente, com paredes verticais de basalto escuro descendo em linha reta até o Rio Antas, que em alguns trechos desaparece sob blocos de rocha desmoronados — o ponto do "Sumidouro" propriamente dito. A continuação da trilha percorre a borda do cânion com mirantes sucessivos que revelam ângulos diferentes do corte geológico. Em dias claros, é possível ver até Caxias do Sul nos campos ao fundo.</p>
+<h2>Principais trechos e pontos de atenção</h2>
+<p>A borda do cânion não tem guarda-corpo ou sinalização de segurança em todos os pontos — mantenha distância segura das bordas, especialmente com crianças. O terreno em alguns trechos de campo fica enlameado após chuvas, tornando o acesso aos mirantes escorregadio. No interior do cânion (acesso avançado para grupos experientes), as rochas úmidas e o rio em volume alto após chuvas criam condições perigosas que exigem avaliação cuidadosa.</p>
+<h2>Melhor época para visitar</h2>
+<p>Setembro a novembro e março a maio são os melhores períodos: temperatura amena, vegetação verde e o Rio Antas com volume moderado — suficiente para ser bonito, não tanto a ponto de criar risco. O inverno gaúcho (junho-agosto) pode trazer frio intenso e geada que torna o percurso desafiador, mas a paisagem de cânion com névoa da manhã é extraordinariamente fotogênica. O verão (dezembro-fevereiro) é quente e úmido, com possibilidade de chuvas fortes que aumentam o caudal do rio.</p>
+<h2>Dicas de segurança</h2>
+<p>Não se aproxime das bordas do cânion além do que os mirantes sinalizados permitem — acidentes acontecem por excesso de confiança. Leve capa impermeável mesmo em dias de sol: o microclima da Serra Gaúcha pode mudar rapidamente. O acesso ao fundo do cânion pelo leito do Rio Antas deve ser feito apenas com conhecimento da área e acompanhamento de alguém familiarizado com as condições locais. Não nade no rio sem checar o volume e a correnteza com antecedência.</p>
+<h2>Nível de preparo recomendado</h2>
+<p>Nível moderado. A trilha de borda é acessível para caminhantes com condição física regular, mas o terreno irregular e algumas subidas curtas exigem atenção. Para quem quer descer ao fundo do cânion, o nível de exigência sobe para difícil — essa variante exige experiência em trilhas técnicas e, preferencialmente, acompanhamento de guia local com conhecimento específico do cânion.</p>
+<h2>Contexto local: Serra Gaúcha</h2>
+<p>A região de São Marcos fica no coração da Serra Gaúcha vitivinícola, entre Caxias do Sul e Bento Gonçalves. Combinar a visita ao Cânion do Sumidouro com uma passagem pelas vinícolas e pelos municípios de colonização italiana da região é um roteiro completo de fim de semana. A cidade de São Marcos tem pousadas simples e gastronomia colonial italiana que complementa bem a experiência de trilha.""",
+
+"serra-da-canastra": """\
+<h2>O que esperar da trilha</h2>
+<p>A Serra da Canastra guarda dois dos marcos mais simbólicos do Brasil central: a nascente do Rio São Francisco — o Velho Chico, o rio que abasteceu a sertaneja por séculos — e a Cachoeira Casca D'Anta, com 186 metros de queda que a tornam uma das maiores do país. Percorrer os 22 quilômetros da trilha principal entre a portaria de São Roque de Minas e a Casca D'Anta é atravessar o Cerrado mineiro em seu estado mais puro: campos rupestres intermináveis, lobos-guará que cruzam o caminho ao entardecer e silêncio de chapada que a cidade nunca oferece.</p>
+<p>O parque fica a aproximadamente 500 quilômetros de Belo Horizonte e a 350 quilômetros de Brasília, o que o torna um destino logisticamente viável de fim de semana longo. A infraestrutura é bem organizada pelo ICMBio, com campings estruturados, sinalização de trilhas e fiscalização ativa. A Canastra recebe menos visitantes que parques mais famosos do Sudeste, o que preserva aquela qualidade de silêncio e imersão que está desaparecendo dos destinos mais populares.</p>
+<h2>Como é a experiência no percurso</h2>
+<p>A trilha começa na portaria de São Roque de Minas e atravessa imediatamente os campos de altitude da chapada. A vegetação é a marca: campos sujos com murunduns, veredas de buritis, manchas de cerrado sensu stricto com seus ipês retorcidos e os campos rupestres nas cotas mais altas. Em julho e agosto, as canelas-de-ema atingem seus dois metros de altura e os campos ficam salpicados de amarelo e branco das flores silvestres.</p>
+<p>A nascente do Rio São Francisco fica a aproximadamente 8 quilômetros da portaria — um ponto de peregrinação para quem cresceu no Nordeste ou em Minas Gerais com o Velho Chico no imaginário cultural. A água brota de uma rocha numa quantidade modesta que dificilmente faz imaginar o rio caudaloso que ela vai se tornar 2.800 quilômetros depois. Mas a emoção do lugar vem precisamente dessa escala: ver onde começa o que alimentou tantas histórias e tantas vidas.</p>
+<h2>Principais trechos e pontos de atenção</h2>
+<p>O trecho entre a nascente do São Francisco e a Cachoeira Casca D'Anta é o mais longo e menos frequentado. A sinalização existe mas é mais esparsa — GPS com rota previamente carregada é recomendado. As estradas de terra dentro do parque podem ser cortadas pelas chuvas no verão, tornando alguns trechos inacessíveis de carro; confirme as condições de acesso com o ICMBio antes de planejar visitas entre novembro e março.</p>
+<h2>Melhor época para visitar</h2>
+<p>Abril a outubro é a estação seca, com trilhas transitáveis e temperatura agradável durante o dia. As noites de inverno na chapada são frias — geada é registrada no planalto em julho. A floração do Cerrado acontece principalmente de julho a setembro, quando o visual dos campos é excepcional. O verão chuvoso (dezembro a março) transforma as cachoeiras em espetáculos de volume, mas dificulta o acesso a algumas áreas do parque. A Cachoeira Casca D'Anta atinge seu máximo de volume entre janeiro e março.</p>
+<h2>Dicas de segurança</h2>
+<p>O sol do Cerrado é direto e intenso: protetor solar de fator 50, chapéu de aba larga e camiseta manga longa são equipamentos, não opcionais. A hidratação nos campos abertos é consumida mais rapidamente do que parece. Leve mínimo de dois litros para os trechos entre fontes. No entardecer, o lobo-guará cruza os campos com frequência — não se aproxime, não ofereça alimento e aproveite o privilégio de observar de longe.</p>
+<h2>Nível de preparo recomendado</h2>
+<p>Nível moderado. O terreno da Canastra não apresenta trechos técnicos, mas o percurso de 22 quilômetros com mochila de dois dias em campo aberto é exigente pelo volume total e pelo calor. Caminhantes com experiência em trilhas de um dia conseguem completar em dois dias com ritmo tranquilo. A opção de fazer percursos parciais saindo e voltando pela portaria é válida para quem quer conhecer o parque sem o desafio da travessia completa.</p>
+<h2>Pontos de água e camping</h2>
+<p>Os riachos do parque fornecem água ao longo do percurso, mas o tratamento é obrigatório — filtro ou purificador é item essencial. O Camping Casca D'Anta, próximo à cachoeira, é o mais estruturado do parque e serve de base para quem divide a travessia em dois dias. Reserve com antecedência pelo sistema ICMBio, especialmente em feriados e fins de semana de julho e agosto, quando o parque recebe o maior fluxo de visitantes.""",
+
+"parque-nacional-superagui": """\
+<h2>O que esperar da trilha</h2>
+<p>Chegar ao Parque Nacional de Superagui exige uma decisão que filtra por si só o perfil do visitante: sem estrada, sem sinal de celular confiável, acessível apenas por barco a partir de Guaraqueçaba, no litoral norte do Paraná. Essa inacessibilidade é a maior proteção de um dos últimos grandes remanescentes de Mata Atlântica costeira do Brasil — e Patrimônio Mundial da UNESCO desde 1999. Quem decide encontrar Superagui encontra também um dos lugares mais silenciosos e biologicamente ricos do litoral sul-sudeste.</p>
+<p>O parque abrange a Ilha de Superagui e a Ilha das Peças, com uma rede de trilhas, canais e praias que se estende por dezenas de quilômetros. A Praia Deserta — 40 quilômetros de areia fina sem acesso por terra — é o símbolo maior do parque: uma das praias mais preservadas do Brasil, sem quiosques, sem voadores de boia, sem presença humana permanente. A trilha principal percorre a ilha de Superagui da vila até a borda da Praia Deserta, cruzando manguezais, restingas e mata atlântica de restinga num percurso de 12 quilômetros que parece de outro tempo.</p>
+<h2>Como é a experiência no percurso</h2>
+<p>A Vila de Superagui — uma comunidade de pescadores artesanais caiçaras com cerca de 1.000 moradores — é o ponto de partida e chegada. A vida na vila acontece em ritmo de maré: as saídas e chegadas dos barcos de pesca, a fumaça das casas de farinha, as crianças que andam descalças pelas vielas de terra. Essa imersão na cultura caiçara é parte indissociável da experiência de Superagui — não é um parque com vila adjacente, é uma vila dentro de um parque onde a relação entre humanos e natureza nunca foi cortada.</p>
+<p>A trilha sai pela borda da vila e entra imediatamente em mata fechada de restinga. A vegetação é densa, baixa e intrincada, com epífitas em abundância e o som constante de pássaros que nem os mais experientes birdwatchers conseguem identificar todos. Após aproximadamente 4 quilômetros, a mata abre abruptamente para a Praia Deserta: o impacto é imediato. Quarenta quilômetros de areia branca sem nenhum sinal humano visível nos dois sentidos. O oceano Atlântico de frente, a restinga de costas, e o silêncio — exceto pelo vento e pelas ondas.</p>
+<h2>Principais trechos e pontos de atenção</h2>
+<p>A trilha em mata de restinga é bem definida mas pode ficar enlameada após chuvas. O guia é obrigatório para a trilha interna — além da exigência legal, o conhecimento do guia local sobre fauna, flora e pontos de passagem da maré é insubstituível. Na Praia Deserta, cuidado com a ressaca oceânica: as ondas são abertas, sem proteção de recifes, e podem ser fortes. Não nade nos pontos de corrente de retorno — o guia indica os locais seguros.</p>
+<h2>Melhor época para visitar</h2>
+<p>Março a novembro tem menor volume de chuvas e mares mais calmos para a travessia de barco. Dezembro a fevereiro é alta temporada com mais visitantes e mar potencialmente mais agitado para a chegada. O inverno (junho-agosto) é frio no litoral paranaense mas com dias claros e oceano calmo. Para observação de aves, agosto a outubro é o período ideal — espécies migratórias chegam ao litoral e o papagaio-de-cara-roxa está mais ativo.</p>
+<h2>Dicas de segurança</h2>
+<p>O barco de acesso a Superagui pode ser afetado por tempo adverso — tenha flexibilidade de datas para acomodar cancelamentos por mau tempo marítimo. Na ilha, não há farmácia ou pronto-socorro — leve kit de primeiros socorros completo e qualquer medicação necessária para a estadia. A água potável na vila é de qualidade variável; leve purificador ou compre garrafas na cidade antes do embarque. Repelente forte é obrigatório — os mosquitos de manguezal são diferentes dos urbanos.</p>
+<h2>Nível de preparo recomendado</h2>
+<p>Nível fácil a moderado para a trilha principal. O maior desafio não é físico, mas logístico: chegar requer organização, o retorno depende de horário de barco e a permanência exige autossuficiência básica. Para quem aceita essas condições, Superagui oferece uma imersão de natureza que poucos destinos no Brasil ainda proporcionam.</p>
+<h2>Contexto local: cultura caiçara e preservação</h2>
+<p>Os moradores de Superagui vivem uma tensão histórica com o parque — parte das restrições de uso afeta diretamente suas práticas de pesca e agricultura tradicionais. A visita consciente, que valoriza a hospedagem e os serviços dos caiçaras, é a forma mais direta de contribuir para que a comunidade se beneficie do turismo e encontre razões para preservar, ao invés de resistir, ao parque que cerca suas vidas. O papagaio-de-cara-roxa — endêmico e criticamente ameaçado — depende tanto da floresta quanto da convivência pacífica com os moradores.""",
+
+"pico-do-caraca": """\
+<h2>O que esperar da trilha</h2>
+<p>O Pico do Caraça não é apenas uma trilha — é uma experiência que combina montanhismo, história colonial e um dos espetáculos faunísticos mais incomuns do Brasil: os lobos-guará que aparecem ao entardecer no claustro de uma igreja do século XVIII para ser alimentados pelos frades lazaristas. Esta combinação única de cume de 2.072 metros, santuário histórico preservado e encontro programado com o maior canídeo sul-americano faz do Caraça um destino absolutamente singular no país.</p>
+<p>O Santuário do Caraça, em Catas Altas, no Quadrilátero Ferrífero mineiro, é uma reserva particular administrada pela Congregação da Missão. O colégio histórico — fundado em 1820 — ainda funciona como pousada, com hospedagem em quartos simples nos próprios corredores do colégio e refeições no refeitório original. Dormir no Santuário do Caraça é experimentar uma das acomodações mais inusitadas do Brasil, com os sinos da igreja marcando as horas e as janelas dando para jardins de mata atlântica preservada.</p>
+<h2>Como é a experiência no percurso</h2>
+<p>A trilha sai da sede do Santuário e sobe por Mata Atlântica densa de altitude nos primeiros quilômetros. A floresta é extraordinariamente preservada — sem caça, sem extrativismo, protegida pelos frades por mais de 200 anos — e a diversidade de aves é notável: o andorinhão-de-coleira, o tucano-de-bico-preto e várias espécies de beija-flor acompanham a subida. Bromélias, orquídeas e samambaias arborescentes cobrem cada tronco disponível.</p>
+<p>Acima de 1.600 metros, a mata vai cedendo espaço para campos rupestres com a flora típica do Quadrilátero Ferrífero: canelas-de-ema, sempre-vivas e cactos de campos de altitude. O vento aumenta conforme o cume se aproxima. No topo, com 2.072 metros, a vista abrange o Quadrilátero Ferrífero ao sul, a Serra do Espinhaço ao norte e, em dias excepcionais de visibilidade, o horizonte onde Belo Horizonte brilla ao longe. O silêncio é total — e o contraste com a capital a 120 quilômetros é deliberado e libertador.</p>
+<h2>Principais trechos e pontos de atenção</h2>
+<p>O trecho final ao cume, acima dos 1.800 metros, é exposto ao vento e sem sombra. Após chuvas, as pedras de campo rupestre ficam escorregadias — botas com solado de borracha são indispensáveis. A trilha tem bifurcações com sinalização nem sempre atualizada; o mapa fornecido pelo Santuário é suficiente, mas GPS offline é uma garantia adicional útil. Inicie a subida no máximo às 8h para ter tempo de retorno antes do anoitecer — a caminhada de 12 km leva de 6 a 8 horas em ritmo razoável.</p>
+<h2>Melhor época para visitar</h2>
+<p>Abril a outubro é a estação seca e mais segura. O inverno (junho-agosto) pode trazer geada nos campos do cume — temperaturas abaixo de 5 °C são registradas em noites claras de julho — mas os dias são ensolarados e as vistas excepcionalmente claras. O verão chuvoso (dezembro-março) tem flores nos campos rupestres, mas a névoa frequente pode limitar as vistas do cume. Os lobos-guará aparecem no Santuário durante o ano todo; o horário de alimentação varia com a estação e é informado na recepção.</p>
+<h2>Dicas de segurança</h2>
+<p>Hospede-se no Santuário para viver a experiência completa: a caminhada de ida e volta ao cume no mesmo dia que se vem de Belo Horizonte é logisticamente possível mas cansativa. Para o espetáculo dos lobos-guará, o horário é tipicamente entre 18h30 e 20h, no jardim do claustro — o Santuário orienta onde e como esperar. Não persiga ou alimente os lobos fora do ritual coordenado pelos frades: eles são animais silvestres e a habitualidade com humanos é resultado de décadas de condicionamento controlado.</p>
+<h2>Nível de preparo recomendado</h2>
+<p>Nível difícil pelo desnível de 830 metros em 6 quilômetros de subida. Caminhantes com experiência regular em trilhas de montanha e boa condição aeróbica completam o percurso confortavelmente. Para iniciantes, é possível fazer a trilha com ritmo lento e descansos frequentes, mas o retorno antes do anoitecer exige gestão cuidadosa do tempo. Bastões de trekking são recomendados para a descida, especialmente para proteger os joelhos no trecho de maior inclinação.</p>
+<h2>Contexto histórico: o Santuário e os frades</h2>
+<p>O Colégio do Caraça foi fundado em 1820 pelos padres lazaristas e formou gerações de estudantes mineiros até o incêndio de 1968, que destruiu grande parte do edifício central. A reconstrução manteve a essência histórica, e hoje a Congregação da Missão administra tanto a reserva natural quanto a pousada e o museu histórico. A biblioteca e a coleção de objetos coloniais merecem uma tarde de exploração antes ou depois da subida.""",
+
+"lagoa-azul-bonito": """\
+<h2>O que esperar da trilha</h2>
+<p>A Lagoa Azul é o cartão postal mais famoso de Bonito e, para muitos visitantes, a revelação de que a realidade pode superar as fotografias. A água da lagoa é de um azul-turquesa tão saturado e translúcido que parece retocada digitalmente — mas é física e química: as partículas de calcário em suspensão na água refratam a luz criando essa tonalidade que varia de turquesa claro na superfície para azul-cobalto nas profundezas. A visibilidade chega a 30 metros, tornando o snorkeling numa experiência de flutuação sobre o abismo.</p>
+<p>O fenômeno mais esperado de Bonito é o raio de sol que penetra pela abertura da gruta e ilumina as stalactites subaquáticas em azul intenso — esse espetáculo acontece apenas de junho a julho, entre 9h e 10h da manhã, quando o ângulo solar é preciso o suficiente para que a luz desça exatamente pelo buraco na rocha. Mas a Lagoa Azul é impactante em qualquer horário e época do ano: a clareza da água, os cardumes de piraputanga e dourado que nadam em torno dos visitantes e as stalactites parcialmente submersas criam um ambiente que não tem equivalente em nenhum outro ponto do Brasil.</p>
+<h2>Como é a experiência no percurso</h2>
+<p>A trilha de acesso, com 3 quilômetros, parte da área de recepção e percorre mata ciliar preservada da Bacia do Rio Miranda. O caminho é plano e bem mantido, com o guia explicando a formação geológica da área e as espécies de flora ao longo do percurso. A chegada é impactante: após uma última curva, a abertura da gruta aparece e, alguns metros abaixo, a lagoa azul se estende em toda a sua dimensão. A descida até a beira da água é feita por uma rampa de madeira que respeita o ângulo da rocha.</p>
+<p>O tempo de snorkeling é cronometrado pelo operador — geralmente 30 a 40 minutos — com colete salva-vidas obrigatório e nadadeiras para ajudar a flutuar sem esforço. Dentro da água, cardumes de centenas de peixes nativos circulam ao redor dos visitantes com absoluta indiferença — o peixe de Bonito não tem predador humano há décadas e perdeu o instinto de fuga. A experiência de estar rodeado por uma nuvem de peixe dourado em água de cristal com stalactites ao fundo é genuinamente surreal.</p>
+<h2>Principais trechos e pontos de atenção</h2>
+<p>Bonito funciona com um sistema único de controle de visitação: todas as atrações exigem agência ou guia credenciado e o número de visitantes por dia é limitado por cada atrativo. Reserve com antecedência — especialmente em julho, dezembro e janeiro, quando a Lagoa Azul pode atingir capacidade máxima com semanas de antecedência. A entrada sem reserva não é possível. O acesso à Lagoa Azul não é adequado para pessoas com claustrofobia severa ou dificuldade de mobilidade.</p>
+<h2>Melhor época para visitar</h2>
+<p>A Lagoa é visitável o ano inteiro, mas outubro a março oferece a maior diversidade de piraputanga nos cardumes e temperaturas de água mais amenas. De junho a julho, quem quer ver o raio de sol nas stalactites deve reservar para o horário entre 9h e 10h — é quando o fenômeno acontece. Julho é também alta temporada com preços elevados e atrações lotadas. Para uma experiência mais tranquila, vá em setembro, outubro ou novembro.</p>
+<h2>Dicas de segurança</h2>
+<p>Use apenas protetor solar biodegradável dentro da água — os protetores comuns contaminam o calcário e destroem a transparência que torna a lagoa única. O protetor convencional é proibido em todas as atrações aquáticas de Bonito. Não toque nas stalactites ou nas paredes da gruta dentro da água. Comer dentro da lagoa ou levar comida para próximo da água também é proibido. Siga rigorosamente as instruções do guia — as regras de Bonito são rígidas e fazem parte do motivo pelo qual o destino continua tão preservado após décadas de visitação.</p>
+<h2>Nível de preparo recomendado</h2>
+<p>Nível fácil. A trilha de acesso não exige preparo físico e o snorkeling com colete não requer habilidade de natação avançada. A Lagoa Azul é um dos destinos mais acessíveis e democráticos de Bonito — adequada para crianças a partir de aproximadamente 5 anos, adultos sem condição física para trilhas mais exigentes e idosos com mobilidade razoável. O principal pré-requisito é não ter medo de água e conseguir usar snorkel.""",
+
+"pedra-azul": """\
+<h2>O que esperar da trilha</h2>
+<p>A Pedra Azul é um monólito granítico que domina o horizonte da Serra do Espírito Santo como um farol de rocha: 1.822 metros de altitude, 300 metros de altura visível desde a base e uma coloração que muda ao longo do dia — do cinza-rosado da manhã para o azul-acinzentado do entardecer que deu nome à pedra. O Parque Estadual da Pedra Azul protege o monólito e a Mata Atlântica de altitude que o envolve, com uma trilha de 6 quilômetros que chega às piscinas naturais esculpidas na rocha na base do granito.</p>
+<p>O parque fica em Domingos Martins, município da região serrana capixaba a 75 quilômetros de Vitória — uma das distâncias mais curtas entre uma capital brasileira e uma área de proteção com trilha de montanha. Essa proximidade faz da Pedra Azul o destino favorito dos vitorienses e uma parada obrigatória para quem passa pela BR-262 entre o Espírito Santo e Minas Gerais.</p>
+<h2>Como é a experiência no percurso</h2>
+<p>A trilha parte do Centro de Visitantes e adentra imediatamente uma Mata Atlântica de altitude extraordinariamente preservada. A floresta tem uma densidade de bromélias, orquídeas e samambaias que transforma os troncos em jardins verticais. O som de pássaros é constante — o Parque Estadual da Pedra Azul tem uma das listas mais ricas de avifauna do Espírito Santo, com espécies endêmicas da Mata Atlântica que não existem em nenhum outro bioma.</p>
+<p>Após aproximadamente 2 quilômetros, a trilha abre para a área das piscinas naturais: concavidades esculpidas pelo intemperismo na superfície do granito, preenchidas por água de nascentes que desce pelo monólito. A água é fria, transparente e perfeitamente azul-esverdeada pelo reflexo do granito molhado. As piscinas de diferentes tamanhos criam um complexo natural de banhistas que nenhum resort conseguiria replicar. A Pedra Azul ao fundo, mudando de cor conforme o sol se move, é o enquadramento perfeito.</p>
+<h2>Principais trechos e pontos de atenção</h2>
+<p>As rochas em torno das piscinas ficam extremamente escorregadias quando molhadas — acidentes por queda são a principal ocorrência nos registros do parque. Calçado aquático com solado antiderrapante ou sandália de trekking com boa aderência é mais seguro do que andar descalço. O guia é obrigatório para a trilha e orienta os pontos seguros de entrada e saída das piscinas. O sol na face sul do monólito cria sombra nas piscinas a partir das 15h — chegue cedo para aproveitar o sol na água.</p>
+<h2>Melhor época para visitar</h2>
+<p>Maio a setembro é a estação seca, com trilha mais transitável, piscinas limpas e o efeito da coloração azul da pedra mais pronunciado nos entardeceres. O verão (outubro a abril) tem chuvas frequentes que podem fechar a trilha por segurança e turvar as piscinas. A floração das bromélias e orquídeas da Mata Atlântica acontece principalmente entre agosto e outubro — o percurso nessa época é especialmente rico em detalhes botânicos. A Pedra Azul tem lotação máxima em fins de semana de julho — chegue antes das 8h para evitar filas.</p>
+<h2>Dicas de segurança</h2>
+<p>Não suba na face vertical do monólito fora dos pontos autorizados pelo parque — a rocha parece mais fácil de escalar do que é, e acidentes graves já aconteceram em tentativas não autorizadas. O mergulho nas piscinas é permitido apenas nas áreas sinalizadas; a profundidade varia muito entre concavidades e algumas têm fundos irregulares. Protetores solares convencionais são proibidos nas piscinas — use somente protetor mineral ou biodegradável. Leve água suficiente para o percurso — as fontes ao longo da trilha não devem ser usadas sem tratamento.</p>
+<h2>Nível de preparo recomendado</h2>
+<p>Nível moderado. A trilha não tem trechos técnicos, mas o desnível de 520 metros em 3 quilômetros de subida exige boa condição aeróbica. Crianças acima de 8 anos geralmente completam o percurso sem dificuldade, desde que o ritmo seja adaptado. Para visitantes que buscam apenas as piscinas sem a subida completa, existe um acesso mais curto pela área de uso intensivo — consulte o Centro de Visitantes.</p>
+<h2>Contexto local: serra capixaba</h2>
+<p>A região serrana do Espírito Santo, colonizada predominantemente por imigrantes alemães e italianos no século XIX, tem uma identidade cultural distinta do litoral capixaba. Domingos Martins é conhecida pelo festival de cultura germânica, pela gastronomia de influência europeia e pela arquitetura das casas de campo que salpicam as encostas entre o Parque da Pedra Azul e a cidade. Combinar a trilha com uma passagem pelo centro histórico de Pedra Azul (vilarejo no entorno do parque) e um almoço nas pousadas da região é o itinerário mais completo para a região.""",
+
+"pedra-da-gavea": """\
+<h2>O que esperar da trilha</h2>
+<p>A Pedra da Gávea é a trilha urbana mais icônica do Brasil — e possivelmente do mundo. Com 844 metros de altitude, o cume do maciço granítico está a apenas 12 quilômetros em linha reta do centro do Rio de Janeiro, e a vista do topo combina o que nenhum outro ponto da cidade consegue oferecer: Cristo Redentor, Pão de Açúcar, Lagoa Rodrigo de Freitas, Ipanema, Leblon e o oceano Atlântico numa panorâmica de 360° que tem poucos equivalentes em metrópoles do mundo. A subida, contudo, não é uma caminhada casual — inclui um trecho de escalada com corda fixada que filtra quem chega ao cume.</p>
+<p>A trilha está dentro do Parque Nacional da Tijuca — a maior floresta urbana do mundo — e exige guia credenciado pelo ICMBio, tanto por questão de segurança no trecho técnico quanto por ser norma do parque. A distância de 10 quilômetros (ida e volta) não é o parâmetro principal: o desnível de 820 metros em terreno irregular de floresta densa e, especialmente, o trecho de escalada são o que determinam o perfil do caminhante adequado para a Gávea.</p>
+<h2>Como é a experiência no percurso</h2>
+<p>A trilha começa na Estrada da Gávea, no bairro da Gávea, e entra imediatamente na Floresta da Tijuca — uma imersão instantânea de mata atlântica a metros do bairro de São Conrado. A floresta é exuberante e barulhenta com aves, macacos-pregos e saguis que acompanham a subida com curiosidade e sem medo. O percurso sobe consistentemente por singletrack de terra e raízes por cerca de 3 quilômetros até chegar ao início do trecho técnico.</p>
+<p>O trecho de escalada é o coração da experiência. Uma fenda vertical na rocha granítica — com cordas fixas instaladas pelo parque — exige subir pelo próprio corpo usando apoios na pedra. O guia instrui os movimentos e garante a segurança, mas é necessária disposição física e psicológica para encarar alguns metros de exposição vertical. Para quem supera esse momento, a chegada ao cume é correspondentemente dramática: o plateau granítico se abre em visão total de 360° do Rio de Janeiro que literalmente tira o fôlego.</p>
+<h2>Principais trechos e pontos de atenção</h2>
+<p>O trecho de escalada é o único ponto sem alternativa — quem não conseguir ou não quiser fazê-lo não chega ao cume. A escalada não é tecnicamente difícil, mas exige força de braço e resistência a alturas. Pessoas com acrofobia severa devem ser honestas consigo mesmas antes de tentar. O cume é totalmente exposto ao vento e ao sol — leve camadas e protetor solar. Em dias de nevoeiro, a visibilidade do topo pode ser zero; o guia avalia as condições antes de iniciar e pode recomendar cancelamento em dias de má visibilidade.</p>
+<h2>Melhor época para visitar</h2>
+<p>Abril a outubro tem menos chuvas e maior probabilidade de visibilidade limpa no cume. O verão carioca (dezembro-março) traz chuvas frequentes, rocha molhada que torna o trecho de escalada mais perigoso e névoa que cobre o topo com frequência. Os meses de julho e agosto têm os dias mais claros e o vento mais favorável — os melhores para fotografar o panorama completo do Rio. Saia antes das 7h para evitar o calor do meio-dia no trecho de subida e para ter mais chances de estar no cume sem névoa.</p>
+<h2>Dicas de segurança</h2>
+<p>Nunca faça a Pedra da Gávea sem guia credenciado — além de ser obrigatório, o trecho de escalada sem orientação adequada é genuinamente perigoso. Calçado de trilha com bom solado de borracha é fundamental para aderência na rocha; tênis de corrida e sapatilhas de skatista são inadequados. Não suba em dias de chuva ou com previsão de tempestade — a rocha molhada no trecho técnico cria risco real de queda. Leve no mínimo dois litros de água — o calor e o esforço na subida consomem mais do que parece.</p>
+<h2>Nível de preparo recomendado</h2>
+<p>Nível difícil. O desnível de 820 metros e o trecho de escalada colocam a Pedra da Gávea bem acima das trilhas de montanha convencionais. Caminhantes com experiência em trilhas moderadas a difíceis e sem fobia de altura conseguem completar o percurso com guia. Para quem nunca escalou nada e tem pouca experiência em trilhas, a recomendação é começar por trilhas mais simples do Parque da Tijuca antes de tentar a Gávea. A sensação de chegada ao cume, contudo, é uma das mais inesquecíveis que qualquer trilha no Brasil oferece.</p>
+<h2>Contexto local: Parque Nacional da Tijuca</h2>
+<p>O Parque Nacional da Tijuca é a maior floresta urbana do mundo e um dos exemplos mais bem-sucedidos de reflorestamento da história: a mata atual foi replantada no século XIX após o desmatamento da era colonial que ameaçava o abastecimento de água do Rio de Janeiro. Hoje a floresta abriga mais de 200 espécies de aves, 70 espécies de mamíferos e uma diversidade de flora que rivaliza com florestas primárias do Brasil. A Pedra da Gávea é apenas a ponta mais alta de um parque que merece mais de uma visita.""",
+
 }  # end TRAIL_EDITORIAL
 
 # ---------------------------------------------------------------------------
@@ -737,6 +919,277 @@ TRAIL_FAQ = {
     {
         "q": "Como chegar a Fernando de Noronha e à Baía do Sancho?",
         "a": "Fernando de Noronha só tem acesso aéreo: voos saem de Recife (PE) e Natal (RN) com duração de aproximadamente 1h30. As companhias que operam a rota mudam conforme a temporada; reserve com antecedência, especialmente na alta temporada (dezembro a fevereiro), quando as passagens dobram de preço. Dentro da ilha, o deslocamento é feito por buggy alugado (limitado a visitantes cadastrados), moto, bicicleta elétrica ou transporte coletivo. Não existe acesso por barco de passageiros de forma regular.",
+    },
+],
+
+
+"chapada-diamantina-vale-do-capao": [
+    {
+        "q": "Precisa de guia para trilhar no Vale do Capão na Chapada Diamantina?",
+        "a": "Sim. O guia é obrigatório dentro dos limites do Parque Nacional da Chapada Diamantina, incluindo as trilhas da Cachoeira da Fumaça e da área do Vale do Capão. A exigência legal existe para proteger tanto os visitantes quanto o bioma — a Chapada é vasta, a vegetação rupestre dificulta a orientação e casos de pessoas perdidas sem guia têm histórico documentado. Os guias credenciados são contratados diretamente na Vila de Capão, nas agências de turismo locais ou pela internet com antecedência.",
+    },
+    {
+        "q": "Qual a melhor forma de chegar ao Vale do Capão na Chapada Diamantina?",
+        "a": "O Vale do Capão fica a aproximadamente 75 quilômetros de Lençóis, o principal hub aéreo da Chapada. De Lençóis, o acesso é feito por estrada de terra que pode ser difícil em épocas de chuva — carro com tração ou ônibus de van que sai diariamente de Lençóis são as melhores opções. De Salvador, são aproximadamente 450 quilômetros pela BR-116 e BA-148. A Vila de Capão tem boa infraestrutura de pousadas e é um destino por si só, mesmo para quem não vai fazer trilhas longas.",
+    },
+    {
+        "q": "A Cachoeira da Fumaça tem água o ano todo?",
+        "a": "Não. A Cachoeira da Fumaça varia muito de volume conforme a estação. No período das chuvas (novembro a março), o volume é máximo e o visual é dramático — a névoa gerada pelo impacto com o ar cria uma nuvem permanente na base. Na estação seca (especialmente agosto a outubro), a cachoeira pode ficar com volume muito reduzido ou praticamente seca no salto principal, com apenas um fio de água descendo. O guia informa as condições atuais antes de incluir a Fumaça no roteiro.",
+    },
+    {
+        "q": "O que é melhor: ver a Cachoeira da Fumaça de cima ou de baixo?",
+        "a": "São experiências completamente diferentes e complementares. De cima, do mirante do Pai Inácio (trecho separado de 8 km), a vista do salto livre de 340 metros é impressionante pela escala — um fio de água que cai e some na névoa abaixo. De baixo, a perspectiva é mais íntima e mais úmida: a névoa gerada pela queda cria um microclima permanente, a acústica é impressionante e a escala das paredões ao redor é de difícil compreensão. Se o tempo permitir, fazer as duas perspectivas em dias diferentes é o ideal.",
+    },
+    {
+        "q": "Qual a melhor época para visitar o Vale do Capão?",
+        "a": "Abril a outubro é a estação seca, com trilhas mais transitáveis, água cristalina nos rios e temperatura amena. Julho concentra o maior fluxo de visitantes — a Vila de Capão fica movimentada mas ainda tem a atmosfera própria. Para quem busca silêncio, setembro e outubro são excelentes: o fluxo cai e os campos rupestres ainda têm flores. A estação chuvosa (novembro-março) tem o benefício de ver a Fumaça em volume máximo, mas as trilhas ficam enlameadas e o acesso a alguns pontos pode ser bloqueado.",
+    },
+    {
+        "q": "Quanto tempo preciso reservar para o Vale do Capão?",
+        "a": "O mínimo recomendado é dois dias completos: um para a trilha da base da Cachoeira da Fumaça (aproximadamente 12 km, 6-8 horas) e outro para explorar os arredores da vila e um banho no Rio Capão. Para quem quer incluir o mirante da Fumaça pelo Pai Inácio, acrescente mais um dia. O Vale do Capão recompensa quem desacelera — a Vila tem uma energia particular que convida à permanência, e a diversidade de trilhas de diferentes dificuldades permite uma semana inteira de programação.",
+    },
+],
+
+"pico-dos-marins": [
+    {
+        "q": "Precisa de guia para subir o Pico dos Marins?",
+        "a": "Não é obrigatório legalmente, mas fortemente recomendado para quem não tem experiência em trilhas de altitude sem marcação profissional. O trecho superior do Pico dos Marins, acima dos 1.800 metros, tem marcação menos definida e a orientação por GPS é necessária em trechos onde o caminho se confunde com trilhas de gado. Um guia local de Piquete conhece os atalhos, os pontos de água e as melhores janelas de tempo para o cume — informações que valem mais do que qualquer aplicativo em campo.",
+    },
+    {
+        "q": "Qual a dificuldade real do Pico dos Marins para quem nunca subiu um pico de 2.000 metros?",
+        "a": "O Pico dos Marins é classificado como difícil principalmente pelo desnível de 1.250 metros em 7 quilômetros de subida — equivalente a escalar um prédio de 400 andares. Para quem nunca subiu acima de 1.500 metros, a altitude em si não é problema nos Marins, mas o acúmulo de esforço físico ao longo de horas de subida contínua é subestimado por caminhantes iniciantes. Preparação com caminhadas de treino progressivo por pelo menos dois meses antes da subida é o mínimo recomendado.",
+    },
+    {
+        "q": "É possível fazer o Pico dos Marins em bate-volta no mesmo dia?",
+        "a": "Sim, mas é exigente. O bate-volta leva de 8 a 10 horas dependendo do ritmo e do tempo no cume. Saída às 6h da manhã é o ideal para ter luz suficiente, evitar o calor do meio-dia na subida e chegar ao cume antes de eventual névoa da tarde. Caminhantes em boa condição física completam o percurso confortavelmente nesse horário. Para quem não tem experiência em ritmo de subida contínua, a opção de dois dias com bivaque próximo ao cume é muito mais segura e prazerosa.",
+    },
+    {
+        "q": "Qual o melhor horário para estar no cume do Pico dos Marins?",
+        "a": "O nascer do sol no cume é a experiência mais valorizada: a vista da Serra da Mantiqueira com o céu mudando de preto para dourado e o horizonte de serras emergindo da névoa é de rara beleza. Para viver esse momento, é necessário bivouacar na noite anterior próximo ao cume e subir o trecho final antes das 6h. Alternativamente, o entardecer também oferece iluminação dramática — mas o retorno no escuro exige lanterna frontal e conhecimento do caminho ou acompanhamento de guia.",
+    },
+    {
+        "q": "Que equipamento levar para o Pico dos Marins?",
+        "a": "Bota de trilha com solado de borracha é obrigatória — o terreno irregular e molhado do trecho superior não é compatível com tênis de corrida. Capa impermeável e camadas térmicas devem estar na mochila mesmo em dias de sol — o vento no cume de 2.420 metros cria sensação térmica muito menor que a temperatura do ar. Para o bate-volta: mínimo de 2,5 litros de água, protetor solar de alto fator, lanche energético e bastões para a descida. Para o bivaque: saco de dormir para temperaturas abaixo de zero, barraca com tensionamento para vento e fogareiro.",
+    },
+    {
+        "q": "Como chegar até o início da trilha do Pico dos Marins?",
+        "a": "O ponto de partida fica em Piquete, município do Vale do Paraíba paulista, a aproximadamente 200 quilômetros de São Paulo e 270 quilômetros do Rio de Janeiro. De carro, a rota mais usada é pela Rodovia Presidente Dutra (BR-116) com saída em Guaratinguetá e depois Piquete. O início da trilha fica a alguns quilômetros do centro da cidade, acessível por estrada de terra. Piquete tem hospedagem simples para quem chega na véspera. Transporte público até Piquete existe via ônibus de Guaratinguetá.",
+    },
+],
+
+"gruta-do-lapao": [
+    {
+        "q": "Qual é a diferença entre a Gruta do Lapão e as outras cavernas da Chapada Diamantina?",
+        "a": "A principal diferença é o tipo de rocha. A maioria das grutas famosas do Brasil é formada em calcário, onde a dissolução química cria estalactites e estalagmites. A Gruta do Lapão foi escavada no arenito — processo de erosão física que cria cavidades com geometrias mais arredondadas, paredes texturizadas em camadas horizontais e ausência de formações calcárias internas. O resultado é uma caverna com escala maior e aparência completamente diferente das grutas calcárias, sendo a maior do Brasil nessa categoria de rocha.",
+    },
+    {
+        "q": "Precisa de guia para visitar a Gruta do Lapão?",
+        "a": "Sim, o guia é obrigatório para acessar a Gruta do Lapão. A exigência existe por razões de segurança — o interior é extenso e escuro, e alguns trechos exigem conhecimento da rota — e por preservação: o guia impede o toque nas formações e garante que os visitantes sigam os caminhos que minimizam o impacto sobre o arenito, que é mais frágil que o calcário. Os guias são contratados em Lençóis, com saídas diárias organizadas por agências ou guias independentes credenciados.",
+    },
+    {
+        "q": "Quanto tempo leva a visita à Gruta do Lapão?",
+        "a": "A visita completa, incluindo a trilha de ida e volta (4 km) e a exploração do interior da gruta, leva de 3 a 4 horas. O percurso de acesso é tranquilo e serve de contexto geológico antes da gruta. No interior, o tempo varia conforme o interesse: quem vai fotografar cada ângulo passa mais tempo, quem vai em grupo com crianças tem ritmo diferente de quem vai para contemplação. A Gruta do Lapão é perfeitamente combinável com outras atrações de Lençóis no mesmo dia.",
+    },
+    {
+        "q": "A Gruta do Lapão é adequada para crianças?",
+        "a": "Sim, a Gruta do Lapão é uma das atrações mais adequadas para crianças de toda a Chapada Diamantina. A trilha de acesso é curta e plana, a gruta não tem trechos de escalada ou passagens muito estreitas, e o impacto visual é imediato — crianças ficam impressionadas com a escala da galeria principal. O guia geralmente tem repertório de explicações adaptadas para crianças sobre a formação geológica. A recomendação é levar lanterna própria para cada criança — iluminar a própria caverna aumenta muito o engajamento.",
+    },
+    {
+        "q": "Qual a melhor época para visitar a Gruta do Lapão?",
+        "a": "A Gruta do Lapão pode ser visitada durante o ano inteiro, o que a torna uma das poucas atrações da Chapada que funciona bem em qualquer estação. Na estação seca (abril a outubro), o acesso externo é mais fácil e o interior está menos úmido. Na estação chuvosa, o nível de água interna pode subir e restringir alguns trechos, mas a vegetação ao redor está mais exuberante. Para fotografar o efeito de luz na Janela da gruta, o período da manhã é o melhor em qualquer época do ano.",
+    },
+    {
+        "q": "Como se chega à Gruta do Lapão saindo de Lençóis?",
+        "a": "A Gruta do Lapão fica a aproximadamente 4 quilômetros do centro de Lençóis, acessível a pé pela trilha que sai da cidade ou de carro até o início do percurso. A maioria dos visitantes vai com o guia contratado, que organiza o transporte e acompanha durante toda a visita. Para quem prefere ir a pé diretamente do centro, o trajeto é bem sinalizado e faz parte da própria experiência — atravessar as ruas de Lençóis, sair pelo bairro do Rosário e seguir pelo caminho de terra até a entrada da gruta é uma introdução agradável ao ritmo da cidade.",
+    },
+],
+
+"canion-do-sumidouro": [
+    {
+        "q": "Como chegar ao Cânion do Sumidouro no Rio Grande do Sul?",
+        "a": "O Cânion do Sumidouro fica na área rural de São Marcos, município da Serra Gaúcha entre Caxias do Sul e Bento Gonçalves. O acesso é feito por estrada de terra a partir da cidade de São Marcos, com o último trecho passando por propriedade privada. Carro próprio é a forma mais prática de chegar. Caxias do Sul, com aeroporto e rodoviária, é a referência logística mais próxima — de lá são aproximadamente 35 quilômetros. Confirme o acesso com os proprietários da área antes de ir, pois a rota pode ter variações de acordo com a temporada.",
+    },
+    {
+        "q": "O Cânion do Sumidouro é diferente do Cânion Itaimbezinho?",
+        "a": "Sim, são experiências bastante diferentes. O Cânion Itaimbezinho é maior, mais famoso e mais estruturado — Parque Nacional com acesso regulamentado, trilhas marcadas e grande fluxo de visitantes. O Cânion do Sumidouro é menor, menos conhecido e mais rústico, com acesso por propriedade privada e estrutura mínima. O Itaimbezinho impressiona pela escala; o Sumidouro impacta pelo isolamento e pela sensação de descoberta. Para quem quer conhecer os cânions gaúchos, os dois se complementam perfeitamente num roteiro de dois a três dias na região.",
+    },
+    {
+        "q": "É possível descer ao fundo do Cânion do Sumidouro?",
+        "a": "O acesso ao fundo do cânion pelo leito do Rio Antas é possível em condições específicas de volume do rio e nível de experiência. Em épocas de estiagem, quando o rio está baixo, grupos experientes conseguem acessar o interior do cânion por caminhadas no leito rochoso. No entanto, esse acesso não é marcado oficialmente, exige conhecimento prévio da área e avaliação das condições hídricas. Após chuvas intensas ou no período de enchente do rio, o acesso ao fundo é perigoso e não recomendado.",
+    },
+    {
+        "q": "Qual a melhor época para visitar o Cânion do Sumidouro?",
+        "a": "Setembro a novembro e março a maio são os períodos mais recomendados: temperatura amena, vegetação verde e o Rio Antas com volume moderado. O verão gaúcho (dezembro-fevereiro) tem calor intenso e chuvas frequentes que aumentam o volume do rio e podem tornar o acesso a alguns mirantes escorregadio. O inverno (junho-agosto) pode trazer frio intenso e geada, mas os dias claros e a paisagem com névoa matinal tornam a experiência fotogêfica particularmente rica para quem não se importa com o frio.",
+    },
+    {
+        "q": "O que ver na região além do Cânion do Sumidouro?",
+        "a": "A região de São Marcos e da Serra Gaúcha oferece um roteiro complementar rico. Bento Gonçalves e Garibaldi, a poucos quilômetros, são o coração vitivinícola do Brasil — com visitas a vinícolas históricas e espumantes premiados. Caxias do Sul tem o Parque da Região Colonial Italiana e o Museu do Imigrante. Para quem quer mais natureza, os Cânions da Fortaleza e Itaimbezinho ficam a aproximadamente 100 quilômetros, na direção de Cambará do Sul — um roteiro de três dias que cobre os três cânions e a vinicultura gaúcha.",
+    },
+    {
+        "q": "Precisa de guia para visitar o Cânion do Sumidouro?",
+        "a": "Não é obrigatório para a trilha de borda, mas recomendado para quem quer acessar os pontos mais remotos ou descer ao fundo do cânion. O proprietário da área de acesso geralmente fornece orientações básicas sobre a trilha. Para a trilha padrão de borda, caminhantes com experiência em trilhas moderadas conseguem navegar sem guia usando GPS e o mapa da rota. Para grupos sem experiência em trilhas ou para quem quer fazer o acesso ao interior do cânion, um guia local de São Marcos é a escolha mais segura.",
+    },
+],
+
+"serra-da-canastra": [
+    {
+        "q": "O que é possível ver na nascente do Rio São Francisco na Serra da Canastra?",
+        "a": "A nascente do Rio São Francisco, chamada de Casca D'Anta, fica na zona de uso especial do Parque Nacional da Serra da Canastra. O broto da nascente é modesto em volume — um fio de água saindo de uma fenda na rocha — mas o significado simbólico é imenso. O Rio São Francisco percorrerá 2.863 quilômetros até chegar ao Oceano Atlântico entre Alagoas e Sergipe, passando por cinco estados e abastecendo dezenas de cidades nordestinas. Um painel interpretativo no local contextualiza a importância histórica e hídrica do ponto.",
+    },
+    {
+        "q": "Qual é a Cachoeira Casca D'Anta e como chegar até ela?",
+        "a": "A Cachoeira Casca D'Anta é a maior do Parque Nacional da Serra da Canastra, com 186 metros de queda, formada pelo próprio Rio São Francisco nos primeiros quilômetros após a nascente. É uma das poucas cachoeiras do Brasil onde é possível ver um rio grande — não apenas um riacho — despencando em queda livre de grande altura. O acesso é feito a partir da portaria de São Roque de Minas ou pelo trecho final da trilha principal do parque. A cachoeira tem capacidade de visitação controlada — chegue cedo em finais de semana.",
+    },
+    {
+        "q": "É possível ver lobo-guará e tamanduá-bandeira na Serra da Canastra?",
+        "a": "Sim. A Serra da Canastra tem uma das populações mais estáveis de lobo-guará e tamanduá-bandeira do Brasil, beneficiadas pela extensão dos campos preservados dentro do parque. O lobo-guará é crepuscular — visto principalmente ao amanhecer e ao entardecer, cruzando os campos na busca por lobeira (fruta-do-lobo, sua alimentação principal). O tamanduá-bandeira é mais difícil de avistar mas está presente. Capivaras, emas, seriemas e diversas espécies de gavião são comuns durante as caminhadas nos campos.",
+    },
+    {
+        "q": "Precisa de guia para visitar o Parque Nacional da Serra da Canastra?",
+        "a": "O guia não é obrigatório para as trilhas marcadas do parque. A entrada é feita pelas portarias, com pagamento da taxa de ingresso e orientação dos fiscais do ICMBio sobre as trilhas disponíveis. Para a trilha completa de 22 quilômetros até a Casca D'Anta, um guia ou mapa offline detalhado é recomendado para os trechos menos frequentados onde a sinalização é mais esparsa. Para visitas de um dia às principais cachoeiras, o auto-guiamento é tranquilo com os mapas fornecidos na portaria.",
+    },
+    {
+        "q": "Quais são as melhores trilhas de um dia no Parque Nacional da Serra da Canastra?",
+        "a": "Para visitas de um dia, as trilhas mais acessíveis saem da portaria de São Roque de Minas. A trilha da nascente do Rio São Francisco (16 km ida e volta) é a mais simbólica. A trilha da Cachoeira Casca D'Anta (acesso pela estrada interna do parque) permite ver a maior cachoeira sem grande percurso a pé. Para quem busca campos rupestres com fauna, a trilha do Mirante da Bandeirinha oferece vista panorâmica do planalto com boa probabilidade de avistar emas e lobos-guará no entardecer.",
+    },
+    {
+        "q": "Como chegar ao Parque Nacional da Serra da Canastra?",
+        "a": "O principal acesso é pela cidade de São Roque de Minas, a aproximadamente 330 quilômetros de Belo Horizonte e 480 quilômetros de Brasília. De BH, a rota mais comum é pela BR-262 até Piumhi e depois estrada estadual até São Roque de Minas. De carro é o transporte mais prático — o transporte público para a região é limitado. São Roque de Minas tem pousadas e restaurantes para hospedagem próximo ao parque. Sacramento, Delfinópolis e Medeiros são outras cidades com acesso às portarias secundárias do parque.",
+    },
+],
+
+"parque-nacional-superagui": [
+    {
+        "q": "Como chegar ao Parque Nacional de Superagui?",
+        "a": "O Parque Nacional de Superagui só tem acesso por barco — não existe estrada. O ponto de partida é Guaraqueçaba, município do litoral norte do Paraná, a aproximadamente 120 quilômetros de Curitiba (via Antonina ou via Morretes). Barcos regulares e lanchas fretadas conectam Guaraqueçaba à Vila de Superagui em trajeto de aproximadamente 1h30. De Curitiba, a opção mais prática é dirigir até Guaraqueçaba, pernoitar e pegar o barco no dia seguinte. Confirme horários de barco antes de partir — são limitados e dependem do clima.",
+    },
+    {
+        "q": "Precisa de guia para trilhar no Parque Nacional de Superagui?",
+        "a": "Sim. O guia é obrigatório para as trilhas dentro do Parque Nacional de Superagui. Os guias são moradores e ex-moradores da Vila de Superagui credenciados pelo ICMBio — contratar seus serviços é também uma forma direta de apoiar a economia da comunidade caiçara que vive dentro do parque. A contratação pode ser feita antecipadamente por agências de ecoturismo de Guaraqueçaba ou Curitiba, ou diretamente com os guias locais ao chegar na vila.",
+    },
+    {
+        "q": "O que é o papagaio-de-cara-roxa e como avistá-lo em Superagui?",
+        "a": "O papagaio-de-cara-roxa (Amazona brasiliensis) é uma espécie endêmica da Mata Atlântica costeira do sul do Brasil — ocorre apenas em um estreito trecho do litoral entre São Paulo e Santa Catarina. Está classificado como criticamente ameaçado e Superagui é o local com maior concentração da espécie. O avistamento é mais fácil no entardecer, quando bandos chegam para o dormitório coletivo nas árvores do manguezal — um dos espetáculos de natureza mais impressionantes do Sul do Brasil. O guia local conhece os melhores pontos de observação.",
+    },
+    {
+        "q": "Qual a duração mínima recomendada para visitar Superagui?",
+        "a": "Dois dias completos é o mínimo para uma experiência significativa, mas três a quatro dias permitem conhecer as trilhas da mata, a Praia Deserta, os canais de manguezal de barco e o espetáculo noturno dos papagaios-de-cara-roxa. A hospedagem na Vila de Superagui é simples e acolhedora — pousadas familiares geridas por moradores locais. Uma noite não compensa a logística de chegar e ir embora em menos de 24 horas; aproveite para desacelerar no ritmo da ilha.",
+    },
+    {
+        "q": "A Praia Deserta de Superagui realmente não tem acesso por terra?",
+        "a": "Corretamente descrita: a Praia Deserta de Superagui tem 40 quilômetros de extensão e não tem acesso por terra de nenhuma estrada pública ou trilha de veículos. O único acesso é por barco pela face oceânica ou pela trilha interna da ilha, que conecta a Vila de Superagui à borda da praia após aproximadamente 4-5 quilômetros de mata de restinga. Essa inacessibilidade é o que a mantém completamente intocada: sem infraestrutura turística, sem quiosques, sem trilha de buggy — apenas areia, vento e oceano.",
+    },
+    {
+        "q": "Qual a melhor época para visitar o Parque Nacional de Superagui?",
+        "a": "Março a novembro é o período com menor volume de chuvas e mar mais calmo para a travessia de barco. O inverno paranaense (junho-agosto) tem temperaturas mais baixas no litoral, mas dias claros e mar tranquilo. O verão (dezembro-fevereiro) é quente e chuvoso, com eventual mar agitado que pode atrasar ou cancelar barcos. Para observação de aves, especialmente o papagaio-de-cara-roxa, setembro e outubro são excelentes. Para quem quer praias desertas com sol, dezembro a fevereiro tem os dias mais quentes, apesar do risco de chuva.",
+    },
+],
+
+"pico-do-caraca": [
+    {
+        "q": "Os lobos-guará aparecem todo dia no Santuário do Caraça?",
+        "a": "A aparição dos lobos-guará no claustro da Igreja Nossa Senhora Mãe dos Homens é regular mas não garantida em cada noite. Os frades colocam alimento no horário específico informado pela recepção (geralmente entre 18h30 e 20h conforme a estação), e os lobos aparecem com frequência alta — mas são animais silvestres com comportamento próprio. A taxa de aparição reportada por visitantes é alta, mas dias de lua cheia, barulho excessivo ou presença de muita gente podem alterar o comportamento. A recepção do Santuário informa se houve aparição nas noites anteriores.",
+    },
+    {
+        "q": "Como funciona a hospedagem no Santuário do Caraça?",
+        "a": "O Santuário do Caraça oferece hospedagem no próprio Colégio histórico, em quartos simples com banheiro compartilhado ou privativo, refeições no refeitório original e café da manhã incluso. A experiência é austera e encantadora: silêncio, sinos de igreja, jardins históricos e a atmosfera de um lugar onde o tempo parece diferente. A capacidade é limitada e a reserva com antecedência é fundamental, especialmente em finais de semana, julho e feriados. O Santuário é fechado às segundas-feiras para visitação. Consulte a disponibilidade pelo site ou telefone da Congregação da Missão.",
+    },
+    {
+        "q": "Qual a dificuldade real da subida ao Pico do Caraça?",
+        "a": "O Pico do Caraça é classificado como trilha difícil pelo desnível de 830 metros em 6 quilômetros de subida e pelo terreno irregular de Mata Atlântica e campos rupestres. Não há trechos de escalada, mas a inclinação é constante e exigente. Caminhantes com condição física regular e alguma experiência em trilhas de montanha conseguem completar sem grandes dificuldades em 3 a 4 horas de subida. A descida, pelo mesmo caminho, pode ser mais exigente para os joelhos — bastões de trekking são recomendados.",
+    },
+    {
+        "q": "Precisa de guia para subir ao Pico do Caraça?",
+        "a": "O guia não é obrigatório para a trilha ao Pico do Caraça. O Santuário fornece mapa do percurso na recepção e a trilha tem sinalização razoável. Caminhantes com experiência em trilhas de montanha conseguem navegar sem acompanhamento. Para grupos sem experiência prévia ou para quem quer informações sobre a fauna e flora da reserva ao longo do caminho, guias locais contratados pelo Santuário são disponíveis. Confirme com a recepção as condições da trilha antes de sair — alguns trechos podem estar interditados após chuvas.",
+    },
+    {
+        "q": "O que ver no Santuário do Caraça além da trilha e dos lobos?",
+        "a": "O Santuário do Caraça tem muito mais para oferecer além da trilha principal e do espetáculo dos lobos. A Igreja Nossa Senhora Mãe dos Homens, do século XIX, tem acervo histórico valioso. O Museu do Caraça expõe objetos e documentos do colégio desde sua fundação em 1820. O lago do Santuário tem trilha circular de baixa dificuldade com vistas dos paredões rochosos. As trilhas secundárias dentro da reserva levam a cascatas e mirantes com menos visitantes. A biblioteca histórica e os jardins são abertos para contemplação.",
+    },
+    {
+        "q": "Qual a melhor época para visitar o Pico do Caraça?",
+        "a": "Abril a outubro é a estação seca, com trilha mais transitável e visibilidade máxima do cume. O inverno (junho-agosto) pode trazer frio intenso e geada nos campos do pico, mas os dias são claros e as vistas excepcionais. A floração dos campos rupestres acontece principalmente entre agosto e outubro — o percurso fica colorido de sempre-vivas e outras espécies endêmicas. O verão chuvoso (novembro-março) tem a reserva mais verde e algumas cachoeiras com mais volume, mas o pico frequentemente fica coberto de névoa.",
+    },
+],
+
+"lagoa-azul-bonito": [
+    {
+        "q": "Por que a água da Lagoa Azul de Bonito é tão azul?",
+        "a": "A cor azul-turquesa da Lagoa Azul é resultado da química da água, não de tintura ou efeito especial. As águas de Bonito são extremamente ricas em carbonato de cálcio (calcário) dissolvido, que precipita em forma de partículas microscópicas em suspensão. Essas partículas refratam a luz solar de maneira específica, absorvendo as frequências do vermelho e refletindo as do azul — o mesmo princípio que torna o céu azul. Quanto mais calcário e mais luz, mais intenso o azul. A visibilidade de até 30 metros é resultado dessa mesma pureza.",
+    },
+    {
+        "q": "Quando acontece o raio de sol na Lagoa Azul de Bonito?",
+        "a": "O famoso fenômeno do raio de sol que ilumina as stalactites subaquáticas da Lagoa Azul acontece no período de junho a julho, entre aproximadamente 9h e 10h da manhã. Nesse período do ano e nesse horário específico, o ângulo solar é preciso o suficiente para que a luz penetre pela abertura da gruta, atravesse a superfície da lagoa e ilumine as estalactites submersas em azul intenso — criando um efeito que parece de ficção científica mas é puramente astronômico e geológico. Para ver esse espetáculo, reserve exatamente para esse horário e período.",
+    },
+    {
+        "q": "Quanto custa visitar a Lagoa Azul em Bonito?",
+        "a": "O pacote da Lagoa Azul inclui a trilha de acesso, o snorkeling com equipamento (máscara, snorkel e colete) e o guia obrigatório. O preço varia por agência e temporada, mas gira em torno de R$ 160 a R$ 250 por pessoa na alta temporada. Reserva com antecedência é fundamental — o número de vagas diárias é limitado e a Lagoa Azul esgota rapidamente em julho e nos meses de férias. As agências em Bonito organizam o pacote completo, frequentemente combinado com outras atrações da cidade.",
+    },
+    {
+        "q": "O que ver além da Lagoa Azul em Bonito?",
+        "a": "Bonito tem um dos cardápios de turismo de natureza mais completos do Brasil. O Rio da Prata é o flutuoduto mais famoso — nadar com flutuadores num rio de visibilidade cristalina com cardumes de dourado. A Gruta do Mimoso tem uma das piscinas subterrâneas mais bonitas do interior do país. O Abismo Anhumas combina rapel numa gruta e mergulho em lago subterrâneo para perfis mais aventureiros. A Serra da Bodoquena tem trilhas e cachoeiras no entorno. Um roteiro de quatro a cinco dias em Bonito consegue combinar as principais atrações sem pressa.",
+    },
+    {
+        "q": "É possível mergulhar com cilindro na Lagoa Azul?",
+        "a": "O mergulho autônomo com cilindro não é permitido na Lagoa Azul — apenas snorkeling de superfície é autorizado para o público geral. O mergulho com cilindro em Bonito é feito em outros pontos específicos da região, como o Abismo Anhumas, que exige certificação de mergulho e treino prévio. Para snorkeling iniciante, a Lagoa Azul é perfeita — o colete salva-vidas fornecido mantém o visitante na superfície sem esforço e a visibilidade de 30 metros permite ver todo o fundo da lagoa e as stalactites subaquáticas confortavelmente.",
+    },
+    {
+        "q": "A Lagoa Azul é adequada para crianças?",
+        "a": "Sim, a Lagoa Azul é adequada para crianças a partir de aproximadamente 5 anos que não tenham medo de água. O colete salva-vidas é obrigatório para todos e garante segurança mesmo para quem não sabe nadar. A trilha de acesso de 3 quilômetros é plana e fácil para crianças com disposição básica. O snorkeling em água turquesa com cardumes de peixe é uma experiência marcante que crianças geralmente adoram. Certifique-se de usar apenas protetor solar biodegradável ou mineral — os protetores convencionais são proibidos na lagoa.",
+    },
+],
+
+"pedra-azul": [
+    {
+        "q": "Por que a Pedra Azul muda de cor?",
+        "a": "A coloração azul-acinzentada da Pedra Azul é resultado da combinação entre a composição mineralógica do granito, a umidade superficial da rocha e o ângulo de incidência da luz. O granito do monólito tem composição específica que, quando úmido — o que é frequente na Mata Atlântica de altitude — e iluminado pela luz rasante do entardecer, reflete tonalidades no espectro do azul e cinza. O efeito é mais pronunciado nas horas finais da tarde e em dias com umidade elevada. Ao meio-dia com sol direto, a pedra aparece mais cinza-claro.",
+    },
+    {
+        "q": "Precisa de guia para visitar o Parque Estadual da Pedra Azul?",
+        "a": "Sim, o guia é obrigatório para a trilha principal do Parque Estadual da Pedra Azul. A exigência existe para controlar o fluxo de visitantes, proteger a vegetação nativa e garantir segurança nas áreas das piscinas, onde as rochas molhadas representam risco de queda. Os guias são credenciados pelo Instituto Estadual de Meio Ambiente e Recursos Hídricos (IEMA) e contratados no Centro de Visitantes do parque ou previamente por agências da região.",
+    },
+    {
+        "q": "Qual a melhor trilha e o melhor horário para ver a Pedra Azul?",
+        "a": "A trilha principal de 6 quilômetros que leva às piscinas naturais na base do monólito é a experiência central do parque. O melhor horário para ver o efeito de coloração azul da pedra é entre 15h e 18h, quando a luz rasante do final da tarde bate na face sul do granito. Para as piscinas com sol, chegue antes das 13h — a face das piscinas fica em sombra a partir do meio da tarde. Quem consegue fazer os dois momentos — as piscinas pela manhã e o entardecer contemplando o monólito de longe — tem a experiência mais completa.",
+    },
+    {
+        "q": "Como chegar ao Parque Estadual da Pedra Azul?",
+        "a": "O Parque Estadual da Pedra Azul fica em Domingos Martins, a aproximadamente 75 quilômetros de Vitória pela BR-262, a rodovia que liga o Espírito Santo a Minas Gerais. De carro, é facilmente acessível como passeio de um dia saindo de Vitória. De ônibus, a linha Vitória-Domingos Martins passa pela BR-262 próximo ao parque. A região de Pedra Azul (o bairro no entorno do parque) tem pousadas, restaurantes e estrutura turística bem desenvolvida para quem quer pernoitar.",
+    },
+    {
+        "q": "As piscinas naturais da Pedra Azul são abertas para banho?",
+        "a": "Sim, as piscinas naturais na base do monólito são o principal atrativo do parque e o banho é permitido nas áreas sinalizadas. As piscinas são concavidades naturais no granito preenchidas por água de nascente, com temperatura fria e aparência de turquesa pelo reflexo da rocha e da vegetação. O guia indica quais piscinas estão abertas para banho em cada visita — o volume de água e as condições de segurança variam conforme a estação. Protetores solares convencionais são proibidos; use apenas protetor mineral ou solar biodegradável.",
+    },
+    {
+        "q": "Qual a melhor época para visitar o Parque Estadual da Pedra Azul?",
+        "a": "Maio a setembro é a estação seca, com trilha mais transitável, piscinas mais limpas e o efeito de coloração azul da pedra mais intenso — a umidade específica que potencializa a cor é mais frequente nesse período. O verão capixaba (outubro a março) tem chuvas que podem fechar a trilha temporariamente e turvar as piscinas. A floração da Mata Atlântica de altitude acontece principalmente entre setembro e novembro, tornando o percurso especialmente rico em bromélias e orquídeas com flores. Os finais de semana de julho têm alta demanda — chegue antes das 8h ou reserve com antecedência.",
+    },
+],
+
+"pedra-da-gavea": [
+    {
+        "q": "Precisa de guia para subir a Pedra da Gávea?",
+        "a": "Sim. O guia credenciado pelo ICMBio é obrigatório para a trilha da Pedra da Gávea — exigência tanto legal quanto de segurança real. O trecho de escalada com corda fixada não é tecnicamente muito difícil, mas exige orientação adequada para ser executado com segurança. Guias sem credenciamento ICMBio operam ilegalmente e não têm seguro ou capacitação verificada para o trecho técnico. A contratação é feita por agências de trilhas no Rio de Janeiro com antecedência — não há guia de plantão no início da trilha.",
+    },
+    {
+        "q": "Qual a diferença entre a Pedra da Gávea e o Pão de Açúcar como mirante do Rio de Janeiro?",
+        "a": "São experiências completamente diferentes. O Pão de Açúcar (396 metros) é acessado por bondinho e recebe dezenas de milhares de visitantes por mês — é turismo de massa com conforto total. A Pedra da Gávea (844 metros) exige 5 a 7 horas de trilha exigente com trecho de escalada e recebe apenas grupos pequenos — é trekking de montanha. A vista da Gávea é mais alta e mais abrangente: é possível ver o Pão de Açúcar de cima. Quem sobe a Gávea por esforço próprio tem uma conexão com a cidade completamente diferente de quem sobe de bondinho.",
+    },
+    {
+        "q": "O trecho de escalada da Pedra da Gávea é perigoso para quem nunca escalou?",
+        "a": "O trecho de escalada da Gávea é de grau técnico baixo — não requer treinamento de escalada prévia — mas envolve exposição vertical que pode ser desafiadora psicologicamente para quem tem acrofobia. A fenda na rocha com corda fixada tem apoios suficientes para progressão segura com orientação do guia. O risco principal não é técnico, mas de pânico em altitude em pessoas que não se conhecem bem em situações de exposição. Seja honesto com o guia sobre seu histórico com alturas antes de começar a subida.",
+    },
+    {
+        "q": "Qual a melhor época para subir a Pedra da Gávea?",
+        "a": "Abril a outubro é a janela mais segura: menor probabilidade de chuva, rocha mais seca e maior clareza para a vista do cume. O verão carioca (dezembro-março) tem chuvas frequentes à tarde e neblina matinal que pode cobrir o topo completamente. Julho é o mês mais seco e tem os melhores dias para visibilidade máxima do Rio. Suba sempre de manhã — a chuva no Rio de Janeiro típicamente acontece à tarde e a névoa matinal geralmente se dissipa até às 9h. O guia cancela a trilha em caso de chuva ou previsão de tempestade.",
+    },
+    {
+        "q": "A Pedra da Gávea é a trilha mais difícil do Parque Nacional da Tijuca?",
+        "a": "Sim, a Pedra da Gávea é a trilha mais exigente do Parque Nacional da Tijuca pelo desnível de 820 metros, o terreno irregular e o trecho de escalada. Outras trilhas do parque, como o Pico da Tijuca (1.021 metros, o ponto mais alto do parque), são mais altas em altitude mas têm acesso menos técnico. Para quem quer começar pelo Parque da Tijuca antes de tentar a Gávea, as trilhas da Cascatinha Taunay, Corcovado a pé e Pico da Tijuca são progressões naturais de dificuldade crescente.",
+    },
+    {
+        "q": "Quanto tempo leva a trilha da Pedra da Gávea?",
+        "a": "O percurso completo de ida e volta leva de 5 a 7 horas dependendo do ritmo, do tempo no cume e das paradas para descanso e fotografias. A subida leva de 3 a 4 horas, com o trecho de escalada consumindo de 30 a 60 minutos dependendo do grupo. A descida leva de 2 a 3 horas. A recomendação é sair no máximo às 7h para garantir chegada ao cume antes de eventual névoa da tarde e retorno antes do anoitecer. Não faça o percurso com previsão de retorno no escuro sem experiência e equipamento adequado de iluminação.",
     },
 ],
 
