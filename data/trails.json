@@ -1126,5 +1126,451 @@
     "status": "published",
     "lat": -25.264,
     "lng": -48.835
+  },
+  {
+    "id": 41,
+    "name": "Chapada Diamantina — Vale do Capão",
+    "slug": "chapada-diamantina-vale-do-capao",
+    "uf": "BA",
+    "city": "Palmeiras / Vale do Capão",
+    "region": "Chapada Diamantina",
+    "park": "Parque Nacional da Chapada Diamantina",
+    "distanceKm": "18",
+    "elevationGain": 900,
+    "maxAltitude": 1200,
+    "difficulty": "moderate",
+    "guideRequired": 1,
+    "entranceFee": "Gratuito (guia credenciado obrigatório)",
+    "estimatedTime": "2-3 dias",
+    "trailType": "circular",
+    "bestSeason": "Abril a Outubro",
+    "waterPoints": [
+      "Rio Capão",
+      "Cachoeira da Fumaça (base)",
+      "Fontes ao longo da trilha"
+    ],
+    "campingPoints": [
+      "Camping Véu da Noiva",
+      "Camping Capão"
+    ],
+    "highlights": [
+      "Cachoeira da Fumaça (340 m — maior salto livre do Brasil)",
+      "Vale do Capão com visual 360°",
+      "Paredões de arenito colorido",
+      "Campos rupestres e canelas-de-ema",
+      "Vila de Capão — comunidade alternativa"
+    ],
+    "shortDescription": "Porta de entrada da Chapada Diamantina, o Vale do Capão combina a Cachoeira da Fumaça — maior salto livre do Brasil — com trilhas por campos rupestres e a atmosfera única de uma das comunidades mais alternativas do Brasil.",
+    "hookText": "Caminhar pelo Vale do Capão é entrar em um mundo onde a rocha vermelha, a cachoeira mais alta do Brasil e os campos dourados de canelas-de-ema se reúnem num único horizonte.",
+    "ctaText": "Explore o Vale do Capão com um guia credenciado da Chapada Diamantina. Reserve sua experiência.",
+    "description": "O Vale do Capão é o principal ponto de acesso à Chapada Diamantina pela sua face ocidental, reunindo a Cachoeira da Fumaça — com seus 340 metros de queda livre, a maior do Brasil — e uma rede de trilhas que percorre campos rupestres, paredões de arenito e nascentes cristalinas. A vila de Capão, conhecida por sua comunidade alternativa e pacífica, serve de base para aventuras de 2 a 5 dias pelo entorno do parque.",
+    "imageUrl": "/trails/chapada-vale-capao.jpg",
+    "images": [
+      "/trails/chapada-vale-capao.jpg"
+    ],
+    "wiklocUrl": "",
+    "wiklocGpxUrl": "",
+    "status": "published",
+    "lat": -12.637,
+    "lng": -41.485
+  },
+  {
+    "id": 42,
+    "name": "Pico dos Marins",
+    "slug": "pico-dos-marins",
+    "uf": "SP",
+    "city": "Piquete",
+    "region": "Serra da Mantiqueira",
+    "park": "APA da Serra da Mantiqueira",
+    "distanceKm": "14",
+    "elevationGain": 1250,
+    "maxAltitude": 2420,
+    "difficulty": "hard",
+    "guideRequired": 0,
+    "entranceFee": "Gratuito",
+    "estimatedTime": "8-10 horas (bate-volta) / 2 dias",
+    "trailType": "out-and-back",
+    "bestSeason": "Abril a Setembro",
+    "waterPoints": [
+      "Riachos no início da trilha",
+      "Nascentes até 1.800 m"
+    ],
+    "campingPoints": [
+      "Área de camping próxima ao cume (bivaque)"
+    ],
+    "highlights": [
+      "Segundo pico mais alto de São Paulo (2.420 m)",
+      "Vista de 360° para a Serra da Mantiqueira",
+      "Campos de altitude com flora rupestre",
+      "Silêncio e isolamento incomuns",
+      "Nascer do sol épico no cume"
+    ],
+    "shortDescription": "O segundo ponto mais alto de São Paulo, com 2.420 m de altitude na Serra da Mantiqueira. Uma subida exigente de 1.250 metros de desnível recompensada por vistas de 360° sobre o maior corredor verde do Sudeste.",
+    "hookText": "Poucos destinos em São Paulo oferecem o silêncio e a grandiosidade do Pico dos Marins — um cume de 2.420 metros que se levanta acima das nuvens e domina o horizonte da Mantiqueira.",
+    "ctaText": "Suba ao segundo pico mais alto de São Paulo. Planeje sua expedição ao Pico dos Marins.",
+    "description": "O Pico dos Marins, com 2.420 metros, é o segundo ponto mais alto do estado de São Paulo, superado apenas pelo Pico do Papagaio. Localizado no município de Piquete, na Serra da Mantiqueira, a trilha cobre 14 quilômetros de ida e volta com ganho de altitude de 1.250 metros, tornando-o um dos desafios mais sérios do montanhismo paulistano. A rota cruza Mata Atlântica de altitude, campos rupestres e uma faixa final exposta de campos abertos que revelam um panorama 360° da Mantiqueira.",
+    "imageUrl": "/trails/pico-dos-marins.jpg",
+    "images": [
+      "/trails/pico-dos-marins.jpg"
+    ],
+    "wiklocUrl": "",
+    "wiklocGpxUrl": "",
+    "status": "published",
+    "lat": -22.573,
+    "lng": -45.008
+  },
+  {
+    "id": 43,
+    "name": "Gruta do Lapão",
+    "slug": "gruta-do-lapao",
+    "uf": "BA",
+    "city": "Lençóis",
+    "region": "Chapada Diamantina",
+    "park": "Parque Nacional da Chapada Diamantina",
+    "distanceKm": "4",
+    "elevationGain": 200,
+    "maxAltitude": 950,
+    "difficulty": "easy",
+    "guideRequired": 1,
+    "entranceFee": "R$ 19,00 (taxa do parque)",
+    "estimatedTime": "3-4 horas",
+    "trailType": "out-and-back",
+    "bestSeason": "Ano todo (evitar chuvas intensas)",
+    "waterPoints": [
+      "Lençóis (cidade base)",
+      "Riachos próximos ao acesso"
+    ],
+    "campingPoints": [],
+    "highlights": [
+      "Maior gruta em arenito do Brasil (1.120 m de extensão)",
+      "Formações rochosas esculpidas em milênios",
+      "Galeria principal com 70 m de largura",
+      "Janela natural com vista para a chapada",
+      "Trilha por mata ciliar e arenito avermelhado"
+    ],
+    "shortDescription": "A maior gruta em arenito do Brasil, escavada ao longo de milênios no coração da Chapada Diamantina, a poucos quilômetros de Lençóis. Um percurso curto e acessível que leva a uma das formações geológicas mais raras do país.",
+    "hookText": "Entrar na Gruta do Lapão é atravessar um corredor esculpido pelo tempo — 1.120 metros de arenito avermelhado moldado por água e vento ao longo de eras geológicas que a mente humana mal consegue dimensionar.",
+    "ctaText": "Explore a maior gruta em arenito do Brasil com guia credenciado. Reserve sua visita à Gruta do Lapão.",
+    "description": "A Gruta do Lapão é a maior caverna em arenito do Brasil, com 1.120 metros de extensão, localizada a 4 quilômetros da cidade de Lençóis, na Chapada Diamantina. Diferente das grutas calcárias comuns, o Lapão foi esculpido pelo processo de erosão do arenito, criando uma galeria principal com até 70 metros de largura e 30 metros de altura. A trilha de acesso é curta e de dificuldade baixa, tornando a Gruta do Lapão uma das atrações mais acessíveis e impressionantes do parque.",
+    "imageUrl": "/trails/gruta-do-lapao.jpg",
+    "images": [
+      "/trails/gruta-do-lapao.jpg"
+    ],
+    "wiklocUrl": "",
+    "wiklocGpxUrl": "",
+    "status": "published",
+    "lat": -12.559,
+    "lng": -41.395
+  },
+  {
+    "id": 44,
+    "name": "Cânion do Sumidouro",
+    "slug": "canion-do-sumidouro",
+    "uf": "RS",
+    "city": "São Marcos",
+    "region": "Serra Gaúcha",
+    "park": "Área de Proteção Ambiental Rota do Sol",
+    "distanceKm": "8",
+    "elevationGain": 420,
+    "maxAltitude": 920,
+    "difficulty": "moderate",
+    "guideRequired": 0,
+    "entranceFee": "Taxa de propriedade privada (R$ 30–50)",
+    "estimatedTime": "4-6 horas",
+    "trailType": "out-and-back",
+    "bestSeason": "Setembro a Abril",
+    "waterPoints": [
+      "Rio Antas (base do cânion)",
+      "Riachos ao longo da trilha"
+    ],
+    "campingPoints": [
+      "Área de camping na propriedade de acesso"
+    ],
+    "highlights": [
+      "Cânion escavado pelo Rio Antas",
+      "Paredões basálticos de até 150 m",
+      "Mirante com vista sobre o vale",
+      "Cachoeiras internas no cânion",
+      "Trilha por mata nativa de araucária"
+    ],
+    "shortDescription": "Um cânion escavado pelo Rio Antas na Serra Gaúcha, com paredões basálticos de até 150 metros e uma trilha que atravessa mata nativa de araucárias até mirantes com vista dramática sobre o vale do Nordeste gaúcho.",
+    "hookText": "O Cânion do Sumidouro revela a força do Rio Antas esculpindo basalto por milênios — uma fenda na terra gaúcha onde a mata de araucárias encontra paredes de 150 metros e o silêncio só é quebrado pela água.",
+    "ctaText": "Descubra o Cânion do Sumidouro na Serra Gaúcha. Planeje sua visita a um dos cânions mais selvagens do Sul.",
+    "description": "O Cânion do Sumidouro é uma das formações geológicas mais impressionantes da Serra Gaúcha, localizado em São Marcos, na região do Vale do Rio das Antas. Escavado pelo Rio Antas ao longo de milhões de anos na rocha basáltica, o cânion possui paredões que atingem 150 metros de altura e uma extensão de vários quilômetros. A trilha de acesso percorre mata nativa de araucárias e campos de altitude, com mirantes estratégicos que revelam a magnitude do corte geológico.",
+    "imageUrl": "/trails/canion-do-sumidouro.jpg",
+    "images": [
+      "/trails/canion-do-sumidouro.jpg"
+    ],
+    "wiklocUrl": "",
+    "wiklocGpxUrl": "",
+    "status": "published",
+    "lat": -29.108,
+    "lng": -51.018
+  },
+  {
+    "id": 45,
+    "name": "Serra da Canastra",
+    "slug": "serra-da-canastra",
+    "uf": "MG",
+    "city": "São Roque de Minas",
+    "region": "Planalto Central Mineiro",
+    "park": "Parque Nacional da Serra da Canastra",
+    "distanceKm": "22",
+    "elevationGain": 620,
+    "maxAltitude": 1496,
+    "difficulty": "moderate",
+    "guideRequired": 0,
+    "entranceFee": "R$ 19,00",
+    "estimatedTime": "2-3 dias",
+    "trailType": "out-and-back",
+    "bestSeason": "Abril a Outubro",
+    "waterPoints": [
+      "Nascente do Rio São Francisco",
+      "Cachoeira Casca D'Anta",
+      "Riachos ao longo da chapada"
+    ],
+    "campingPoints": [
+      "Camping Casca D'Anta",
+      "Camping São Roque de Minas (base)"
+    ],
+    "highlights": [
+      "Nascente do Rio São Francisco",
+      "Cachoeira Casca D'Anta (186 m)",
+      "Campos rupestres com lobeiras e sempre-vivas",
+      "Tamanduás-bandeira e lobos-guará (fauna)",
+      "Vista do planalto de 1.496 m"
+    ],
+    "shortDescription": "O berço do Rio São Francisco e a Cachoeira Casca D'Anta, com 186 metros de queda, são os destaques de uma travessia pelos campos rupestres do Parque Nacional da Serra da Canastra — o Cerrado mineiro em seu estado mais puro.",
+    "hookText": "Beber a água da nascente do Velho Chico e ouvir o estrondo da Casca D'Anta numa manhã de inverno mineiro é entender por que a Canastra é chamada de berço das águas do Brasil.",
+    "ctaText": "Visite a nascente do Rio São Francisco na Serra da Canastra. Planeje sua trilha no Cerrado mineiro.",
+    "description": "O Parque Nacional da Serra da Canastra protege a nascente do Rio São Francisco — o Velho Chico — e um dos últimos remanescentes de Cerrado de altitude do Brasil. A trilha principal cobre 22 quilômetros ligando a portaria de São Roque de Minas à Cachoeira Casca D'Anta, a maior cachoeira do parque com 186 metros de queda. A chapada preserva campos rupestres com flora endêmica, lobo-guará, tamanduá-bandeira e emas — um dos santuários de biodiversidade mais importantes do Cerrado.",
+    "imageUrl": "/trails/serra-da-canastra.jpg",
+    "images": [
+      "/trails/serra-da-canastra.jpg"
+    ],
+    "wiklocUrl": "",
+    "wiklocGpxUrl": "",
+    "status": "published",
+    "lat": -20.269,
+    "lng": -46.517
+  },
+  {
+    "id": 46,
+    "name": "Parque Nacional de Superagui",
+    "slug": "parque-nacional-superagui",
+    "uf": "PR",
+    "city": "Guaraqueçaba",
+    "region": "Litoral Norte do Paraná",
+    "park": "Parque Nacional de Superagui",
+    "distanceKm": "12",
+    "elevationGain": 30,
+    "maxAltitude": 40,
+    "difficulty": "easy",
+    "guideRequired": 1,
+    "entranceFee": "Gratuito",
+    "estimatedTime": "1-2 dias",
+    "trailType": "out-and-back",
+    "bestSeason": "Março a Novembro",
+    "waterPoints": [
+      "Vila de Superagui (infraestrutura)",
+      "Rios e canais ao longo da trilha"
+    ],
+    "campingPoints": [
+      "Camping na Vila de Superagui"
+    ],
+    "highlights": [
+      "Patrimônio Mundial da UNESCO (Mata Atlântica)",
+      "Praia Deserta — 40 km de areia sem acesso terrestre",
+      "Papagaio-de-cara-roxa (espécie endêmica e ameaçada)",
+      "Manguezais e restingas preservados",
+      "Silence e isolamento absolutos"
+    ],
+    "shortDescription": "Um Patrimônio Mundial da UNESCO acessível apenas por barco, o Parque Nacional de Superagui guarda 40 quilômetros de Praia Deserta intocada, o papagaio-de-cara-roxa e a maior área contínua de Mata Atlântica do litoral sul do Brasil.",
+    "hookText": "Superagui só existe para quem decide encontrá-la: sem estrada, sem sinal de celular, com 40 quilômetros de praia deserta e o canto do papagaio-de-cara-roxa como única trilha sonora.",
+    "ctaText": "Explore Superagui, Patrimônio Mundial da UNESCO. Reserve sua expedição ao litoral norte do Paraná.",
+    "description": "O Parque Nacional de Superagui, Patrimônio Mundial da UNESCO desde 1999, é um dos últimos grandes remanescentes de Mata Atlântica do litoral sul-sudeste brasileiro. Acessível apenas por barco a partir de Guaraqueçaba, o parque abriga a Praia Deserta — 40 quilômetros de areia sem acesso terrestre — e uma das maiores populações do papagaio-de-cara-roxa, espécie endêmica e criticamente ameaçada. A trilha principal percorre manguezais, restingas e mata atlântica densa em um ambiente de rara integridade ecológica.",
+    "imageUrl": "/trails/parque-superagui.jpg",
+    "images": [
+      "/trails/parque-superagui.jpg"
+    ],
+    "wiklocUrl": "",
+    "wiklocGpxUrl": "",
+    "status": "published",
+    "lat": -25.273,
+    "lng": -48.140
+  },
+  {
+    "id": 47,
+    "name": "Pico do Caraça",
+    "slug": "pico-do-caraca",
+    "uf": "MG",
+    "city": "Catas Altas",
+    "region": "Quadrilátero Ferrífero",
+    "park": "Reserva Particular Santuário do Caraça",
+    "distanceKm": "12",
+    "elevationGain": 830,
+    "maxAltitude": 2072,
+    "difficulty": "hard",
+    "guideRequired": 0,
+    "entranceFee": "R$ 30,00 (entrada no Santuário)",
+    "estimatedTime": "6-8 horas",
+    "trailType": "out-and-back",
+    "bestSeason": "Abril a Outubro",
+    "waterPoints": [
+      "Nascentes próximas ao Santuário",
+      "Riachos nos primeiros 3 km"
+    ],
+    "campingPoints": [
+      "Hospedagem no Colégio do Caraça (pousada histórica)"
+    ],
+    "highlights": [
+      "Cume de 2.072 m com vista 360°",
+      "Vista do Quadrilátero Ferrífero e da Mantiqueira",
+      "Lobos-guará que visitam o Santuário ao entardecer",
+      "Igreja histórica do século XVIII na base",
+      "Campos rupestres com flora única do Cerrado de altitude"
+    ],
+    "shortDescription": "Um pico de 2.072 metros erguido sobre o Quadrilátero Ferrífero mineiro, com vista de 360° e a singularidade de funcionar dentro de um santuário histórico do século XVIII onde lobos-guará são alimentados à noite pelos frades.",
+    "hookText": "No Caraça, uma subida exigente leva ao cume de 2.072 metros — e ao descer, os lobos-guará aparecem ao entardecer no claustro de uma igreja colonial para ser alimentados pelos freis.",
+    "ctaText": "Suba ao Pico do Caraça e assista à visita noturna dos lobos-guará. Reserve sua estada no Santuário.",
+    "description": "O Pico do Caraça, com 2.072 metros de altitude, é o ponto mais alto da Reserva Particular do Santuário do Caraça, em Catas Altas, no Quadrilátero Ferrífero mineiro. A trilha de 12 quilômetros (ida e volta) sai da sede do Santuário — um colégio histórico do século XVIII ainda operado por padres lazaristas — e sobe por Mata Atlântica e campos rupestres até o cume com vista panorâmica de 360°. O Caraça é famoso também pelos lobos-guará que aparecem ao entardecer para ser alimentados pelos frades.",
+    "imageUrl": "/trails/pico-do-caraca.jpg",
+    "images": [
+      "/trails/pico-do-caraca.jpg"
+    ],
+    "wiklocUrl": "",
+    "wiklocGpxUrl": "",
+    "status": "published",
+    "lat": -20.086,
+    "lng": -43.488
+  },
+  {
+    "id": 48,
+    "name": "Lagoa Azul — Bonito",
+    "slug": "lagoa-azul-bonito",
+    "uf": "MS",
+    "city": "Bonito",
+    "region": "Serra da Bodoquena",
+    "park": "Área de Proteção Ambiental da Serra da Bodoquena",
+    "distanceKm": "3",
+    "elevationGain": 120,
+    "maxAltitude": 610,
+    "difficulty": "easy",
+    "guideRequired": 1,
+    "entranceFee": "R$ 160–250 (pacote com guia obrigatório)",
+    "estimatedTime": "3-4 horas",
+    "trailType": "out-and-back",
+    "bestSeason": "Outubro a Março (melhor visibilidade subaquática)",
+    "waterPoints": [
+      "Lagoa Azul (mergulho e snorkeling)",
+      "Lagos ao longo da trilha"
+    ],
+    "campingPoints": [],
+    "highlights": [
+      "Água azul-turquesa com visibilidade de 30 m",
+      "Stalactites e estalagmites subaquáticas",
+      "Snorkeling entre cardumes de dourado e piraputanga",
+      "Raio de sol que penetra a lagoa às 9h-10h (solstício de inverno)",
+      "Trilha por mata ciliar intacta"
+    ],
+    "shortDescription": "A lagoa de água turquesa mais famosa do Brasil, com visibilidade de 30 metros e stalactites subaquáticas iluminadas por raios de sol que penetram a superfície apenas em determinadas horas do ano — em Bonito, MS.",
+    "hookText": "Às 9h da manhã de julho, um raio de sol desce exatamente pela abertura da gruta e ilumina as stalactites subaquáticas da Lagoa Azul em azul-turquesa. Este momento justifica qualquer viagem.",
+    "ctaText": "Mergulhe na Lagoa Azul de Bonito. Reserve seu ingresso com antecedência — as vagas diárias são limitadas.",
+    "description": "A Lagoa Azul é um dos destinos mais fotografados do Brasil, localizada a 22 quilômetros de Bonito, no Mato Grosso do Sul. A lagoa ocupa uma gruta semi-aberta de calcário, com água de visibilidade excepcional — até 30 metros — azul-turquesa por causa da refração da luz nas partículas de calcário em suspensão. O atrativo máximo é o fenômeno anual de junho-julho, quando raios de sol penetram pela abertura da gruta e iluminam as stalactites subaquáticas em uma cena única no mundo.",
+    "imageUrl": "/trails/lagoa-azul-bonito.jpg",
+    "images": [
+      "/trails/lagoa-azul-bonito.jpg"
+    ],
+    "wiklocUrl": "",
+    "wiklocGpxUrl": "",
+    "status": "published",
+    "lat": -20.941,
+    "lng": -56.554
+  },
+  {
+    "id": 49,
+    "name": "Pedra Azul",
+    "slug": "pedra-azul",
+    "uf": "ES",
+    "city": "Domingos Martins",
+    "region": "Serra do Espírito Santo",
+    "park": "Parque Estadual da Pedra Azul",
+    "distanceKm": "6",
+    "elevationGain": 520,
+    "maxAltitude": 1822,
+    "difficulty": "moderate",
+    "guideRequired": 1,
+    "entranceFee": "R$ 20,00",
+    "estimatedTime": "4-5 horas",
+    "trailType": "out-and-back",
+    "bestSeason": "Maio a Setembro",
+    "waterPoints": [
+      "Piscinas naturais na base da pedra",
+      "Riachos ao longo da trilha"
+    ],
+    "campingPoints": [],
+    "highlights": [
+      "Monólito de granito de 1.822 m — visual único",
+      "Mudança de cor azul-acinzentada ao longo do dia",
+      "Piscinas naturais de água fria na base",
+      "Vista panorâmica da Serra Capixaba",
+      "Flora de Mata Atlântica de altitude preservada"
+    ],
+    "shortDescription": "Um monólito de granito de 1.822 metros que muda de cor ao longo do dia — do cinza da manhã ao azul do entardecer — no coração da serra capixaba, com piscinas naturais na base e uma das mais belas trilhas do Espírito Santo.",
+    "hookText": "A Pedra Azul não mente no nome: ao entardecer, quando a luz rasante do sol bate no granito úmido, o monólito muda para uma tonalidade azul-acinzentada que não parece real — até você estar lá na frente.",
+    "ctaText": "Visite a Pedra Azul no Espírito Santo. Reserve sua trilha com guia credenciado do Parque Estadual.",
+    "description": "A Pedra Azul é um monólito granítico de 1.822 metros de altitude no Parque Estadual da Pedra Azul, em Domingos Martins, região serrana do Espírito Santo. O nome vem da coloração azul-acinzentada que o granito assume ao entardecer, quando a umidade e a luz criam um efeito cromático raro. A trilha de 6 quilômetros percorre Mata Atlântica de altitude com guia obrigatório, chegando às piscinas naturais na base da pedra — o ponto mais visitado e fotogênico do parque.",
+    "imageUrl": "/trails/pedra-azul-es.jpg",
+    "images": [
+      "/trails/pedra-azul-es.jpg"
+    ],
+    "wiklocUrl": "",
+    "wiklocGpxUrl": "",
+    "status": "published",
+    "lat": -20.450,
+    "lng": -41.021
+  },
+  {
+    "id": 50,
+    "name": "Pedra da Gávea",
+    "slug": "pedra-da-gavea",
+    "uf": "RJ",
+    "city": "Rio de Janeiro",
+    "region": "Tijuca / Zona Sul",
+    "park": "Parque Nacional da Tijuca",
+    "distanceKm": "10",
+    "elevationGain": 820,
+    "maxAltitude": 844,
+    "difficulty": "hard",
+    "guideRequired": 1,
+    "entranceFee": "Gratuito (guia exigido pelo ICMBio)",
+    "estimatedTime": "5-7 horas",
+    "trailType": "out-and-back",
+    "bestSeason": "Abril a Outubro",
+    "waterPoints": [
+      "Córregos nos primeiros trechos",
+      "Sem água no cume — leve tudo"
+    ],
+    "campingPoints": [],
+    "highlights": [
+      "Vista do Rio de Janeiro de 844 m — única em uma capital brasileira",
+      "Cristo Redentor, Pão de Açúcar e Lagoa Rodrigo de Freitas na mesma foto",
+      "Trecho de escalada com corda fixada",
+      "Floresta da Tijuca com fauna rica",
+      "Experiência urbano-selvagem incomparável"
+    ],
+    "shortDescription": "O ponto mais alto do Parque Nacional da Tijuca — 844 metros sobre o Rio de Janeiro — com vista simultânea do Cristo Redentor, Pão de Açúcar e Lagoa. Uma subida exigente com trecho de escalada que termina em um dos panoramas urbanos mais espetaculares do mundo.",
+    "hookText": "Subir a Pedra da Gávea é olhar para o Rio de Janeiro de cima como nenhuma outra trilha permite — com o Cristo de um lado, o Pão de Açúcar do outro e o oceano se abrindo até o horizonte.",
+    "ctaText": "Conquiste a Pedra da Gávea com guia certificado. Reserve sua trilha no Parque Nacional da Tijuca.",
+    "description": "A Pedra da Gávea, com 844 metros de altitude, é o ponto mais alto do Parque Nacional da Tijuca e um dos picos urbanos mais impressionantes do mundo. Localizada na Zona Sul do Rio de Janeiro, a trilha de 10 quilômetros (ida e volta) exige guia credenciado pelo ICMBio e inclui um trecho de escalada com corda fixada para chegar ao topo. O cume oferece uma vista de 360° que inclui simultaneamente o Cristo Redentor, o Pão de Açúcar, a Lagoa Rodrigo de Freitas, as praias de Ipanema e Leblon e o oceano Atlântico.",
+    "imageUrl": "/trails/pedra-da-gavea.jpg",
+    "images": [
+      "/trails/pedra-da-gavea.jpg"
+    ],
+    "wiklocUrl": "",
+    "wiklocGpxUrl": "",
+    "status": "published",
+    "lat": -22.985,
+    "lng": -43.283
   }
 ]
