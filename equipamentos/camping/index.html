@@ -122,6 +122,29 @@ a:hover{text-decoration:underline}
 .footer-col a{color:rgba(255,255,255,.6);font-size:.83rem}
 .footer-col a:hover{color:#fff;text-decoration:none}
 .footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:20px;font-size:.78rem;color:rgba(255,255,255,.4);text-align:center}
+
+/* ── Mobile nav dark header (UX-01) ── */
+.nav-toggle{display:none;align-items:center;justify-content:center;width:44px;height:44px;border:none;background:transparent;cursor:pointer;padding:0;color:#fff;flex-shrink:0}
+.nav-toggle svg{display:block}
+@media(max-width:767px){
+  .nav-toggle{display:flex}
+  .site-header nav{display:none!important;position:fixed;inset:0;top:60px;background:#fff;z-index:200;flex-direction:column!important;align-items:stretch!important;gap:0!important;padding:1rem 0;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,.12)}
+  .site-header nav.nav-open{display:flex!important}
+  .site-header nav a{padding:.85rem 1.5rem;font-size:1rem!important;color:#0d542b!important;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;min-height:44px;margin-left:0!important}
+  .site-header nav a:last-child{border-bottom:none}
+  .nav-overlay{display:none;position:fixed;inset:0;top:60px;background:rgba(0,0,0,.35);z-index:190}
+  .nav-overlay.nav-open{display:block}
+}
+
+/* ── Global mobile fixes (UX-01) ── */
+@media(max-width:767px){
+  html,body{max-width:100%;overflow-x:hidden}
+  img{max-width:100%;height:auto}
+  .btn,.quick-link,button,a[role="button"]{min-height:44px;min-width:44px}
+  .form-row{grid-template-columns:1fr!important}
+  .contact-layout{grid-template-columns:1fr!important}
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+}
 </style>
   <link rel="alternate" hreflang="pt-BR" href="https://trekko.com.br/equipamentos/camping">
   <link rel="alternate" hreflang="x-default" href="https://trekko.com.br/equipamentos/camping">
@@ -337,6 +360,34 @@ a:hover{text-decoration:underline}
 
 <script>
 function toggleFaq(btn){btn.closest('.faq-item').classList.toggle('open')}
+</script>
+<div class="nav-overlay" id="nav-overlay" aria-hidden="true"></div>
+<script>
+(function(){
+  var btn=document.getElementById('nav-toggle');
+  var nav=document.querySelector('.site-header nav');
+  var overlay=document.getElementById('nav-overlay');
+  if(!btn||!nav)return;
+  function openMenu(){
+    nav.classList.add('nav-open');
+    if(overlay)overlay.classList.add('nav-open');
+    btn.setAttribute('aria-expanded','true');
+    btn.setAttribute('aria-label','Fechar menu de navegação');
+    document.body.style.overflow='hidden';
+  }
+  function closeMenu(){
+    nav.classList.remove('nav-open');
+    if(overlay)overlay.classList.remove('nav-open');
+    btn.setAttribute('aria-expanded','false');
+    btn.setAttribute('aria-label','Abrir menu de navegação');
+    document.body.style.overflow='';
+  }
+  btn.addEventListener('click',function(){
+    nav.classList.contains('nav-open')?closeMenu():openMenu();
+  });
+  if(overlay)overlay.addEventListener('click',closeMenu);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeMenu();});
+})();
 </script>
 </body>
 </html>
