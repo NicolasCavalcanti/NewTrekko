@@ -210,6 +210,29 @@ p{color:var(--text-secondary);line-height:1.7}
 .trail-disclaimer{background:#fef9c3;border-bottom:1px solid #fde68a;padding:7px 0;font-size:.78rem;color:#92400e;text-align:center}
 .trail-disclaimer strong{color:#78350f}
 .trail-disclaimer a{color:#78350f;font-weight:600;text-decoration:underline}
+
+/* ── Mobile nav dark header (UX-01) ── */
+.nav-toggle{display:none;align-items:center;justify-content:center;width:44px;height:44px;border:none;background:transparent;cursor:pointer;padding:0;color:#fff;flex-shrink:0}
+.nav-toggle svg{display:block}
+@media(max-width:767px){
+  .nav-toggle{display:flex}
+  .site-header nav{display:none!important;position:fixed;inset:0;top:60px;background:#fff;z-index:200;flex-direction:column!important;align-items:stretch!important;gap:0!important;padding:1rem 0;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,.12)}
+  .site-header nav.nav-open{display:flex!important}
+  .site-header nav a{padding:.85rem 1.5rem;font-size:1rem!important;color:#0d542b!important;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;min-height:44px;margin-left:0!important}
+  .site-header nav a:last-child{border-bottom:none}
+  .nav-overlay{display:none;position:fixed;inset:0;top:60px;background:rgba(0,0,0,.35);z-index:190}
+  .nav-overlay.nav-open{display:block}
+}
+
+/* ── Global mobile fixes (UX-01) ── */
+@media(max-width:767px){
+  html,body{max-width:100%;overflow-x:hidden}
+  img{max-width:100%;height:auto}
+  .btn,.quick-link,button,a[role="button"]{min-height:44px;min-width:44px}
+  .form-row{grid-template-columns:1fr!important}
+  .contact-layout{grid-template-columns:1fr!important}
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+}
 </style>
   <link rel="alternate" hreflang="pt-BR" href="https://trekko.com.br/trilhas/com-cachoeira">
   <link rel="alternate" hreflang="x-default" href="https://trekko.com.br/trilhas/com-cachoeira">
@@ -797,5 +820,33 @@ document.querySelectorAll('.faq-q').forEach(function(btn){btn.addEventListener('
   <a href="#trilhas" class="btn btn--primary" data-event="click_find_trails" data-cta-location="sticky_mobile" data-page-type="trail_intent_landing">Ver trilhas recomendadas</a>
   <a href="#guias" class="btn btn--outline" data-event="click_view_guides" data-cta-location="sticky_mobile" data-page-type="trail_intent_landing">Ver guias disponíveis</a>
 </div>
+<div class="nav-overlay" id="nav-overlay" aria-hidden="true"></div>
+<script>
+(function(){
+  var btn=document.getElementById('nav-toggle');
+  var nav=document.querySelector('.site-header nav');
+  var overlay=document.getElementById('nav-overlay');
+  if(!btn||!nav)return;
+  function openMenu(){
+    nav.classList.add('nav-open');
+    if(overlay)overlay.classList.add('nav-open');
+    btn.setAttribute('aria-expanded','true');
+    btn.setAttribute('aria-label','Fechar menu de navegação');
+    document.body.style.overflow='hidden';
+  }
+  function closeMenu(){
+    nav.classList.remove('nav-open');
+    if(overlay)overlay.classList.remove('nav-open');
+    btn.setAttribute('aria-expanded','false');
+    btn.setAttribute('aria-label','Abrir menu de navegação');
+    document.body.style.overflow='';
+  }
+  btn.addEventListener('click',function(){
+    nav.classList.contains('nav-open')?closeMenu():openMenu();
+  });
+  if(overlay)overlay.addEventListener('click',closeMenu);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeMenu();});
+})();
+</script>
 </body>
 </html>

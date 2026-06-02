@@ -109,6 +109,31 @@ p:last-child{margin-bottom:0}
 .footer-social{display:flex;gap:1rem;justify-content:center;margin-top:.75rem;align-items:center}
 .footer-social a{display:flex;align-items:center;gap:.4rem;font-size:.8rem;color:rgba(255,255,255,.5);transition:color .15s}
 .footer-social a:hover{color:#fff}
+
+/* ── Mobile nav (UX-01) ── */
+.nav-toggle{display:none;align-items:center;justify-content:center;width:44px;height:44px;border:none;background:transparent;cursor:pointer;padding:0;color:inherit;flex-shrink:0}
+.nav-toggle svg{display:block}
+@media(max-width:767px){
+  .nav-toggle{display:flex}
+  .site-nav{display:none!important;position:fixed;inset:0;top:64px;background:#fff;z-index:200;flex-direction:column!important;align-items:stretch!important;gap:0!important;padding:1rem 0;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,.12)}
+  .site-nav.nav-open,#main-nav.nav-open{display:flex!important}
+  .site-nav a{padding:.85rem 1.5rem;font-size:1rem!important;color:var(--text-primary,#1a1a1a)!important;border-bottom:1px solid var(--border,#e5e7eb);display:block;min-height:44px;display:flex;align-items:center}
+  .site-nav a:last-child{border-bottom:none}
+  .header-cta .btn--outline{display:none}
+  .header-cta .btn--primary{min-height:44px;min-width:44px}
+  .nav-overlay{display:none;position:fixed;inset:0;top:64px;background:rgba(0,0,0,.35);z-index:190}
+  .nav-overlay.nav-open{display:block}
+}
+
+/* ── Global mobile fixes (UX-01) ── */
+@media(max-width:767px){
+  html,body{max-width:100%;overflow-x:hidden}
+  img{max-width:100%;height:auto}
+  .btn,.quick-link,button,a[role="button"]{min-height:44px;min-width:44px}
+  .form-row{grid-template-columns:1fr!important}
+  .contact-layout{grid-template-columns:1fr!important}
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+}
 </style>
   <link rel="alternate" hreflang="pt-BR" href="https://trekko.com.br/termos-de-uso">
   <link rel="alternate" hreflang="x-default" href="https://trekko.com.br/termos-de-uso">
@@ -124,12 +149,19 @@ p:last-child{margin-bottom:0}
       </svg>
       Trekko
     </a>
-    <nav class="site-nav" aria-label="Navegação principal">
+    <nav class="site-nav" aria-label="Navegação principal" id="main-nav">
       <a href="/trilhas">Trilhas</a>
       <a href="/guias">Guias</a>
       <a href="/blog">Blog</a>
       <a href="/sobre">Sobre</a>
     </nav>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="main-nav">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <line class="bar1" x1="3" y1="6" x2="21" y2="6"/>
+        <line class="bar2" x1="3" y1="12" x2="21" y2="12"/>
+        <line class="bar3" x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
     <div class="header-cta">
       <a href="/" class="btn btn--outline btn--sm">Explorar trilhas</a>
       <a href="/guias/ativar-perfil" class="btn btn--primary btn--sm">Sou guia</a>
@@ -363,6 +395,34 @@ window.addEventListener('load',function(){
   window.dataLayer=window.dataLayer||[];
   window.dataLayer.push({event:'view_terms_of_use',page_path:'/termos-de-uso',page_type:'legal'});
 });
+</script>
+<div class="nav-overlay" id="nav-overlay" aria-hidden="true"></div>
+<script>
+(function(){
+  var btn=document.getElementById('nav-toggle');
+  var nav=document.getElementById('main-nav');
+  var overlay=document.getElementById('nav-overlay');
+  if(!btn||!nav)return;
+  function openMenu(){
+    nav.classList.add('nav-open');
+    if(overlay)overlay.classList.add('nav-open');
+    btn.setAttribute('aria-expanded','true');
+    btn.setAttribute('aria-label','Fechar menu de navegação');
+    document.body.style.overflow='hidden';
+  }
+  function closeMenu(){
+    nav.classList.remove('nav-open');
+    if(overlay)overlay.classList.remove('nav-open');
+    btn.setAttribute('aria-expanded','false');
+    btn.setAttribute('aria-label','Abrir menu de navegação');
+    document.body.style.overflow='';
+  }
+  btn.addEventListener('click',function(){
+    nav.classList.contains('nav-open')?closeMenu():openMenu();
+  });
+  if(overlay)overlay.addEventListener('click',closeMenu);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeMenu();});
+})();
 </script>
 </body>
 </html>
