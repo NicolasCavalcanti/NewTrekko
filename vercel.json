@@ -18,7 +18,8 @@
     { "source": "/divulgacao-de-afiliados.html",     "destination": "/divulgacao-de-afiliados",     "permanent": true },
     { "source": "/remocao-ou-atualizacao-de-dados.html", "destination": "/remocao-ou-atualizacao-de-dados", "permanent": true },
     { "source": "/guias.html",                       "destination": "/guias",                       "permanent": true },
-    { "source": "/equipamentos.html",                "destination": "/equipamentos",                "permanent": true }
+    { "source": "/equipamentos.html",                "destination": "/equipamentos",                "permanent": true },
+    { "source": "/aviso-de-responsabilidade.html",   "destination": "/aviso-de-responsabilidade",   "permanent": true }
   ],
   "rewrites": [
     { "source": "/trilhas", "destination": "/index.html" },
