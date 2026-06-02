@@ -1228,6 +1228,13 @@ def slug_redirect_script(trails):
     )
 
 
+def _is_free(fee):
+    if not fee:
+        return True
+    return fee.strip().lower() in ("gratuito", "gratuita", "grátis", "gratis",
+                                   "gratuito (guia obrigatório)", "gratuito (guia obrigatorio)")
+
+
 def build_jsonld(t):
     slug = t["slug"]
     canonical = "https://trekko.com.br/trilha/" + slug
@@ -1259,6 +1266,7 @@ def build_jsonld(t):
             "url": canonical,
             "image": "https://trekko.com.br" + t["imageUrl"],
             "touristType": "Trilha / Trekking",
+            "isAccessibleForFree": _is_free(t.get("entranceFee", "")),
             "geo": geo,
             "address": {
                 "@type": "PostalAddress",

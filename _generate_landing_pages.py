@@ -936,8 +936,12 @@ def build_item_list_jsonld(trails_list, canonical, list_name):
         {
             "@type": "ListItem",
             "position": i + 1,
-            "url": f"https://trekko.com.br/trilha/{t['slug']}",
-            "name": t["name"],
+            "item": {
+                "@type": "TouristAttraction",
+                "@id": f"https://trekko.com.br/trilha/{t['slug']}",
+                "name": t["name"],
+                "url": f"https://trekko.com.br/trilha/{t['slug']}",
+            },
         }
         for i, t in enumerate(trails_list)
     ]
@@ -1082,7 +1086,8 @@ def build_city_page(city_slug, city_name, uf, city_trails):
          f"{city_name} tem opções de hospedagem para trilheiros. Para locais muito remotos, camping pode ser a principal alternativa."),
     ]
     jsonld = build_faq_jsonld(faqs, canonical_path)
-    head = build_head(title, desc, canonical, hero_img, jsonld)
+    item_list_jsonld = build_item_list_jsonld(city_trails, canonical_path, f"Trilhas em {city_name}")
+    head = build_head(title, desc, canonical, hero_img, jsonld, extra_jsonld=item_list_jsonld)
     header = build_header()
     breadcrumb = build_breadcrumb([
         ("Trekko", "/"), ("Trilhas", "/trilhas"),
@@ -1154,7 +1159,8 @@ def build_park_page(park_slug, park_name, park_trails):
          f"O Trekko lista {n} trilha{'s' if n>1 else ''} no {park_name}. Veja as fichas completas acima."),
     ]
     jsonld = build_faq_jsonld(faqs, canonical_path)
-    head = build_head(title, desc, canonical, hero_img, jsonld)
+    item_list_jsonld = build_item_list_jsonld(park_trails, canonical_path, f"Trilhas no {park_name}")
+    head = build_head(title, desc, canonical, hero_img, jsonld, extra_jsonld=item_list_jsonld)
     header = build_header()
     breadcrumb = build_breadcrumb([
         ("Trekko", "/"), ("Trilhas", "/trilhas"),
@@ -1216,7 +1222,8 @@ def build_difficulty_page(diff_key, diff_trails):
     desc = f"Encontre trilhas {diff_label.lower()}s no Brasil: roteiros em {', '.join(UF_NAMES.get(u,u) for u in ufs[:3])} e mais. Dificuldade, distância e guias certificados CADASTUR."
     faqs = content.get("faqs", [])
     jsonld = build_faq_jsonld(faqs, canonical_path)
-    head = build_head(title, desc, canonical, hero_img, jsonld)
+    item_list_jsonld = build_item_list_jsonld(diff_trails, canonical_path, title_str)
+    head = build_head(title, desc, canonical, hero_img, jsonld, extra_jsonld=item_list_jsonld)
     header = build_header()
     breadcrumb = build_breadcrumb([
         ("Trekko", "/"), ("Trilhas", "/trilhas"),
