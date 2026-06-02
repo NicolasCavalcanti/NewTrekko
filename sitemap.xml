@@ -1213,4 +1213,31 @@
       <news:title>Hipotermia em Trilhas: Como Prevenir e Agir em Caso de Emergência</news:title>
     </news:news>
   </url>
+
+  <!-- Guias de trilha credenciados -->
+  <url>
+    <loc>https://www.trekko.com.br/guia/aaron-wesley-wilber-lopes</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/guia/abel-nascimento-junior</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/guia/ada-katia-aparecida-dos-santos</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/guia/adna-andreia-bernardes-rabelo</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.trekko.com.br/guia/adriana-lima-da-silva</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
 </urlset>
