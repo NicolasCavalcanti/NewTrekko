@@ -4,8 +4,9 @@ Allow: /
 Disallow: /perfil
 Disallow: /checkout
 Disallow: /reservas
-Disallow: /admin
+Disallow: /admin/
 Disallow: /api/
+Disallow: /dashboard/
 Disallow: /component-showcase
 
 # Googlebot-Image — allow product/trail images
@@ -16,30 +17,7 @@ Allow: /
 User-agent: APIs-Google
 Allow: /
 
-User-agent: *
-Allow: /
-Disallow: /admin/
-Disallow: /api/
-Disallow: /dashboard/
-Disallow: /perfil
-Disallow: /checkout
-Disallow: /reservas
-Disallow: /guia/
-Disallow: /expedicao/
-Disallow: /component-showcase
-
-User-agent: Googlebot
-Allow: /
-Disallow: /admin/
-Disallow: /api/
-Disallow: /dashboard/
-Disallow: /perfil
-Disallow: /checkout
-Disallow: /reservas
-Disallow: /guia/
-Disallow: /expedicao/
-Disallow: /component-showcase
-
+# AdsBot variants — required for ad serving
 User-agent: AdsBot-Google
 Allow: /
 
@@ -48,5 +26,16 @@ Allow: /
 
 User-agent: Mediapartners-Google
 Allow: /
+
+# All other crawlers
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /dashboard/
+Disallow: /perfil
+Disallow: /checkout
+Disallow: /reservas
+Disallow: /component-showcase
 
 Sitemap: https://www.trekko.com.br/sitemap.xml
