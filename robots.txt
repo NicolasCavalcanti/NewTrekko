@@ -8,6 +8,8 @@ Disallow: /admin/
 Disallow: /api/
 Disallow: /dashboard/
 Disallow: /component-showcase
+# URL parameters: filter/search params on listing pages return noindex via meta tag (JS-injected).
+# Disallow not used here so Googlebot can read and respect the canonical + noindex directives.
 
 # Googlebot-Image — allow product/trail images
 User-agent: Googlebot-Image
