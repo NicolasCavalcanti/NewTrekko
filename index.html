@@ -35,7 +35,19 @@
       (function () {
         var KEY = 'trekko_lgpd_consent';
         var stored = null;
-        try { var raw = localStorage.getItem(KEY); if (raw) stored = JSON.parse(raw); } catch (e) {}
+        try {
+          var raw = localStorage.getItem(KEY);
+          if (raw) {
+            var parsed = JSON.parse(raw);
+            /* Invalidate consent older than 12 months */
+            var TWELVE_MONTHS_MS = 365 * 24 * 60 * 60 * 1000;
+            if (parsed && parsed.ts && (Date.now() - new Date(parsed.ts).getTime()) < TWELVE_MONTHS_MS) {
+              stored = parsed;
+            } else {
+              localStorage.removeItem(KEY);
+            }
+          }
+        } catch (e) {}
 
         /* Consent state API — consumed by the banner and trekko-analytics.js */
         window.TrekkoConsent = {
@@ -61,7 +73,7 @@
           ad_storage:         adStorage,
           ad_user_data:       adStorage,
           ad_personalization: adStorage,
-          wait_for_update:    stored ? 0 : 2000
+          wait_for_update:    stored ? 0 : 500
         });
 
         /* Called by the banner after user makes a choice */
@@ -96,16 +108,42 @@
     </script>
     <!-- End Google Tag Manager -->
 
-    <!-- Google tag (gtag.js) — direct GA4 fallback while GTM is not yet configured -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-S816P190VN"></script>
+    <!-- Google tag (gtag.js) — loaded after consent is confirmed, or immediately if already granted -->
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-S816P190VN', { send_page_view: !(window.TREKKO_CONFIG && window.TREKKO_CONFIG.GTM_ID) });
+      (function () {
+        var cfg = window.TREKKO_CONFIG || {};
+        /* Skip if GTM is handling tracking */
+        if (cfg.GTM_ID) return;
+
+        function loadGA4() {
+          if (window._ga4Loaded) return;
+          window._ga4Loaded = true;
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=' + (cfg.GA4_ID || 'G-S816P190VN');
+          document.head.appendChild(s);
+          window.dataLayer = window.dataLayer || [];
+          function gtag() { window.dataLayer.push(arguments); }
+          window.gtag = window.gtag || gtag;
+          gtag('js', new Date());
+          gtag('config', cfg.GA4_ID || 'G-S816P190VN', { send_page_view: true });
+        }
+
+        /* If user already consented to analytics in a previous session, load immediately */
+        var consent = window.TrekkoConsent;
+        if (consent && consent.analytics()) {
+          loadGA4();
+        } else {
+          /* Listen for the consent update emitted by _trekkoApplyConsent */
+          var origApply = window._trekkoApplyConsent;
+          window._trekkoApplyConsent = function (analytics, ads) {
+            if (typeof origApply === 'function') origApply(analytics, ads);
+            if (analytics) loadGA4();
+          };
+        }
+      })();
     </script>
-    <!-- NOTE: once GTM is configured, set send_page_view: false above and let
-         GTM fire page_view via the History Change trigger to avoid duplicates. -->
+    <!-- NOTE: once GTM is configured above, GA4 events route through GTM instead. -->
     <meta charset="UTF-8" />
     <meta
       name="viewport"
@@ -424,13 +462,13 @@
           <div class="trekko-consent-text">
             <strong>Sua privacidade importa</strong>
             <p>
-              Usamos cookies para analytics e personalização de anúncios, em conformidade com a
-              <a href="/privacidade" target="_blank" rel="noopener">LGPD</a>.
+              Usamos cookies para analytics e personalização de anúncios, em conformidade com a LGPD.
+              Saiba mais em nossa <a href="/politica-de-cookies" target="_blank" rel="noopener">Política de Cookies</a>.
               Você tem controle total sobre suas preferências.
             </p>
           </div>
           <div class="trekko-consent-btns">
-            <button id="trekko-btn-custom"  type="button">Personalizar</button>
+            <button id="trekko-btn-custom"  type="button">Gerenciar preferências</button>
             <button id="trekko-btn-reject"  type="button">Recusar não essenciais</button>
             <button id="trekko-btn-accept"  type="button">Aceitar todos</button>
           </div>
