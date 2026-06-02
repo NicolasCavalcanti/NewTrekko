@@ -53,12 +53,35 @@
       })();
     </script>
 
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-S816P190VN"></script>
+    <!-- GA4 loaded only after analytics consent (LGPD / Consent Mode v2) -->
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-S816P190VN', { send_page_view: true });
+      (function () {
+        var cfg = window.TREKKO_CONFIG || {};
+        if (cfg.GTM_ID) return;
+        function loadGA4() {
+          if (window._ga4Loaded) return;
+          window._ga4Loaded = true;
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=' + (cfg.GA4_ID || 'G-S816P190VN');
+          document.head.appendChild(s);
+          window.dataLayer = window.dataLayer || [];
+          function gtag() { window.dataLayer.push(arguments); }
+          window.gtag = window.gtag || gtag;
+          gtag('js', new Date());
+          gtag('config', cfg.GA4_ID || 'G-S816P190VN', { send_page_view: true });
+        }
+        var consent = window.TrekkoConsent;
+        if (consent && consent.analytics()) {
+          loadGA4();
+        } else {
+          var orig = window._trekkoApplyConsent;
+          window._trekkoApplyConsent = function (analytics, ads) {
+            if (typeof orig === 'function') orig(analytics, ads);
+            if (analytics) loadGA4();
+          };
+        }
+      })();
     </script>
 
     <meta charset="UTF-8" />
