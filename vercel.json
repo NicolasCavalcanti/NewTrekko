@@ -21,10 +21,6 @@
     { "source": "/equipamentos.html",                "destination": "/equipamentos",                "permanent": true },
     { "source": "/aviso-de-responsabilidade.html",   "destination": "/aviso-de-responsabilidade",   "permanent": true }
   ],
-  "rewrites": [
-    { "source": "/trilhas", "destination": "/index.html" },
-    { "source": "/blog",    "destination": "/index.html" }
-  ],
   "cleanUrls": true,
   "trailingSlash": false,
   "headers": [
