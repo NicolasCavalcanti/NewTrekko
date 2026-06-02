@@ -155,7 +155,7 @@ input:disabled+.toggle-slider{opacity:.6;cursor:not-allowed}
     </thead>
     <tbody>
       <tr>
-        <td><code>trekko_consent</code></td>
+        <td><code>trekko_lgpd_consent</code></td>
         <td><span class="cookie-type type-essential">Essencial</span></td>
         <td>Armazena suas preferências de consentimento de cookies</td>
         <td>1 ano</td>
@@ -175,6 +175,13 @@ input:disabled+.toggle-slider{opacity:.6;cursor:not-allowed}
         <td>90 dias</td>
         <td>Google LLC</td>
       </tr>
+      <tr>
+        <td><code>_gads</code>, <code>IDE</code>, <code>DSID</code></td>
+        <td><span class="cookie-type type-marketing">Marketing</span></td>
+        <td>Google AdSense (ca-pub-2482023752745520) — exibe anúncios relevantes e mede cliques. Ativado apenas nas páginas de equipamentos e blog.</td>
+        <td>13 meses / sessão</td>
+        <td>Google LLC</td>
+      </tr>
     </tbody>
   </table>
   </div>
@@ -190,6 +197,7 @@ input:disabled+.toggle-slider{opacity:.6;cursor:not-allowed}
   <p>Você pode ver a política de privacidade do Google em: <a href="https://policies.google.com/privacy" style="color:var(--st-green)" rel="noopener" target="_blank">policies.google.com/privacy</a>.</p>
 
   <h2>4. Cookies de terceiros</h2>
+  <p>O Trekko exibe anúncios via <strong>Google AdSense</strong> (publisher <code>ca-pub-2482023752745520</code>) nas páginas de equipamentos e blog. O AdSense pode definir cookies de publicidade e remarketing. Esses cookies só são ativados com seu consentimento de marketing.</p>
   <p>Quando você clica em links de afiliado da Trekko (botões "Ver na Amazon", "Ver na Shopee", etc.), o marketplace de destino pode definir seus próprios cookies em seu navegador para fins de rastreamento de compra, personalização e publicidade. Esses cookies são de responsabilidade do respectivo marketplace e regidos pela política de privacidade de cada um:</p>
   <ul>
     <li><a href="https://www.amazon.com.br/gp/help/customer/display.html?nodeId=GLSBYFE9MGKKQXXM" style="color:var(--st-green)" rel="noopener" target="_blank">Política de privacidade da Amazon Brasil</a></li>
@@ -285,28 +293,37 @@ input:disabled+.toggle-slider{opacity:.6;cursor:not-allowed}
   var h=document.getElementById('site-header');
   window.addEventListener('scroll',function(){h.classList.toggle('scrolled',window.scrollY>10)},{passive:true});
 
-  var consent = {};
-  try { consent = JSON.parse(localStorage.getItem('trekko_consent') || '{}'); } catch(e){}
-  if ('analytics' in consent) document.getElementById('consent-analytics').checked = !!consent.analytics;
-  if ('marketing' in consent) document.getElementById('consent-marketing').checked = !!consent.marketing;
+  /* Load current consent from the canonical key used by trekko-lgpd.js */
+  var stored = null;
+  try { stored = JSON.parse(localStorage.getItem('trekko_lgpd_consent') || 'null'); } catch(e){}
+  if (stored) {
+    if ('analytics' in stored) document.getElementById('consent-analytics').checked = !!stored.analytics;
+    if ('ads' in stored) document.getElementById('consent-marketing').checked = !!stored.ads;
+  }
 })();
 
 function saveConsent() {
-  var prefs = {
-    essential: true,
-    analytics: document.getElementById('consent-analytics').checked,
-    marketing: document.getElementById('consent-marketing').checked,
-    timestamp: new Date().toISOString()
-  };
-  localStorage.setItem('trekko_consent', JSON.stringify(prefs));
+  var analytics = document.getElementById('consent-analytics').checked;
+  var ads       = document.getElementById('consent-marketing').checked;
 
-  if (typeof gtag === 'function') {
-    gtag('consent', 'update', {
-      analytics_storage: prefs.analytics ? 'granted' : 'denied',
-      ad_storage: prefs.marketing ? 'granted' : 'denied',
-      ad_user_data: prefs.marketing ? 'granted' : 'denied',
-      ad_personalization: prefs.marketing ? 'granted' : 'denied'
-    });
+  /* Use the official API from trekko-lgpd.js so Consent Mode v2 is updated */
+  if (typeof window._trekkoApplyConsent === 'function') {
+    window._trekkoApplyConsent(analytics, ads);
+  } else {
+    /* Fallback: write directly (e.g. lgpd script not yet loaded) */
+    try {
+      localStorage.setItem('trekko_lgpd_consent', JSON.stringify({
+        analytics: analytics, ads: ads, ts: new Date().toISOString()
+      }));
+    } catch(e){}
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        analytics_storage:  analytics ? 'granted' : 'denied',
+        ad_storage:         ads       ? 'granted' : 'denied',
+        ad_user_data:       ads       ? 'granted' : 'denied',
+        ad_personalization: ads       ? 'granted' : 'denied'
+      });
+    }
   }
 
   document.getElementById('consent-saved').style.display = 'block';
