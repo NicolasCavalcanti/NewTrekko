@@ -71,6 +71,11 @@
     #trekko-disclaimer .td-text a{color:#15803d;text-decoration:underline}
     @media(max-width:640px){#trekko-disclaimer{padding:1.5rem .75rem}#trekko-disclaimer .td-inner{flex-direction:column;gap:.5rem}}
   </style>
+  <style>
+    .trekko-ad{max-width:800px;margin:1.75rem auto;overflow:hidden;text-align:center}
+    .trekko-ad ins{display:block!important;max-width:100%}
+    @media(max-width:640px){.trekko-ad{margin:1.25rem auto}}
+  </style>
   <script>
 (function(){
   var m=window.location.pathname.match(/^\/trilha\/([^/]+)\/?$/);
@@ -96,6 +101,8 @@
 <p>A trilha tem cerca de 5 km e um desnível de 537 metros — mais exigente do que parece para uma caminhada urbana. O percurso começa no acesso oficial pela comunidade do Vidigal, onde guias locais organizam grupos regularmente. Não há taxa de entrada, mas a contratação de guia local é recomendada e apoia diretamente a economia da comunidade.</p>
 <h2>Como é a experiência no percurso</h2>
 <p>A subida pelo Vidigal é em si uma imersão em uma outra faceta do Rio de Janeiro: becos, escadarias e vielas que sobem pela encosta com vistas progressivas sobre o mar. A comunidade recebe caminhantes com familiaridade — o turismo é parte da vida econômica do Vidigal há anos. Conforme a trilha sobe para além da área habitada, a vegetação de Mata Atlântica toma conta e os sons da cidade vão ficando embaixo.</p>
+<div class="trekko-ad" aria-label="Anúncio"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2482023752745520" data-ad-slot="3721854690" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+
 <p>O trecho final na rocha exposta tem passagens que exigem mãos e pés. O cume não é uma plataforma ampla — é uma série de lajes rochosas com boas opções de posicionamento para fotografia. A vista é imediata e avassaladora em todas as direções: a Lagoa Rodrigo de Freitas à esquerda, as praias de Ipanema e Leblon à frente, o oceano Atlântico e as ilhas Cagarras no horizonte sul.</p>
 <h2>Principais trechos e pontos de atenção</h2>
 <p>O trecho de rocha exposta antes do cume é escorregadio após chuva recente. A rocha úmida combina mal com calçado de sola lisa — tênis de trilha ou tênis com boa aderência são necessários. No cume, a ausência de grades de proteção exige atenção, especialmente com crianças. O horário de alta demanda (fins de semana, pôr do sol) cria fila no trecho final de rocha — paciência e espaçamento entre grupos são necessários.</p>
@@ -107,6 +114,8 @@
 <p>Nível moderado. A trilha não é tecnicamente difícil, mas o desnível de 537 metros em 2,5 km de subida é exigente para pessoas sem condicionamento regular. Quem faz caminhadas urbanas de uma hora por semana vai sentir as pernas no dia seguinte. Calçado adequado é o fator mais importante — o trecho de rocha exposta com sapato inadequado transforma a trilha de moderada para arriscada.</p>
 <h2>Contexto: Vidigal e a cidade</h2>
 <p>O Vidigal é uma das comunidades mais organizadas para o turismo no Rio de Janeiro, com hostels, restaurantes e bares no mirante inferior que oferecem uma perspectiva única da cidade. Contratar guia local não é apenas uma questão de segurança — é uma forma de distribuir o benefício econômico do turismo para quem vive e conhece o morro. O Parque Nacional da Tijuca, que cobre 32 km² no coração urbano do Rio, é o maior parque nacional urbano do mundo e o contexto ambiental em que trilhas como o Dois Irmãos existem.</p>
+<div class="trekko-ad" aria-label="Anúncio"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2482023752745520" data-ad-slot="5038274619" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+
     <div class="ef">
       <span>Trilha: <strong>Morro Dois Irmãos</strong></span> &nbsp;·&nbsp;
       <span>Dificuldade: <strong>Moderado</strong></span> &nbsp;·&nbsp;
@@ -155,5 +164,21 @@
     </div>
   </div>
 </section>
+  <script>
+  (function(){
+    if(!("IntersectionObserver"in window))return;
+    var els=document.querySelectorAll("#trekko-editorial .trekko-ad ins.adsbygoogle");
+    if(!els.length)return;
+    var seen=new WeakSet();
+    var obs=new IntersectionObserver(function(entries,o){
+      entries.forEach(function(e){
+        if(!e.isIntersecting||seen.has(e.target))return;
+        seen.add(e.target);o.unobserve(e.target);
+        try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(err){}
+      });
+    },{rootMargin:"300px"});
+    els.forEach(function(el){obs.observe(el);});
+  })();
+  </script>
 </body>
 </html>

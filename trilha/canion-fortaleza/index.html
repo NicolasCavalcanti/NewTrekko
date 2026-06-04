@@ -71,6 +71,11 @@
     #trekko-disclaimer .td-text a{color:#15803d;text-decoration:underline}
     @media(max-width:640px){#trekko-disclaimer{padding:1.5rem .75rem}#trekko-disclaimer .td-inner{flex-direction:column;gap:.5rem}}
   </style>
+  <style>
+    .trekko-ad{max-width:800px;margin:1.75rem auto;overflow:hidden;text-align:center}
+    .trekko-ad ins{display:block!important;max-width:100%}
+    @media(max-width:640px){.trekko-ad{margin:1.25rem auto}}
+  </style>
   <script>
 (function(){
   var m=window.location.pathname.match(/^\/trilha\/([^/]+)\/?$/);
@@ -96,6 +101,8 @@
 <p>A trilha mais completa percorre cerca de 12 km entre o mirante superior e o interior do cânion, saindo de Praia Grande (SC) com acesso pelo Parque Nacional de Aparados da Serra e Serra Geral. O guia é obrigatório para o acesso ao interior do cânion.</p>
 <h2>Como é a experiência no percurso</h2>
 <p>O percurso começa no planalto, onde campos de altitude com araucárias centenárias dominam a paisagem. Conforme a trilha avança em direção à borda do cânion, o corte geológico vai se revelando: primeiro como uma linha distante no campo, depois como uma fenda que cresce até tomar proporções que simplesmente não cabem no campo visual. O contraste entre o planalto aberto e horizontal e a verticalidade das paredes do cânion é o impacto visual mais imediato do Fortaleza.</p>
+<div class="trekko-ad" aria-label="Anúncio"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2482023752745520" data-ad-slot="3721854690" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+
 <p>A descida pela borda do cânion leva ao interior da garganta, onde a Mata Atlântica de encosta substitui os campos de altitude. O microclima muda completamente: mais úmido, mais fresco, com a vegetação adensada e o barulho do Rio Josafaz acompanhando o percurso. A Cascata do Avencal se anuncia pelo barulho antes de aparecer — uma queda de água que despeja dentro do próprio cânion, em uma parede lateral de basalto coberta de musgos e avencas.</p>
 <h2>Principais trechos e pontos de atenção</h2>
 <p>A descida ao interior do cânion tem trechos de barro escorregadio e raízes expostas — calçado de trilha com bom agarre é indispensável. Em dias de chuva ou imediatamente após, o acesso ao interior pode ser fechado por risco de deslizamento; confirme condições com o parque antes de partir de Praia Grande. O retorno pelo mesmo caminho tem subida exigente — reserve energia.</p>
@@ -107,6 +114,8 @@
 <p>Nível moderado para as trilhas do topo (sem guia, vista do planalto). O acesso ao interior com descida à cascata eleva para moderado a difícil, pela exigência física do retorno e pelas condições de terreno. O Cânion Fortaleza é uma boa opção para quem já visitou o Itaimbezinho e quer uma perspectiva mais imersiva e mais tranquila da mesma formação geológica.</p>
 <h2>Contexto: basalto, Serra Geral e araucárias</h2>
 <p>Os cânions dos Aparados da Serra foram formados pelo derramamento de lava basáltica que criou o Planalto Meridional durante o Cretáceo. Erosão fluvial ao longo de dezenas de milhões de anos cortou as rochas criando as gargantas. O Parque Nacional de Serra Geral, criado em 1992 para complementar o Parque de Aparados da Serra, protege a área de entorno dos cânions, incluindo a Floresta de Araucária — um dos ecossistemas mais ameaçados do Sul do Brasil.</p>
+<div class="trekko-ad" aria-label="Anúncio"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2482023752745520" data-ad-slot="5038274619" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+
     <div class="ef">
       <span>Trilha: <strong>Cânion Fortaleza</strong></span> &nbsp;·&nbsp;
       <span>Dificuldade: <strong>Moderado</strong></span> &nbsp;·&nbsp;
@@ -127,5 +136,21 @@
     </div>
   </div>
 </section>
+  <script>
+  (function(){
+    if(!("IntersectionObserver"in window))return;
+    var els=document.querySelectorAll("#trekko-editorial .trekko-ad ins.adsbygoogle");
+    if(!els.length)return;
+    var seen=new WeakSet();
+    var obs=new IntersectionObserver(function(entries,o){
+      entries.forEach(function(e){
+        if(!e.isIntersecting||seen.has(e.target))return;
+        seen.add(e.target);o.unobserve(e.target);
+        try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(err){}
+      });
+    },{rootMargin:"300px"});
+    els.forEach(function(el){obs.observe(el);});
+  })();
+  </script>
 </body>
 </html>

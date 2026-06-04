@@ -71,6 +71,11 @@
     #trekko-disclaimer .td-text a{color:#15803d;text-decoration:underline}
     @media(max-width:640px){#trekko-disclaimer{padding:1.5rem .75rem}#trekko-disclaimer .td-inner{flex-direction:column;gap:.5rem}}
   </style>
+  <style>
+    .trekko-ad{max-width:800px;margin:1.75rem auto;overflow:hidden;text-align:center}
+    .trekko-ad ins{display:block!important;max-width:100%}
+    @media(max-width:640px){.trekko-ad{margin:1.25rem auto}}
+  </style>
   <script>
 (function(){
   var m=window.location.pathname.match(/^\/trilha\/([^/]+)\/?$/);
@@ -96,6 +101,8 @@
 <p>A trilha tem 5,5 quilômetros e pode ser feita em 2 a 3 horas. É acessível para a maioria dos perfis de caminhante, embora o trecho final de subida na própria rocha exija atenção e calçado adequado. O acesso é gratuito pelo parque.</p>
 <h2>Como é a experiência no percurso</h2>
 <p>A trilha começa no estacionamento próximo à BR-242 e sobe gradualmente por campos de quartzito e vegetação de caatinga e campos rupestres. A vista do Pai Inácio aparece rapidamente — a formação rochosa isolada se destaca do horizonte como uma sentinela do planalto. O trecho de aproximação pelo campo aberto tem vistas progressivas do Vale do Capão à esquerda e das serras ao redor.</p>
+<div class="trekko-ad" aria-label="Anúncio"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2482023752745520" data-ad-slot="3721854690" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+
 <p>A subida final é pela própria rocha, com apoios naturais e algumas fissuras que facilitam o progresso. No topo, a plataforma rochosa aberta revela o panorama em todas as direções: o Vale do Capão com a vila de Caeté-Açu embaixo, a Serra do Sincorá ao fundo, o Morro do Camelo ao norte e o oceano de morros que se estende em todas as direções até o horizonte. No pôr do sol, esse oceano de morros ganha tons de laranja e cobre que mudam minuto a minuto.</p>
 <h2>Principais trechos e pontos de atenção</h2>
 <p>O trecho de rocha final exige sapato com solado aderente — em dia de chuva ou após chuva recente, as pedras ficam escorregadias e a subida deve ser feita com cuidado redobrado. No topo, a plataforma é exposta e sem grades de proteção: crianças pequenas devem ser supervisionadas próximo às bordas. No pôr do sol, a aglomeração de pessoas no topo é considerável nos fins de semana.</p>
@@ -107,6 +114,8 @@
 <p>Nível moderado. A trilha é adequada para a maioria dos caminhantes, incluindo famílias com crianças acima de 7–8 anos. O trecho de rocha pode ser intimidador para quem não tem experiência com superfícies expostas, mas não exige habilidades técnicas de escalada. Calçado de trilha ou tênis com boa aderência é suficiente.</p>
 <h2>Contexto: Vale do Capão e Chapada Diamantina</h2>
 <p>O Vale do Capão, ao pé do Pai Inácio, é um dos polos de turismo alternativo mais ativos do Brasil — uma mistura de trilheiros, artistas, agricultores orgânicos e comunidades que chegaram nos anos 1970 em busca de um modo de vida diferente. A Chapada Diamantina foi declarada parque nacional em 1985 e abrange 152 mil hectares de cerrado, campos rupestres e floresta de galeria, com mais de 400 espécies de aves catalogadas.</p>
+<div class="trekko-ad" aria-label="Anúncio"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2482023752745520" data-ad-slot="5038274619" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+
     <div class="ef">
       <span>Trilha: <strong>Morro do Pai Inácio</strong></span> &nbsp;·&nbsp;
       <span>Dificuldade: <strong>Moderado</strong></span> &nbsp;·&nbsp;
@@ -127,5 +136,21 @@
     </div>
   </div>
 </section>
+  <script>
+  (function(){
+    if(!("IntersectionObserver"in window))return;
+    var els=document.querySelectorAll("#trekko-editorial .trekko-ad ins.adsbygoogle");
+    if(!els.length)return;
+    var seen=new WeakSet();
+    var obs=new IntersectionObserver(function(entries,o){
+      entries.forEach(function(e){
+        if(!e.isIntersecting||seen.has(e.target))return;
+        seen.add(e.target);o.unobserve(e.target);
+        try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(err){}
+      });
+    },{rootMargin:"300px"});
+    els.forEach(function(el){obs.observe(el);});
+  })();
+  </script>
 </body>
 </html>

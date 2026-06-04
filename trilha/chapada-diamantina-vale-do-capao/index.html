@@ -71,6 +71,11 @@
     #trekko-disclaimer .td-text a{color:#15803d;text-decoration:underline}
     @media(max-width:640px){#trekko-disclaimer{padding:1.5rem .75rem}#trekko-disclaimer .td-inner{flex-direction:column;gap:.5rem}}
   </style>
+  <style>
+    .trekko-ad{max-width:800px;margin:1.75rem auto;overflow:hidden;text-align:center}
+    .trekko-ad ins{display:block!important;max-width:100%}
+    @media(max-width:640px){.trekko-ad{margin:1.25rem auto}}
+  </style>
   <script>
 (function(){
   var m=window.location.pathname.match(/^\/trilha\/([^/]+)\/?$/);
@@ -96,6 +101,8 @@
 <p>O percurso de 18 quilômetros é circular e pode ser feito em dois a três dias, com acampamento no próprio vale ou nas proximidades da cachoeira. A densidade de paisagens é extraordinária: em um único trecho é possível ver paredões de quartzito avermelhado, campos rupestres com orquídeas e canelas-de-ema, nascentes de água cristalina e o som constante do Rio Capão que atravessa a vila. O guia é obrigatório dentro do parque e essencial para navegar os atalhos que encurtam a rota sem sacrificar os melhores pontos.</p>
 <h2>Como é a experiência no percurso</h2>
 <p>A partida da Vila de Capão já é uma experiência em si: ruas de terra, casas coloridas, uma praça onde permacultores e mochileiros se misturam com moradores nativos. A trilha sai pelo fundo da vila e começa subindo entre cercas de pedra seca até abrir nos campos rupestres. A vegetação baixa dos campos permite visões dos paredões de arenito que enquadram o vale como uma catedral natural.</p>
+<div class="trekko-ad" aria-label="Anúncio"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2482023752745520" data-ad-slot="3721854690" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+
 <p>O trecho mais longo vai em direção à Cachoeira da Fumaça, passando por trechos de mata ciliar ao longo do Rio Capão. A aproximação pela base da cachoeira é feita por uma trilha íngreme que termina num anfiteatro de rocha úmido e nebuloso — mesmo em dias de sol, a névoa gerada pelos 340 metros de queda cria um ambiente permanentemente suave e difuso. Quem sobe ao mirante superior (trecho separado de 8 km) tem uma perspectiva completamente diferente: o volume d'água visto de cima parece uma fita branca desaparecendo no abismo.</p>
 <h2>Principais trechos e pontos de atenção</h2>
 <p>A subida para o mirante da Fumaça é o trecho mais exigente, com desnível de cerca de 600 metros em terreno irregular de campos rupestres. No período seco, a cachoeira pode estar com volume muito reduzido ou quase seca — o nome "Fumaça" vem da névoa gerada pelo impacto com o ar, que persiste mesmo com pouca água, mas o visual é muito mais dramático na estação chuvosa. Verifique as condições com o guia antes de definir o roteiro.</p>
@@ -110,6 +117,8 @@
 <p>O Rio Capão é a principal fonte de água ao longo do percurso. Os campings mais utilizados ficam na própria vila e nas proximidades da base da cachoeira. Trate sempre a água coletada nos rios — a Chapada recebe cada vez mais visitantes e a contaminação por coliformes tem sido registrada em pontos de maior frequência. Fogareiro e kit dejetos são obrigatórios para pernoites fora de área urbana.</p>
 <h2>Contexto local: bioma e comunidade</h2>
 <p>A Vila de Capão — oficialmente Caeté-Açu — é uma das comunidades mais peculiares do interior da Bahia: mistura de agricultores tradicionais, artistas, permacultores e praticantes de espiritualidades alternativas que chegaram nos anos 1980 e 1990 fugindo do ritmo urbano. Hoje convivem em harmonia razoável e criaram uma rede de pousadas, restaurantes e artesanato que sustenta a economia local sem destruir o que os trouxe até ali. O bioma é o Cerrado da Chapada — uma das formações mais biodiversas do planeta, com flora e fauna altamente endêmicas e ameaçadas.
+<div class="trekko-ad" aria-label="Anúncio"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2482023752745520" data-ad-slot="5038274619" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+
     <div class="ef">
       <span>Trilha: <strong>Chapada Diamantina — Vale do Capão</strong></span> &nbsp;·&nbsp;
       <span>Dificuldade: <strong>Moderado</strong></span> &nbsp;·&nbsp;
@@ -158,5 +167,21 @@
     </div>
   </div>
 </section>
+  <script>
+  (function(){
+    if(!("IntersectionObserver"in window))return;
+    var els=document.querySelectorAll("#trekko-editorial .trekko-ad ins.adsbygoogle");
+    if(!els.length)return;
+    var seen=new WeakSet();
+    var obs=new IntersectionObserver(function(entries,o){
+      entries.forEach(function(e){
+        if(!e.isIntersecting||seen.has(e.target))return;
+        seen.add(e.target);o.unobserve(e.target);
+        try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(err){}
+      });
+    },{rootMargin:"300px"});
+    els.forEach(function(el){obs.observe(el);});
+  })();
+  </script>
 </body>
 </html>

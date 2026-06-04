@@ -71,6 +71,11 @@
     #trekko-disclaimer .td-text a{color:#15803d;text-decoration:underline}
     @media(max-width:640px){#trekko-disclaimer{padding:1.5rem .75rem}#trekko-disclaimer .td-inner{flex-direction:column;gap:.5rem}}
   </style>
+  <style>
+    .trekko-ad{max-width:800px;margin:1.75rem auto;overflow:hidden;text-align:center}
+    .trekko-ad ins{display:block!important;max-width:100%}
+    @media(max-width:640px){.trekko-ad{margin:1.25rem auto}}
+  </style>
   <script>
 (function(){
   var m=window.location.pathname.match(/^\/trilha\/([^/]+)\/?$/);
@@ -96,6 +101,8 @@
 <p>A trilha tem 12 quilômetros de ida e volta e pode ser feita em um único dia (com partida de madrugada) ou em dois dias com pernoite nos campings de Tronqueira ou Terreirão. A segunda opção é mais recomendada: permite aclimatação à altitude e garante presença no cume no amanhecer.</p>
 <h2>Como é a experiência no percurso</h2>
 <p>A trilha começa no centro de visitantes em Alto Caparaó, em torno de 1.000 metros de altitude, e sobe progressivamente por Mata Atlântica densa até atingir os campos de altitude. A vegetação muda marcantemente a partir dos 2.200 metros: a floresta se abre em campos rupestres com canelas-de-ema, sempre-vivas e bromélias rasteiras. O vento começa a dominar e a temperatura cai visivelmente.</p>
+<div class="trekko-ad" aria-label="Anúncio"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2482023752745520" data-ad-slot="3721854690" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+
 <p>O Terreirão (2.350 m) é o último camping antes do cume e o ponto de partida para a subida de madrugada. O trecho final, de 2.350 m a 2.892 m, é o mais exigente: solo irregular de rocha e campos rupestres, vento cortante e, muitas vezes, temperatura abaixo de 5 °C. Mas a chegada ao cume antes do sol romper o horizonte — com o mar de nuvens embaixo e as primeiras cores pintando o céu — é uma das experiências mais transformadoras que a natureza brasileira oferece.</p>
 <h2>Principais trechos e pontos de atenção</h2>
 <p>O trecho entre o Terreirão e o cume (cerca de 3 km) não tem marcadores muito claros no escuro — leve lanterna frontal e um GPS com a rota carregada. No cume, a exposição ao vento é total e a sensação térmica pode cair muito abaixo da temperatura do ar. Hipotermia é um risco real no inverno mineiro: camadas térmicas e capa impermeável são obrigatórias, não opcionais.</p>
@@ -107,6 +114,8 @@
 <p>Nível difícil. A distância total não é extrema, mas a altitude e o desnível de 1.000 m tornam o percurso exigente. Caminhantes com experiência em trilhas de montanha de um dia conseguem completar a subida, especialmente se optarem por dois dias com pernoite no Terreirão. A subida noturna sem experiência prévia em trilhas escuras não é recomendada.</p>
 <h2>Camping e apoio</h2>
 <p>Os campings de Tronqueira e Terreirão são estruturados com sanitários e água potável. O parque exige reserva prévia online e cobra taxa de acampamento separada da entrada. Leve barracas adequadas para ventos fortes: as noites em altitude no Caparaó testam equipamentos de qualidade média.</p>
+<div class="trekko-ad" aria-label="Anúncio"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2482023752745520" data-ad-slot="5038274619" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+
     <div class="ef">
       <span>Trilha: <strong>Pico da Bandeira</strong></span> &nbsp;·&nbsp;
       <span>Dificuldade: <strong>Difícil</strong></span> &nbsp;·&nbsp;
@@ -159,5 +168,21 @@
     </div>
   </div>
 </section>
+  <script>
+  (function(){
+    if(!("IntersectionObserver"in window))return;
+    var els=document.querySelectorAll("#trekko-editorial .trekko-ad ins.adsbygoogle");
+    if(!els.length)return;
+    var seen=new WeakSet();
+    var obs=new IntersectionObserver(function(entries,o){
+      entries.forEach(function(e){
+        if(!e.isIntersecting||seen.has(e.target))return;
+        seen.add(e.target);o.unobserve(e.target);
+        try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(err){}
+      });
+    },{rootMargin:"300px"});
+    els.forEach(function(el){obs.observe(el);});
+  })();
+  </script>
 </body>
 </html>
