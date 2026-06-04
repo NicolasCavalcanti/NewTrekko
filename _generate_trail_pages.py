@@ -26,6 +26,28 @@ EDITORIAL_CSS = """\
     @media(max-width:640px){#trekko-editorial{padding:2rem .75rem 3rem}#trekko-editorial h2{font-size:1.05rem}}
   </style>"""
 
+DISCLAIMER_CSS = """\
+  <style>
+    #trekko-disclaimer{font-family:Inter,system-ui,sans-serif;background:#f1f5f9;border-top:1px solid #e2e8f0;padding:2rem 1rem;color:#475569}
+    #trekko-disclaimer .td-inner{max-width:800px;margin:0 auto;display:flex;gap:1rem;align-items:flex-start}
+    #trekko-disclaimer .td-icon{font-size:1.4rem;flex-shrink:0;margin-top:.1rem}
+    #trekko-disclaimer .td-text{font-size:.875rem;line-height:1.65}
+    #trekko-disclaimer .td-text p{margin:0 0 .5rem}
+    #trekko-disclaimer .td-text a{color:#15803d;text-decoration:underline}
+    @media(max-width:640px){#trekko-disclaimer{padding:1.5rem .75rem}#trekko-disclaimer .td-inner{flex-direction:column;gap:.5rem}}
+  </style>"""
+
+DISCLAIMER_HTML = """\
+<section id="trekko-disclaimer" aria-label="Aviso de responsabilidade">
+  <div class="td-inner">
+    <span class="td-icon" aria-hidden="true">⚠️</span>
+    <div class="td-text">
+      <p><strong>Aviso de responsabilidade:</strong> Atividades ao ar livre envolvem riscos inerentes. O Trekko fornece informações de referência e não se responsabiliza por acidentes, condições climáticas adversas ou alterações nas trilhas. Sempre verifique as condições locais, informe alguém sobre seu roteiro e, quando possível, contrate um guia profissional certificado.</p>
+      <p><a href="/aviso-de-responsabilidade/">Saiba mais</a></p>
+    </div>
+  </div>
+</section>"""
+
 # ---------------------------------------------------------------------------
 # Per-trail editorial content — Brazilian Portuguese, trail-specific prose
 # ---------------------------------------------------------------------------
@@ -1406,6 +1428,7 @@ def build_slug_page(t, redirect_script):
   <style>#root{{min-height:100svh}}</style>
 {EDITORIAL_CSS}
 {FAQ_CSS}
+{DISCLAIMER_CSS}
   {redirect_script}
   <script type="module" crossorigin src="/assets/index-DSKK19TW.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/react-vendor-DViTTRkQ.js">
@@ -1417,6 +1440,7 @@ def build_slug_page(t, redirect_script):
   <div id="root"></div>
   {editorial}
   {faq}
+  {DISCLAIMER_HTML}
 </body>
 </html>"""
 
