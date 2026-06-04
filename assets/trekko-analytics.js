@@ -267,6 +267,107 @@
     });
   }
 
+  // ─── Core Web Vitals (auto-initialised) ──────────────────────────────────
+  // Sends LCP, CLS, INP, FCP, TTFB to GA4 as 'web_vitals' events.
+  // These populate the GA4 Core Web Vitals report and feed into the linked
+  // Search Console coverage once GA4 ↔ GSC integration is active.
+
+  function initCoreWebVitals() {
+    if (!win.PerformanceObserver) return;
+
+    function sendVital(name, value) {
+      var thresholds = {
+        LCP:  [2500, 4000],
+        CLS:  [0.1,  0.25],
+        INP:  [200,  500],
+        FCP:  [1800, 3000],
+        TTFB: [800,  1800]
+      };
+      var t = thresholds[name] || [0, 0];
+      var rating = value <= t[0] ? 'good' : value <= t[1] ? 'needs-improvement' : 'poor';
+      dispatch('web_vitals', {
+        metric_name:   name,
+        metric_value:  Math.round(name === 'CLS' ? value * 1000 : value),
+        metric_rating: rating,
+        page_type:     getPageType(),
+        page_path:     win.location.pathname
+      });
+    }
+
+    // LCP — largest contentful paint
+    safe(function () {
+      var lcpValue = 0;
+      var obs = new PerformanceObserver(function (list) {
+        var entries = list.getEntries();
+        lcpValue = entries[entries.length - 1].startTime;
+      });
+      obs.observe({ type: 'largest-contentful-paint', buffered: true });
+      doc.addEventListener('visibilitychange', function () {
+        if (doc.visibilityState === 'hidden') { obs.disconnect(); if (lcpValue) sendVital('LCP', lcpValue); }
+      }, { once: true });
+    });
+
+    // CLS — cumulative layout shift (session-windowed per spec)
+    safe(function () {
+      var clsValue = 0, sessionValue = 0, sessionEntries = [];
+      var obs = new PerformanceObserver(function (list) {
+        list.getEntries().forEach(function (entry) {
+          if (entry.hadRecentInput) return;
+          var last = sessionEntries[sessionEntries.length - 1];
+          var first = sessionEntries[0];
+          if (sessionValue && last && entry.startTime - last.startTime < 1000
+              && first && entry.startTime - first.startTime < 5000) {
+            sessionValue += entry.value;
+            sessionEntries.push(entry);
+          } else {
+            sessionValue = entry.value;
+            sessionEntries = [entry];
+          }
+          if (sessionValue > clsValue) clsValue = sessionValue;
+        });
+      });
+      obs.observe({ type: 'layout-shift', buffered: true });
+      doc.addEventListener('visibilitychange', function () {
+        if (doc.visibilityState === 'hidden') { obs.disconnect(); sendVital('CLS', clsValue); }
+      }, { once: true });
+    });
+
+    // INP — interaction to next paint (replaces FID as of March 2024)
+    safe(function () {
+      var inpValue = 0;
+      var obs = new PerformanceObserver(function (list) {
+        list.getEntries().forEach(function (entry) {
+          var duration = entry.duration;
+          if (duration > inpValue) inpValue = duration;
+        });
+      });
+      obs.observe({ type: 'event', durationThreshold: 16, buffered: true });
+      doc.addEventListener('visibilitychange', function () {
+        if (doc.visibilityState === 'hidden') { obs.disconnect(); if (inpValue) sendVital('INP', inpValue); }
+      }, { once: true });
+    });
+
+    // FCP + TTFB — available after load via Performance API
+    safe(function () {
+      function reportPaintAndTTFB() {
+        var navEntries = performance.getEntriesByType('navigation');
+        if (navEntries.length) {
+          var nav = navEntries[0];
+          var ttfb = nav.responseStart - nav.requestStart;
+          if (ttfb >= 0) sendVital('TTFB', ttfb);
+        }
+        performance.getEntriesByType('paint').forEach(function (entry) {
+          if (entry.name === 'first-contentful-paint') sendVital('FCP', entry.startTime);
+        });
+      }
+      if (doc.readyState === 'complete') {
+        setTimeout(reportPaintAndTTFB, 0);
+      } else {
+        win.addEventListener('load', function () { setTimeout(reportPaintAndTTFB, 0); });
+      }
+    });
+  }
+
   // ─── Scroll depth (auto-initialised) ─────────────────────────────────────
 
   function initScrollDepth() {
@@ -333,6 +434,7 @@
 
   // ─── Bootstrap ────────────────────────────────────────────────────────────
 
+  initCoreWebVitals();
   initScrollDepth();
   initSPARouting();
 
