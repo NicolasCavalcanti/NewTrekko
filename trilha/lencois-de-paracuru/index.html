@@ -71,6 +71,11 @@
     #trekko-disclaimer .td-text a{color:#15803d;text-decoration:underline}
     @media(max-width:640px){#trekko-disclaimer{padding:1.5rem .75rem}#trekko-disclaimer .td-inner{flex-direction:column;gap:.5rem}}
   </style>
+  <style>
+    .trekko-ad{max-width:800px;margin:1.75rem auto;overflow:hidden;text-align:center}
+    .trekko-ad ins{display:block!important;max-width:100%}
+    @media(max-width:640px){.trekko-ad{margin:1.25rem auto}}
+  </style>
   <script>
 (function(){
   var m=window.location.pathname.match(/^\/trilha\/([^/]+)\/?$/);
@@ -96,6 +101,8 @@
 <p>O percurso é linear, partindo próximo à Praia do Farol e seguindo pela sequência de campos de dunas até o ponto final. A baixa altimetria (ganho acumulado de apenas 59 m) é enganosa: a areia fofa aumenta o esforço de cada passada em 30 a 50% em relação ao mesmo percurso em solo firme.</p>
 <h2>Como é a experiência no percurso</h2>
 <p>Caminhar em dunas é diferente de qualquer outra trilha. O horizonte muda a cada crista vencida: uma nova duna revela outra lagoa, outro ângulo do litoral, outra perspectiva do oceano. A luz do Ceará — intensa, direta e quase sem filtro — cria sombras dramáticas sobre as formas suaves das dunas que mudam de aparência a cada hora do dia. O final da tarde dourea a areia e transforma o campo de dunas em um cenário de cinema.</p>
+<div class="trekko-ad" aria-label="Anúncio"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2482023752745520" data-ad-slot="3721854690" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+
 <p>As lagoas são o ponto alto do percurso. Algumas são permanentes, outras aparecem apenas no período de maior pluviosidade (março a julho); suas cores variam conforme a vegetação subaquática e a profundidade. Aerogeradores no horizonte marcam a presença da modernidade sem eliminar o caráter selvagem do lugar.</p>
 <h2>Principais trechos e pontos de atenção</h2>
 <p>A navegação sem trilha marcada é o principal desafio: leve GPS com rota carregada ou contrate guia local que conhece os caminhos seguros entre as lagoas. Algumas áreas da APA têm restrições de acesso para proteger a vegetação de fixação das dunas — siga as indicações de guia ou pesquise as zonas de visitação antes de ir. A areia pode atingir 60 °C na superfície em dias de sol forte.</p>
@@ -107,6 +114,8 @@
 <p>Nível moderado. A distância e o desnível seriam fáceis em solo firme, mas a areia fofa eleva a dificuldade para moderado. Caminhantes com experiência regular em trilhas de um dia completam o percurso sem grandes dificuldades desde que a hidratação e o horário de início sejam respeitados. Crianças menores de 10 anos podem ter dificuldade com a areia — avalie com base na disposição física do grupo.</p>
 <h2>Contexto: APA das Dunas e litoral cearense</h2>
 <p>Paracuru é uma cidade de pescadores e kite-surfistas a 75 km de Fortaleza, conhecida pelas condições de vento que atraem praticantes de esportes aquáticos de todo o Brasil. A APA das Dunas protege um ecossistema frágil que enfrenta pressão crescente de loteamentos e tráfego de veículos nas dunas — respeitar as zonas de visitação e não usar veículos de tração nas dunas são atitudes fundamentais para a preservação do lugar.</p>
+<div class="trekko-ad" aria-label="Anúncio"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2482023752745520" data-ad-slot="5038274619" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+
     <div class="ef">
       <span>Trilha: <strong>Lençóis de Paracuru</strong></span> &nbsp;·&nbsp;
       <span>Dificuldade: <strong>Moderado</strong></span> &nbsp;·&nbsp;
@@ -127,5 +136,21 @@
     </div>
   </div>
 </section>
+  <script>
+  (function(){
+    if(!("IntersectionObserver"in window))return;
+    var els=document.querySelectorAll("#trekko-editorial .trekko-ad ins.adsbygoogle");
+    if(!els.length)return;
+    var seen=new WeakSet();
+    var obs=new IntersectionObserver(function(entries,o){
+      entries.forEach(function(e){
+        if(!e.isIntersecting||seen.has(e.target))return;
+        seen.add(e.target);o.unobserve(e.target);
+        try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(err){}
+      });
+    },{rootMargin:"300px"});
+    els.forEach(function(el){obs.observe(el);});
+  })();
+  </script>
 </body>
 </html>

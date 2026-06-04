@@ -71,6 +71,11 @@
     #trekko-disclaimer .td-text a{color:#15803d;text-decoration:underline}
     @media(max-width:640px){#trekko-disclaimer{padding:1.5rem .75rem}#trekko-disclaimer .td-inner{flex-direction:column;gap:.5rem}}
   </style>
+  <style>
+    .trekko-ad{max-width:800px;margin:1.75rem auto;overflow:hidden;text-align:center}
+    .trekko-ad ins{display:block!important;max-width:100%}
+    @media(max-width:640px){.trekko-ad{margin:1.25rem auto}}
+  </style>
   <script>
 (function(){
   var m=window.location.pathname.match(/^\/trilha\/([^/]+)\/?$/);
@@ -96,6 +101,8 @@
 <p>Não existe trilha marcada. A navegação é feita pelos guias locais que conhecem a lógica das dunas, os caminhos entre as lagoas e os pontos seguros de travessia do Rio Preguiças. Sem guia, a orientação nos Lençóis é virtualmente impossível — as dunas se parecem umas com as outras e o vento apaga qualquer rastro em horas.</p>
 <h2>Como é a experiência no percurso</h2>
 <p>Caminhar em dunas é diferente de qualquer outro tipo de trilha: cada passada em areia fofa exige mais esforço do que parece, os músculos das panturrilhas e tornozelos trabalham de forma incomum e o ritmo de avanço é menor do que a distância plana sugeriria. Apesar disso — ou por causa disso — a caminhada tem um aspecto meditativo: o branco das dunas, o silêncio rompido apenas pelo vento e o contraste das lagoas turquesas criam um ambiente que desacelera o pensamento.</p>
+<div class="trekko-ad" aria-label="Anúncio"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2482023752745520" data-ad-slot="3721854690" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+
 <p>O acampamento nas dunas ao lado de uma lagoa, sob um céu repleto de estrelas sem nenhuma poluição luminosa por quilômetros em todas as direções, é um dos momentos mais memoráveis da travessia. O contraste entre o branco absoluto das dunas durante o dia e a imensidão do céu noturno é algo que os caminhantes descrevem como transformador.</p>
 <h2>Principais trechos e pontos de atenção</h2>
 <p>A gestão de água é crítica: nem todas as lagoas são potáveis sem filtração, e o guia indica quais fontes são adequadas para consumo. A areia pode atingir temperatura de superfície acima de 60 °C no meio do dia — caminhar nas horas centrais sem calçado adequado causa queimaduras. A travessia do Rio Preguiças, dependendo da época, pode exigir barco ou canoa local.</p>
@@ -107,6 +114,8 @@
 <p>Nível difícil pela distância (75 km em 3–4 dias) e pela exigência física da areia fofa. Caminhantes sem experiência em múltiplos dias de caminhada devem fazer uma versão abreviada antes de tentar a travessia completa. Fisicamente, o maior desafio não é o desnível (praticamente nulo) mas a fadiga muscular acumulada de caminhar em areia por dias consecutivos.</p>
 <h2>Camping e apoio</h2>
 <p>Os acampamentos são feitos nas dunas próximas às lagoas ou no vilarejo de Queimada dos Britos, a meio caminho. Em Atins, pousadas simples recebem os caminhantes ao final da travessia. Barreirinhas tem boa infraestrutura de hotéis e restaurantes para a noite anterior à largada. Os guias locais geralmente incluem alimentação no pacote de travessia.</p>
+<div class="trekko-ad" aria-label="Anúncio"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2482023752745520" data-ad-slot="5038274619" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+
     <div class="ef">
       <span>Trilha: <strong>Travessia dos Lençóis Maranhenses</strong></span> &nbsp;·&nbsp;
       <span>Dificuldade: <strong>Difícil</strong></span> &nbsp;·&nbsp;
@@ -127,5 +136,21 @@
     </div>
   </div>
 </section>
+  <script>
+  (function(){
+    if(!("IntersectionObserver"in window))return;
+    var els=document.querySelectorAll("#trekko-editorial .trekko-ad ins.adsbygoogle");
+    if(!els.length)return;
+    var seen=new WeakSet();
+    var obs=new IntersectionObserver(function(entries,o){
+      entries.forEach(function(e){
+        if(!e.isIntersecting||seen.has(e.target))return;
+        seen.add(e.target);o.unobserve(e.target);
+        try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(err){}
+      });
+    },{rootMargin:"300px"});
+    els.forEach(function(el){obs.observe(el);});
+  })();
+  </script>
 </body>
 </html>

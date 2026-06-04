@@ -71,6 +71,11 @@
     #trekko-disclaimer .td-text a{color:#15803d;text-decoration:underline}
     @media(max-width:640px){#trekko-disclaimer{padding:1.5rem .75rem}#trekko-disclaimer .td-inner{flex-direction:column;gap:.5rem}}
   </style>
+  <style>
+    .trekko-ad{max-width:800px;margin:1.75rem auto;overflow:hidden;text-align:center}
+    .trekko-ad ins{display:block!important;max-width:100%}
+    @media(max-width:640px){.trekko-ad{margin:1.25rem auto}}
+  </style>
   <script>
 (function(){
   var m=window.location.pathname.match(/^\/trilha\/([^/]+)\/?$/);
@@ -96,6 +101,8 @@
 <p>O parque oferece duas opções de trilha: as trilhas do topo (Vértice e Cotovelo, sem guia obrigatório) e a Trilha do Rio do Boi, que desce ao interior do cânion e exige guia credenciado. A Trilha do Rio do Boi, de 14 quilômetros, é a experiência mais completa e a que recomendamos para quem quer realmente conhecer o cânion por dentro.</p>
 <h2>Como é a experiência no percurso</h2>
 <p>A descida ao interior do cânion começa em campo aberto de araucárias, a vegetação símbolo do Planalto Sul-brasileiro. Rapidamente a vegetação muda conforme a trilha desce pelas encostas: Mata Atlântica densa substitui os campos, a temperatura cai e o barulho do rio começa a preencher o silêncio. O Rio do Boi é atravessado diversas vezes ao longo do percurso — em épocas de maior volume, as travessias ficam na altura do joelho ou da cintura.</p>
+<div class="trekko-ad" aria-label="Anúncio"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2482023752745520" data-ad-slot="3721854690" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+
 <p>Dentro do cânion, a escala das paredes de basalto é avassaladora. Olhar para cima é ver uma faixa de céu recortada por paredes escuras e verticais. As cachoeiras que despencam do alto — algumas secas na estiagem, outras perenes — adicionam camadas sonoras ao ambiente. O silêncio dentro do cânion, quando o grupo para para ouvir, é de uma profundidade rara.</p>
 <h2>Principais trechos e pontos de atenção</h2>
 <p>As travessias do Rio do Boi exigem sapatos que possam molhar (não use botas impermeáveis que enchem com água). O guia define quais travessias são seguras conforme o volume do dia — na dúvida, confie no guia. Nos meses de verão, a chuva pode subir o nível do rio rapidamente e interromper a trilha antes do previsto.</p>
@@ -107,6 +114,8 @@
 <p>Nível moderado a difícil. A trilha do topo (Vértice/Cotovelo) é acessível para caminhantes iniciantes. A Trilha do Rio do Boi exige condição física para 14 km com terreno irregular e travessias de rio. A emoção compensa em ambos os casos, mas para a experiência completa do cânion, o percurso interior não tem substituto.</p>
 <h2>Contexto: araucárias e Serra Geral</h2>
 <p>O Planalto da Serra Geral é um dos últimos refúgios significativos da Floresta de Araucária no Brasil. As araucárias centenárias nos campos acima do cânion fazem parte do ecossistema que o parque protege junto com a formação geológica. Cambará do Sul, a cidade mais próxima, é um polo de turismo serrano com boa oferta de pousadas e guias especializados nos dois parques da região (Aparados da Serra e Serra Geral).</p>
+<div class="trekko-ad" aria-label="Anúncio"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2482023752745520" data-ad-slot="5038274619" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+
     <div class="ef">
       <span>Trilha: <strong>Cânion Itaimbezinho</strong></span> &nbsp;·&nbsp;
       <span>Dificuldade: <strong>Moderado</strong></span> &nbsp;·&nbsp;
@@ -155,5 +164,21 @@
     </div>
   </div>
 </section>
+  <script>
+  (function(){
+    if(!("IntersectionObserver"in window))return;
+    var els=document.querySelectorAll("#trekko-editorial .trekko-ad ins.adsbygoogle");
+    if(!els.length)return;
+    var seen=new WeakSet();
+    var obs=new IntersectionObserver(function(entries,o){
+      entries.forEach(function(e){
+        if(!e.isIntersecting||seen.has(e.target))return;
+        seen.add(e.target);o.unobserve(e.target);
+        try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(err){}
+      });
+    },{rootMargin:"300px"});
+    els.forEach(function(el){obs.observe(el);});
+  })();
+  </script>
 </body>
 </html>
