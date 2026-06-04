@@ -71,6 +71,11 @@
     #trekko-disclaimer .td-text a{color:#15803d;text-decoration:underline}
     @media(max-width:640px){#trekko-disclaimer{padding:1.5rem .75rem}#trekko-disclaimer .td-inner{flex-direction:column;gap:.5rem}}
   </style>
+  <style>
+    .trekko-ad{max-width:800px;margin:1.75rem auto;overflow:hidden;text-align:center}
+    .trekko-ad ins{display:block!important;max-width:100%}
+    @media(max-width:640px){.trekko-ad{margin:1.25rem auto}}
+  </style>
   <script>
 (function(){
   var m=window.location.pathname.match(/^\/trilha\/([^/]+)\/?$/);
@@ -96,6 +101,8 @@
 <p>A trilha é iniciada em Teresópolis, pela entrada do Parque Nacional da Serra dos Órgãos (PARNASO). Não há guia obrigatório, mas a trilha é longa e requer planejamento sério. A opção de pernoite no Abrigo da Pedra do Sino permite subir no segundo dia ao amanhecer com o mar de nuvens.</p>
 <h2>Como é a experiência no percurso</h2>
 <p>A trilha começa na Mata Atlântica densa de altitude, onde a umidade e a sombra criam um ambiente de floresta típico da Serra dos Órgãos. A vegetação vai abrindo progressivamente conforme a altitude sobe: samambaias arborescentes dão lugar a campos de altitude com bromélias e musgos que cobrem cada pedra disponível. O Dedo de Deus aparece em perspectiva lateral em determinado ponto do caminho — uma das visões mais icônicas do montanhismo brasileiro.</p>
+<div class="trekko-ad" aria-label="Anúncio"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2482023752745520" data-ad-slot="3721854690" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+
 <p>O trecho final, acima de 2.000 metros, é em campo aberto e rocha exposta. O vento pode ser intenso e a sensação térmica cai consideravelmente. O cume da Pedra do Sino é uma plataforma rochosa com exposição total em todas as direções. Nos dias claros, a Baía de Guanabara aparece ao sul e a Serra da Mantiqueira se perfila no horizonte norte.</p>
 <h2>Principais trechos e pontos de atenção</h2>
 <p>O trecho entre 1.800 m e o cume é o mais exposto ao vento e ao frio. A neblina pode entrar rapidamente — tenha a rota salva no GPS. Os riachos ao longo do percurso têm água disponível, mas devem ser filtrados. A descida pelo mesmo caminho tem impacto considerável nos joelhos — bastões são altamente recomendados para o retorno.</p>
@@ -107,6 +114,8 @@
 <p>Nível difícil. O desnível de 1.650 m em trilha de 14 km é uma das subidas mais exigentes do Rio de Janeiro sem necessidade de técnica de escalada. Caminhantes que completaram a Travessia Petrópolis–Teresópolis estão bem preparados para a Pedra do Sino. Para quem está fazendo a primeira trilha de dia longo, a Pedra do Sino não é o começo recomendado.</p>
 <h2>Contexto: Serra dos Órgãos e PARNASO</h2>
 <p>O Parque Nacional da Serra dos Órgãos foi criado em 1939 — é um dos parques nacionais mais antigos do Brasil. Os picos da Serra dos Órgãos (Dedo de Deus, Pedra do Sino, Agulhas do Diabo) foram o berço do montanhismo brasileiro organizado no século XX. O parque protege um dos trechos mais preservados de Mata Atlântica de altitude no Sudeste, com alta endemismo de epífitas, anfíbios e aves.</p>
+<div class="trekko-ad" aria-label="Anúncio"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2482023752745520" data-ad-slot="5038274619" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+
     <div class="ef">
       <span>Trilha: <strong>Pedra do Sino — Serra dos Órgãos</strong></span> &nbsp;·&nbsp;
       <span>Dificuldade: <strong>Difícil</strong></span> &nbsp;·&nbsp;
@@ -127,5 +136,21 @@
     </div>
   </div>
 </section>
+  <script>
+  (function(){
+    if(!("IntersectionObserver"in window))return;
+    var els=document.querySelectorAll("#trekko-editorial .trekko-ad ins.adsbygoogle");
+    if(!els.length)return;
+    var seen=new WeakSet();
+    var obs=new IntersectionObserver(function(entries,o){
+      entries.forEach(function(e){
+        if(!e.isIntersecting||seen.has(e.target))return;
+        seen.add(e.target);o.unobserve(e.target);
+        try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(err){}
+      });
+    },{rootMargin:"300px"});
+    els.forEach(function(el){obs.observe(el);});
+  })();
+  </script>
 </body>
 </html>
