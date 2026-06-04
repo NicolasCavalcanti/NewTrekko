@@ -1218,6 +1218,64 @@ TRAIL_FAQ = {
 }  # end TRAIL_FAQ
 
 
+_ADSENSE_CLIENT = "ca-pub-2482023752745520"
+_AD_SLOT_MID    = "3721854690"   # TRAIL_AFTER_INTRO — after 3rd paragraph
+_AD_SLOT_END    = "5038274619"   # GUIDES_AFTER_EDITORIAL — end of editorial
+
+AD_CSS = """\
+  <style>
+    .trekko-ad{max-width:800px;margin:1.75rem auto;overflow:hidden;text-align:center}
+    .trekko-ad ins{display:block!important;max-width:100%}
+    @media(max-width:640px){.trekko-ad{margin:1.25rem auto}}
+  </style>"""
+
+_AD_LAZY_SCRIPT = """\
+  <script>
+  (function(){
+    if(!("IntersectionObserver"in window))return;
+    var els=document.querySelectorAll("#trekko-editorial .trekko-ad ins.adsbygoogle");
+    if(!els.length)return;
+    var seen=new WeakSet();
+    var obs=new IntersectionObserver(function(entries,o){
+      entries.forEach(function(e){
+        if(!e.isIntersecting||seen.has(e.target))return;
+        seen.add(e.target);o.unobserve(e.target);
+        try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(err){}
+      });
+    },{rootMargin:"300px"});
+    els.forEach(function(el){obs.observe(el);});
+  })();
+  </script>"""
+
+
+def _ad_html(slot):
+    return (
+        f'\n<div class="trekko-ad" aria-label="Anúncio">'
+        f'<ins class="adsbygoogle" style="display:block"'
+        f' data-ad-client="{_ADSENSE_CLIENT}"'
+        f' data-ad-slot="{slot}"'
+        f' data-ad-format="auto"'
+        f' data-full-width-responsive="true"></ins></div>\n'
+    )
+
+
+def _inject_editorial_ads(content):
+    """Insert ad after 3rd </p> and append one at end of content."""
+    # Mid-content: after 3rd closing paragraph tag
+    count, pos = 0, 0
+    while count < 3:
+        idx = content.find("</p>", pos)
+        if idx == -1:
+            break
+        count += 1
+        pos = idx + 4
+    if count == 3:
+        content = content[:pos] + _ad_html(_AD_SLOT_MID) + content[pos:]
+    # End-of-content ad
+    content += _ad_html(_AD_SLOT_END)
+    return content
+
+
 FAQ_CSS = """\
   <style>
     #trekko-faq{font-family:Inter,system-ui,sans-serif;background:#fff;border-top:4px solid #15803d;padding:3rem 1rem 4rem;color:#1e293b;line-height:1.8}
@@ -1353,10 +1411,11 @@ def build_editorial_section(t):
     if not content:
         return ""
     diff = DIFF_LABELS.get(t["difficulty"], t["difficulty"])
+    content_with_ads = _inject_editorial_ads(content)
     return f"""\
 <section id="trekko-editorial" aria-label="Guia editorial: {t['name']}">
   <div class="ei">
-    {content}
+    {content_with_ads}
     <div class="ef">
       <span>Trilha: <strong>{t['name']}</strong></span> &nbsp;·&nbsp;
       <span>Dificuldade: <strong>{diff}</strong></span> &nbsp;·&nbsp;
@@ -1429,6 +1488,7 @@ def build_slug_page(t, redirect_script):
 {EDITORIAL_CSS}
 {FAQ_CSS}
 {DISCLAIMER_CSS}
+{AD_CSS}
   {redirect_script}
   <script type="module" crossorigin src="/assets/index-DSKK19TW.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/react-vendor-DViTTRkQ.js">
@@ -1441,6 +1501,7 @@ def build_slug_page(t, redirect_script):
   {editorial}
   {faq}
   {DISCLAIMER_HTML}
+{_AD_LAZY_SCRIPT}
 </body>
 </html>"""
 

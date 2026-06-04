@@ -71,6 +71,11 @@
     #trekko-disclaimer .td-text a{color:#15803d;text-decoration:underline}
     @media(max-width:640px){#trekko-disclaimer{padding:1.5rem .75rem}#trekko-disclaimer .td-inner{flex-direction:column;gap:.5rem}}
   </style>
+  <style>
+    .trekko-ad{max-width:800px;margin:1.75rem auto;overflow:hidden;text-align:center}
+    .trekko-ad ins{display:block!important;max-width:100%}
+    @media(max-width:640px){.trekko-ad{margin:1.25rem auto}}
+  </style>
   <script>
 (function(){
   var m=window.location.pathname.match(/^\/trilha\/([^/]+)\/?$/);
@@ -96,6 +101,8 @@
 <p>O parque fica a aproximadamente 500 quilômetros de Belo Horizonte e a 350 quilômetros de Brasília, o que o torna um destino logisticamente viável de fim de semana longo. A infraestrutura é bem organizada pelo ICMBio, com campings estruturados, sinalização de trilhas e fiscalização ativa. A Canastra recebe menos visitantes que parques mais famosos do Sudeste, o que preserva aquela qualidade de silêncio e imersão que está desaparecendo dos destinos mais populares.</p>
 <h2>Como é a experiência no percurso</h2>
 <p>A trilha começa na portaria de São Roque de Minas e atravessa imediatamente os campos de altitude da chapada. A vegetação é a marca: campos sujos com murunduns, veredas de buritis, manchas de cerrado sensu stricto com seus ipês retorcidos e os campos rupestres nas cotas mais altas. Em julho e agosto, as canelas-de-ema atingem seus dois metros de altura e os campos ficam salpicados de amarelo e branco das flores silvestres.</p>
+<div class="trekko-ad" aria-label="Anúncio"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2482023752745520" data-ad-slot="3721854690" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+
 <p>A nascente do Rio São Francisco fica a aproximadamente 8 quilômetros da portaria — um ponto de peregrinação para quem cresceu no Nordeste ou em Minas Gerais com o Velho Chico no imaginário cultural. A água brota de uma rocha numa quantidade modesta que dificilmente faz imaginar o rio caudaloso que ela vai se tornar 2.800 quilômetros depois. Mas a emoção do lugar vem precisamente dessa escala: ver onde começa o que alimentou tantas histórias e tantas vidas.</p>
 <h2>Principais trechos e pontos de atenção</h2>
 <p>O trecho entre a nascente do São Francisco e a Cachoeira Casca D'Anta é o mais longo e menos frequentado. A sinalização existe mas é mais esparsa — GPS com rota previamente carregada é recomendado. As estradas de terra dentro do parque podem ser cortadas pelas chuvas no verão, tornando alguns trechos inacessíveis de carro; confirme as condições de acesso com o ICMBio antes de planejar visitas entre novembro e março.</p>
@@ -107,6 +114,8 @@
 <p>Nível moderado. O terreno da Canastra não apresenta trechos técnicos, mas o percurso de 22 quilômetros com mochila de dois dias em campo aberto é exigente pelo volume total e pelo calor. Caminhantes com experiência em trilhas de um dia conseguem completar em dois dias com ritmo tranquilo. A opção de fazer percursos parciais saindo e voltando pela portaria é válida para quem quer conhecer o parque sem o desafio da travessia completa.</p>
 <h2>Pontos de água e camping</h2>
 <p>Os riachos do parque fornecem água ao longo do percurso, mas o tratamento é obrigatório — filtro ou purificador é item essencial. O Camping Casca D'Anta, próximo à cachoeira, é o mais estruturado do parque e serve de base para quem divide a travessia em dois dias. Reserve com antecedência pelo sistema ICMBio, especialmente em feriados e fins de semana de julho e agosto, quando o parque recebe o maior fluxo de visitantes.
+<div class="trekko-ad" aria-label="Anúncio"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2482023752745520" data-ad-slot="5038274619" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+
     <div class="ef">
       <span>Trilha: <strong>Serra da Canastra</strong></span> &nbsp;·&nbsp;
       <span>Dificuldade: <strong>Moderado</strong></span> &nbsp;·&nbsp;
@@ -155,5 +164,21 @@
     </div>
   </div>
 </section>
+  <script>
+  (function(){
+    if(!("IntersectionObserver"in window))return;
+    var els=document.querySelectorAll("#trekko-editorial .trekko-ad ins.adsbygoogle");
+    if(!els.length)return;
+    var seen=new WeakSet();
+    var obs=new IntersectionObserver(function(entries,o){
+      entries.forEach(function(e){
+        if(!e.isIntersecting||seen.has(e.target))return;
+        seen.add(e.target);o.unobserve(e.target);
+        try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(err){}
+      });
+    },{rootMargin:"300px"});
+    els.forEach(function(el){obs.observe(el);});
+  })();
+  </script>
 </body>
 </html>
