@@ -27,7 +27,7 @@
       "travessia",
       "serra-dos-orgaos"
     ],
-    "metaTitle": "Travessia Petrópolis x Teresópolis: Guia Completo 2026 | Trekko",
+    "metaTitle": "Travessia Petrópolis–Teresópolis: Guia Completo | Trekko",
     "metaDescription": "Tudo sobre a travessia mais clássica do Brasil: percurso, abrigos, dificuldades, melhor época e dicas essenciais para os 30 km pela Serra dos Órgãos.",
     "featured": 1,
     "viewCount": 0,
@@ -170,7 +170,7 @@
       "conservacao",
       "chapada-dos-veadeiros"
     ],
-    "metaTitle": "Chapada dos Veadeiros: Guia Completo do Cerrado Sagrado | Trekko",
+    "metaTitle": "Chapada dos Veadeiros: Guia do Cerrado Sagrado | Trekko",
     "metaDescription": "Conheça a Chapada dos Veadeiros, o coração preservado do Cerrado brasileiro — trilhas, cachoeiras, fauna e como visitar com responsabilidade.",
     "featured": 1,
     "viewCount": 0,
@@ -313,7 +313,7 @@
       "guia-basico",
       "equipamentos"
     ],
-    "metaTitle": "Como Começar no Trekking: Guia Completo para Iniciantes | Trekko",
+    "metaTitle": "Como Começar no Trekking: Guia para Iniciantes | Trekko",
     "metaDescription": "Guia completo para quem quer começar no trekking do zero: equipamentos, preparo físico, escolha da primeira trilha e dicas de segurança.",
     "featured": 0,
     "viewCount": 0,
@@ -348,7 +348,7 @@
       "iniciante",
       "fim-de-semana"
     ],
-    "metaTitle": "Trilhas Fáceis em São Paulo: 8 Opções para o Fim de Semana | Trekko",
+    "metaTitle": "Trilhas Fáceis em São Paulo: 8 Opções | Trekko",
     "metaDescription": "As 8 melhores trilhas fáceis em São Paulo para iniciantes e famílias — na capital, na serra e no litoral, com dicas de acesso e melhor época.",
     "featured": 0,
     "viewCount": 0,
@@ -418,7 +418,7 @@
       "equipamentos",
       "emergencia"
     ],
-    "metaTitle": "Kit de Primeiros Socorros para Trilha: O Que Levar | Trekko",
+    "metaTitle": "Kit de Primeiros Socorros na Trilha: Guia Completo | Trekko",
     "metaDescription": "Guia completo do kit de primeiros socorros para trilha: quais itens são essenciais, por que cada um importa e como usar em campo.",
     "featured": 0,
     "viewCount": 0,
@@ -454,7 +454,7 @@
       "peconhentos",
       "mata"
     ],
-    "metaTitle": "Animais Perigosos nas Trilhas Brasileiras: Guia Completo | Trekko",
+    "metaTitle": "Animais Perigosos nas Trilhas Brasileiras | Trekko",
     "metaDescription": "Guia completo sobre animais perigosos nas trilhas do Brasil: como identificar cobras, aranhas e outros animais peçonhentos e o que fazer em caso de picada.",
     "featured": 0,
     "viewCount": 0,
@@ -490,7 +490,7 @@
       "cipó",
       "serra"
     ],
-    "metaTitle": "As Melhores Trilhas de Minas Gerais: Da Mantiqueira ao Caparaó | Trekko",
+    "metaTitle": "Melhores Trilhas de Minas Gerais | Trekko",
     "metaDescription": "Guia completo das melhores trilhas de Minas Gerais: Caparaó, Serra da Mantiqueira, Serra do Cipó e muito mais para todos os níveis.",
     "featured": 0,
     "viewCount": 0,
@@ -634,7 +634,7 @@
       "calçado",
       "trilha"
     ],
-    "metaTitle": "Bota ou Tênis para Trilha? Como Escolher o Calçado Certo | Trekko",
+    "metaTitle": "Bota ou Tênis para Trilha? Escolha o Calçado | Trekko",
     "metaDescription": "Bota ou tênis para trilha? Entenda as diferenças, quando cada um é indicado e como escolher o calçado certo para cada tipo de terreno e percurso.",
     "featured": 0,
     "viewCount": 0,
@@ -742,7 +742,7 @@
       "trilha",
       "guia-pratico"
     ],
-    "metaTitle": "Trilhas Pet-Friendly no Brasil: Onde Levar Seu Cachorro | Trekko",
+    "metaTitle": "Trilhas Pet-Friendly: Onde Levar Seu Cachorro | Trekko",
     "metaDescription": "Guia completo de trilhas pet-friendly no Brasil: onde cães são permitidos, como preparar o cão, equipamentos necessários e regras de etiqueta.",
     "featured": 0,
     "viewCount": 0,
@@ -778,7 +778,7 @@
       "equipamentos",
       "filtro"
     ],
-    "metaTitle": "Hidratação em Trilhas: Quantos Litros Levar e Como Filtrar | Trekko",
+    "metaTitle": "Hidratação em Trilhas: Quantos Litros Levar | Trekko",
     "metaDescription": "Guia completo de hidratação para trilhas: quanto levar, como calcular o consumo, métodos de filtragem de água e sinais de desidratação.",
     "featured": 0,
     "viewCount": 0,
@@ -1014,7 +1014,9 @@
     "excerpt": "Da caminhada no parque à travessia de múltiplos dias: um roteiro de 8 semanas para se preparar física e logisticamente para a primeira trilha longa.",
     "category": "planejamento-seguranca",
     "imageUrl": "/trails/M5NbSJ18enIH.jpg",
-    "images": ["/trails/M5NbSJ18enIH.jpg"],
+    "images": [
+      "/trails/M5NbSJ18enIH.jpg"
+    ],
     "authorId": 1,
     "authorSlug": "rafael-dias",
     "authorName": "Rafael Dias",
@@ -1022,9 +1024,17 @@
     "authorBio": "Com mais de 15 anos percorrendo trilhas da Mata Atlântica, Rafael é colaborador técnico do Trekko especializado em rotas do Rio de Janeiro.",
     "authorCredentials": "Certificação em Primeiros Socorros de Montanha (Cruz Vermelha) | Instrutor de Trekking formado pelo CBME",
     "readingTime": 7,
-    "relatedTrailIds": [2, 6],
-    "tags": ["planejamento", "iniciante", "preparacao", "longo-curso"],
-    "metaTitle": "Planejamento da Primeira Trilha Longa: Guia Completo | Trekko",
+    "relatedTrailIds": [
+      2,
+      6
+    ],
+    "tags": [
+      "planejamento",
+      "iniciante",
+      "preparacao",
+      "longo-curso"
+    ],
+    "metaTitle": "Primeira Trilha Longa: Guia de Planejamento | Trekko",
     "metaDescription": "Roteiro de 8 semanas para se preparar fisicamente e logisticamente para a primeira trilha longa. Do diagnóstico ao dia da saída, passo a passo.",
     "featured": 0,
     "viewCount": 0,
@@ -1042,7 +1052,9 @@
     "excerpt": "Pico Paraná, Cânion Itaimbezinho, Superagui e Vila Velha: o Paraná tem trilhas para todos os perfis, do litoral atlântico às serras do interior.",
     "category": "trilhas-destinos",
     "imageUrl": "/trails/GuOeLhNRV74n.jpg",
-    "images": ["/trails/GuOeLhNRV74n.jpg"],
+    "images": [
+      "/trails/GuOeLhNRV74n.jpg"
+    ],
     "authorId": 3,
     "authorSlug": "leticia-campos",
     "authorName": "Letícia Campos",
@@ -1050,8 +1062,16 @@
     "authorBio": "Ecóloga formada pela UnB com especialização em biomas do Brasil Central, Letícia é guia de ecoturismo certificada e pesquisadora voluntária do ICMBio. Acompanha grupos na Chapada dos Veadeiros há 8 anos com foco em interpretação ambiental e turismo de baixo impacto.",
     "authorCredentials": "Biologia — UnB (2011) | Especialização em Ecoturismo — UnB | Guia CADASTUR nº 07.031.102/2016-GO",
     "readingTime": 6,
-    "relatedTrailIds": [12, 13],
-    "tags": ["PR", "parana", "sul", "trilhas-destinos"],
+    "relatedTrailIds": [
+      12,
+      13
+    ],
+    "tags": [
+      "PR",
+      "parana",
+      "sul",
+      "trilhas-destinos"
+    ],
     "metaTitle": "Melhores Trilhas do Paraná: Guia Completo 2026 | Trekko",
     "metaDescription": "As melhores trilhas do Paraná: Pico Paraná, Cânion Itaimbezinho, Superagui e muito mais. Guia completo com dificuldade, acesso e melhor época.",
     "featured": 0,
@@ -1070,7 +1090,9 @@
     "excerpt": "A lista definitiva para trilhas de um dia: água, comida, roupa, calçado, primeiros socorros e navegação — tudo o que precisa, nada que não precisa.",
     "category": "equipamentos",
     "imageUrl": "/trails/4cc4qiw1IgsI.jpg",
-    "images": ["/trails/4cc4qiw1IgsI.jpg"],
+    "images": [
+      "/trails/4cc4qiw1IgsI.jpg"
+    ],
     "authorId": 3,
     "authorSlug": "leticia-campos",
     "authorName": "Letícia Campos",
@@ -1079,7 +1101,12 @@
     "authorCredentials": "Biologia — UnB (2011) | Especialização em Ecoturismo — UnB | Guia CADASTUR nº 07.031.102/2016-GO",
     "readingTime": 6,
     "relatedTrailIds": [],
-    "tags": ["equipamentos", "iniciante", "checklist", "mochila"],
+    "tags": [
+      "equipamentos",
+      "iniciante",
+      "checklist",
+      "mochila"
+    ],
     "metaTitle": "O Que Levar em Trilha de Um Dia: Lista Completa | Trekko",
     "metaDescription": "Lista completa do que levar em uma trilha de um dia: hidratação, alimentação, vestuário, calçado, primeiros socorros e navegação. Sem exageros, sem esquecer nada.",
     "featured": 0,
@@ -1098,7 +1125,9 @@
     "excerpt": "O terceiro pico mais alto do Brasil, acessível por trilha bem marcada: guia completo do Pico da Bandeira com acesso, percurso, clima e equipamento.",
     "category": "trilhas-destinos",
     "imageUrl": "/trails/uZnvsARGNELs.jpg",
-    "images": ["/trails/uZnvsARGNELs.jpg"],
+    "images": [
+      "/trails/uZnvsARGNELs.jpg"
+    ],
     "authorId": 1,
     "authorSlug": "rafael-dias",
     "authorName": "Rafael Dias",
@@ -1106,8 +1135,16 @@
     "authorBio": "Com mais de 15 anos percorrendo trilhas da Mata Atlântica, Rafael é colaborador técnico do Trekko especializado em rotas do Rio de Janeiro.",
     "authorCredentials": "Certificação em Primeiros Socorros de Montanha (Cruz Vermelha) | Instrutor de Trekking formado pelo CBME",
     "readingTime": 8,
-    "relatedTrailIds": [5],
-    "tags": ["MG", "ES", "caparao", "pico", "altitude"],
+    "relatedTrailIds": [
+      5
+    ],
+    "tags": [
+      "MG",
+      "ES",
+      "caparao",
+      "pico",
+      "altitude"
+    ],
     "metaTitle": "Pico da Bandeira: Guia Completo 2026 | Trekko",
     "metaDescription": "Guia completo do Pico da Bandeira: acesso, trilhas, clima, equipamento e segurança para conquistar o terceiro pico mais alto do Brasil.",
     "featured": 0,
@@ -1126,7 +1163,9 @@
     "excerpt": "Hipotermia, sistema de camadas e os melhores destinos de inverno no Brasil: guia completo para trilhar no frio com segurança e aproveitar o melhor da estação.",
     "category": "planejamento-seguranca",
     "imageUrl": "/trails/JgU5fHD8luc1.jpg",
-    "images": ["/trails/JgU5fHD8luc1.jpg"],
+    "images": [
+      "/trails/JgU5fHD8luc1.jpg"
+    ],
     "authorId": 2,
     "authorSlug": "marcos-rodrigues",
     "authorName": "Marcos Rodrigues",
@@ -1134,8 +1173,18 @@
     "authorBio": "Guia de turismo certificado com 12 anos de experiência em expedições ao Monte Roraima. Já conduziu mais de 40 grupos ao tepui e é referência em turismo sustentável com comunidades indígenas da região de Uiramutã (RR).",
     "authorCredentials": "Guia CADASTUR nº 11.024.789/2014-RR | Técnico em Turismo (SENAC-RR)",
     "readingTime": 6,
-    "relatedTrailIds": [5, 9, 6],
-    "tags": ["inverno", "frio", "preparacao", "seguranca", "equipamentos"],
+    "relatedTrailIds": [
+      5,
+      9,
+      6
+    ],
+    "tags": [
+      "inverno",
+      "frio",
+      "preparacao",
+      "seguranca",
+      "equipamentos"
+    ],
     "metaTitle": "Trilhas no Inverno: Como Se Preparar para o Frio | Trekko",
     "metaDescription": "Como se preparar para trilhas no inverno: sistema de camadas, risco de hipotermia, melhores destinos e protocolo de segurança para o frio nas serras brasileiras.",
     "featured": 0,
@@ -1154,7 +1203,9 @@
     "excerpt": "Trilhas para todos os níveis, paredes de basalto e 720 metros de profundidade: guia completo do Cânion Itaimbezinho com acesso, trilhas e melhores épocas.",
     "category": "trilhas-destinos",
     "imageUrl": "/trails/oepacBp3xFeU.jpg",
-    "images": ["/trails/oepacBp3xFeU.jpg"],
+    "images": [
+      "/trails/oepacBp3xFeU.jpg"
+    ],
     "authorId": 1,
     "authorSlug": "rafael-dias",
     "authorName": "Rafael Dias",
@@ -1162,8 +1213,17 @@
     "authorBio": "Com mais de 15 anos percorrendo trilhas da Mata Atlântica, Rafael é colaborador técnico do Trekko especializado em rotas do Rio de Janeiro.",
     "authorCredentials": "Certificação em Primeiros Socorros de Montanha (Cruz Vermelha) | Instrutor de Trekking formado pelo CBME",
     "readingTime": 8,
-    "relatedTrailIds": [6, 12],
-    "tags": ["RS", "SC", "canion", "aparados-da-serra", "sul"],
+    "relatedTrailIds": [
+      6,
+      12
+    ],
+    "tags": [
+      "RS",
+      "SC",
+      "canion",
+      "aparados-da-serra",
+      "sul"
+    ],
     "metaTitle": "Cânion Itaimbezinho: Guia Completo 2026 | Trekko",
     "metaDescription": "Guia completo do Cânion Itaimbezinho: trilhas, acesso, melhor época e dicas práticas para visitar o cânion mais famoso do Brasil.",
     "featured": 0,
@@ -1200,7 +1260,7 @@
       "mata-atlantica",
       "sudeste"
     ],
-    "metaTitle": "Melhores Trilhas do Espírito Santo: Pedra Azul, Forno Grande e Caparaó | Trekko",
+    "metaTitle": "Melhores Trilhas do Espírito Santo | Trekko",
     "metaDescription": "Guia completo das melhores trilhas do Espírito Santo: Parque da Pedra Azul, Forno Grande, Pico da Bandeira e mais. Dicas de acesso, dificuldade e melhor época.",
     "featured": 0,
     "viewCount": 0,
@@ -1272,7 +1332,7 @@
       "altitude",
       "sudeste"
     ],
-    "metaTitle": "Pedra do Baú: Guia Completo da Trilha Mais Alta de SP (2.033m) | Trekko",
+    "metaTitle": "Pedra do Baú: Guia da Trilha Mais Alta de SP | Trekko",
     "metaDescription": "Tudo sobre a Pedra do Baú em São Bento do Sapucaí: trilha, capacete obrigatório, logística, melhor época e dicas de segurança para o monólito mais famoso de SP.",
     "featured": 0,
     "viewCount": 0,
@@ -1308,7 +1368,7 @@
       "altitude",
       "hipotermia"
     ],
-    "metaTitle": "Hipotermia em Trilhas: Sinais, Estágios e Como Tratar no Campo | Trekko",
+    "metaTitle": "Hipotermia em Trilhas: Sinais e Como Tratar | Trekko",
     "metaDescription": "Guia completo sobre hipotermia em trilhas: como reconhecer os estágios, o que fazer e o que não fazer no campo, e equipamento preventivo essencial.",
     "featured": 0,
     "viewCount": 0,

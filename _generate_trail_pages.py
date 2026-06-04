@@ -1428,17 +1428,45 @@ def build_editorial_section(t):
 </section>"""
 
 
+def make_trail_title(t):
+    """Build SEO title ≤ 60 chars: name — city, UF | Trekko (with fallbacks)."""
+    name = t["name"]
+    uf = t["uf"]
+    city = t["city"]
+
+    candidate = f"{name} — {city}, {uf} | Trekko"
+    if len(candidate) <= 60:
+        return candidate
+
+    if " / " in city:
+        first_city = city.split(" / ")[0]
+        candidate = f"{name} — {first_city}, {uf} | Trekko"
+        if len(candidate) <= 60:
+            return candidate
+
+    candidate = f"{name}, {uf} | Trekko"
+    if len(candidate) <= 60:
+        return candidate
+
+    suffix = f", {uf} | Trekko"
+    return name[: 60 - len(suffix)].rstrip() + suffix
+
+
+def make_trail_desc(t):
+    """Build description following the standard template."""
+    diff = DIFF_LABELS.get(t["difficulty"], t["difficulty"]).lower()
+    city = t["city"].split(" / ")[0] if " / " in t["city"] else t["city"]
+    return (
+        f"Faça a {t['name']}: {t['distanceKm']}km, nível {diff}, em {city}. "
+        f"Veja roteiro completo, como chegar, equipamentos e guias disponíveis."
+    )
+
+
 def build_slug_page(t, redirect_script):
     slug = t["slug"]
     canonical = "https://trekko.com.br/trilha/" + slug
-    diff = DIFF_LABELS.get(t["difficulty"], t["difficulty"])
-    title = t["name"] + " — " + t["region"] + " (" + t["uf"] + ") | Trekko"
-    desc = (
-        t["shortDescription"]
-        + " Dificuldade: " + diff
-        + ". Distância: " + str(t["distanceKm"]) + " km."
-        + " Duração: " + t["estimatedTime"] + "."
-    )
+    title = make_trail_title(t)
+    desc = make_trail_desc(t)
     image = "https://trekko.com.br" + t["imageUrl"]
     jsonld = build_jsonld(t)
     editorial = build_editorial_section(t)
@@ -1509,7 +1537,8 @@ def build_slug_page(t, redirect_script):
 def build_numeric_page(t):
     slug = t["slug"]
     canonical_slug = "https://trekko.com.br/trilha/" + slug
-    title = t["name"] + " — " + t["region"] + " | Trekko"
+    title = make_trail_title(t)
+    desc = make_trail_desc(t)
     image = "https://trekko.com.br" + t["imageUrl"]
 
     return f"""<!doctype html>
@@ -1528,11 +1557,12 @@ def build_numeric_page(t):
   <script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','G-S816P190VN',{{send_page_view:!(window.TREKKO_CONFIG&&window.TREKKO_CONFIG.GTM_ID)}});</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, follow" />
   <title>{title}</title>
-  <meta name="description" content="{t['shortDescription']}" />
+  <meta name="description" content="{desc}" />
   <link rel="canonical" href="{canonical_slug}" />
   <meta property="og:title" content="{title}" />
-  <meta property="og:description" content="{t['shortDescription']}" />
+  <meta property="og:description" content="{desc}" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="{canonical_slug}" />
   <meta property="og:image" content="{image}" />
