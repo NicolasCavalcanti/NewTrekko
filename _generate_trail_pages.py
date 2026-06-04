@@ -14,6 +14,32 @@ DIFF_LABELS = {
     "expert": "Especialista",
 }
 
+UF_NAMES = {
+    "RR": "Roraima",      "RJ": "Rio de Janeiro", "GO": "Goiás",
+    "SP": "São Paulo",    "MG": "Minas Gerais",   "RS": "Rio Grande do Sul",
+    "SC": "Santa Catarina","CE": "Ceará",          "PR": "Paraná",
+    "BA": "Bahia",        "ES": "Espírito Santo", "MA": "Maranhão",
+    "MS": "Mato Grosso do Sul", "MT": "Mato Grosso", "PE": "Pernambuco",
+}
+UF_SLUGS = {
+    "RR": "roraima",         "RJ": "rio-de-janeiro", "GO": "goias",
+    "SP": "sao-paulo",       "MG": "minas-gerais",   "RS": "rio-grande-do-sul",
+    "SC": "santa-catarina",  "CE": "ceara",           "PR": "parana",
+    "BA": "bahia",           "ES": "espirito-santo", "MA": "maranhao",
+    "MS": "mato-grosso-do-sul", "MT": "mato-grosso", "PE": "pernambuco",
+}
+
+BREADCRUMB_CSS = """\
+  <style>
+    .trekko-bc{padding:.6rem 0;border-bottom:1px solid #e2e8f0;background:#fff;font-family:Inter,system-ui,sans-serif}
+    .trekko-bc .container{max-width:1200px;margin:0 auto;padding:0 1rem}
+    .trekko-bc ol{display:flex;flex-wrap:wrap;gap:.25rem;align-items:center;font-size:.8rem;color:#64748b;list-style:none;margin:0;padding:0}
+    .trekko-bc li+li::before{content:"/";margin-right:.25rem;color:#94a3b8}
+    .trekko-bc a{color:#64748b;text-decoration:none}
+    .trekko-bc a:hover{color:#15803d}
+    .trekko-bc [aria-current=page]{color:#1e293b;font-weight:500}
+  </style>"""
+
 EDITORIAL_CSS = """\
   <style>
     #trekko-editorial{font-family:Inter,system-ui,sans-serif;background:#f8fafc;border-top:4px solid #15803d;padding:3rem 1rem 4rem;color:#1e293b;line-height:1.8}
@@ -1277,7 +1303,8 @@ def build_jsonld(t):
             "itemListElement": [
                 {"@type": "ListItem", "position": 1, "name": "Trekko", "item": "https://trekko.com.br"},
                 {"@type": "ListItem", "position": 2, "name": "Trilhas", "item": "https://trekko.com.br/trilhas"},
-                {"@type": "ListItem", "position": 3, "name": t["name"], "item": canonical},
+                {"@type": "ListItem", "position": 3, "name": UF_NAMES.get(t["uf"], t["uf"]), "item": "https://trekko.com.br/trilhas/" + UF_SLUGS.get(t["uf"], t["uf"].lower())},
+                {"@type": "ListItem", "position": 4, "name": t["name"], "item": canonical},
             ],
         },
         {
@@ -1429,6 +1456,7 @@ def build_slug_page(t, redirect_script):
 {EDITORIAL_CSS}
 {FAQ_CSS}
 {DISCLAIMER_CSS}
+{BREADCRUMB_CSS}
   {redirect_script}
   <script type="module" crossorigin src="/assets/index-DSKK19TW.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/react-vendor-DViTTRkQ.js">
@@ -1437,6 +1465,14 @@ def build_slug_page(t, redirect_script):
 </head>
 <body>
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <nav class="trekko-bc" aria-label="Navegação estrutural">
+    <div class="container"><ol>
+      <li><a href="/">Trekko</a></li>
+      <li><a href="/trilhas">Trilhas</a></li>
+      <li><a href="/trilhas/{UF_SLUGS.get(t['uf'], t['uf'].lower())}">{UF_NAMES.get(t['uf'], t['uf'])}</a></li>
+      <li><span aria-current="page">{t['name']}</span></li>
+    </ol></div>
+  </nav>
   <div id="root"></div>
   {editorial}
   {faq}
