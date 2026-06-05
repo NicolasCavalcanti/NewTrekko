@@ -1,0 +1,301 @@
+{
+  "campaign": {
+    "id": "RED-11",
+    "name": "Estratégia de Link Building Editorial",
+    "objective": "10 backlinks de domínios com DA > 30 em 90 dias",
+    "start_date": "2026-06-05",
+    "end_date": "2026-09-03",
+    "status": "ativo",
+    "responsible": "nicolas.cavalcanti2@gmail.com",
+    "target_niches": ["ecoturismo", "aventura", "turismo", "trilhas", "natureza"]
+  },
+  "targets": [
+    {
+      "id": "T01",
+      "domain": "mochileiros.com",
+      "da_estimate": 42,
+      "niche": "aventura/mochileiro",
+      "contact": "contato@mochileiros.com",
+      "status": "para_contato",
+      "pitch_sent": null,
+      "response": null,
+      "article_id": "GP-01",
+      "backlink_url": null,
+      "notes": "Portal estabelecido, aceita contribuições de especialistas em trilhas"
+    },
+    {
+      "id": "T02",
+      "domain": "aventureiro.com.br",
+      "da_estimate": 38,
+      "niche": "aventura/esportes",
+      "contact": "redacao@aventureiro.com.br",
+      "status": "para_contato",
+      "pitch_sent": null,
+      "response": null,
+      "article_id": "GP-02",
+      "backlink_url": null,
+      "notes": "Foco em esportes de aventura, aceitam guias técnicos"
+    },
+    {
+      "id": "T03",
+      "domain": "ecoviagem.com.br",
+      "da_estimate": 45,
+      "niche": "ecoturismo",
+      "contact": "editor@ecoviagem.com.br",
+      "status": "para_contato",
+      "pitch_sent": null,
+      "response": null,
+      "article_id": "GP-03",
+      "backlink_url": null,
+      "notes": "Referência em ecoturismo, exige pauta alinhada com sustentabilidade"
+    },
+    {
+      "id": "T04",
+      "domain": "trilhasebosques.com.br",
+      "da_estimate": 33,
+      "niche": "trilhas",
+      "contact": "contato@trilhasebosques.com.br",
+      "status": "para_contato",
+      "pitch_sent": null,
+      "response": null,
+      "article_id": "GP-04",
+      "backlink_url": null,
+      "notes": "Nicho idêntico ao NewTrekko, backlink de alta relevância"
+    },
+    {
+      "id": "T05",
+      "domain": "guiatravel.com.br",
+      "da_estimate": 41,
+      "niche": "turismo",
+      "contact": "pauta@guiatravel.com.br",
+      "status": "para_contato",
+      "pitch_sent": null,
+      "response": null,
+      "article_id": "GP-05",
+      "backlink_url": null,
+      "notes": "Guia de viagens nacional, seção de destinos ao ar livre"
+    },
+    {
+      "id": "T06",
+      "domain": "viajali.com.br",
+      "da_estimate": 36,
+      "niche": "turismo/viagem",
+      "contact": "editorial@viajali.com.br",
+      "status": "para_contato",
+      "pitch_sent": null,
+      "response": null,
+      "article_id": "GP-01",
+      "backlink_url": null,
+      "notes": "Aceita guest posts com author bio e link"
+    },
+    {
+      "id": "T07",
+      "domain": "caminhosdaterra.com.br",
+      "da_estimate": 34,
+      "niche": "ecoturismo/natureza",
+      "contact": "editor@caminhosdaterra.com.br",
+      "status": "para_contato",
+      "pitch_sent": null,
+      "response": null,
+      "article_id": "GP-06",
+      "backlink_url": null,
+      "notes": "Portal de turismo rural e natureza, público alinhado"
+    },
+    {
+      "id": "T08",
+      "domain": "brasilaventura.com",
+      "da_estimate": 39,
+      "niche": "aventura/brasil",
+      "contact": "redacao@brasilaventura.com",
+      "status": "para_contato",
+      "pitch_sent": null,
+      "response": null,
+      "article_id": "GP-02",
+      "backlink_url": null,
+      "notes": "Destinos de aventura no Brasil, forte engajamento nas redes"
+    },
+    {
+      "id": "T09",
+      "domain": "turismoconsultoria.com.br",
+      "da_estimate": 35,
+      "niche": "turismo/b2b",
+      "contact": "blog@turismoconsultoria.com.br",
+      "status": "para_contato",
+      "pitch_sent": null,
+      "response": null,
+      "article_id": "GP-07",
+      "backlink_url": null,
+      "notes": "Blog voltado a operadores, guias especializados têm boa recepção"
+    },
+    {
+      "id": "T10",
+      "domain": "conexaonatureza.com.br",
+      "da_estimate": 31,
+      "niche": "ecoturismo/sustentabilidade",
+      "contact": "pauta@conexaonatureza.com.br",
+      "status": "para_contato",
+      "pitch_sent": null,
+      "response": null,
+      "article_id": "GP-03",
+      "backlink_url": null,
+      "notes": "Foco em turismo sustentável, alinhado com missão do NewTrekko"
+    },
+    {
+      "id": "T11",
+      "domain": "explorebrasil.tur.br",
+      "da_estimate": 37,
+      "niche": "turismo/brasil",
+      "contact": "contribuicoes@explorebrasil.tur.br",
+      "status": "reserva",
+      "pitch_sent": null,
+      "response": null,
+      "article_id": "GP-05",
+      "backlink_url": null,
+      "notes": "Domínio .tur.br confere autoridade extra; reserva caso T01-T10 caiam"
+    },
+    {
+      "id": "T12",
+      "domain": "naturezaviva.com.br",
+      "da_estimate": 32,
+      "niche": "natureza/ecoturismo",
+      "contact": "editorial@naturezaviva.com.br",
+      "status": "reserva",
+      "pitch_sent": null,
+      "response": null,
+      "article_id": "GP-06",
+      "backlink_url": null,
+      "notes": "Reserva — DA levemente acima do mínimo, confirmar antes de envio"
+    }
+  ],
+  "articles": [
+    {
+      "id": "GP-01",
+      "title": "Como planejar sua primeira trilha de múltiplos dias no Brasil",
+      "slug": "como-planejar-trilha-multiplos-dias-brasil",
+      "word_count": 1200,
+      "target_keyword": "trilha multiplos dias brasil",
+      "anchor_text_suggestion": "guia completo de trilhas brasileiras",
+      "file": "docs/guest-posts/GP-01-trilha-multiplos-dias.md",
+      "status": "rascunho_pronto"
+    },
+    {
+      "id": "GP-02",
+      "title": "10 equipamentos essenciais para trilhas de aventura na Mata Atlântica",
+      "slug": "equipamentos-essenciais-trilhas-mata-atlantica",
+      "word_count": 1100,
+      "target_keyword": "equipamentos trilhas mata atlantica",
+      "anchor_text_suggestion": "dicas de equipamentos para trilhas",
+      "file": "docs/guest-posts/GP-02-equipamentos-mata-atlantica.md",
+      "status": "rascunho_pronto"
+    },
+    {
+      "id": "GP-03",
+      "title": "Ecoturismo responsável: como trilhar sem deixar rastros",
+      "slug": "ecoturismo-responsavel-trilhar-sem-rastros",
+      "word_count": 1300,
+      "target_keyword": "ecoturismo responsável trilhas",
+      "anchor_text_suggestion": "trilhas com foco em preservação ambiental",
+      "file": "docs/guest-posts/GP-03-ecoturismo-responsavel.md",
+      "status": "rascunho_pronto"
+    },
+    {
+      "id": "GP-04",
+      "title": "As trilhas mais desafiadoras do Brasil para quem quer sair da zona de conforto",
+      "slug": "trilhas-desafiadoras-brasil",
+      "word_count": 1000,
+      "target_keyword": "trilhas difíceis brasil",
+      "anchor_text_suggestion": "trilhas difíceis classificadas por nível",
+      "file": "docs/guest-posts/GP-04-trilhas-desafiadoras.md",
+      "status": "rascunho_pronto"
+    },
+    {
+      "id": "GP-05",
+      "title": "Turismo de aventura no Brasil: destinos imperdíveis fora do circuito convencional",
+      "slug": "turismo-aventura-brasil-destinos-alternativos",
+      "word_count": 1150,
+      "target_keyword": "turismo de aventura Brasil destinos",
+      "anchor_text_suggestion": "destinos de aventura com trilhas mapeadas",
+      "file": "docs/guest-posts/GP-05-turismo-aventura-destinos.md",
+      "status": "rascunho_pronto"
+    },
+    {
+      "id": "GP-06",
+      "title": "Trilhas com cachoeira: os melhores destinos para uma imersão na natureza",
+      "slug": "trilhas-com-cachoeira-melhores-destinos",
+      "word_count": 1050,
+      "target_keyword": "trilhas com cachoeira brasil",
+      "anchor_text_suggestion": "trilhas com cachoeira por estado",
+      "file": "docs/guest-posts/GP-06-trilhas-cachoeira.md",
+      "status": "rascunho_pronto"
+    },
+    {
+      "id": "GP-07",
+      "title": "Guia para operadores: como estruturar roteiros de trilha com segurança e qualidade",
+      "slug": "guia-operadores-roteiros-trilha-seguranca",
+      "word_count": 1400,
+      "target_keyword": "roteiros de trilha para operadores",
+      "anchor_text_suggestion": "banco de trilhas para operadores de turismo",
+      "file": "docs/guest-posts/GP-07-guia-operadores.md",
+      "status": "rascunho_pronto"
+    }
+  ],
+  "timeline": {
+    "semana_1_2": {
+      "periodo": "2026-06-05 a 2026-06-19",
+      "acoes": [
+        "Finalizar e revisar todos os 7 artigos (GP-01 a GP-07)",
+        "Mapear e validar DA real de cada domínio (usar Moz/Ahrefs free tier)",
+        "Personalizar pitch para cada portal com base no editorial deles",
+        "Enviar pitch para T01, T02, T03 (lote 1)"
+      ]
+    },
+    "semana_3_4": {
+      "periodo": "2026-06-20 a 2026-07-03",
+      "acoes": [
+        "Follow-up no lote 1 (se sem resposta em 7 dias)",
+        "Enviar pitch para T04, T05, T06 (lote 2)",
+        "Ajustar artigos conforme feedback editorial recebido"
+      ]
+    },
+    "semana_5_6": {
+      "periodo": "2026-07-04 a 2026-07-17",
+      "acoes": [
+        "Enviar pitch para T07, T08, T09, T10 (lote 3)",
+        "Acompanhar publicações confirmadas do lote 1",
+        "Verificar e reportar primeiros backlinks via Ahrefs/GSC"
+      ]
+    },
+    "semana_7_8": {
+      "periodo": "2026-07-18 a 2026-07-31",
+      "acoes": [
+        "Follow-up geral em todos os portais sem resposta",
+        "Acionar reservas T11/T12 se necessário para atingir meta",
+        "Atualizar link_building_red11.json com status de cada domain"
+      ]
+    },
+    "semana_9_13": {
+      "periodo": "2026-08-01 a 2026-09-03",
+      "acoes": [
+        "Monitorar publicações restantes e cobrar prazos",
+        "Validar todos os backlinks via Google Search Console",
+        "Documentar aprendizados para próximo ciclo (RED-12 ou similar)",
+        "Relatório final: backlinks conquistados vs. meta"
+      ]
+    }
+  },
+  "kpis": {
+    "meta_backlinks": 10,
+    "meta_da_minimo": 30,
+    "meta_prazo_dias": 90,
+    "metricas_secundarias": [
+      "Taxa de resposta de pitch (meta: >30%)",
+      "Taxa de conversão pitch → publicação (meta: >60%)",
+      "Tráfego de referral gerado (monitorar GA4)",
+      "Posicionamento de palavras-chave linkadas (GSC)"
+    ]
+  },
+  "pitch_templates": {
+    "inicial": "docs/guest-posts/pitch-template-inicial.md",
+    "followup": "docs/guest-posts/pitch-template-followup.md"
+  }
+}
