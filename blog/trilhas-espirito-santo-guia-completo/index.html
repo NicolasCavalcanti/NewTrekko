@@ -45,7 +45,12 @@
    "publisher": {
     "@type": "Organization",
     "name": "Trekko",
-    "logo": {"@type":"ImageObject","url":"https://trekko.com.br/android-chrome-192x192.png","width":192,"height":192},
+    "logo": {
+     "@type": "ImageObject",
+     "url": "https://trekko.com.br/android-chrome-192x192.png",
+     "width": 192,
+     "height": 192
+    },
     "url": "https://trekko.com.br"
    },
    "mainEntityOfPage": "https://trekko.com.br/blog/trilhas-espirito-santo-guia-completo"
@@ -53,9 +58,30 @@
   {
    "@type": "BreadcrumbList",
    "itemListElement": [
-    {"@type": "ListItem","position": 1,"name": "Trekko","item": "https://trekko.com.br"},
-    {"@type": "ListItem","position": 2,"name": "Blog","item": "https://trekko.com.br/blog"},
-    {"@type": "ListItem","position": 3,"name": "Melhores Trilhas do Espírito Santo: Pedra Azul, Forno Grande e Muito Mais","item": "https://trekko.com.br/blog/trilhas-espirito-santo-guia-completo"}
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Trekko",
+     "item": "https://trekko.com.br"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Blog",
+     "item": "https://trekko.com.br/blog"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Trilhas e Destinos",
+     "item": "https://trekko.com.br/blog/trilhas-destinos"
+    },
+    {
+     "@type": "ListItem",
+     "position": 4,
+     "name": "Melhores Trilhas do Espírito Santo: Pedra Azul, Forno Grande e Muito Mais",
+     "item": "https://trekko.com.br/blog/trilhas-espirito-santo-guia-completo"
+    }
    ]
   }
  ]
@@ -146,9 +172,14 @@ footer{background:var(--text-primary);color:var(--text-muted);padding:3rem 0 2re
 </header>
 
 <div class="container">
-  <nav class="breadcrumb" aria-label="breadcrumb">
-    <a href="/">Trekko</a> › <a href="/blog">Blog</a> › Trilhas e Destinos
-  </nav>
+  <nav class="breadcrumb" aria-label="Navegação estrutural">
+<div class="container"><ol>
+  <li><a href="/">Trekko</a></li>
+  <li><a href="/blog">Blog</a></li>
+  <li><a href="/blog/trilhas-destinos">Trilhas e Destinos</a></li>
+  <li><span aria-current="page">Melhores Trilhas do Espírito Santo: Pedra Azul, Forno Grande e Muito Mais</span></li>
+</ol></div>
+</nav>
 </div>
 
 <main class="container">

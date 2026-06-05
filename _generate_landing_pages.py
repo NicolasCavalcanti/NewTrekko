@@ -20,19 +20,25 @@ DIFF_CSS    = {"easy": "easy", "moderate": "moderate", "hard": "hard", "expert":
 DIFF_SLUGS  = {"easy": "para-iniciantes", "moderate": "moderado", "hard": "dificil", "expert": "especialista"}
 
 UF_NAMES = {
-    "RR": "Roraima", "RJ": "Rio de Janeiro", "GO": "Goiás",
-    "SP": "São Paulo", "MG": "Minas Gerais", "RS": "Rio Grande do Sul",
-    "SC": "Santa Catarina", "CE": "Ceará", "PR": "Paraná",
+    "RR": "Roraima",      "RJ": "Rio de Janeiro", "GO": "Goiás",
+    "SP": "São Paulo",    "MG": "Minas Gerais",   "RS": "Rio Grande do Sul",
+    "SC": "Santa Catarina","CE": "Ceará",          "PR": "Paraná",
+    "BA": "Bahia",        "ES": "Espírito Santo", "MA": "Maranhão",
+    "MS": "Mato Grosso do Sul", "MT": "Mato Grosso", "PE": "Pernambuco",
 }
 UF_SLUGS = {
-    "RR": "roraima",       "RJ": "rio-de-janeiro",  "GO": "goias",
-    "SP": "sao-paulo",     "MG": "minas-gerais",     "RS": "rio-grande-do-sul",
-    "SC": "santa-catarina","CE": "ceara",             "PR": "parana",
+    "RR": "roraima",         "RJ": "rio-de-janeiro", "GO": "goias",
+    "SP": "sao-paulo",       "MG": "minas-gerais",   "RS": "rio-grande-do-sul",
+    "SC": "santa-catarina",  "CE": "ceara",           "PR": "parana",
+    "BA": "bahia",           "ES": "espirito-santo", "MA": "maranhao",
+    "MS": "mato-grosso-do-sul", "MT": "mato-grosso", "PE": "pernambuco",
 }
 UF_PREP = {
-    "RR": "em Roraima",         "RJ": "no Rio de Janeiro",  "GO": "em Goiás",
-    "SP": "em São Paulo",       "MG": "em Minas Gerais",     "RS": "no Rio Grande do Sul",
-    "SC": "em Santa Catarina",  "CE": "no Ceará",            "PR": "no Paraná",
+    "RR": "em Roraima",           "RJ": "no Rio de Janeiro",  "GO": "em Goiás",
+    "SP": "em São Paulo",         "MG": "em Minas Gerais",     "RS": "no Rio Grande do Sul",
+    "SC": "em Santa Catarina",    "CE": "no Ceará",            "PR": "no Paraná",
+    "BA": "na Bahia",             "ES": "no Espírito Santo",  "MA": "no Maranhão",
+    "MS": "no Mato Grosso do Sul","MT": "no Mato Grosso",      "PE": "em Pernambuco",
 }
 # Pages that already exist — skip
 EXISTING_STATE_SLUGS = {"rio-de-janeiro", "sao-paulo", "minas-gerais"}
@@ -239,6 +245,48 @@ DIFF_CONTENT = {
              "Procure apólices com cobertura de resgate em helicóptero, evacuação médica e acidentes em atividades de alto risco. Seguros internacionais (como Iati ou Chapka) costumam ter coberturas mais abrangentes. Confirme que a trilha específica está coberta antes de contratar."),
             ("Como escolher um guia confiável para trilhas de especialista?",
              "Verifique o registro no CADASTUR (Ministério do Turismo), experiência específica na trilha desejada, referências de clientes anteriores e certificações de primeiros socorros. Trilhas de especialista exigem guias com experiência sólida — não opte pelo mais barato sem verificar credenciais."),
+        ],
+    },
+    "BA": {
+        "subtitle": "Explore a Chapada Diamantina, cânions, cachoeiras e o cerrado baiano. Trilhas para todos os níveis em um dos estados com mais biodiversidade do Brasil.",
+        "editorial": "A Bahia concentra alguns dos destinos de trekking mais procurados do Brasil. A Chapada Diamantina, no coração do sertão baiano, reúne o Morro do Pai Inácio com seu pôr do sol icônico, a Cachoeira da Fumaça — maior queda d'água do Brasil com 340 m — e a Travessia do Vale do Pati, considerada uma das travessias mais bonitas do país. O litoral de corais, as grutas e as serras tornam a Bahia um destino obrigatório para quem pratica trekking no Nordeste.",
+        "faqs": [
+            ("Quais são as melhores trilhas na Bahia?",
+             "A Bahia tem trilhas excepcionais na Chapada Diamantina: Travessia do Vale do Pati (4 dias), Cachoeira da Fumaça, Morro do Pai Inácio e Gruta do Lapão. A Chapada Diamantina — Vale do Capão é um polo de ecoturismo com acesso a dezenas de pontos naturais."),
+            ("Preciso de guia para trilhas na Bahia?",
+             "Nas trilhas dentro do Parque Nacional da Chapada Diamantina o guia é obrigatório. Para atrações da APA e áreas livres, é recomendado mas não exigido. Guias CADASTUR locais de Lençóis, Ibicoara e Andaraí são referência."),
+            ("Qual a melhor época para fazer trilhas na Bahia?",
+             "De maio a setembro é a época seca, ideal para trilhas na Chapada. As chuvas de verão (novembro a março) enchem cachoeiras e rios, criando cenários espetaculares mas dificultando o acesso a alguns pontos."),
+        ],
+    },
+    "ES": {
+        "subtitle": "Trilhas nas montanhas do Espírito Santo, entre cachoeiras da Mata Atlântica e a Pedra Azul.",
+        "editorial": "O Espírito Santo tem paisagens de serra que surpreendem quem vem de fora: o Parque Estadual da Pedra Azul, com sua formação rochosa de granito coroada por névoa, é um dos destinos mais fotogênicos do Sudeste. As serras capixabas, com trilhas em mata atlântica preservada, oferecem trekking de qualidade a poucas horas de Vitória.",
+    },
+    "MA": {
+        "subtitle": "Travessias nos Lençóis Maranhenses, um dos cenários mais surreais do Brasil.",
+        "editorial": "O Maranhão abriga um dos destinos mais únicos do mundo para o trekking: os Lençóis Maranhenses, 155 mil hectares de dunas brancas intercaladas por lagoas de águas cristalinas. A travessia de 4 a 6 dias entre Barreirinhas e Atins, guiada por especialistas locais, é uma expedição que combina deserto, lagoas e vilas de pescadores em um percurso sem paralelo no Brasil.",
+        "faqs": [
+            ("Qual a melhor época para visitar os Lençóis Maranhenses?",
+             "De julho a setembro as lagoas estão cheias (chuvas de março a junho enchem as bacias) e o visual é máximo. Em outubro a novembro ainda há água nas lagoas maiores. Na seca total (dezembro a fevereiro) muitas lagoas secam."),
+            ("Preciso de guia para atravessar os Lençóis?",
+             "Sim, o guia é indispensável. A orientação nas dunas sem referência visual fixa é praticamente impossível sem conhecimento local. Guias locais de Barreirinhas e Santo Amaro são regulamentados pelo ICMBio."),
+        ],
+    },
+    "MS": {
+        "subtitle": "Trilhas aquáticas e natureza em Bonito, o destino de ecoturismo mais premiado do Brasil.",
+        "editorial": "O Mato Grosso do Sul tem no Município de Bonito um dos destinos de ecoturismo mais famosos da América do Sul. A Lagoa Azul, com sua coloração turquesa incomum por carbonato de cálcio, é o cartão-postal regional. As trilhas aquáticas pelo Rio da Prata e as flutuações no Rio Sucuri combinam trekking e snorkeling em uma experiência única no Pantanal meridional.",
+    },
+    "MT": {
+        "subtitle": "Chapada dos Guimarães e as cachoeiras do Mato Grosso em pleno coração do Brasil.",
+        "editorial": "O Mato Grosso é o estado onde o Cerrado encontra a Amazônia e o Pantanal — uma biodiversidade sem igual. A Chapada dos Guimarães, considerada o centro geodésico da América do Sul, tem um Parque Nacional com cachoeiras espetaculares, cânions de arenito vermelho e trilhas que revelam formações rochosas milenares.",
+    },
+    "PE": {
+        "subtitle": "Fernando de Noronha e o litoral pernambucano — trekking com o Atlântico como pano de fundo.",
+        "editorial": "Pernambuco tem em Fernando de Noronha um dos destinos de trekking mais exclusivos do Brasil. A trilha ao Morro Dois Irmãos, com vistas para o arquipélago e o Atlântico, e o acesso à Baía do Sancho — eleita repetidamente a praia mais bonita do mundo — são experiências únicas para quem combina trekking e contato com o oceano.",
+        "faqs": [
+            ("Fernando de Noronha precisa de reserva antecipada?",
+             "Sim. O acesso a Fernando de Noronha tem cota limitada de visitantes por dia. A trilha ao Morro Dois Irmãos exige guia credenciado e reserva com antecedência, especialmente de dezembro a fevereiro."),
         ],
     },
 }
