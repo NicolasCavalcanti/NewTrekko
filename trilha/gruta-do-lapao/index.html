@@ -63,6 +63,26 @@
     @media(max-width:640px){#trekko-faq{padding:2rem .75rem 3rem}#trekko-faq h2{font-size:1.15rem}#trekko-faq summary{font-size:.92rem}}
   </style>
   <style>
+    #trekko-nearby{font-family:Inter,system-ui,sans-serif;background:#fff;border-top:1px solid #e2e8f0;padding:3rem 1rem 3.5rem}
+    #trekko-nearby .tn-inner{max-width:800px;margin:0 auto}
+    #trekko-nearby h2{font-family:Sora,system-ui,sans-serif;font-size:1.2rem;font-weight:700;color:#0f172a;margin:0 0 1.5rem;border-left:4px solid #15803d;padding-left:.75rem}
+    #trekko-nearby .tn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem}
+    #trekko-nearby .tn-card{display:block;text-decoration:none;color:inherit;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;transition:box-shadow .2s,transform .2s}
+    #trekko-nearby .tn-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.1);transform:translateY(-2px)}
+    #trekko-nearby .tn-card img{width:100%;height:140px;object-fit:cover;display:block}
+    #trekko-nearby .tn-card-body{padding:.75rem 1rem .9rem}
+    #trekko-nearby .tn-name{font-size:.92rem;font-weight:600;color:#0f172a;margin:0 0 .4rem;line-height:1.35}
+    #trekko-nearby .tn-meta{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+    #trekko-nearby .tn-badge{font-size:.72rem;font-weight:600;padding:.2rem .5rem;border-radius:4px;text-transform:uppercase;letter-spacing:.03em}
+    #trekko-nearby .tn-badge-easy{background:#dcfce7;color:#166534}
+    #trekko-nearby .tn-badge-moderate{background:#fef9c3;color:#854d0e}
+    #trekko-nearby .tn-badge-hard{background:#fee2e2;color:#991b1b}
+    #trekko-nearby .tn-badge-expert{background:#f3e8ff;color:#6b21a8}
+    #trekko-nearby .tn-dist{font-size:.78rem;color:#64748b}
+    @media(max-width:640px){#trekko-nearby{padding:2rem .75rem 2.5rem}#trekko-nearby .tn-grid{grid-template-columns:1fr 1fr}#trekko-nearby .tn-card img{height:110px}}
+    @media(max-width:400px){#trekko-nearby .tn-grid{grid-template-columns:1fr}}
+  </style>
+  <style>
     #trekko-disclaimer{font-family:Inter,system-ui,sans-serif;background:#f1f5f9;border-top:1px solid #e2e8f0;padding:2rem 1rem;color:#475569}
     #trekko-disclaimer .td-inner{max-width:800px;margin:0 auto;display:flex;gap:1rem;align-items:flex-start}
     #trekko-disclaimer .td-icon{font-size:1.4rem;flex-shrink:0;margin-top:.1rem}
@@ -172,6 +192,53 @@
     <summary itemprop="name">Como se chega à Gruta do Lapão saindo de Lençóis?</summary>
     <div class="fa" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">A Gruta do Lapão fica a aproximadamente 4 quilômetros do centro de Lençóis, acessível a pé pela trilha que sai da cidade ou de carro até o início do percurso. A maioria dos visitantes vai com o guia contratado, que organiza o transporte e acompanha durante toda a visita. Para quem prefere ir a pé diretamente do centro, o trajeto é bem sinalizado e faz parte da própria experiência — atravessar as ruas de Lençóis, sair pelo bairro do Rosário e seguir pelo caminho de terra até a entrada da gruta é uma introdução agradável ao ritmo da cidade.</p></div>
   </details>
+  </div>
+</section>
+  <section id="trekko-nearby" aria-label="Trilhas próximas">
+  <div class="tn-inner">
+    <h2>Trilhas próximas</h2>
+    <div class="tn-grid">
+      <a class="tn-card" href="/trilha/cachoeira-da-fumaca/" aria-label="Cachoeira da Fumaça">
+        <img src="/trails/Bkot0ar4pyQL.jpg" alt="Cachoeira da Fumaça" loading="lazy" width="400" height="140">
+        <div class="tn-card-body">
+          <p class="tn-name">Cachoeira da Fumaça</p>
+          <div class="tn-meta">
+            <span class="tn-badge tn-badge-moderate">Moderado</span>
+            <span class="tn-dist">11 km de distância</span>
+          </div>
+        </div>
+      </a>
+      <a class="tn-card" href="/trilha/chapada-diamantina-vale-do-capao/" aria-label="Chapada Diamantina — Vale do Capão">
+        <img src="/trails/chapada-vale-capao.jpg" alt="Chapada Diamantina — Vale do Capão" loading="lazy" width="400" height="140">
+        <div class="tn-card-body">
+          <p class="tn-name">Chapada Diamantina — Vale do Capão</p>
+          <div class="tn-meta">
+            <span class="tn-badge tn-badge-moderate">Moderado</span>
+            <span class="tn-dist">13 km de distância</span>
+          </div>
+        </div>
+      </a>
+      <a class="tn-card" href="/trilha/morro-do-pai-inacio/" aria-label="Morro do Pai Inácio">
+        <img src="/trails/GrKqtaH9rXei.jpg" alt="Morro do Pai Inácio" loading="lazy" width="400" height="140">
+        <div class="tn-card-body">
+          <p class="tn-name">Morro do Pai Inácio</p>
+          <div class="tn-meta">
+            <span class="tn-badge tn-badge-moderate">Moderado</span>
+            <span class="tn-dist">15 km de distância</span>
+          </div>
+        </div>
+      </a>
+      <a class="tn-card" href="/trilha/travessia-vale-do-pati/" aria-label="Travessia do Vale do Pati">
+        <img src="/trails/QK0QVfoQFQZo.jpg" alt="Travessia do Vale do Pati" loading="lazy" width="400" height="140">
+        <div class="tn-card-body">
+          <p class="tn-name">Travessia do Vale do Pati</p>
+          <div class="tn-meta">
+            <span class="tn-badge tn-badge-hard">Difícil</span>
+            <span class="tn-dist">77 km de distância</span>
+          </div>
+        </div>
+      </a>
+    </div>
   </div>
 </section>
   <section id="trekko-disclaimer" aria-label="Aviso de responsabilidade">
