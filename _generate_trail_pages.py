@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Generates trail detail pages: SEO head + static editorial body + React SPA root."""
-import json, os
+import json, math, os
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 
@@ -35,6 +35,28 @@ DISCLAIMER_CSS = """\
     #trekko-disclaimer .td-text p{margin:0 0 .5rem}
     #trekko-disclaimer .td-text a{color:#15803d;text-decoration:underline}
     @media(max-width:640px){#trekko-disclaimer{padding:1.5rem .75rem}#trekko-disclaimer .td-inner{flex-direction:column;gap:.5rem}}
+  </style>"""
+
+NEARBY_CSS = """\
+  <style>
+    #trekko-nearby{font-family:Inter,system-ui,sans-serif;background:#fff;border-top:1px solid #e2e8f0;padding:3rem 1rem 3.5rem}
+    #trekko-nearby .tn-inner{max-width:800px;margin:0 auto}
+    #trekko-nearby h2{font-family:Sora,system-ui,sans-serif;font-size:1.2rem;font-weight:700;color:#0f172a;margin:0 0 1.5rem;border-left:4px solid #15803d;padding-left:.75rem}
+    #trekko-nearby .tn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem}
+    #trekko-nearby .tn-card{display:block;text-decoration:none;color:inherit;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;transition:box-shadow .2s,transform .2s}
+    #trekko-nearby .tn-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.1);transform:translateY(-2px)}
+    #trekko-nearby .tn-card img{width:100%;height:140px;object-fit:cover;display:block}
+    #trekko-nearby .tn-card-body{padding:.75rem 1rem .9rem}
+    #trekko-nearby .tn-name{font-size:.92rem;font-weight:600;color:#0f172a;margin:0 0 .4rem;line-height:1.35}
+    #trekko-nearby .tn-meta{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+    #trekko-nearby .tn-badge{font-size:.72rem;font-weight:600;padding:.2rem .5rem;border-radius:4px;text-transform:uppercase;letter-spacing:.03em}
+    #trekko-nearby .tn-badge-easy{background:#dcfce7;color:#166534}
+    #trekko-nearby .tn-badge-moderate{background:#fef9c3;color:#854d0e}
+    #trekko-nearby .tn-badge-hard{background:#fee2e2;color:#991b1b}
+    #trekko-nearby .tn-badge-expert{background:#f3e8ff;color:#6b21a8}
+    #trekko-nearby .tn-dist{font-size:.78rem;color:#64748b}
+    @media(max-width:640px){#trekko-nearby{padding:2rem .75rem 2.5rem}#trekko-nearby .tn-grid{grid-template-columns:1fr 1fr}#trekko-nearby .tn-card img{height:110px}}
+    @media(max-width:400px){#trekko-nearby .tn-grid{grid-template-columns:1fr}}
   </style>"""
 
 DISCLAIMER_HTML = """\
@@ -1428,6 +1450,74 @@ def build_editorial_section(t):
 </section>"""
 
 
+def _haversine_km(lat1, lon1, lat2, lon2):
+    R = 6371.0
+    dlat = math.radians(lat2 - lat1)
+    dlon = math.radians(lon2 - lon1)
+    a = math.sin(dlat / 2) ** 2 + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlon / 2) ** 2
+    return R * 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+
+
+_DIFF_BADGE = {
+    "easy": ("Fácil", "easy"),
+    "moderate": ("Moderado", "moderate"),
+    "hard": ("Difícil", "hard"),
+    "expert": ("Especialista", "expert"),
+}
+
+
+def build_nearby_section(t, all_trails):
+    lat, lng = t.get("lat"), t.get("lng")
+    if lat is None or lng is None:
+        return ""
+
+    candidates = []
+    for other in all_trails:
+        if other["slug"] == t["slug"]:
+            continue
+        olat, olng = other.get("lat"), other.get("lng")
+        if olat is None or olng is None:
+            continue
+        if other.get("uf") != t.get("uf"):
+            continue
+        dist = _haversine_km(lat, lng, olat, olng)
+        if dist <= 100:
+            candidates.append((dist, other))
+
+    candidates.sort(key=lambda x: x[0])
+    candidates = candidates[:6]
+
+    if len(candidates) < 2:
+        return ""
+
+    cards = []
+    for dist_km, other in candidates:
+        label, css_key = _DIFF_BADGE.get(other["difficulty"], (other["difficulty"], "moderate"))
+        dist_str = f"{dist_km:.0f} km de distância"
+        cards.append(f"""\
+      <a class="tn-card" href="/trilha/{other['slug']}/" aria-label="{other['name']}">
+        <img src="{other['imageUrl']}" alt="{other['name']}" loading="lazy" width="400" height="140">
+        <div class="tn-card-body">
+          <p class="tn-name">{other['name']}</p>
+          <div class="tn-meta">
+            <span class="tn-badge tn-badge-{css_key}">{label}</span>
+            <span class="tn-dist">{dist_str}</span>
+          </div>
+        </div>
+      </a>""")
+
+    cards_html = "\n".join(cards)
+    return f"""\
+<section id="trekko-nearby" aria-label="Trilhas próximas">
+  <div class="tn-inner">
+    <h2>Trilhas próximas</h2>
+    <div class="tn-grid">
+{cards_html}
+    </div>
+  </div>
+</section>"""
+
+
 def make_trail_title(t):
     """Build SEO title ≤ 60 chars: name — city, UF | Trekko (with fallbacks)."""
     name = t["name"]
@@ -1462,7 +1552,7 @@ def make_trail_desc(t):
     )
 
 
-def build_slug_page(t, redirect_script):
+def build_slug_page(t, redirect_script, all_trails=None):
     slug = t["slug"]
     canonical = "https://trekko.com.br/trilha/" + slug
     title = make_trail_title(t)
@@ -1471,6 +1561,7 @@ def build_slug_page(t, redirect_script):
     jsonld = build_jsonld(t)
     editorial = build_editorial_section(t)
     faq = build_faq_section(t)
+    nearby = build_nearby_section(t, all_trails or [])
 
     return f"""<!doctype html>
 <html lang="pt-BR">
@@ -1515,6 +1606,7 @@ def build_slug_page(t, redirect_script):
   <style>#root{{min-height:100svh}}</style>
 {EDITORIAL_CSS}
 {FAQ_CSS}
+{NEARBY_CSS}
 {DISCLAIMER_CSS}
 {AD_CSS}
   {redirect_script}
@@ -1528,6 +1620,7 @@ def build_slug_page(t, redirect_script):
   <div id="root"></div>
   {editorial}
   {faq}
+  {nearby}
   {DISCLAIMER_HTML}
 {_AD_LAZY_SCRIPT}
 </body>
@@ -1604,7 +1697,7 @@ def write(path, content):
 print("Generating trail pages...")
 redirect_script = slug_redirect_script(trails)
 for t in trails:
-    write(os.path.join(BASE, "trilha", t["slug"], "index.html"), build_slug_page(t, redirect_script))
+    write(os.path.join(BASE, "trilha", t["slug"], "index.html"), build_slug_page(t, redirect_script, trails))
     write(os.path.join(BASE, "trilha", str(t["id"]), "index.html"), build_numeric_page(t))
 
 print(f"\nDone: {len(trails)*2} files ({len(trails)} slug + {len(trails)} numeric)")
