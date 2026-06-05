@@ -1,0 +1,417 @@
+#!/usr/bin/env python3
+"""Create HTML files for new blog posts that don't have one yet."""
+import json, os, re
+
+BLOG_DIR = "blog"
+NEW_SLUGS = [
+    "como-comecar-no-trekking-guia-para-iniciantes",
+    "o-que-levar-mochila-trilha-lista-completa",
+    "o-que-fazer-se-perder-em-trilha",
+    "quando-obrigatorio-guia-trilhas-brasil",
+    "melhores-trilhas-serra-da-mantiqueira",
+    "chapada-diamantina-como-planejar-viagem",
+    "o-que-e-guia-cadastur-por-que-contratar",
+    "primeiros-socorros-em-trilhas",
+    "animais-peconhentos-trilhas-brasileiras",
+    "como-escolher-tenis-trilha",
+    "melhor-epoca-trilhas-brasil-por-regiao",
+    "trilha-guiada-vs-trilha-solo",
+    "melhores-parques-nacionais-trekking-brasil",
+    "mochila-ideal-trilhas-1-2-3-dias",
+    "quanto-custa-contratar-guia-trekking-brasil",
+]
+
+with open("data/blog.json", encoding="utf-8") as f:
+    all_posts = json.load(f)
+
+posts_by_slug = {p["slug"]: p for p in all_posts}
+
+CATEGORY_LABELS = {
+    "trilhas-destinos": "Trilhas e Destinos",
+    "equipamentos": "Equipamentos",
+    "planejamento-seguranca": "Planejamento e Segurança",
+    "guias-praticos": "Guias Práticos",
+}
+
+def apply_inline(text):
+    text = re.sub(r'\[([^\]]+)\]\((/[^)]+)\)', r'<a href="\2">\1</a>', text)
+    text = re.sub(r'\*\*([^*]+)\*\*', r'<strong>\1</strong>', text)
+    text = re.sub(r'`([^`]+)`', r'<code>\1</code>', text)
+    return text
+
+def md_to_html(text):
+    lines = text.split("\n")
+    html_lines = []
+    in_ul = False
+    in_table = False
+    buffer = []
+
+    def flush_p():
+        nonlocal buffer
+        if buffer:
+            para = " ".join(buffer).strip()
+            if para:
+                html_lines.append(f"    <p>{para}</p>")
+            buffer = []
+
+    for line in lines:
+        stripped = line.strip()
+
+        if stripped.startswith("|") and stripped.endswith("|"):
+            if buffer: flush_p()
+            if not in_table:
+                in_table = True
+                html_lines.append('    <div class="table-wrap"><table><tbody>')
+            if re.match(r'^\|[-| :]+\|$', stripped):
+                continue
+            cells = [c.strip() for c in stripped.strip("|").split("|")]
+            row = "".join(f"<td>{c}</td>" for c in cells)
+            html_lines.append(f"      <tr>{row}</tr>")
+            continue
+        else:
+            if in_table:
+                html_lines.append("    </tbody></table></div>")
+                in_table = False
+
+        if stripped.startswith("## "):
+            if buffer: flush_p()
+            if in_ul:
+                html_lines.append("    </ul>")
+                in_ul = False
+            html_lines.append(f"    <h2>{apply_inline(stripped[3:].strip())}</h2>")
+            continue
+
+        if stripped.startswith("### "):
+            if buffer: flush_p()
+            if in_ul:
+                html_lines.append("    </ul>")
+                in_ul = False
+            html_lines.append(f"    <h3>{apply_inline(stripped[4:].strip())}</h3>")
+            continue
+
+        if stripped.startswith("- ") or stripped.startswith("* "):
+            if buffer: flush_p()
+            if not in_ul:
+                html_lines.append("    <ul>")
+                in_ul = True
+            html_lines.append(f"      <li>{apply_inline(stripped[2:].strip())}</li>")
+            continue
+
+        num_match = re.match(r'^(\d+)\.\s+(.+)$', stripped)
+        if num_match:
+            if buffer: flush_p()
+            if in_ul:
+                html_lines.append("    </ul>")
+                in_ul = False
+            html_lines.append(f"      <li>{apply_inline(num_match.group(2))}</li>")
+            continue
+
+        if not stripped:
+            if buffer: flush_p()
+            if in_ul:
+                html_lines.append("    </ul>")
+                in_ul = False
+            continue
+
+        if in_ul:
+            html_lines.append("    </ul>")
+            in_ul = False
+        buffer.append(apply_inline(stripped))
+
+    if buffer: flush_p()
+    if in_ul: html_lines.append("    </ul>")
+    if in_table: html_lines.append("    </tbody></table></div>")
+
+    return "\n".join(html_lines)
+
+def published_date_display(iso):
+    months = ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"]
+    try:
+        parts = iso[:10].split("-")
+        d = int(parts[2])
+        m = months[int(parts[1]) - 1]
+        y = parts[0]
+        return f"{d} {m} {y}"
+    except:
+        return iso[:10]
+
+def make_html(post):
+    slug = post["slug"]
+    title = post["title"]
+    meta_title = post.get("metaTitle", title + " | Trekko")
+    meta_desc = post.get("metaDescription", post.get("excerpt", ""))
+    subtitle = post.get("subtitle", "")
+    author_name = post.get("authorName", "Trekko")
+    author_role = post.get("authorRole", "")
+    author_bio = post.get("authorBio", "")
+    author_credentials = post.get("authorCredentials", "")
+    pub = post.get("publishedAt", "2026-06-01T08:00:00.000Z")
+    pub_display = published_date_display(pub)
+    reading_time = post.get("readingTime", 6)
+    category = post.get("category", "guias-praticos")
+    category_label = CATEGORY_LABELS.get(category, "Guias Práticos")
+    content_html = md_to_html(post["content"])
+
+    return f"""<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{meta_title}</title>
+<meta name="description" content="{meta_desc}">
+<link rel="canonical" href="https://trekko.com.br/blog/{slug}">
+<meta property="og:title" content="{meta_title}">
+<meta property="og:description" content="{meta_desc}">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://trekko.com.br/blog/{slug}">
+<meta property="og:image" content="https://trekko.com.br/images/trekko_logo_horizontal_color_transparent.png" />
+<meta property="og:image:width" content="1024" /><meta property="og:image:height" content="1024" />
+<meta property="article:published_time" content="{pub}">
+<meta property="article:modified_time" content="{pub}">
+<meta property="article:author" content="{author_name}">
+<link rel="icon" href="/favicon-48x48.png" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap"></noscript>
+<script>window.TREKKO_CONFIG={{GA4_ID:'G-S816P190VN',GTM_ID:null,ADS_ID:'AW-355784943'}};</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-S816P190VN"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','G-S816P190VN');</script>
+<script defer src="/assets/trekko-analytics.js"></script>
+<script type="application/ld+json">
+{{
+ "@context": "https://schema.org",
+ "@graph": [
+  {{
+   "@type": "Article",
+   "@id": "https://trekko.com.br/blog/{slug}/#article",
+   "headline": "{title}",
+   "description": "{meta_desc}",
+   "image": "https://trekko.com.br/images/trekko_logo_horizontal_color_transparent.png",
+   "datePublished": "{pub[:10]}T08:00:00-03:00",
+   "dateModified": "{pub[:10]}T08:00:00-03:00",
+   "author": {{
+    "@type": "Person",
+    "name": "{author_name}",
+    "description": "{author_role}"
+   }},
+   "publisher": {{
+    "@type": "Organization",
+    "name": "Trekko",
+    "logo": {{"@type":"ImageObject","url":"https://trekko.com.br/android-chrome-192x192.png","width":192,"height":192}},
+    "url": "https://trekko.com.br"
+   }},
+   "mainEntityOfPage": "https://trekko.com.br/blog/{slug}"
+  }},
+  {{
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {{"@type":"ListItem","position":1,"name":"Trekko","item":"https://trekko.com.br"}},
+    {{"@type":"ListItem","position":2,"name":"Blog","item":"https://trekko.com.br/blog"}},
+    {{"@type":"ListItem","position":3,"name":"{title}","item":"https://trekko.com.br/blog/{slug}"}}
+   ]
+  }}
+ ]
+}}
+</script>
+<style>
+:root{{--primary:#15803d;--primary-dark:#166534;--primary-hover:#16a34a;--primary-light:#dcfce7;--primary-bg:#f0fdf4;--accent:#f59e0b;--accent-light:#fef3c7;--text-primary:#1e293b;--text-secondary:#475569;--text-muted:#94a3b8;--border:#e2e8f0;--white:#fff;--bg-light:#f8fafc;--shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.1);--radius:8px;--radius-lg:16px;--font-body:'Inter',sans-serif;--font-heading:'Sora',sans-serif;--max-w:1200px;--gutter:1.25rem}}
+*,*::before,*::after{{box-sizing:border-box;margin:0;padding:0}}
+html{{scroll-behavior:smooth}}body{{font-family:var(--font-body);color:var(--text-primary);line-height:1.6;background:var(--white)}}
+img{{max-width:100%;height:auto;display:block}}a{{color:inherit;text-decoration:none}}ul{{list-style:none}}
+.container{{max-width:var(--max-w);margin:0 auto;padding:0 var(--gutter)}}
+h1,h2,h3,h4{{font-family:var(--font-heading);line-height:1.25;color:var(--text-primary)}}
+p{{color:var(--text-secondary);line-height:1.75}}
+.btn{{display:inline-flex;align-items:center;gap:.5rem;padding:.65rem 1.25rem;border-radius:var(--radius);font-weight:600;font-size:.9rem;border:2px solid transparent;transition:all .2s;text-decoration:none}}
+.btn--primary{{background:var(--primary);color:#fff}}.btn--primary:hover{{background:var(--primary-hover)}}
+.btn--outline{{background:transparent;color:var(--primary);border-color:var(--primary)}}.btn--outline:hover{{background:var(--primary-light)}}
+.btn--sm{{padding:.45rem .9rem;font-size:.82rem}}
+.site-header{{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}}
+.site-header.scrolled{{box-shadow:var(--shadow-md)}}
+.header-inner{{display:flex;align-items:center;justify-content:space-between;height:64px}}
+.logo{{display:flex;align-items:center;gap:.5rem;font-family:var(--font-heading);font-size:1.35rem;font-weight:700;color:var(--primary)}}
+.header-cta{{display:flex;gap:.75rem;align-items:center}}
+.site-nav{{display:none;gap:1.5rem;align-items:center}}
+.site-nav a{{font-size:.875rem;font-weight:500;color:var(--text-secondary);transition:color .15s}}
+.site-nav a:hover,.site-nav a.active{{color:var(--primary)}}
+@media(min-width:768px){{.site-nav{{display:flex}}}}
+.breadcrumb{{padding:.75rem 0;border-bottom:1px solid var(--border)}}
+.breadcrumb ol{{display:flex;flex-wrap:wrap;gap:.25rem;align-items:center;font-size:.8rem;color:var(--text-muted)}}
+.breadcrumb li+li::before{{content:"/";margin-right:.25rem}}
+.breadcrumb a:hover{{color:var(--primary)}}
+.breadcrumb [aria-current]{{color:var(--text-primary);font-weight:500}}
+.article-wrap{{display:grid;grid-template-columns:1fr min(720px,100%) 1fr;padding:3rem 0}}
+.article-wrap>*{{grid-column:2}}
+@media(max-width:800px){{.article-wrap{{grid-template-columns:var(--gutter) 1fr var(--gutter)}}}}
+.post-hero-img{{width:100%;aspect-ratio:16/7;object-fit:cover;border-radius:var(--radius-lg);margin-bottom:2rem;background:var(--primary-bg)}}
+.post-category{{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--primary);background:var(--primary-bg);padding:.2rem .65rem;border-radius:4px;margin-bottom:.75rem}}
+.post-title{{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:700;line-height:1.2;margin-bottom:.75rem}}
+.post-subtitle{{font-size:1.05rem;color:var(--text-secondary);line-height:1.5;margin-bottom:1.25rem}}
+.post-byline{{display:flex;flex-wrap:wrap;align-items:center;gap:.75rem;font-size:.82rem;color:var(--text-muted);padding-bottom:1.5rem;border-bottom:2px solid var(--border);margin-bottom:2rem}}
+.post-byline strong{{color:var(--text-primary)}}
+.post-body p{{margin-bottom:1.25rem;color:var(--text-secondary);line-height:1.8}}
+.post-body h2{{font-size:1.4rem;font-weight:700;margin:2.25rem 0 .75rem;color:var(--text-primary)}}
+.post-body h3{{font-size:1.1rem;font-weight:600;margin:1.5rem 0 .5rem;color:var(--text-primary)}}
+.post-body ul{{margin:0 0 1.25rem 1.25rem;list-style:disc}}
+.post-body ul li{{color:var(--text-secondary);margin-bottom:.45rem;line-height:1.65}}
+.post-body strong{{color:var(--text-primary)}}
+.post-body a{{color:var(--primary);text-decoration:underline;text-underline-offset:2px}}
+.post-body table{{width:100%;border-collapse:collapse;margin-bottom:1.25rem;font-size:.9rem}}
+.post-body td{{padding:.5rem .75rem;border:1px solid var(--border);color:var(--text-secondary)}}
+.post-body tr:first-child td{{font-weight:600;background:var(--bg-light)}}
+.author-box{{background:var(--bg-light);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;margin:3rem 0 1.5rem;display:flex;gap:1rem;align-items:flex-start}}
+.author-avatar{{width:56px;height:56px;border-radius:50%;background:var(--primary-bg);object-fit:cover;flex-shrink:0}}
+.author-info h4{{font-size:.95rem;font-weight:700;margin-bottom:.2rem}}
+.author-info .author-role{{font-size:.8rem;color:var(--primary);font-weight:600;margin-bottom:.4rem}}
+.author-info p{{font-size:.82rem;color:var(--text-secondary);margin:0;line-height:1.55}}
+.author-credentials{{font-size:.75rem;color:var(--text-muted);margin-top:.35rem!important}}
+.related-section{{border-top:1px solid var(--border);padding-top:1.5rem;margin-top:1.5rem}}
+.related-section h3{{font-size:1rem;font-weight:700;margin-bottom:.75rem}}
+.related-links{{display:flex;flex-wrap:wrap;gap:.5rem}}
+.related-links a{{font-size:.83rem;padding:.35rem .8rem;border-radius:999px;border:1.5px solid var(--border);color:var(--text-secondary);transition:all .15s}}
+.related-links a:hover{{border-color:var(--primary);color:var(--primary)}}
+.site-footer{{background:var(--text-primary);color:rgba(255,255,255,.65);padding:3rem 0 2rem}}
+.footer-inner{{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:2rem}}
+.footer-brand{{grid-column:1/2}}
+.footer-logo-link{{display:inline-flex;align-items:center;margin-bottom:.75rem}}
+.footer-logo-img{{height:38px;width:auto;filter:brightness(0) invert(1)}}
+.footer-tagline{{font-size:.85rem;line-height:1.6;margin-bottom:.5rem}}
+.footer-col h4{{color:#fff;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem}}
+.footer-col ul li+li{{margin-top:.4rem}}
+.footer-col a{{font-size:.85rem;color:rgba(255,255,255,.65);transition:color .15s}}.footer-col a:hover{{color:#fff}}
+.footer-bottom{{border-top:1px solid rgba(255,255,255,.1);margin-top:2rem;padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.75rem;font-size:.8rem}}
+.footer-social{{display:flex;gap:1rem;align-items:center}}
+.footer-social a{{display:flex;align-items:center;color:rgba(255,255,255,.55);transition:color .15s}}.footer-social a:hover{{color:#fff}}
+@media(max-width:900px){{.footer-inner{{grid-template-columns:1fr 1fr}}}}
+@media(max-width:600px){{.footer-inner{{grid-template-columns:1fr}}.footer-bottom{{flex-direction:column;text-align:center}}}}
+</style>
+  <link rel="alternate" hreflang="pt-BR" href="https://trekko.com.br/blog/{slug}">
+  <link rel="alternate" hreflang="x-default" href="https://trekko.com.br/blog/{slug}">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2482023752745520" crossorigin="anonymous"></script>
+</head>
+<body>
+<header class="site-header" id="site-header">
+<div class="container"><div class="header-inner">
+  <a href="/" class="logo" aria-label="Trekko - página inicial">
+    <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M16 3L3 28h26L16 3z" fill="#15803d" opacity=".9"/><path d="M16 10l-7 18h14L16 10z" fill="#fff" opacity=".3"/></svg>
+    Trekko
+  </a>
+  <nav class="site-nav" aria-label="Navegação principal">
+    <a href="/trilhas">Trilhas</a><a href="/guias">Guias</a>
+    <a href="/blog" class="active">Blog</a><a href="/sobre">Sobre</a>
+  </nav>
+  <div class="header-cta">
+    <a href="/" class="btn btn--outline btn--sm">Explorar trilhas</a>
+    <a href="/guias/ativar-perfil" class="btn btn--primary btn--sm">Sou guia</a>
+  </div>
+</div></div>
+</header>
+<nav class="breadcrumb" aria-label="Navegação estrutural">
+<div class="container"><ol>
+  <li><a href="/">Trekko</a></li>
+  <li><a href="/blog">Blog</a></li>
+  <li><span aria-current="page">{title}</span></li>
+</ol></div>
+</nav>
+<main id="main-content">
+<div class="article-wrap">
+  <div class="post-hero-img" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f0fdf4 0%,#dcfce7 100%)" role="img" aria-label="{title}">
+    <svg width="120" height="120" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M16 3L3 28h26L16 3z" fill="#15803d" opacity=".6"/><path d="M16 10l-7 18h14L16 10z" fill="#15803d" opacity=".3"/></svg>
+  </div>
+  <span class="post-category">{category_label}</span>
+  <h1 class="post-title">{title}</h1>
+  <p class="post-subtitle">{subtitle}</p>
+  <div class="post-byline">
+    <strong>{author_name}</strong>
+    <span>{author_role}</span>
+    <span>Publicado em {pub_display}</span>
+    <span>{reading_time} min de leitura</span>
+  </div>
+  <article class="post-body">
+{content_html}
+  </article>
+  <div class="author-box">
+    <div class="author-avatar" style="display:flex;align-items:center;justify-content:center;background:var(--primary-bg)">
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M16 3L3 28h26L16 3z" fill="#15803d" opacity=".6"/></svg>
+    </div>
+    <div class="author-info">
+      <h4>{author_name}</h4>
+      <p class="author-role">{author_role}</p>
+      <p>{author_bio}</p>
+      <p class="author-credentials">{author_credentials}</p>
+    </div>
+  </div>
+  <div class="related-section">
+    <h3>Leia também</h3>
+    <div class="related-links">
+      <a href="/trilhas">Descobrir trilhas</a>
+      <a href="/guias">Encontrar guias</a>
+      <a href="/blog">Ver todos os artigos</a>
+    </div>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+<div class="container">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="/" class="footer-logo-link" aria-label="Trekko — página inicial">
+        <img src="/images/trekko_logo_horizontal_color_transparent.png" alt="Trekko" class="footer-logo-img" width="130" height="44" loading="lazy">
+      </a>
+      <p class="footer-tagline">A plataforma para quem vive a trilha.<br>Descubra, planeje e conecte-se com guias.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Sobre o Trekko</h4>
+      <ul>
+        <li><a href="/sobre">Sobre nós</a></li>
+        <li><a href="/contato">Contato</a></li>
+        <li><a href="/blog">Blog &amp; Guias</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Trilhas</h4>
+      <ul>
+        <li><a href="/trilhas">Ver trilhas</a></li>
+        <li><a href="/guias">Guias</a></li>
+        <li><a href="/trilhas#estados">Por estado</a></li>
+        <li><a href="/trilhas#dificuldade">Por dificuldade</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="/privacidade">Política de Privacidade</a></li>
+        <li><a href="/termos-de-uso">Termos de Uso</a></li>
+        <li><a href="/aviso-de-responsabilidade">Aviso de Responsabilidade</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Trekko. Todos os direitos reservados.</p>
+    <div class="footer-social">
+      <a href="https://www.instagram.com/trekko.com.br/" target="_blank" rel="noopener noreferrer" aria-label="Siga o Trekko no Instagram"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd"/></svg></a>
+    </div>
+  </div>
+</div>
+</footer>
+<script>(function(){{var h=document.getElementById('site-header');if(!h)return;window.addEventListener('scroll',function(){{h.classList.toggle('scrolled',window.scrollY>10)}},{{passive:true}});}})()</script>
+</body>
+</html>"""
+
+created = 0
+for slug in NEW_SLUGS:
+    post = posts_by_slug.get(slug)
+    if not post:
+        print(f"MISSING in JSON: {slug}")
+        continue
+    out_dir = os.path.join(BLOG_DIR, slug)
+    os.makedirs(out_dir, exist_ok=True)
+    out_path = os.path.join(out_dir, "index.html")
+    with open(out_path, "w", encoding="utf-8") as f:
+        f.write(make_html(post))
+    words = len(post["content"].split())
+    print(f"  ✓ {slug} ({words} words)")
+    created += 1
+
+print(f"\nCreated {created} HTML files.")
