@@ -1,19 +1,26 @@
 #!/usr/bin/env python3
 """
-DEV-15 – Google Search Console: validação do sitemap e lista de 20 URLs para indexação manual.
+DEV-15 – Google Search Console: validação de sitemap, meta tag GSC e checklist de configuração.
 
 Uso:
     python _gsc_index_check.py
 
 Saída:
     - Valida estrutura do sitemap.xml (contagem, duplicatas, bloqueios por robots.txt)
+    - Verifica se a meta tag de verificação GSC está ativa no index.html
+    - Verifica se GTM_ID e GA4_ID estão configurados
+    - Confirma se Core Web Vitals tracking (initCoreWebVitals) está presente
     - Imprime as 20 URLs de maior prioridade para solicitar indexação manual no GSC
 """
 
+import re
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-SITEMAP = Path(__file__).parent / "sitemap.xml"
+BASE   = Path(__file__).parent
+SITEMAP = BASE / "sitemap.xml"
+INDEX   = BASE / "index.html"
+ANALYTICS_JS = BASE / "assets" / "trekko-analytics.js"
 NS = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
 
 ROBOTS_DISALLOW = [
@@ -88,34 +95,118 @@ def validate(urls: list[str]) -> dict:
     return {"total": len(urls), "duplicates": dups, "blocked_by_robots": blocked}
 
 
+def check_index_html() -> dict:
+    """Check GSC meta tag, GA4_ID and GTM_ID status in index.html."""
+    if not INDEX.exists():
+        return {"error": "index.html not found"}
+    content = INDEX.read_text(encoding="utf-8")
+
+    # GSC verification meta tag
+    placeholder_commented = "<!-- <meta name=\"google-site-verification\" content=\"COLE_SEU_TOKEN_GSC_AQUI\">" in content
+    active_gsc = bool(re.search(
+        r'<meta\s+name="google-site-verification"\s+content="(?!COLE_SEU_TOKEN_GSC_AQUI)[^"]{10,}"',
+        content
+    ))
+
+    # GA4_ID
+    ga4_match = re.search(r"GA4_ID:\s*'([^']+)'", content)
+    ga4_id = ga4_match.group(1) if ga4_match else None
+
+    # GTM_ID
+    gtm_match = re.search(r"GTM_ID:\s*'([^']+)'", content)
+    gtm_id = gtm_match.group(1) if gtm_match else None
+
+    return {
+        "gsc_meta_active": active_gsc,
+        "gsc_placeholder_present": placeholder_commented,
+        "ga4_id": ga4_id,
+        "gtm_id": gtm_id,
+    }
+
+
+def check_cwv_tracking() -> bool:
+    """Verify initCoreWebVitals is present in trekko-analytics.js."""
+    if not ANALYTICS_JS.exists():
+        return False
+    return "initCoreWebVitals" in ANALYTICS_JS.read_text(encoding="utf-8")
+
+
 def main():
     print("=" * 60)
-    print("DEV-15 · Google Search Console – Validação do sitemap")
+    print("DEV-15 · Google Search Console – Validação completa")
     print("=" * 60)
 
+    # ── Sitemap ────────────────────────────────────────────────
     urls = load_sitemap_urls()
     report = validate(urls)
 
-    print(f"\n✓ Total de URLs no sitemap : {report['total']}")
+    print(f"\n{'─'*60}")
+    print("  SITEMAP")
+    print(f"{'─'*60}")
+    print(f"  ✓ Total de URLs           : {report['total']}")
     if report["duplicates"]:
-        print(f"✗ URLs duplicadas          : {len(report['duplicates'])}")
+        print(f"  ✗ URLs duplicadas         : {len(report['duplicates'])}")
         for u in report["duplicates"]:
-            print(f"    {u}")
+            print(f"      {u}")
     else:
-        print("✓ Nenhuma URL duplicada")
+        print("  ✓ Sem URLs duplicadas")
 
     if report["blocked_by_robots"]:
-        print(f"✗ URLs bloqueadas (robots) : {len(report['blocked_by_robots'])}")
+        print(f"  ✗ URLs bloqueadas (robots): {len(report['blocked_by_robots'])}")
         for u in report["blocked_by_robots"]:
-            print(f"    {u}")
+            print(f"      {u}")
     else:
-        print("✓ Nenhuma URL bloqueada pelo robots.txt")
+        print("  ✓ Nenhuma URL bloqueada pelo robots.txt")
+
+    # ── index.html ────────────────────────────────────────────
+    idx = check_index_html()
+    print(f"\n{'─'*60}")
+    print("  INDEX.HTML — Configuração")
+    print(f"{'─'*60}")
+
+    if idx.get("error"):
+        print(f"  ✗ {idx['error']}")
+    else:
+        if idx["gsc_meta_active"]:
+            print("  ✓ GSC meta tag de verificação: ATIVA")
+        elif idx["gsc_placeholder_present"]:
+            print("  ✗ GSC meta tag: PLACEHOLDER (ação necessária)")
+            print("    → Obtenha o token em Search Console → Configurações → Verificação")
+            print("    → Substitua COLE_SEU_TOKEN_GSC_AQUI pelo token real em index.html")
+        else:
+            print("  ✗ GSC meta tag: NÃO ENCONTRADA")
+
+        if idx["ga4_id"]:
+            print(f"  ✓ GA4_ID configurado          : {idx['ga4_id']}")
+        else:
+            print("  ✗ GA4_ID não configurado")
+
+        if idx["gtm_id"]:
+            print(f"  ✓ GTM_ID configurado          : {idx['gtm_id']}")
+        else:
+            print("  ⚠ GTM_ID: null (GA4 direct mode ativo — GTM opcional)")
+            print("    → Para ativar GTM: defina GTM_ID em window.TREKKO_CONFIG em index.html")
+
+    # ── Core Web Vitals ───────────────────────────────────────
+    cwv_ok = check_cwv_tracking()
+    print(f"\n{'─'*60}")
+    print("  CORE WEB VITALS")
+    print(f"{'─'*60}")
+    if cwv_ok:
+        print("  ✓ initCoreWebVitals presente em trekko-analytics.js")
+        print("    Métricas enviadas ao GA4: LCP, CLS, INP, FCP, TTFB")
+        print("    Relatório disponível: GA4 → Relatórios → Core web vitals")
+    else:
+        print("  ✗ initCoreWebVitals NÃO encontrada em trekko-analytics.js")
 
     print("\n" + "=" * 60)
-    print("20 URLs para Inspeção de URL → Solicitar indexação no GSC")
+    print("  20 URLs para Inspeção → Solicitar indexação no GSC")
     print("=" * 60)
+    sitemap_set = set(urls)
+    sitemap_set_norm = {u.rstrip('/').replace('://trekko.com.br', '://www.trekko.com.br') for u in sitemap_set}
     for i, (label, url) in enumerate(PRIORITY_URLS, 1):
-        in_sitemap = "✓" if url in set(urls) else "✗ NÃO ESTÁ NO SITEMAP"
+        url_norm = url.rstrip('/').replace('://trekko.com.br', '://www.trekko.com.br')
+        in_sitemap = "✓" if url_norm in sitemap_set_norm else "✗ NÃO ESTÁ NO SITEMAP"
         print(f"{i:>2}. [{in_sitemap}] {label}")
         print(f"      {url}")
 

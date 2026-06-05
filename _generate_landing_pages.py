@@ -218,7 +218,7 @@ DIFF_CONTENT = {
         ],
     },
     "expert": {
-        "title": "Trilhas de Especialista no Brasil",
+        "title": "Trilhas para Especialistas",
         "slug": "especialista",
         "subtitle": "Expedições para montanhistas com experiência sólida: terreno técnico, altitude extrema e exigência física máxima.",
         "editorial": "Trilhas classificadas como 'especialista' ou 'extrema' são o topo da hierarquia do trekking brasileiro. Monte Roraima e Travessia Serra Fina estão nessa categoria — percursos que exigem planejamento de expedição, técnicas específicas de montanhismo e condicionamento físico de atleta. Não são recomendadas para iniciantes ou para quem nunca fez travessias de múltiplos dias.",
@@ -992,7 +992,7 @@ def build_state_page(uf, uf_trails):
     content = STATE_CONTENT.get(uf, {})
     canonical_path = f"/trilhas/{uf_slug}"
     canonical = f"https://trekko.com.br{canonical_path}"
-    title = f"Trilhas {uf_prep}: roteiros, parques e guias | Trekko"
+    title = f"Trilhas em {uf_name} — Descubra as Melhores | Trekko"
     desc = f"Descubra as melhores trilhas {uf_prep}. Roteiros por dificuldade, distância e parques. Guias certificados CADASTUR prontos para acompanhar você."
     hero_img = content.get("hero_image", uf_trails[0]["imageUrl"] if uf_trails else "/trails/bCKTbP7YuBYO.jpg")
     n_trails = len(uf_trails)
@@ -1071,7 +1071,7 @@ def build_city_page(city_slug, city_name, uf, city_trails):
     canonical = f"https://trekko.com.br{canonical_path}"
     parks = list({t["park"] for t in city_trails})
     park_str = " e ".join(parks[:2])
-    title = f"Trilhas em {city_name}, {uf} — {park_str} | Trekko"
+    title = f"Trilhas em {city_name}, {uf} | Trekko"
     desc = f"Trilhas em {city_name} ({uf}): roteiros no {park_str}. Dificuldade, distância, guias certificados e tudo que você precisa para planejar."
     hero_img = city_trails[0]["imageUrl"]
     n = len(city_trails)
@@ -1142,7 +1142,11 @@ def build_park_page(park_slug, park_name, park_trails):
     n = len(park_trails)
     diffs = list({t["difficulty"] for t in park_trails})
     diff_labels = " · ".join(DIFF_LABELS.get(d, d) for d in diffs)
-    title = f"Trilhas no {park_name} — Roteiros, guias e acesso | Trekko"
+    suffix = " | Trekko"
+    prefix = "Trilhas no "
+    max_park = 60 - len(prefix) - len(suffix)
+    park_display = park_name if len(park_name) <= max_park else park_name[:max_park].rstrip()
+    title = f"{prefix}{park_display}{suffix}"
     desc = f"Trilhas no {park_name} ({uf_names}): roteiros, dificuldade, taxa de entrada, melhor época e guias certificados CADASTUR."
     is_apa = "APA" in park_name or "Área de Proteção" in park_name
     park_type = "APA" if is_apa else "Parque Nacional"
@@ -1218,7 +1222,7 @@ def build_difficulty_page(diff_key, diff_trails):
     hero_img = diff_trails[0]["imageUrl"] if diff_trails else "/trails/bCKTbP7YuBYO.jpg"
     n = len(diff_trails)
     ufs = list({t["uf"] for t in diff_trails})
-    title = f"{title_str} — Roteiros e guias | Trekko"
+    title = f"{title_str} — Descubra as Melhores | Trekko"
     desc = f"Encontre trilhas {diff_label.lower()}s no Brasil: roteiros em {', '.join(UF_NAMES.get(u,u) for u in ufs[:3])} e mais. Dificuldade, distância e guias certificados CADASTUR."
     faqs = content.get("faqs", [])
     jsonld = build_faq_jsonld(faqs, canonical_path)
