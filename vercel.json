@@ -5,7 +5,6 @@
       "destination": "/:path+",
       "permanent": true
     },
-    { "source": "/sobre.html",                      "destination": "/sobre",                      "permanent": true },
     { "source": "/blog.html",                        "destination": "/blog",                        "permanent": true },
     { "source": "/trilhas.html",                     "destination": "/trilhas",                     "permanent": true },
     { "source": "/contato.html",                     "destination": "/contato",                     "permanent": true },
