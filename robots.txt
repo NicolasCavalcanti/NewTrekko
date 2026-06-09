@@ -1,6 +1,7 @@
 # Googlebot — full crawl access (explicit, required for Search Console + AdSense review)
 User-agent: Googlebot
 Allow: /
+Disallow: /go
 Disallow: /perfil
 Disallow: /checkout
 Disallow: /reservas
@@ -19,12 +20,14 @@ Allow: /
 User-agent: APIs-Google
 Allow: /
 
-# AdsBot variants — required for ad serving
+# AdsBot variants — required for ad serving; /go must be blocked to prevent bridge-page policy violations
 User-agent: AdsBot-Google
 Allow: /
+Disallow: /go
 
 User-agent: AdsBot-Google-Mobile
 Allow: /
+Disallow: /go
 
 User-agent: Mediapartners-Google
 Allow: /
@@ -32,6 +35,7 @@ Allow: /
 # All other crawlers
 User-agent: *
 Allow: /
+Disallow: /go
 Disallow: /admin/
 Disallow: /api/
 Disallow: /dashboard/
