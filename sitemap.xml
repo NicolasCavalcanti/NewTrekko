@@ -24,6 +24,90 @@
     <priority>0.4</priority>
   </url>
 
+  <!-- Trilhas detalhe -->
+  <url>
+    <loc>https://trekko.com.br/trilhas/rr/monte-roraima</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://trekko.com.br/trilhas/rj/travessia-petropolis-teresopolis</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://trekko.com.br/trilhas/go/vale-da-lua-e-cachoeiras</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://trekko.com.br/trilhas/sp/pedra-do-bau</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://trekko.com.br/trilhas/mg/pico-da-bandeira</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://trekko.com.br/trilhas/rs/canion-itaimbezinho</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://trekko.com.br/trilhas/sc/trilha-das-praias-rosa-norte-sul</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://trekko.com.br/trilhas/mg/travessia-serra-fina</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://trekko.com.br/trilhas/ce/lencois-de-paracuru</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://trekko.com.br/trilhas/rj/circuito-5-lagos-pedra-do-altar</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <!-- Blog -->
+  <url>
+    <loc>https://trekko.com.br/blog/travessia-petropolis-teresopolis-guia-completo</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://trekko.com.br/blog/monte-roraima-guia-completo</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://trekko.com.br/blog/10-itens-essenciais-mochila-trekking</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://trekko.com.br/blog/por-que-contratar-guia-cadastur</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://trekko.com.br/blog/chapada-dos-veadeiros-cerrado-sagrado</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://trekko.com.br/blog/planejamento-trilha-longo-curso-passo-a-passo</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
   <!-- Trilhas por estado -->
   <url>
     <loc>https://trekko.com.br/trilhas/rio-de-janeiro</loc>

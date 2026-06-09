@@ -10,3 +10,6 @@
 
 /component-showcase
   X-Robots-Tag: noindex, nofollow, nosnippet, noarchive
+
+/trilha/*
+  X-Robots-Tag: noindex, nofollow, nosnippet, noarchive
