@@ -1,0 +1,12 @@
+# Rotas privadas da SPA — sem indexação por crawlers
+/guias
+  X-Robots-Tag: noindex, nofollow, nosnippet, noarchive
+
+/expedicao/*
+  X-Robots-Tag: noindex, nofollow, nosnippet, noarchive
+
+/guia/*
+  X-Robots-Tag: noindex, nofollow, nosnippet, noarchive
+
+/component-showcase
+  X-Robots-Tag: noindex, nofollow, nosnippet, noarchive
