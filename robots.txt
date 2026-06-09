@@ -9,6 +9,7 @@ Allow: /guias/ativar-perfil
 Disallow: /guias
 Disallow: /expedicao/
 Disallow: /component-showcase
+Disallow: /trilha/
 
 # Explicit block for AdSense crawler (AdsBot ignores wildcard on some configs)
 User-agent: AdsBot-Google
