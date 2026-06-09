@@ -85,6 +85,23 @@ NEARBY_CSS = """\
     @media(max-width:400px){#trekko-nearby .tn-grid{grid-template-columns:1fr}}
   </style>"""
 
+HERO_CSS = """\
+  <style>
+    #trekko-hero{font-family:Inter,system-ui,sans-serif;background:#fff;padding:2rem 1rem 1.5rem;border-bottom:1px solid #e2e8f0}
+    #trekko-hero .th-inner{max-width:800px;margin:0 auto}
+    #trekko-hero h1{font-family:Sora,system-ui,sans-serif;font-size:1.75rem;font-weight:700;color:#0f172a;margin:0 0 .5rem;line-height:1.2}
+    #trekko-hero .th-sub{font-size:1rem;color:#475569;margin:0 0 1.25rem;line-height:1.6}
+    #trekko-hero .th-stats{display:flex;flex-wrap:wrap;gap:.75rem}
+    #trekko-hero .th-stat{display:flex;align-items:center;gap:.4rem;font-size:.88rem;color:#334155;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:.35rem .75rem}
+    #trekko-hero .th-stat-label{font-weight:600;color:#0f172a}
+    #trekko-hero .th-badge{font-size:.8rem;font-weight:700;padding:.25rem .65rem;border-radius:4px;text-transform:uppercase;letter-spacing:.04em}
+    #trekko-hero .th-badge-easy{background:#dcfce7;color:#166534}
+    #trekko-hero .th-badge-moderate{background:#fef9c3;color:#854d0e}
+    #trekko-hero .th-badge-hard{background:#fee2e2;color:#991b1b}
+    #trekko-hero .th-badge-expert{background:#f3e8ff;color:#6b21a8}
+    @media(max-width:640px){#trekko-hero{padding:1.5rem .75rem 1rem}#trekko-hero h1{font-size:1.35rem}#trekko-hero .th-stats{gap:.5rem}}
+  </style>"""
+
 DISCLAIMER_HTML = """\
 <section id="trekko-disclaimer" aria-label="Aviso de responsabilidade">
   <div class="td-inner">
@@ -1579,6 +1596,36 @@ def make_trail_desc(t):
     )
 
 
+def build_static_hero(t):
+    diff_label, diff_css = _DIFF_BADGE.get(t["difficulty"], (t["difficulty"], "moderate"))
+    dist = t.get("distanceKm", "")
+    elev = t.get("elevationGain", "")
+    time_ = t.get("estimatedTime", "")
+    city = t["city"].split(" / ")[0] if " / " in t["city"] else t["city"]
+    uf_name = UF_NAMES.get(t["uf"], t["uf"])
+    short_desc = t.get("shortDescription") or t.get("hookText") or ""
+
+    stats = [f'<span class="th-badge th-badge-{diff_css}">{diff_label}</span>']
+    if dist:
+        stats.append(f'<div class="th-stat"><span class="th-stat-label">Distância</span> {dist} km</div>')
+    if elev:
+        stats.append(f'<div class="th-stat"><span class="th-stat-label">Ganho de elevação</span> {elev} m</div>')
+    if time_:
+        stats.append(f'<div class="th-stat"><span class="th-stat-label">Duração</span> {time_}</div>')
+    stats_html = "\n    ".join(stats)
+
+    return f"""\
+<section id="trekko-hero" aria-label="Informações sobre {t['name']}">
+  <div class="th-inner">
+    <h1>{t['name']}</h1>
+    <p class="th-sub">{short_desc} — {city}, {uf_name}.</p>
+    <div class="th-stats">
+    {stats_html}
+    </div>
+  </div>
+</section>"""
+
+
 def build_slug_page(t, redirect_script, all_trails=None):
     slug = t["slug"]
     canonical = "https://trekko.com.br/trilha/" + slug
@@ -1589,6 +1636,7 @@ def build_slug_page(t, redirect_script, all_trails=None):
     editorial = build_editorial_section(t)
     faq = build_faq_section(t)
     nearby = build_nearby_section(t, all_trails or [])
+    static_hero = build_static_hero(t)
 
     return f"""<!doctype html>
 <html lang="pt-BR">
@@ -1638,6 +1686,7 @@ def build_slug_page(t, redirect_script, all_trails=None):
 
 {BREADCRUMB_CSS}
 {AD_CSS}
+{HERO_CSS}
 
   {redirect_script}
   <script type="module" crossorigin src="/assets/index-DSKK19TW.js"></script>
@@ -1656,6 +1705,7 @@ def build_slug_page(t, redirect_script, all_trails=None):
     </ol></div>
   </nav>
   <div id="root"></div>
+  {static_hero}
   {editorial}
   {faq}
   {nearby}
