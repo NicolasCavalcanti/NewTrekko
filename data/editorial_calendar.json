@@ -268,7 +268,7 @@
     "wordCountTarget": 1000,
     "wordCountActual": null,
     "authorSlug": "ana-beatriz-lima",
-    "status": "planejado",
+    "status": "publicado",
     "notes": "Windy, Climatempo, INMET, janelas de tempo, nuvens cumulonimbus"
   },
   {
@@ -285,7 +285,7 @@
     "wordCountTarget": 1000,
     "wordCountActual": null,
     "authorSlug": "rafael-dias",
-    "status": "planejado",
+    "status": "publicado",
     "notes": "Pedra Selada, Pedra do Altar, Agulhas Negras, logística 3 dias"
   },
   {
@@ -302,7 +302,7 @@
     "wordCountTarget": 1000,
     "wordCountActual": null,
     "authorSlug": "ana-beatriz-lima",
-    "status": "planejado",
+    "status": "publicado",
     "notes": "Adaptação dos 7 princípios LNT para contexto brasileiro, parques"
   },
   {
@@ -319,7 +319,7 @@
     "wordCountTarget": 1100,
     "wordCountActual": null,
     "authorSlug": "marcos-rodrigues",
-    "status": "planejado",
+    "status": "publicado",
     "notes": "Manaus, Presidente Figueiredo, PARNA Jaú, ecoturismo ribeirinho"
   },
   {
@@ -336,7 +336,7 @@
     "wordCountTarget": 1000,
     "wordCountActual": null,
     "authorSlug": "ana-beatriz-lima",
-    "status": "planejado",
+    "status": "publicado",
     "notes": "Azimute, declinação magnética, triangulação, exercícios práticos"
   },
   {
@@ -353,7 +353,7 @@
     "wordCountTarget": 1000,
     "wordCountActual": null,
     "authorSlug": "rafael-dias",
-    "status": "planejado",
+    "status": "publicado",
     "notes": "Pico da Tijuca, trilha do Corcovado a pé, Pedra da Gávea, Vista Chinesa"
   },
   {
@@ -370,7 +370,7 @@
     "wordCountTarget": 1000,
     "wordCountActual": null,
     "authorSlug": "rafael-dias",
-    "status": "planejado",
+    "status": "publicado",
     "notes": "Geodésica vs túnel, 3 estações vs 4, peso vs resistência"
   },
   {
@@ -387,7 +387,7 @@
     "wordCountTarget": 1000,
     "wordCountActual": null,
     "authorSlug": "marcos-rodrigues",
-    "status": "planejado",
+    "status": "publicado",
     "notes": "Diferentes das trilhas de Chapada Veadeiros - focar nos arredores e Serra Geral"
   },
   {
@@ -404,7 +404,7 @@
     "wordCountTarget": 1000,
     "wordCountActual": null,
     "authorSlug": "ana-beatriz-lima",
-    "status": "planejado",
+    "status": "publicado",
     "notes": "PRICE, graus 1-3, quando evacuar, prevenção, propriocepção"
   },
   {
@@ -421,7 +421,7 @@
     "wordCountTarget": 1000,
     "wordCountActual": null,
     "authorSlug": "marcos-rodrigues",
-    "status": "planejado",
+    "status": "publicado",
     "notes": "Fortaleza de Nossa Senhora dos Prazeres, Gruta das Encantadas, Farol das Conchas"
   },
   {
@@ -438,7 +438,7 @@
     "wordCountTarget": 1000,
     "wordCountActual": null,
     "authorSlug": "rafael-dias",
-    "status": "planejado",
+    "status": "publicado",
     "notes": "Sawyer, LifeStraw, pastilhas, UV, comparação por uso"
   },
   {
@@ -455,7 +455,7 @@
     "wordCountTarget": 1000,
     "wordCountActual": null,
     "authorSlug": "marcos-rodrigues",
-    "status": "planejado",
+    "status": "publicado",
     "notes": "Batateiras, balneários, fósseis, ecoturismo Crato e Juazeiro"
   },
   {
@@ -472,7 +472,7 @@
     "wordCountTarget": 1000,
     "wordCountActual": null,
     "authorSlug": "marcos-rodrigues",
-    "status": "planejado",
+    "status": "publicado",
     "notes": "Faixa etária, trilhas indicadas, equipamento kids, motivação"
   },
   {
@@ -489,7 +489,7 @@
     "wordCountTarget": 1000,
     "wordCountActual": null,
     "authorSlug": "rafael-dias",
-    "status": "planejado",
+    "status": "publicado",
     "notes": "Ilha Grande, trilha Lopes Mendes, Pico do Papagaio, Costa Verde litoral"
   },
   {
@@ -506,7 +506,7 @@
     "wordCountTarget": 1000,
     "wordCountActual": null,
     "authorSlug": "marcos-rodrigues",
-    "status": "planejado",
+    "status": "publicado",
     "notes": "Formações reconhecidas, CBME, SENAC, habilitação CADASTUR, renda"
   }
 ]
