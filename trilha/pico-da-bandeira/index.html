@@ -106,6 +106,21 @@
     .trekko-ad ins{display:block!important;max-width:100%}
     @media(max-width:640px){.trekko-ad{margin:1.25rem auto}}
   </style>
+  <style>
+    #trekko-hero{font-family:Inter,system-ui,sans-serif;background:#fff;padding:2rem 1rem 1.5rem;border-bottom:1px solid #e2e8f0}
+    #trekko-hero .th-inner{max-width:800px;margin:0 auto}
+    #trekko-hero h1{font-family:Sora,system-ui,sans-serif;font-size:1.75rem;font-weight:700;color:#0f172a;margin:0 0 .5rem;line-height:1.2}
+    #trekko-hero .th-sub{font-size:1rem;color:#475569;margin:0 0 1.25rem;line-height:1.6}
+    #trekko-hero .th-stats{display:flex;flex-wrap:wrap;gap:.75rem}
+    #trekko-hero .th-stat{display:flex;align-items:center;gap:.4rem;font-size:.88rem;color:#334155;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:.35rem .75rem}
+    #trekko-hero .th-stat-label{font-weight:600;color:#0f172a}
+    #trekko-hero .th-badge{font-size:.8rem;font-weight:700;padding:.25rem .65rem;border-radius:4px;text-transform:uppercase;letter-spacing:.04em}
+    #trekko-hero .th-badge-easy{background:#dcfce7;color:#166534}
+    #trekko-hero .th-badge-moderate{background:#fef9c3;color:#854d0e}
+    #trekko-hero .th-badge-hard{background:#fee2e2;color:#991b1b}
+    #trekko-hero .th-badge-expert{background:#f3e8ff;color:#6b21a8}
+    @media(max-width:640px){#trekko-hero{padding:1.5rem .75rem 1rem}#trekko-hero h1{font-size:1.35rem}#trekko-hero .th-stats{gap:.5rem}}
+  </style>
 
   <script>
 (function(){
@@ -133,6 +148,18 @@
     </ol></div>
   </nav>
   <div id="root"></div>
+  <section id="trekko-hero" aria-label="Informações sobre Pico da Bandeira">
+  <div class="th-inner">
+    <h1>Pico da Bandeira</h1>
+    <p class="th-sub">O terceiro ponto mais alto do Brasil, onde o nascer do sol acima das nuvens é uma experiência transformadora. — Alto Caparaó, Minas Gerais.</p>
+    <div class="th-stats">
+    <span class="th-badge th-badge-hard">Difícil</span>
+    <div class="th-stat"><span class="th-stat-label">Distância</span> 12 km</div>
+    <div class="th-stat"><span class="th-stat-label">Ganho de elevação</span> 1000 m</div>
+    <div class="th-stat"><span class="th-stat-label">Duração</span> 1-2 dias</div>
+    </div>
+  </div>
+</section>
   <section id="trekko-editorial" aria-label="Guia editorial: Pico da Bandeira">
   <div class="ei">
     <h2>O que esperar da trilha</h2>
