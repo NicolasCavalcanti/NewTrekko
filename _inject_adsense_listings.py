@@ -7,11 +7,15 @@ Placement rule:
 - One ad between the editorial section (</section>) and the trails section
 - Uses "auto" responsive format
 - Idempotent: skips pages that already have adsbygoogle
+- Skips pages with less than MIN_WORDS of visible text (AdSense "low value
+  content" policy: never serve ads on thin pages)
 """
 import os, re
 
 BASE      = os.path.dirname(os.path.abspath(__file__))
 LIST_DIR  = os.path.join(BASE, "trilhas")
+
+MIN_WORDS = 300
 
 PUB_ID    = "ca-pub-2482023752745520"
 # Reuse TRAIL_MID slot for listing pages.
@@ -40,6 +44,12 @@ AD_HTML = (
     f'  <script>(adsbygoogle = window.adsbygoogle || []).push({{}});</script>\n'
     '</div>\n'
 )
+
+
+def visible_word_count(content):
+    body = re.sub(r'<(script|style)\b.*?</\1>', ' ', content, flags=re.S | re.I)
+    body = re.sub(r'<[^>]+>', ' ', body)
+    return len(body.split())
 
 
 def add_adsense_to_head(content):
@@ -92,6 +102,10 @@ def process_file(html_path):
 
     if 'adsbygoogle' in content:
         return 'SKIP', 'already has AdSense'
+
+    words = visible_word_count(content)
+    if words < MIN_WORDS:
+        return 'SKIP', f'only {words} words of visible text (min {MIN_WORDS}) — no ads on thin pages'
 
     content, _ = add_adsense_to_head(content)
     content     = add_ad_css(content)
