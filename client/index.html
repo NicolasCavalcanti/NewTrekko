@@ -2,6 +2,11 @@
 <html lang="en">
 
   <head>
+    <!-- Recuperação de senha: se o Supabase devolver o link de recuperação na home
+         (Site URL), leva o usuário para a página de redefinição antes do app carregar. -->
+    <script>
+      (function(){try{var h=location.hash;if(h&&/(^|[#&])type=recovery(&|$)/.test(h)&&location.pathname.indexOf("/redefinir-senha")!==0){location.replace("/redefinir-senha/"+h)}}catch(e){}})();
+    </script>
     <!-- Google AdSense account verification (script injected conditionally by AdSenseLoader) -->
     <meta name="google-adsense-account" content="ca-pub-2482023752745520">
     <!-- Google tag (gtag.js) -->

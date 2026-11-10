@@ -175,6 +175,29 @@ export async function supabaseRegister(data: {
   return { user: toUser(auth.user) };
 }
 
+/** Send a password-recovery link that returns to /redefinir-senha/. */
+export async function supabaseRequestPasswordReset(
+  email: string,
+): Promise<{ success: true } | { error: string }> {
+  if (!supabase) return { error: "Supabase não configurado" };
+  try {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/redefinir-senha/`,
+    });
+    if (error) {
+      const m = `${error.message ?? ""} ${(error as any).code ?? ""}`;
+      return {
+        error: /rate.?limit|429/i.test(m)
+          ? "Muitas tentativas em pouco tempo. Aguarde alguns minutos e tente novamente."
+          : "Não foi possível enviar o link de recuperação. Tente novamente em alguns minutos.",
+      };
+    }
+    return { success: true };
+  } catch {
+    return { error: "Falha de conexão. Verifique sua internet e tente novamente." };
+  }
+}
+
 export async function supabaseGetCurrentUser(): Promise<SupabaseUser | null> {
   if (!supabase) return null;
   const {
