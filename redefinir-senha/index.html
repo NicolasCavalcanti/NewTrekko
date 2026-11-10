@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Redefinir senha | Trekko</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<link rel="icon" href="/favicon-48x48.png" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700&display=swap">
+<style>
+  :root {
+    --bg: oklch(98% .005 85);
+    --fg: oklch(20% .02 155);
+    --card: oklch(100% 0 0);
+    --border: oklch(88% .02 85);
+    --muted: oklch(50% .02 155);
+    --primary: oklch(45% .1 155);
+    --primary-hover: oklch(40% .1 155);
+    --destructive: oklch(55% .2 25);
+    --radius: .5rem;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; padding: 24px 16px; background: var(--bg); color: var(--fg);
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif; line-height: 1.5;
+  }
+  .logo { display: block; margin-bottom: 24px; }
+  .logo img { height: 40px; width: auto; }
+  .card {
+    width: 100%; max-width: 420px; background: var(--card); border: 1px solid var(--border);
+    border-radius: calc(var(--radius) * 2); padding: 32px 28px; box-shadow: 0 4px 24px rgb(0 0 0 / .05);
+  }
+  h1 { font-family: Sora, Inter, sans-serif; font-size: 1.375rem; margin: 0 0 6px; }
+  p.lead { margin: 0 0 24px; color: var(--muted); font-size: .9375rem; }
+  label { display: block; font-size: .875rem; font-weight: 500; margin-bottom: 6px; }
+  .field { margin-bottom: 16px; }
+  .pw { position: relative; }
+  input {
+    width: 100%; height: 42px; padding: 0 12px; font: inherit; font-size: .9375rem; color: var(--fg);
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); outline: none;
+  }
+  .pw input { padding-right: 64px; }
+  input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px color-mix(in oklch, var(--primary) 18%, transparent); }
+  input[aria-invalid="true"] { border-color: var(--destructive); }
+  .toggle {
+    position: absolute; right: 8px; top: 50%; transform: translateY(-50%); border: 0; background: none;
+    color: var(--muted); font: inherit; font-size: .8125rem; cursor: pointer; padding: 4px 6px;
+  }
+  .hint { font-size: .8125rem; color: var(--muted); margin-top: 6px; }
+  button.primary {
+    width: 100%; height: 44px; border: 0; border-radius: var(--radius); background: var(--primary);
+    color: #fff; font: inherit; font-weight: 600; cursor: pointer; margin-top: 8px;
+  }
+  button.primary:hover { background: var(--primary-hover); }
+  button.primary:disabled { opacity: .6; cursor: progress; }
+  .msg { padding: 12px 14px; border-radius: var(--radius); font-size: .875rem; margin-bottom: 16px; }
+  .msg.error { background: color-mix(in oklch, var(--destructive) 10%, transparent); color: var(--destructive); }
+  .msg.ok { background: color-mix(in oklch, var(--primary) 10%, transparent); color: var(--primary); }
+  .back { display: block; text-align: center; margin-top: 20px; font-size: .875rem; color: var(--primary); text-decoration: none; font-weight: 500; }
+  .back:hover { text-decoration: underline; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+  <a class="logo" href="/" aria-label="Trekko — página inicial">
+    <img src="/images/trekko_logo_horizontal_color_transparent.png" alt="Trekko" width="160" height="40">
+  </a>
+
+  <main class="card">
+    <!-- Estado 1: definir nova senha (chegou pelo link do e-mail) -->
+    <section id="set-view" hidden>
+      <h1>Crie uma nova senha</h1>
+      <p class="lead">Escolha uma senha nova para a sua conta<strong id="set-email"></strong>.</p>
+      <div id="set-msg" class="msg error" role="alert" hidden></div>
+      <form id="set-form" novalidate>
+        <div class="field">
+          <label for="password">Nova senha</label>
+          <div class="pw">
+            <input id="password" type="password" autocomplete="new-password" minlength="6" required>
+            <button type="button" class="toggle" data-target="password">Mostrar</button>
+          </div>
+          <div class="hint">Mínimo de 6 caracteres.</div>
+        </div>
+        <div class="field">
+          <label for="confirm">Confirme a nova senha</label>
+          <div class="pw">
+            <input id="confirm" type="password" autocomplete="new-password" minlength="6" required>
+            <button type="button" class="toggle" data-target="confirm">Mostrar</button>
+          </div>
+        </div>
+        <button class="primary" type="submit" id="set-btn">Salvar nova senha</button>
+      </form>
+    </section>
+
+    <!-- Estado 2: senha alterada -->
+    <section id="done-view" hidden>
+      <h1>Senha alterada!</h1>
+      <p class="lead">Sua senha foi atualizada. Agora é só entrar no Trekko com o seu e-mail e a nova senha.</p>
+      <a class="primary" href="/" style="display:flex;align-items:center;justify-content:center;text-decoration:none;height:44px;border-radius:var(--radius);background:var(--primary);color:#fff;font-weight:600">Ir para o Trekko</a>
+    </section>
+
+    <!-- Estado 3: pedir um link (acesso direto ou link expirado) -->
+    <section id="request-view" hidden>
+      <h1>Esqueceu sua senha?</h1>
+      <p class="lead" id="request-lead">Informe o e-mail da sua conta e enviaremos um link para criar uma nova senha.</p>
+      <div id="request-msg" class="msg" role="alert" hidden></div>
+      <form id="request-form" novalidate>
+        <div class="field">
+          <label for="email">E-mail</label>
+          <input id="email" type="email" autocomplete="email" placeholder="seu@email.com" required>
+        </div>
+        <button class="primary" type="submit" id="request-btn">Enviar link de recuperação</button>
+      </form>
+    </section>
+
+    <a class="back" href="/">Voltar para o Trekko</a>
+  </main>
+
+<script>
+(function () {
+  "use strict";
+  var SUPABASE_URL = "https://nyvfwvydcwmbafzxfozk.supabase.co";
+  var ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im55dmZ3dnlkY3dtYmFmenhmb3prIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MDQ4MDQsImV4cCI6MjA5MTA4MDgwNH0.K5F9BhwMpcSU_NsrAdm7ITOBKt_kTO0wKuEp8qvigO0";
+  var REDIRECT_TO = window.location.origin + "/redefinir-senha/";
+
+  function $(id) { return document.getElementById(id); }
+  function show(id) {
+    ["set-view", "done-view", "request-view"].forEach(function (v) { $(v).hidden = v !== id; });
+  }
+  function setMsg(el, text, kind) {
+    el.textContent = text || "";
+    el.className = "msg " + (kind || "error");
+    el.hidden = !text;
+  }
+  function translate(body, status) {
+    var m = ((body && (body.msg || body.message || body.error_description || body.error)) || "") + " " +
+            ((body && (body.error_code || body.code)) || "") + " " + (status || "");
+    if (/same_password|different from the old/i.test(m)) return "A nova senha precisa ser diferente da senha atual.";
+    if (/weak_password|password should/i.test(m)) {
+      var n = m.match(/at least (\d+)/i);
+      return n ? "A senha deve ter pelo menos " + n[1] + " caracteres." : "A senha não atende aos requisitos mínimos de segurança.";
+    }
+    if (/rate.?limit|429/i.test(m)) return "Muitas tentativas em pouco tempo. Aguarde alguns minutos e tente novamente.";
+    if (/expired|invalid|jwt|401|403|session/i.test(m)) return "Este link de recuperação expirou ou já foi usado. Peça um novo link abaixo.";
+    if (/validate email|email_address_invalid/i.test(m)) return "E-mail inválido. Confira o endereço digitado.";
+    return "Não foi possível concluir agora. Tente novamente em alguns minutos.";
+  }
+  function api(path, opts) {
+    var headers = { apikey: ANON_KEY, "Content-Type": "application/json" };
+    if (opts.token) headers.Authorization = "Bearer " + opts.token;
+    return fetch(SUPABASE_URL + "/auth/v1" + path, {
+      method: opts.method || "GET", headers: headers, body: opts.body ? JSON.stringify(opts.body) : undefined
+    }).then(function (r) {
+      return r.text().then(function (t) {
+        var j = null; try { j = t ? JSON.parse(t) : null; } catch (e) {}
+        return { ok: r.ok, status: r.status, body: j };
+      });
+    });
+  }
+
+  // Lê os parâmetros que o Supabase devolve no hash (fluxo implicit) ou na query (erros).
+  var params = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+  new URLSearchParams(window.location.search).forEach(function (v, k) { if (!params.has(k)) params.set(k, v); });
+  var token = params.get("access_token");
+  var type = params.get("type");
+  var urlError = params.get("error_code") || params.get("error");
+
+  // Remove o token da barra de endereço/histórico.
+  if (window.location.hash || window.location.search) {
+    try { history.replaceState(null, "", window.location.pathname); } catch (e) {}
+  }
+
+  // Botões "Mostrar/Ocultar" senha
+  Array.prototype.forEach.call(document.querySelectorAll(".toggle"), function (b) {
+    b.addEventListener("click", function () {
+      var i = $(b.getAttribute("data-target"));
+      var visible = i.type === "text";
+      i.type = visible ? "password" : "text";
+      b.textContent = visible ? "Mostrar" : "Ocultar";
+    });
+  });
+
+  // ── Pedir link de recuperação ──────────────────────────────────────────────
+  $("request-form").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var email = $("email").value.trim().toLowerCase();
+    var msg = $("request-msg");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      $("email").setAttribute("aria-invalid", "true");
+      setMsg(msg, "Digite um e-mail válido.");
+      return;
+    }
+    $("email").removeAttribute("aria-invalid");
+    var btn = $("request-btn");
+    btn.disabled = true; btn.textContent = "Enviando...";
+    api("/recover?redirect_to=" + encodeURIComponent(REDIRECT_TO), { method: "POST", body: { email: email } })
+      .then(function (res) {
+        if (!res.ok) { setMsg(msg, translate(res.body, res.status)); return; }
+        setMsg(msg, "Se existir uma conta com esse e-mail, enviamos um link para redefinir a senha. Confira também a pasta de spam.", "ok");
+      })
+      .catch(function () { setMsg(msg, "Falha de conexão. Verifique sua internet e tente novamente."); })
+      .then(function () { btn.disabled = false; btn.textContent = "Enviar link de recuperação"; });
+  });
+
+  // ── Definir nova senha ─────────────────────────────────────────────────────
+  $("set-form").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var pw = $("password").value, cf = $("confirm").value, msg = $("set-msg");
+    $("password").removeAttribute("aria-invalid"); $("confirm").removeAttribute("aria-invalid");
+    if (pw.length < 6) { $("password").setAttribute("aria-invalid", "true"); setMsg(msg, "A senha deve ter pelo menos 6 caracteres."); return; }
+    if (pw !== cf) { $("confirm").setAttribute("aria-invalid", "true"); setMsg(msg, "As senhas não coincidem."); return; }
+    setMsg(msg, "");
+    var btn = $("set-btn");
+    btn.disabled = true; btn.textContent = "Salvando...";
+    api("/user", { method: "PUT", token: token, body: { password: pw } })
+      .then(function (res) {
+        if (res.ok) {
+          // Encerra a sessão de recuperação; o login é feito com a nova senha.
+          api("/logout", { method: "POST", token: token }).catch(function () {});
+          token = null;
+          show("done-view");
+          return;
+        }
+        var text = translate(res.body, res.status);
+        if (/expirou/.test(text)) { goRequest(text); return; }
+        setMsg(msg, text);
+      })
+      .catch(function () { setMsg(msg, "Falha de conexão. Verifique sua internet e tente novamente."); })
+      .then(function () { btn.disabled = false; btn.textContent = "Salvar nova senha"; });
+  });
+
+  function goRequest(errorText) {
+    show("request-view");
+    if (errorText) setMsg($("request-msg"), errorText);
+    $("email").focus();
+  }
+
+  // ── Estado inicial ─────────────────────────────────────────────────────────
+  if (token && (type === "recovery" || !type)) {
+    show("set-view");
+    $("password").focus();
+    // Mostra o e-mail da conta e valida o token antes de pedir a senha.
+    api("/user", { token: token }).then(function (res) {
+      if (res.ok && res.body && res.body.email) { $("set-email").textContent = " " + res.body.email; }
+      else if (!res.ok) { goRequest(translate(res.body, res.status)); }
+    }).catch(function () {});
+  } else if (urlError) {
+    goRequest(/expired/i.test(params.get("error_description") || urlError)
+      ? "Este link de recuperação expirou ou já foi usado. Peça um novo link abaixo."
+      : "Não foi possível validar o link. Peça um novo link abaixo.");
+  } else {
+    goRequest();
+  }
+})();
+</script>
+</body>
+</html>
