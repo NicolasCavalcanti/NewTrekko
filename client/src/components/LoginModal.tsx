@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { trpc } from "@/lib/trpc";
 import { staticLogin } from "@/lib/staticAuth";
 import { USE_SUPABASE } from "@/lib/supabase";
-import { supabaseLogin } from "@/lib/supabaseAuth";
+import { supabaseLogin, supabaseRequestPasswordReset } from "@/lib/supabaseAuth";
 import { toast } from "sonner";
 import { useLocation } from "wouter";
 import { Loader2, Eye, EyeOff } from "lucide-react";
@@ -30,6 +30,23 @@ export default function LoginModal({ open, onOpenChange, onSwitchToRegister }: L
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
+
+  const handleForgotPassword = async () => {
+    const target = email.trim().toLowerCase();
+    if (!target || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(target)) {
+      setErrors({ ...errors, email: "Digite seu e-mail acima para recuperar a senha" });
+      return;
+    }
+    const result = await supabaseRequestPasswordReset(target);
+    if ("error" in result) {
+      toast.error(result.error);
+      return;
+    }
+    toast.success(
+      "Se existir uma conta com esse e-mail, enviamos um link para redefinir a senha. Confira também a pasta de spam.",
+      { duration: 8000 },
+    );
+  };
 
   const loginMutation = trpc.auth.login.useMutation({
     onSuccess: async () => {
@@ -167,6 +184,17 @@ export default function LoginModal({ open, onOpenChange, onSwitchToRegister }: L
               </button>
             </div>
             {errors.password && <p className="text-sm text-destructive">{errors.password}</p>}
+            {USE_SUPABASE && (
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={handleForgotPassword}
+                  className="text-sm text-primary hover:underline"
+                >
+                  Esqueci minha senha
+                </button>
+              </div>
+            )}
           </div>
 
           <Button
