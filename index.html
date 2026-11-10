@@ -2,6 +2,11 @@
 <html lang="pt-BR">
 
   <head>
+    <!-- Recuperação de senha: se o Supabase devolver o link de recuperação na home
+         (Site URL), leva o usuário para a página de redefinição antes do app carregar. -->
+    <script>
+      (function(){try{var h=location.hash;if(h&&/(^|[#&])type=recovery(&|$)/.test(h)&&location.pathname.indexOf("/redefinir-senha")!==0){location.replace("/redefinir-senha/"+h)}}catch(e){}})();
+    </script>
     <!-- Google Search Console property verification
          Obtenha o token em: Search Console → Configurações → Verificação da propriedade → Tag HTML
          Substitua o valor abaixo pelo token fornecido pelo GSC (ex: "abc123...XYZ") -->
