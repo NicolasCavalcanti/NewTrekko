@@ -13,6 +13,8 @@
 <meta property="og:image" content="https://www.trekko.com.br/images/trekko_logo_horizontal_color_transparent.png">
 <link rel="icon" href="/favicon-48x48.png" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="alternate" hreflang="pt-BR" href="https://www.trekko.com.br/blog">
+<link rel="alternate" hreflang="x-default" href="https://www.trekko.com.br/blog">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
@@ -28,37 +30,335 @@
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        {"@type": "ListItem", "position": 1, "name": "Trekko", "item": "https://www.trekko.com.br/"},
-        {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.trekko.com.br/blog"},
-        {"@type": "ListItem", "position": 3, "name": "Trilhas e Destinos", "item": "https://www.trekko.com.br/blog/trilhas-destinos/"}
+        { "@type": "ListItem", "position": 1, "name": "Trekko", "item": "https://www.trekko.com.br/" },
+        { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.trekko.com.br/blog" }
       ]
+    },
+    {
+      "@type": "Blog",
+      "@id": "https://www.trekko.com.br/blog",
+      "name": "Blog Trekko",
+      "description": "Artigos sobre trekking, trilhas, segurança outdoor e equipamentos no Brasil.",
+      "url": "https://www.trekko.com.br/blog",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Trekko",
+        "logo": "https://www.trekko.com.br/android-chrome-192x192.png",
+        "url": "https://www.trekko.com.br/"
+      }
     }
   ]
 }
 </script>
 <style>
-  .bc{padding:.6rem 0;border-bottom:1px solid #e2e8f0;font-family:Inter,system-ui,sans-serif}
-  .bc .container{max-width:1200px;margin:0 auto;padding:0 1rem}
-  .bc ol{display:flex;flex-wrap:wrap;gap:.25rem;align-items:center;font-size:.8rem;color:#64748b;list-style:none;margin:0;padding:0}
-  .bc li+li::before{content:"/";margin-right:.25rem;color:#94a3b8}
-  .bc a{color:#64748b;text-decoration:none}
-  .bc a:hover{color:#15803d}
-  .bc [aria-current=page]{color:#1e293b;font-weight:500}
-  #root{min-height:100svh}
+:root{--primary:#15803d;--primary-dark:#166534;--primary-hover:#16a34a;--primary-light:#dcfce7;--primary-bg:#f0fdf4;--accent:#f59e0b;--accent-light:#fef3c7;--text-primary:#1e293b;--text-secondary:#475569;--text-muted:#94a3b8;--border:#e2e8f0;--white:#fff;--bg-light:#f8fafc;--shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.1);--radius:8px;--radius-lg:16px;--font-body:'Inter',sans-serif;--font-heading:'Sora',sans-serif;--max-w:1200px;--gutter:1.25rem}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);color:var(--text-primary);line-height:1.6;background:var(--white)}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+.container{max-width:var(--max-w);margin:0 auto;padding:0 var(--gutter)}
+h1,h2,h3,h4{font-family:var(--font-heading);line-height:1.25;color:var(--text-primary)}
+p{color:var(--text-secondary);line-height:1.75}
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.65rem 1.25rem;border-radius:var(--radius);font-weight:600;font-size:.9rem;border:2px solid transparent;transition:all .2s;text-decoration:none}
+.btn--primary{background:var(--primary);color:#fff}.btn--primary:hover{background:var(--primary-hover)}
+.btn--outline{background:transparent;color:var(--primary);border-color:var(--primary)}.btn--outline:hover{background:var(--primary-light)}
+.btn--sm{padding:.45rem .9rem;font-size:.82rem}
+/* Header */
+.site-header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+.site-header.scrolled{box-shadow:var(--shadow-md)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{display:flex;align-items:center;gap:.5rem;font-family:var(--font-heading);font-size:1.35rem;font-weight:700;color:var(--primary)}
+.header-cta{display:flex;gap:.75rem;align-items:center}
+.site-nav{display:none;gap:1.5rem;align-items:center}
+.site-nav a{font-size:.875rem;font-weight:500;color:var(--text-secondary);transition:color .15s}
+.site-nav a:hover,.site-nav a.active{color:var(--primary)}
+@media(min-width:768px){.site-nav{display:flex}}
+/* Breadcrumb */
+.breadcrumb{padding:.75rem 0;border-bottom:1px solid var(--border)}
+.breadcrumb ol{display:flex;flex-wrap:wrap;gap:.25rem;align-items:center;font-size:.8rem;color:var(--text-muted)}
+.breadcrumb li+li::before{content:"/";margin-right:.25rem}
+.breadcrumb a:hover{color:var(--primary)}
+.breadcrumb [aria-current]{color:var(--text-primary);font-weight:500}
+/* Blog hero */
+.blog-hero{background:var(--primary-bg);padding:3rem 0 2.5rem;border-bottom:1px solid #bbf7d0}
+.blog-hero h1{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;margin-bottom:.75rem}
+.blog-hero p{font-size:1.05rem;color:var(--text-secondary);max-width:600px}
+/* Filters */
+.blog-filters{padding:1.5rem 0;border-bottom:1px solid var(--border);position:sticky;top:64px;z-index:90;background:var(--white)}
+.filter-row{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+.filter-btn{padding:.45rem 1rem;border-radius:999px;border:1.5px solid var(--border);background:var(--white);color:var(--text-secondary);font-size:.85rem;font-weight:500;cursor:pointer;transition:all .15s;font-family:var(--font-body)}
+.filter-btn:hover{border-color:var(--primary);color:var(--primary)}
+.filter-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.filter-count{font-size:.75rem;opacity:.75;margin-left:.25rem}
+/* Grid */
+.blog-main{padding:2.5rem 0 4rem}
+.blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.75rem;margin-bottom:2.5rem}
+/* Card */
+.article-card{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;background:var(--white);transition:box-shadow .2s,transform .15s;display:flex;flex-direction:column}
+.article-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.card-thumb{aspect-ratio:16/9;background:linear-gradient(135deg,var(--primary-bg) 0%,#dcfce7 100%);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.card-thumb svg{opacity:.5}
+.card-body{padding:1.25rem;display:flex;flex-direction:column;flex:1}
+.card-category{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--primary);background:var(--primary-bg);padding:.15rem .6rem;border-radius:4px;margin-bottom:.6rem}
+.card-title{font-size:1rem;font-weight:700;line-height:1.35;margin-bottom:.6rem;color:var(--text-primary);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-meta{font-size:.75rem;color:var(--text-muted);margin-bottom:.65rem;display:flex;gap:.75rem;flex-wrap:wrap}
+.card-desc{font-size:.85rem;color:var(--text-secondary);line-height:1.6;flex:1;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:1rem}
+.card-cta{margin-top:auto;display:inline-flex;align-items:center;gap:.35rem;color:var(--primary);font-size:.85rem;font-weight:600}
+.card-cta svg{transition:transform .15s}
+.article-card:hover .card-cta svg{transform:translateX(3px)}
+/* Empty state */
+.empty-state{text-align:center;padding:4rem 1rem;color:var(--text-muted)}
+.empty-state p{margin-top:.5rem;font-size:.9rem}
+/* Pagination */
+.pagination{display:flex;align-items:center;justify-content:center;gap:.5rem;flex-wrap:wrap}
+.page-btn{min-width:40px;height:40px;padding:0 .75rem;border-radius:var(--radius);border:1.5px solid var(--border);background:var(--white);color:var(--text-secondary);font-size:.875rem;font-weight:500;cursor:pointer;transition:all .15s;font-family:var(--font-body);display:flex;align-items:center;justify-content:center}
+.page-btn:hover{border-color:var(--primary);color:var(--primary)}
+.page-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.page-btn:disabled{opacity:.4;cursor:default;pointer-events:none}
+.page-info{font-size:.82rem;color:var(--text-muted);text-align:center;margin-bottom:1rem}
+@media(max-width:900px){@media(max-width:600px){.hidden{display:none!important}
+
+
+
+
+
+
+
+
+
+/* Footer */
+.site-footer{background:var(--text-primary);color:rgba(255,255,255,.65);padding:3rem 0 2rem}
+.footer-inner{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:2rem}
+.footer-brand{grid-column:1/2}
+.footer-logo-link{display:inline-flex;align-items:center;margin-bottom:.75rem}
+.footer-logo-img{height:38px;width:auto;filter:brightness(0) invert(1)}
+.footer-tagline{font-size:.85rem;line-height:1.6;margin-bottom:.5rem}
+.footer-col h4{color:#fff;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem}
+.footer-col ul li+li{margin-top:.4rem}
+.footer-col a{font-size:.85rem;color:rgba(255,255,255,.65);transition:color .15s}.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.1);margin-top:2rem;padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.75rem;font-size:.8rem}
+.footer-social{display:flex;gap:1rem;align-items:center}
+.footer-social a{display:flex;align-items:center;color:rgba(255,255,255,.55);transition:color .15s}.footer-social a:hover{color:#fff}
+@media(max-width:900px){.footer-inner{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.footer-inner{grid-template-columns:1fr}.footer-bottom{flex-direction:column;text-align:center}}
+.blog-ad{max-width:1200px;margin:0 auto;padding:1rem 1.25rem 0;text-align:center;overflow:hidden}
+.blog-ad ins{display:block!important;max-width:100%}
 </style>
-<script type="module" crossorigin src="/assets/index-DSKK19TW.js"></script>
-<link rel="modulepreload" crossorigin href="/assets/react-vendor-DViTTRkQ.js">
-<link rel="modulepreload" crossorigin href="/assets/radix-ui-D-C9zAgG.js">
-<link rel="stylesheet" crossorigin href="/assets/index-CKkMVUOE.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2482023752745520" crossorigin="anonymous"></script>
 </head>
 <body>
-<nav class="bc" aria-label="Navegação estrutural">
-  <div class="container"><ol>
-    <li><a href="/">Trekko</a></li>
-    <li><a href="/blog">Blog</a></li>
-    <li><span aria-current="page">Trilhas e Destinos</span></li>
-  </ol></div>
+<header class="site-header" id="site-header">
+<div class="container"><div class="header-inner">
+  <a href="/" class="logo" aria-label="Trekko - página inicial">
+    <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M16 3L3 28h26L16 3z" fill="#15803d" opacity=".9"/><path d="M16 10l-7 18h14L16 10z" fill="#fff" opacity=".3"/></svg>
+    Trekko
+  </a>
+  <nav class="site-nav" aria-label="Navegação principal">
+    <a href="/trilhas">Trilhas</a>
+    <a href="/guias/">Guias</a>
+    <a href="/blog" class="active">Blog</a>
+    <a href="/sobre/">Sobre</a>
+  </nav>
+  <div class="header-cta">
+    <a href="/" class="btn btn--outline btn--sm">Explorar trilhas</a>
+    <a href="/guias/ativar-perfil/" class="btn btn--primary btn--sm">Sou guia</a>
+  </div>
+</div></div>
+</header>
+
+<nav class="breadcrumb" aria-label="Navegação estrutural">
+<div class="container"><ol>
+  <li><a href="/">Trekko</a></li>
+  <li><span aria-current="page">Blog</span></li>
+</ol></div>
 </nav>
-<div id="root"></div>
+
+<section class="blog-hero">
+<div class="container">
+  <p class="blog-crumb"><a href="/blog" style="color:inherit;opacity:.85">Blog Trekko</a> › Trilhas e Destinos</p><h1>Trilhas e Destinos</h1><p>Roteiros e guias dos melhores destinos de trekking no Brasil: Chapada Diamantina, Lençóis Maranhenses, cânions do Sul e muito mais.</p>
+</div>
+</section>
+
+<div class="blog-ad" aria-label="Publicidade">
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2482023752745520" data-ad-slot="8145037926" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<div class="blog-filters" id="blog-filters">
+<div class="container">
+  <div class="filter-row" role="group" aria-label="Filtrar por categoria" hidden>
+    <button class="filter-btn active" data-filter="todos" onclick="setFilter('todos')">Todos <span class="filter-count" id="count-todos"></span></button>
+    <button class="filter-btn" data-filter="iniciantes" onclick="setFilter('iniciantes')">Iniciantes <span class="filter-count" id="count-iniciantes"></span></button>
+    <button class="filter-btn" data-filter="seguranca" onclick="setFilter('seguranca')">Segurança <span class="filter-count" id="count-seguranca"></span></button>
+    <button class="filter-btn" data-filter="destinos" onclick="setFilter('destinos')">Destinos <span class="filter-count" id="count-destinos"></span></button>
+    <button class="filter-btn" data-filter="equipamentos" onclick="setFilter('equipamentos')">Equipamentos <span class="filter-count" id="count-equipamentos"></span></button>
+  </div>
+</div>
+</div>
+
+<main class="blog-main" id="main-content">
+<div class="container">
+  <p class="page-info" id="page-info"></p>
+  <div class="blog-grid" id="blog-grid" aria-live="polite" aria-label="Lista de artigos"><article class="article-card"><div class="card-body"><span class="card-category">Trilhas &amp; Destinos</span><h2 class="card-title">Costa Verde (RJ): As Melhores Trilhas Entre Angra, Paraty e Ilha Grande</h2><div class="card-meta"><span>8 set 2026</span><span>Equipe Trekko</span></div><p class="card-desc">Guia completo das melhores trilhas da Costa Verde no Rio de Janeiro: Ilha Grande, Lopes Mendes, Pico do Papagaio, Paraty e como chegar a cada destino.</p><a href="/blog/trilha-da-costa-verde-rj/" class="card-cta">Ler mais</a></div></article><article class="article-card"><div class="card-body"><span class="card-category">Trilhas &amp; Destinos</span><h2 class="card-title">Trekking com Crianças: Como Iniciar os Pequenos nas Trilhas</h2><div class="card-meta"><span>4 set 2026</span><span>Equipe Trekko</span></div><p class="card-desc">Guia completo para trekking com crianças: qual idade começar, trilhas indicadas por faixa etária, equipamentos essenciais e como manter as crianças motivadas.</p><a href="/blog/trekking-criancas-guia-completo/" class="card-cta">Ler mais</a></div></article><article class="article-card"><div class="card-body"><span class="card-category">Trilhas &amp; Destinos</span><h2 class="card-title">Chapada do Araripe (CE): Trilhas e Floresta Nacional no Nordeste</h2><div class="card-meta"><span>1 set 2026</span><span>Equipe Trekko</span></div><p class="card-desc">Guia completo da Chapada do Araripe no Ceará: trilhas na FLONA, balneários, trilha dos fósseis, como chegar a Crato e Juazeiro do Norte e melhor época.</p><a href="/blog/trilhas-chapada-araripe-ceara/" class="card-cta">Ler mais</a></div></article><article class="article-card"><div class="card-body"><span class="card-category">Trilhas &amp; Destinos</span><h2 class="card-title">Ilha do Mel (PR): Trilhas, Fortaleza e os Segredos da Ilha Mais Selvagem do Sul</h2><div class="card-meta"><span>25 ago 2026</span><span>Equipe Trekko</span></div><p class="card-desc">Guia completo da Ilha do Mel no Paraná: trilhas, praias, Fortaleza Nossa Senhora dos Prazeres, Gruta das Encantadas, como chegar e dicas de hospedagem.</p><a href="/blog/ilha-do-mel-trilhas-parana/" class="card-cta">Ler mais</a></div></article><article class="article-card"><div class="card-body"><span class="card-category">Trilhas &amp; Destinos</span><h2 class="card-title">Alto Paraíso de Goiás: Trilhas, Cachoeiras e o Misticismo do Cerrado</h2><div class="card-meta"><span>18 ago 2026</span><span>Equipe Trekko</span></div><p class="card-desc">Guia completo de Alto Paraíso de Goiás: trilhas, cachoeiras, Serra Geral, como chegar, melhor época e dicas para explorar além do parque nacional.</p><a href="/blog/trilhas-goias-alto-paraiso/" class="card-cta">Ler mais</a></div></article><article class="article-card"><div class="card-body"><span class="card-category">Trilhas &amp; Destinos</span><h2 class="card-title">Trilhas no Corcovado e Floresta da Tijuca: A Mata Atlântica dentro do Rio</h2><div class="card-meta"><span>11 ago 2026</span><span>Equipe Trekko</span></div><p class="card-desc">Guia completo de trilhas na Floresta da Tijuca e Corcovado no Rio de Janeiro: Pico da Tijuca, Pedra da Gávea, Vista Chinesa e como chegar a cada trilha.</p><a href="/blog/corcovado-floresta-tijuca-trilhas/" class="card-cta">Ler mais</a></div></article><article class="article-card"><div class="card-body"><span class="card-category">Trilhas &amp; Destinos</span><h2 class="card-title">Trilhas na Floresta Amazônica: Guia para Quem Quer Explorar a Amazônia a Pé</h2><div class="card-meta"><span>4 ago 2026</span><span>Equipe Trekko</span></div><p class="card-desc">Guia completo para trilhas na Floresta Amazônica: melhores destinos, como chegar, vacinas, equipamentos específicos e dicas de segurança na floresta.</p><a href="/blog/trilhas-amazonas-floresta-amazonica/" class="card-cta">Ler mais</a></div></article><article class="article-card"><div class="card-body"><span class="card-category">Trilhas &amp; Destinos</span><h2 class="card-title">Leave No Trace: Os 7 Princípios Para Trilhar Sem Destruir a Natureza</h2><div class="card-meta"><span>31 jul 2026</span><span>Equipe Trekko</span></div><p class="card-desc">Aprenda os 7 princípios do Leave No Trace adaptados para o contexto brasileiro: como acampar, gerenciar lixo, fogueiras e impacto em trilhas e parques nacionais.</p><a href="/blog/codigo-lnt-deixar-nenhum-rastro/" class="card-cta">Ler mais</a></div></article><article class="article-card"><div class="card-body"><span class="card-category">Trilhas &amp; Destinos</span><h2 class="card-title">Travessia da Serra Fina: O Trekking Técnico Mais Famoso da Mantiqueira</h2><div class="card-meta"><span>28 jul 2026</span><span>Equipe Trekko</span></div><p class="card-desc">Guia completo da Travessia da Serra Fina: roteiro de 3 dias, pontos de acampamento, dificuldades técnicas e como se preparar para o trekking mais famoso da Mantiqueira.</p><a href="/blog/travessia-serra-fina-mantiqueira/" class="card-cta">Ler mais</a></div></article><article class="article-card"><div class="card-body"><span class="card-category">Trilhas &amp; Destinos</span><h2 class="card-title">Trilha Guiada vs. Trilha Solo: Prós, Contras e Quando Cada Uma Faz Sentido</h2><div class="card-meta"><span>11 jun 2026</span><span>Equipe Trekko</span></div><p class="card-desc">Comparação entre trilha guiada e trilha solo: prós, contras, e quando contratar um guia faz sentido ou é obrigatório.</p><a href="/blog/trilha-guiada-vs-trilha-solo/" class="card-cta">Ler mais</a></div></article><article class="article-card"><div class="card-body"><span class="card-category">Trilhas &amp; Destinos</span><h2 class="card-title">Os Melhores Parques Nacionais para Trekking no Brasil</h2><div class="card-meta"><span>11 jun 2026</span><span>Equipe Trekko</span></div><p class="card-desc">Os melhores parques nacionais para fazer trekking no Brasil: Itatiaia, Serra dos Órgãos, Chapada Diamantina, Caparaó, Roraima e mais.</p><a href="/blog/melhores-parques-nacionais-trekking-brasil/" class="card-cta">Ler mais</a></div></article><article class="article-card"><div class="card-body"><span class="card-category">Trilhas &amp; Destinos</span><h2 class="card-title">Melhor Época para Trilhas no Brasil por Região</h2><div class="card-meta"><span>10 jun 2026</span><span>Equipe Trekko</span></div><p class="card-desc">Calendário completo das melhores épocas para trekking no Brasil por região: Sudeste, Sul, Nordeste, Centro-Oeste e Amazônia.</p><a href="/blog/melhor-epoca-trilhas-brasil-por-regiao/" class="card-cta">Ler mais</a></div></article><article class="article-card"><div class="card-body"><span class="card-category">Trilhas &amp; Destinos</span><h2 class="card-title">Pedra do Baú: Guia Completo da Trilha Mais Alta de SP (2.033m)</h2><div class="card-meta"><span>9 jun 2026</span><span>Equipe Trekko</span></div><p class="card-desc">Tudo sobre a Pedra do Baú em São Bento do Sapucaí: trilha, capacete obrigatório, logística, melhor época e dicas de segurança para o monólito mais famoso de SP.</p><a href="/blog/pedra-do-bau-guia-completo/" class="card-cta">Ler mais</a></div></article><article class="article-card"><div class="card-body"><span class="card-category">Trilhas &amp; Destinos</span><h2 class="card-title">Trilhas na Chapada Diamantina: Como Planejar Sua Viagem</h2><div class="card-meta"><span>6 jun 2026</span><span>Equipe Trekko</span></div><p class="card-desc">Guia completo para planejar sua visita à Chapada Diamantina: Vale do Pati, Cachoeira da Fumaça, melhor época e orçamento.</p><a href="/blog/chapada-diamantina-como-planejar-viagem/" class="card-cta">Ler mais</a></div></article><article class="article-card"><div class="card-body"><span class="card-category">Trilhas &amp; Destinos</span><h2 class="card-title">Cânion Itaimbezinho: Guia Completo 2026</h2><div class="card-meta"><span>6 jun 2026</span><span>Equipe Trekko</span></div><p class="card-desc">Guia completo do Cânion Itaimbezinho: trilhas, acesso, melhor época e dicas práticas para visitar o cânion mais famoso do Brasil.</p><a href="/blog/canion-itaimbezinho-guia-completo/" class="card-cta">Ler mais</a></div></article><article class="article-card"><div class="card-body"><span class="card-category">Trilhas &amp; Destinos</span><h2 class="card-title">As Melhores Trilhas da Serra da Mantiqueira</h2><div class="card-meta"><span>5 jun 2026</span><span>Equipe Trekko</span></div><p class="card-desc">Descubra as melhores trilhas da Serra da Mantiqueira: Pico dos Marins, Papagaio, Itatiaia e mais. Com dificuldade, como chegar e melhor época.</p><a href="/blog/melhores-trilhas-serra-da-mantiqueira/" class="card-cta">Ler mais</a></div></article><article class="article-card"><div class="card-body"><span class="card-category">Trilhas &amp; Destinos</span><h2 class="card-title">Quando é Obrigatório Ter Guia em Trilhas no Brasil?</h2><div class="card-meta"><span>4 jun 2026</span><span>Equipe Trekko</span></div><p class="card-desc">Saiba em quais parques nacionais o guia é exigência legal, a diferença entre guia CADASTUR e condutor local, e as multas por descumprir a regra.</p><a href="/blog/quando-obrigatorio-guia-trilhas-brasil/" class="card-cta">Ler mais</a></div></article><article class="article-card"><div class="card-body"><span class="card-category">Trilhas &amp; Destinos</span><h2 class="card-title">Pico da Bandeira: Guia Completo 2026</h2><div class="card-meta"><span>4 jun 2026</span><span>Equipe Trekko</span></div><p class="card-desc">Guia completo do Pico da Bandeira: acesso, trilhas, clima, equipamento e segurança para conquistar o terceiro pico mais alto do Brasil.</p><a href="/blog/pico-da-bandeira-guia-completo/" class="card-cta">Ler mais</a></div></article><article class="article-card"><div class="card-body"><span class="card-category">Trilhas &amp; Destinos</span><h2 class="card-title">Melhores Trilhas do Espírito Santo: Pedra Azul, Forno Grande e Caparaó</h2><div class="card-meta"><span>2 jun 2026</span><span>Equipe Trekko</span></div><p class="card-desc">Guia completo das melhores trilhas do Espírito Santo: Parque da Pedra Azul, Forno Grande, Pico da Bandeira e mais. Dicas de acesso, dificuldade e melhor época.</p><a href="/blog/trilhas-espirito-santo-guia-completo/" class="card-cta">Ler mais</a></div></article><article class="article-card"><div class="card-body"><span class="card-category">Trilhas &amp; Destinos</span><h2 class="card-title">Melhores Trilhas do Paraná: Guia Completo 2026</h2><div class="card-meta"><span>2 jun 2026</span><span>Equipe Trekko</span></div><p class="card-desc">As melhores trilhas do Paraná: Pico Paraná, Cânion Itaimbezinho, Superagui e muito mais. Guia completo com dificuldade, acesso e melhor época.</p><a href="/blog/melhores-trilhas-parana/" class="card-cta">Ler mais</a></div></article><article class="article-card"><div class="card-body"><span class="card-category">Trilhas &amp; Destinos</span><h2 class="card-title">Trekking no Nordeste: As Melhores Trilhas</h2><div class="card-meta"><span>24 mai 2026</span><span>Equipe Trekko</span></div><p class="card-desc">As melhores trilhas de trekking no Nordeste brasileiro: Chapada Diamantina, Serra da Capivara, Chapada do Araripe, Lençóis Maranhenses e muito mais.</p><a href="/blog/trilhas-nordeste-brasil/" class="card-cta">Ler mais</a></div></article><article class="article-card"><div class="card-body"><span class="card-category">Trilhas &amp; Destinos</span><h2 class="card-title">Melhores Trilhas na Serra Gaúcha e Cânions do RS</h2><div class="card-meta"><span>22 mai 2026</span><span>Equipe Trekko</span></div><p class="card-desc">As melhores trilhas no Rio Grande do Sul: Cânion Itaimbezinho, Fortaleza, Serra Gaúcha e muito mais — para todos os níveis de experiência.</p><a href="/blog/melhores-trilhas-rs-canyons/" class="card-cta">Ler mais</a></div></article><article class="article-card"><div class="card-body"><span class="card-category">Trilhas &amp; Destinos</span><h2 class="card-title">Trilhas em Santa Catarina: Cânions, Serras e Praias</h2><div class="card-meta"><span>15 mai 2026</span><span>Equipe Trekko</span></div><p class="card-desc">As melhores trilhas de Santa Catarina: Cânion Itaimbezinho, Serra Catarinense, Litoral Sul e muito mais para todos os níveis de experiência.</p><a href="/blog/trilhas-santa-catarina/" class="card-cta">Ler mais</a></div></article><article class="article-card"><div class="card-body"><span class="card-category">Trilhas &amp; Destinos</span><h2 class="card-title">Chapada Diamantina: Guia Completo para Trilheiros</h2><div class="card-meta"><span>11 mai 2026</span><span>Equipe Trekko</span></div><p class="card-desc">Guia completo da Chapada Diamantina para trilheiros: os melhores roteiros, como chegar, quando ir, guias locais e logística passo a passo.</p><a href="/blog/trilhas-chapada-diamantina/" class="card-cta">Ler mais</a></div></article><article class="article-card"><div class="card-body"><span class="card-category">Trilhas &amp; Destinos</span><h2 class="card-title">As Melhores Trilhas de Minas Gerais: Da Mantiqueira ao Caparaó</h2><div class="card-meta"><span>10 mai 2026</span><span>Equipe Trekko</span></div><p class="card-desc">Guia completo das melhores trilhas de Minas Gerais: Caparaó, Serra da Mantiqueira, Serra do Cipó e muito mais para todos os níveis.</p><a href="/blog/melhores-trilhas-minas-gerais/" class="card-cta">Ler mais</a></div></article><article class="article-card"><div class="card-body"><span class="card-category">Trilhas &amp; Destinos</span><h2 class="card-title">Trilhas Fáceis no Rio de Janeiro: Guia Completo</h2><div class="card-meta"><span>7 mai 2026</span><span>Equipe Trekko</span></div><p class="card-desc">As melhores trilhas fáceis no Rio de Janeiro — dentro da cidade e no estado — para iniciantes, famílias e quem quer explorar além dos pontos turísticos.</p><a href="/blog/trilhas-faceis-rio-de-janeiro/" class="card-cta">Ler mais</a></div></article><article class="article-card"><div class="card-body"><span class="card-category">Trilhas &amp; Destinos</span><h2 class="card-title">Trilhas Fáceis em São Paulo: 8 Opções para o Fim de Semana</h2><div class="card-meta"><span>6 mai 2026</span><span>Equipe Trekko</span></div><p class="card-desc">As 8 melhores trilhas fáceis em São Paulo para iniciantes e famílias — na capital, na serra e no litoral, com dicas de acesso e melhor época.</p><a href="/blog/trilhas-faceis-sao-paulo/" class="card-cta">Ler mais</a></div></article><article class="article-card"><div class="card-body"><span class="card-category">Trilhas &amp; Destinos</span><h2 class="card-title">Chapada dos Veadeiros: Guia Completo do Cerrado</h2><div class="card-meta"><span>20 fev 2026</span><span>Equipe Trekko</span></div><p class="card-desc">Conheça a Chapada dos Veadeiros, o coração preservado do Cerrado brasileiro — trilhas, cachoeiras, fauna, como chegar e como visitar com responsabilidade.</p><a href="/blog/chapada-dos-veadeiros-cerrado-sagrado/" class="card-cta">Ler mais</a></div></article><article class="article-card"><div class="card-body"><span class="card-category">Trilhas &amp; Destinos</span><h2 class="card-title">Monte Roraima: Guia Completo para Subir o Tepui</h2><div class="card-meta"><span>20 jan 2026</span><span>Equipe Trekko</span></div><p class="card-desc">Como chegar, o que levar e o que esperar no Monte Roraima. Guia completo para conquistar a montanha mais antiga do planeta na tríplice fronteira Brasil-Venezuela-Guiana.</p><a href="/blog/monte-roraima-guia-completo/" class="card-cta">Ler mais</a></div></article><article class="article-card"><div class="card-body"><span class="card-category">Trilhas &amp; Destinos</span><h2 class="card-title">Travessia Petrópolis x Teresópolis: Guia Completo 2026</h2><div class="card-meta"><span>10 jan 2026</span><span>Equipe Trekko</span></div><p class="card-desc">Tudo sobre a travessia mais clássica do Brasil: percurso dia a dia, abrigos, dificuldades, melhor época e dicas essenciais para os 30 km pela Serra dos Órgãos.</p><a href="/blog/travessia-petropolis-teresopolis-guia-completo/" class="card-cta">Ler mais</a></div></article></div>
+  <div class="pagination" id="pagination" aria-label="Paginação"></div>
+</div>
+</main>
+
+<footer class="site-footer">
+<div class="container">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="/" class="footer-logo-link" aria-label="Trekko — página inicial">
+        <img src="/images/trekko_logo_horizontal_color_transparent.png" alt="Trekko" class="footer-logo-img" width="130" height="44" loading="lazy">
+      </a>
+      <p class="footer-tagline">A plataforma para quem vive a trilha.<br>Descubra, planeje e conecte-se com guias.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Sobre o Trekko</h4>
+      <ul>
+        <li><a href="/sobre/">Sobre nós</a></li>
+        <li><a href="/contato/">Contato</a></li>
+        <li><a href="/blog">Blog &amp; Guias</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Trilhas</h4>
+      <ul>
+        <li><a href="/trilhas">Ver trilhas</a></li>
+        <li><a href="/guias/">Guias</a></li>
+        <li><a href="/trilhas#estados">Por estado</a></li>
+        <li><a href="/trilhas#dificuldade">Por dificuldade</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="/privacidade/">Política de Privacidade</a></li>
+        <li><a href="/termos-de-uso/">Termos de Uso</a></li>
+        <li><a href="/politica-de-cookies/">Política de Cookies</a></li>
+        <li><a href="/aviso-de-responsabilidade/">Aviso de Responsabilidade</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Trekko — CNPJ 62.286.383/0001-63. Todos os direitos reservados.</p>
+    <div class="footer-social">
+      <a href="https://www.instagram.com/trekko.com.br/" target="_blank" rel="noopener noreferrer" aria-label="Siga o Trekko no Instagram"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd"/></svg></a>
+      <a href="https://www.tiktok.com/@trekko.com.br" target="_blank" rel="noopener noreferrer" aria-label="Siga o Trekko no TikTok"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a>
+      <a href="https://www.youtube.com/@trekkooficial" target="_blank" rel="noopener noreferrer" aria-label="Siga o Trekko no YouTube"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+    </div>
+  </div>
+</div>
+</footer>
+
+<script>
+var ARTICLES = [
+  {slug:"trilha-da-costa-verde-rj",title:"Costa Verde (RJ): As Melhores Trilhas Entre Angra, Paraty e Ilha Grande",cat:"Trilhas &amp; Destinos",filter:"destinos",date:"2026-09-08",dateLabel:"8 set 2026",author:"Equipe Trekko",desc:"Guia completo das melhores trilhas da Costa Verde no Rio de Janeiro: Ilha Grande, Lopes Mendes, Pico do Papagaio, Paraty e como chegar a cada destino."},
+  {slug:"trekking-criancas-guia-completo",title:"Trekking com Crianças: Como Iniciar os Pequenos nas Trilhas",cat:"Trilhas &amp; Destinos",filter:"destinos",date:"2026-09-04",dateLabel:"4 set 2026",author:"Equipe Trekko",desc:"Guia completo para trekking com crianças: qual idade começar, trilhas indicadas por faixa etária, equipamentos essenciais e como manter as crianças motivadas."},
+  {slug:"trilhas-chapada-araripe-ceara",title:"Chapada do Araripe (CE): Trilhas e Floresta Nacional no Nordeste",cat:"Trilhas &amp; Destinos",filter:"destinos",date:"2026-09-01",dateLabel:"1 set 2026",author:"Equipe Trekko",desc:"Guia completo da Chapada do Araripe no Ceará: trilhas na FLONA, balneários, trilha dos fósseis, como chegar a Crato e Juazeiro do Norte e melhor época."},
+  {slug:"ilha-do-mel-trilhas-parana",title:"Ilha do Mel (PR): Trilhas, Fortaleza e os Segredos da Ilha Mais Selvagem do Sul",cat:"Trilhas &amp; Destinos",filter:"destinos",date:"2026-08-25",dateLabel:"25 ago 2026",author:"Equipe Trekko",desc:"Guia completo da Ilha do Mel no Paraná: trilhas, praias, Fortaleza Nossa Senhora dos Prazeres, Gruta das Encantadas, como chegar e dicas de hospedagem."},
+  {slug:"trilhas-goias-alto-paraiso",title:"Alto Paraíso de Goiás: Trilhas, Cachoeiras e o Misticismo do Cerrado",cat:"Trilhas &amp; Destinos",filter:"destinos",date:"2026-08-18",dateLabel:"18 ago 2026",author:"Equipe Trekko",desc:"Guia completo de Alto Paraíso de Goiás: trilhas, cachoeiras, Serra Geral, como chegar, melhor época e dicas para explorar além do parque nacional."},
+  {slug:"corcovado-floresta-tijuca-trilhas",title:"Trilhas no Corcovado e Floresta da Tijuca: A Mata Atlântica dentro do Rio",cat:"Trilhas &amp; Destinos",filter:"destinos",date:"2026-08-11",dateLabel:"11 ago 2026",author:"Equipe Trekko",desc:"Guia completo de trilhas na Floresta da Tijuca e Corcovado no Rio de Janeiro: Pico da Tijuca, Pedra da Gávea, Vista Chinesa e como chegar a cada trilha."},
+  {slug:"trilhas-amazonas-floresta-amazonica",title:"Trilhas na Floresta Amazônica: Guia para Quem Quer Explorar a Amazônia a Pé",cat:"Trilhas &amp; Destinos",filter:"destinos",date:"2026-08-04",dateLabel:"4 ago 2026",author:"Equipe Trekko",desc:"Guia completo para trilhas na Floresta Amazônica: melhores destinos, como chegar, vacinas, equipamentos específicos e dicas de segurança na floresta."},
+  {slug:"codigo-lnt-deixar-nenhum-rastro",title:"Leave No Trace: Os 7 Princípios Para Trilhar Sem Destruir a Natureza",cat:"Trilhas &amp; Destinos",filter:"destinos",date:"2026-07-31",dateLabel:"31 jul 2026",author:"Equipe Trekko",desc:"Aprenda os 7 princípios do Leave No Trace adaptados para o contexto brasileiro: como acampar, gerenciar lixo, fogueiras e impacto em trilhas e parques nacionais."},
+  {slug:"travessia-serra-fina-mantiqueira",title:"Travessia da Serra Fina: O Trekking Técnico Mais Famoso da Mantiqueira",cat:"Trilhas &amp; Destinos",filter:"destinos",date:"2026-07-28",dateLabel:"28 jul 2026",author:"Equipe Trekko",desc:"Guia completo da Travessia da Serra Fina: roteiro de 3 dias, pontos de acampamento, dificuldades técnicas e como se preparar para o trekking mais famoso da Mantiqueira."},
+  {slug:"trilha-guiada-vs-trilha-solo",title:"Trilha Guiada vs. Trilha Solo: Prós, Contras e Quando Cada Uma Faz Sentido",cat:"Trilhas &amp; Destinos",filter:"destinos",date:"2026-06-11",dateLabel:"11 jun 2026",author:"Equipe Trekko",desc:"Comparação entre trilha guiada e trilha solo: prós, contras, e quando contratar um guia faz sentido ou é obrigatório."},
+  {slug:"melhores-parques-nacionais-trekking-brasil",title:"Os Melhores Parques Nacionais para Trekking no Brasil",cat:"Trilhas &amp; Destinos",filter:"destinos",date:"2026-06-11",dateLabel:"11 jun 2026",author:"Equipe Trekko",desc:"Os melhores parques nacionais para fazer trekking no Brasil: Itatiaia, Serra dos Órgãos, Chapada Diamantina, Caparaó, Roraima e mais."},
+  {slug:"melhor-epoca-trilhas-brasil-por-regiao",title:"Melhor Época para Trilhas no Brasil por Região",cat:"Trilhas &amp; Destinos",filter:"destinos",date:"2026-06-10",dateLabel:"10 jun 2026",author:"Equipe Trekko",desc:"Calendário completo das melhores épocas para trekking no Brasil por região: Sudeste, Sul, Nordeste, Centro-Oeste e Amazônia."},
+  {slug:"pedra-do-bau-guia-completo",title:"Pedra do Baú: Guia Completo da Trilha Mais Alta de SP (2.033m)",cat:"Trilhas &amp; Destinos",filter:"destinos",date:"2026-06-09",dateLabel:"9 jun 2026",author:"Equipe Trekko",desc:"Tudo sobre a Pedra do Baú em São Bento do Sapucaí: trilha, capacete obrigatório, logística, melhor época e dicas de segurança para o monólito mais famoso de SP."},
+  {slug:"chapada-diamantina-como-planejar-viagem",title:"Trilhas na Chapada Diamantina: Como Planejar Sua Viagem",cat:"Trilhas &amp; Destinos",filter:"destinos",date:"2026-06-06",dateLabel:"6 jun 2026",author:"Equipe Trekko",desc:"Guia completo para planejar sua visita à Chapada Diamantina: Vale do Pati, Cachoeira da Fumaça, melhor época e orçamento."},
+  {slug:"canion-itaimbezinho-guia-completo",title:"Cânion Itaimbezinho: Guia Completo 2026",cat:"Trilhas &amp; Destinos",filter:"destinos",date:"2026-06-06",dateLabel:"6 jun 2026",author:"Equipe Trekko",desc:"Guia completo do Cânion Itaimbezinho: trilhas, acesso, melhor época e dicas práticas para visitar o cânion mais famoso do Brasil."},
+  {slug:"melhores-trilhas-serra-da-mantiqueira",title:"As Melhores Trilhas da Serra da Mantiqueira",cat:"Trilhas &amp; Destinos",filter:"destinos",date:"2026-06-05",dateLabel:"5 jun 2026",author:"Equipe Trekko",desc:"Descubra as melhores trilhas da Serra da Mantiqueira: Pico dos Marins, Papagaio, Itatiaia e mais. Com dificuldade, como chegar e melhor época."},
+  {slug:"quando-obrigatorio-guia-trilhas-brasil",title:"Quando é Obrigatório Ter Guia em Trilhas no Brasil?",cat:"Trilhas &amp; Destinos",filter:"destinos",date:"2026-06-04",dateLabel:"4 jun 2026",author:"Equipe Trekko",desc:"Saiba em quais parques nacionais o guia é exigência legal, a diferença entre guia CADASTUR e condutor local, e as multas por descumprir a regra."},
+  {slug:"pico-da-bandeira-guia-completo",title:"Pico da Bandeira: Guia Completo 2026",cat:"Trilhas &amp; Destinos",filter:"destinos",date:"2026-06-04",dateLabel:"4 jun 2026",author:"Equipe Trekko",desc:"Guia completo do Pico da Bandeira: acesso, trilhas, clima, equipamento e segurança para conquistar o terceiro pico mais alto do Brasil."},
+  {slug:"trilhas-espirito-santo-guia-completo",title:"Melhores Trilhas do Espírito Santo: Pedra Azul, Forno Grande e Caparaó",cat:"Trilhas &amp; Destinos",filter:"destinos",date:"2026-06-02",dateLabel:"2 jun 2026",author:"Equipe Trekko",desc:"Guia completo das melhores trilhas do Espírito Santo: Parque da Pedra Azul, Forno Grande, Pico da Bandeira e mais. Dicas de acesso, dificuldade e melhor época."},
+  {slug:"melhores-trilhas-parana",title:"Melhores Trilhas do Paraná: Guia Completo 2026",cat:"Trilhas &amp; Destinos",filter:"destinos",date:"2026-06-02",dateLabel:"2 jun 2026",author:"Equipe Trekko",desc:"As melhores trilhas do Paraná: Pico Paraná, Cânion Itaimbezinho, Superagui e muito mais. Guia completo com dificuldade, acesso e melhor época."},
+  {slug:"trilhas-nordeste-brasil",title:"Trekking no Nordeste: As Melhores Trilhas",cat:"Trilhas &amp; Destinos",filter:"destinos",date:"2026-05-24",dateLabel:"24 mai 2026",author:"Equipe Trekko",desc:"As melhores trilhas de trekking no Nordeste brasileiro: Chapada Diamantina, Serra da Capivara, Chapada do Araripe, Lençóis Maranhenses e muito mais."},
+  {slug:"melhores-trilhas-rs-canyons",title:"Melhores Trilhas na Serra Gaúcha e Cânions do RS",cat:"Trilhas &amp; Destinos",filter:"destinos",date:"2026-05-22",dateLabel:"22 mai 2026",author:"Equipe Trekko",desc:"As melhores trilhas no Rio Grande do Sul: Cânion Itaimbezinho, Fortaleza, Serra Gaúcha e muito mais — para todos os níveis de experiência."},
+  {slug:"trilhas-santa-catarina",title:"Trilhas em Santa Catarina: Cânions, Serras e Praias",cat:"Trilhas &amp; Destinos",filter:"destinos",date:"2026-05-15",dateLabel:"15 mai 2026",author:"Equipe Trekko",desc:"As melhores trilhas de Santa Catarina: Cânion Itaimbezinho, Serra Catarinense, Litoral Sul e muito mais para todos os níveis de experiência."},
+  {slug:"trilhas-chapada-diamantina",title:"Chapada Diamantina: Guia Completo para Trilheiros",cat:"Trilhas &amp; Destinos",filter:"destinos",date:"2026-05-11",dateLabel:"11 mai 2026",author:"Equipe Trekko",desc:"Guia completo da Chapada Diamantina para trilheiros: os melhores roteiros, como chegar, quando ir, guias locais e logística passo a passo."},
+  {slug:"melhores-trilhas-minas-gerais",title:"As Melhores Trilhas de Minas Gerais: Da Mantiqueira ao Caparaó",cat:"Trilhas &amp; Destinos",filter:"destinos",date:"2026-05-10",dateLabel:"10 mai 2026",author:"Equipe Trekko",desc:"Guia completo das melhores trilhas de Minas Gerais: Caparaó, Serra da Mantiqueira, Serra do Cipó e muito mais para todos os níveis."},
+  {slug:"trilhas-faceis-rio-de-janeiro",title:"Trilhas Fáceis no Rio de Janeiro: Guia Completo",cat:"Trilhas &amp; Destinos",filter:"destinos",date:"2026-05-07",dateLabel:"7 mai 2026",author:"Equipe Trekko",desc:"As melhores trilhas fáceis no Rio de Janeiro — dentro da cidade e no estado — para iniciantes, famílias e quem quer explorar além dos pontos turísticos."},
+  {slug:"trilhas-faceis-sao-paulo",title:"Trilhas Fáceis em São Paulo: 8 Opções para o Fim de Semana",cat:"Trilhas &amp; Destinos",filter:"destinos",date:"2026-05-06",dateLabel:"6 mai 2026",author:"Equipe Trekko",desc:"As 8 melhores trilhas fáceis em São Paulo para iniciantes e famílias — na capital, na serra e no litoral, com dicas de acesso e melhor época."},
+  {slug:"chapada-dos-veadeiros-cerrado-sagrado",title:"Chapada dos Veadeiros: Guia Completo do Cerrado",cat:"Trilhas &amp; Destinos",filter:"destinos",date:"2026-02-20",dateLabel:"20 fev 2026",author:"Equipe Trekko",desc:"Conheça a Chapada dos Veadeiros, o coração preservado do Cerrado brasileiro — trilhas, cachoeiras, fauna, como chegar e como visitar com responsabilidade."},
+  {slug:"monte-roraima-guia-completo",title:"Monte Roraima: Guia Completo para Subir o Tepui",cat:"Trilhas &amp; Destinos",filter:"destinos",date:"2026-01-20",dateLabel:"20 jan 2026",author:"Equipe Trekko",desc:"Como chegar, o que levar e o que esperar no Monte Roraima. Guia completo para conquistar a montanha mais antiga do planeta na tríplice fronteira Brasil-Venezuela-Guiana."},
+  {slug:"travessia-petropolis-teresopolis-guia-completo",title:"Travessia Petrópolis x Teresópolis: Guia Completo 2026",cat:"Trilhas &amp; Destinos",filter:"destinos",date:"2026-01-10",dateLabel:"10 jan 2026",author:"Equipe Trekko",desc:"Tudo sobre a travessia mais clássica do Brasil: percurso dia a dia, abrigos, dificuldades, melhor época e dicas essenciais para os 30 km pela Serra dos Órgãos."}
+];
+
+var PER_PAGE = 12;
+var currentFilter = 'todos';
+var currentPage = 1;
+
+function filteredArticles() {
+  if (currentFilter === 'todos') return ARTICLES;
+  return ARTICLES.filter(function(a){ return a.filter === currentFilter; });
+}
+
+function setFilter(f) {
+  currentFilter = f;
+  currentPage = 1;
+  document.querySelectorAll('.filter-btn').forEach(function(btn){
+    btn.classList.toggle('active', btn.dataset.filter === f);
+  });
+  render();
+}
+
+function setPage(p) {
+  currentPage = p;
+  render();
+  document.getElementById('main-content').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function cardHtml(a) {
+  return '<article class="article-card"><div class="card-thumb"><svg width="64" height="64" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M16 3L3 28h26L16 3z" fill="#15803d"/><path d="M16 10l-7 18h14L16 10z" fill="#fff" opacity=".4"/></svg></div><div class="card-body"><span class="card-category">' + a.cat + '</span><h2 class="card-title">' + a.title + '</h2><div class="card-meta"><span>' + a.dateLabel + '</span><span>' + a.author + '</span></div><p class="card-desc">' + a.desc + '</p><a href="/blog/' + a.slug + '/" class="card-cta" aria-label="Ler mais: ' + a.title + '">Ler mais <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></div></article>';
+}
+
+function render() {
+  var arts = filteredArticles();
+  var total = arts.length;
+  var pages = Math.ceil(total / PER_PAGE);
+  var start = (currentPage - 1) * PER_PAGE;
+  var slice = arts.slice(start, start + PER_PAGE);
+
+  var grid = document.getElementById('blog-grid');
+  if (slice.length === 0) {
+    grid.innerHTML = '<div class="empty-state"><strong>Nenhum artigo encontrado</strong><p>Tente outro filtro.</p></div>';
+  } else {
+    grid.innerHTML = slice.map(cardHtml).join('');
+  }
+
+  var info = document.getElementById('page-info');
+  info.textContent = total + ' artigo' + (total !== 1 ? 's' : '') + (currentFilter !== 'todos' ? ' nesta categoria' : '') + ' — página ' + currentPage + ' de ' + pages;
+
+  renderPagination(pages);
+}
+
+function renderPagination(pages) {
+  var pg = document.getElementById('pagination');
+  if (pages <= 1) { pg.innerHTML = ''; return; }
+  var html = '';
+  html += '<button class="page-btn" onclick="setPage(' + (currentPage-1) + ')" ' + (currentPage===1?'disabled':'') + ' aria-label="Página anterior">&#8592;</button>';
+  for (var i = 1; i <= pages; i++) {
+    html += '<button class="page-btn' + (i===currentPage?' active':'') + '" onclick="setPage(' + i + ')" aria-label="Página ' + i + '" aria-current="' + (i===currentPage?'page':'false') + '">' + i + '</button>';
+  }
+  html += '<button class="page-btn" onclick="setPage(' + (currentPage+1) + ')" ' + (currentPage===pages?'disabled':'') + ' aria-label="Próxima página">&#8594;</button>';
+  pg.innerHTML = html;
+}
+
+function updateCounts() {
+  var counts = {todos: ARTICLES.length, iniciantes:0, seguranca:0, destinos:0, equipamentos:0};
+  ARTICLES.forEach(function(a){ if(counts[a.filter]!==undefined) counts[a.filter]++; });
+  Object.keys(counts).forEach(function(k){
+    var el = document.getElementById('count-' + k);
+    if (el) el.textContent = '(' + counts[k] + ')';
+  });
+}
+
+updateCounts();
+render();
+</script>
+<script>(function(){var h=document.getElementById('site-header');if(!h)return;window.addEventListener('scroll',function(){h.classList.toggle('scrolled',window.scrollY>10)},{passive:true});})();</script>
 </body>
 </html>
