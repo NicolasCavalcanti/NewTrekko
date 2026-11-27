@@ -1,8 +1,11 @@
 name: Deploy
 
+# ATENÇÃO: este workflow apaga a gh-pages inteira (force_orphan) e publica no
+# lugar o build da master. O site no ar é mantido direto na gh-pages, então
+# rodar este deploy desfaz o que foi corrigido lá (páginas estáticas, ajustes do
+# AdSense, máscara dos contatos). Por isso ele só roda manualmente, pelo botão
+# "Run workflow" da aba Actions. Antes, ele rodava em todo push na master.
 on:
-  push:
-    branches: [master]
   workflow_dispatch:
 
 permissions:
