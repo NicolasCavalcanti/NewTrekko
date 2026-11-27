@@ -1,8 +1,47 @@
-User-agent: *
+# Googlebot — full crawl access (explicit, required for Search Console + AdSense review)
+User-agent: Googlebot
+Allow: /
+Disallow: /go
 Disallow: /perfil
 Disallow: /checkout
 Disallow: /reservas
-Disallow: /admin
+Disallow: /admin/
 Disallow: /api/
+Disallow: /dashboard/
+Disallow: /component-showcase
+# URL parameters: filter/search params on listing pages return noindex via meta tag (JS-injected).
+# Disallow not used here so Googlebot can read and respect the canonical + noindex directives.
 
-Sitemap: https://trekko.com.br/sitemap.xml
+# Googlebot-Image — allow product/trail images
+User-agent: Googlebot-Image
+Allow: /
+
+# APIs-Google — used for structured data / rich results testing
+User-agent: APIs-Google
+Allow: /
+
+# AdsBot variants — required for ad serving; /go must be blocked to prevent bridge-page policy violations
+User-agent: AdsBot-Google
+Allow: /
+Disallow: /go
+
+User-agent: AdsBot-Google-Mobile
+Allow: /
+Disallow: /go
+
+User-agent: Mediapartners-Google
+Allow: /
+
+# All other crawlers
+User-agent: *
+Allow: /
+Disallow: /go
+Disallow: /admin/
+Disallow: /api/
+Disallow: /dashboard/
+Disallow: /perfil
+Disallow: /checkout
+Disallow: /reservas
+Disallow: /component-showcase
+
+Sitemap: https://www.trekko.com.br/sitemap.xml

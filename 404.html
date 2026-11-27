@@ -1,22 +1,66 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
 
   <head>
-    <!-- Google AdSense account verification (script injected conditionally by AdSenseLoader) -->
+    <!-- Página servida como erro 404 (inclui rotas só do app): o app não carrega anúncios aqui -->
+    <script>window.__trekko404=!0</script>
+    <!-- Recuperação de senha: se o Supabase devolver o link de recuperação na home
+         (Site URL), leva o usuário para a página de redefinição antes do app carregar. -->
+    <script>
+      (function(){try{var h=location.hash;if(h&&/(^|[#&])type=recovery(&|$)/.test(h)&&location.pathname.indexOf("/redefinir-senha")!==0){location.replace("/redefinir-senha/"+h)}}catch(e){}})();
+    </script>
+    <!-- Redirect .html URLs to canonical clean URLs (fixes duplicate indexing on Google) -->
+    <script>
+      (function(){
+        var path = window.location.pathname;
+        if (path.endsWith('.html')) {
+          var cleanPath = path.replace(/\.html$/, '');
+          window.location.replace(
+            window.location.origin + cleanPath + window.location.search + window.location.hash
+          );
+        }
+      })();
+    </script>
+
     <meta name="google-adsense-account" content="ca-pub-2482023752745520">
-    <!-- Google tag (gtag.js) -->
+
+    <!-- Trekko Analytics Configuration (keep in sync with index.html) -->
+    <script>
+      window.TREKKO_CONFIG = {
+        GA4_ID: 'G-S816P190VN',
+        GTM_ID: null,
+        ADS_ID: 'AW-355784943'
+      };
+    </script>
+
+    <!-- Google Tag Manager (loads only when GTM_ID is configured above) -->
+    <script>
+      (function(){
+        var id = (window.TREKKO_CONFIG || {}).GTM_ID;
+        if (!id) return;
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
+        var f = document.getElementsByTagName('script')[0];
+        var j = document.createElement('script');
+        j.async = true;
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + id;
+        f.parentNode.insertBefore(j, f);
+      })();
+    </script>
+
+    <!-- Google tag (gtag.js) — direct GA4 fallback while GTM is not yet configured -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-S816P190VN"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-S816P190VN');
+      gtag('config', 'G-S816P190VN', { send_page_view: !(window.TREKKO_CONFIG && window.TREKKO_CONFIG.GTM_ID) });
     </script>
     <meta charset="UTF-8" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-    <title>Trekko</title>
+      content="width=device-width, initial-scale=1.0" />
+    <title>Página não encontrada | Trekko</title>
     <!-- Favicons - Google requires minimum 48x48px, recommends larger -->
     <link rel="icon" href="/favicon-48x48.png" type="image/png" sizes="48x48" />
     <link rel="icon" href="/android-chrome-192x192.png" type="image/png" sizes="192x192" />
@@ -35,18 +79,22 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <script type="module" crossorigin src="/assets/index-BYvnwDuG.js"></script>
+    <script>
+      (function(){var p=window.location.pathname,nx=["/component-showcase"],np=[];if(nx.indexOf(p)!==-1||np.some(function(x){return p===x||p.startsWith(x)})){var m=document.createElement("meta");m.name="robots";m.content="noindex, nofollow, nosnippet, max-snippet:0, noarchive";document.head.appendChild(m);}})();
+    </script>
+    <script defer src="/assets/trekko-analytics.js"></script>
+    <script type="module" crossorigin src="/assets/index-DSKK19TW-c1125.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-DViTTRkQ.js">
     <link rel="modulepreload" crossorigin href="/assets/radix-ui-D-C9zAgG.js">
     <link rel="stylesheet" crossorigin href="/assets/index-CKkMVUOE.css">
+  <link rel="alternate" hreflang="pt-BR" href="https://www.trekko.com.br/404">
+  <link rel="alternate" hreflang="x-default" href="https://www.trekko.com.br/404">
   </head>
 
   <body>
+    <!-- Google Tag Manager (noscript) — activate only when GTM_ID is configured in TREKKO_CONFIG -->
+    <!-- <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> -->
     <div id="root"></div>
-    <script
-      defer
-      src="%VITE_ANALYTICS_ENDPOINT%/umami"
-      data-website-id="%VITE_ANALYTICS_WEBSITE_ID%"></script>
   </body>
 
 </html>
