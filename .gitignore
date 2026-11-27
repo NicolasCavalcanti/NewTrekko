@@ -3,3 +3,7 @@ dist/
 .env
 .env.local
 .env.*.local
+
+# Dados pessoais e registros de consultas ao banco: nunca versionar
+*.xlsx
+.manus/db/
