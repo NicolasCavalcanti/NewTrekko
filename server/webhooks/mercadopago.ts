@@ -4,6 +4,7 @@ import { getDb } from "../db";
 import { reservations, payments } from "../../drizzle/schema";
 import { eq } from "drizzle-orm";
 import { notifyOwner } from "../_core/notification";
+import { PLATFORM_FEE_PERCENT } from "../../shared/const";
 
 const router = Router();
 
@@ -94,7 +95,7 @@ router.post("/", async (req: Request, res: Response) => {
         .where(eq(reservations.id, reservationId));
 
       // Create payment record
-      const platformFeePercent = 10; // Default 10%
+      const platformFeePercent = PLATFORM_FEE_PERCENT;
       const grossAmount = paymentInfo.transaction_amount || 0;
       const platformFee = grossAmount * (platformFeePercent / 100);
       const mpFee = paymentInfo.fee_details?.reduce((sum: number, fee: any) => sum + (fee.amount || 0), 0) || 0;

@@ -8,6 +8,7 @@ import { Loader2, Wallet, TrendingUp, Clock, CheckCircle2, AlertCircle, Receipt,
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import GuidePixForm from "./GuidePixForm";
+import { PLATFORM_FEE_PERCENT } from "@shared/const";
 
 export default function GuideFinancialPanel() {
   const [activeTab, setActiveTab] = useState("resumo");
@@ -179,7 +180,7 @@ export default function GuideFinancialPanel() {
           </div>
           <div className="mt-4 p-4 bg-muted/30 rounded-lg">
             <p className="text-sm text-muted-foreground">
-              <strong>Taxa da plataforma:</strong> 4% sobre o valor da reserva<br />
+              <strong>Taxa da plataforma:</strong> {PLATFORM_FEE_PERCENT}% sobre o valor da reserva<br />
               <strong>Taxas do gateway:</strong> Descontadas automaticamente pelo Mercado Pago<br />
               <strong>Prazo de repasse:</strong> 2 dias úteis após a conclusão da expedição (sem contestações)
             </p>

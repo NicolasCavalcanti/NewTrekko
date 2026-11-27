@@ -1,4 +1,4 @@
-import { COOKIE_NAME } from "@shared/const";
+import { COOKIE_NAME, PLATFORM_FEE_PERCENT } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
@@ -1112,10 +1112,9 @@ export const appRouter = router({
   payments: router({
     // Get platform settings (public for display purposes)
     getSettings: publicProcedure.query(async () => {
-      const platformFee = await db.getPlatformSetting('platform_fee_percent') || '10';
       const policy = await db.getDefaultCancellationPolicy();
       return {
-        platformFeePercent: Number(platformFee),
+        platformFeePercent: PLATFORM_FEE_PERCENT,
         cancellationPolicy: policy,
       };
     }),
@@ -1171,7 +1170,7 @@ export const appRouter = router({
         // Calculate amounts
         const unitPrice = Number(expedition.price) || 0;
         const totalAmount = unitPrice * input.quantity;
-        const platformFeePercent = Number(await db.getPlatformSetting('platform_fee_percent') || '10');
+        const platformFeePercent = PLATFORM_FEE_PERCENT;
         const platformFee = totalAmount * (platformFeePercent / 100);
 
         // Set expiration time
@@ -1572,8 +1571,7 @@ export const appRouter = router({
       for (const expId of expeditionIds) {
         const reservations = await db.getPaidReservationsForExpedition(expId);
         for (const r of reservations) {
-          const platformFeePercent = Number(await db.getPlatformSetting('platform_fee_percent') || '10');
-          const netAmount = Number(r.totalAmount) * (1 - platformFeePercent / 100);
+          const netAmount = Number(r.totalAmount) * (1 - PLATFORM_FEE_PERCENT / 100);
           totalEarnings += netAmount;
           reservationCount++;
         }

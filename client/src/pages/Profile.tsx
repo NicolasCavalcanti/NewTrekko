@@ -24,6 +24,7 @@ import UserReservationsPanel from "@/components/UserReservationsPanel";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { USE_SUPABASE } from "@/lib/supabase";
+import { PLATFORM_FEE_PERCENT } from "@shared/const";
 import {
   sbListGuideExpeditions,
   sbCreateExpedition,
@@ -991,7 +992,7 @@ function CreateExpeditionForm({ onClose }: { onClose: () => void }) {
       {/* Platform Fee Notice */}
       <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg">
         <p className="text-sm text-amber-800">
-          <strong>Taxa da plataforma:</strong> Uma taxa de <strong>4%</strong> será aplicada sobre o valor de cada reserva efetivada nesta expedição.
+          <strong>Taxa da plataforma:</strong> Uma taxa de <strong>{PLATFORM_FEE_PERCENT}%</strong> será aplicada sobre o valor de cada reserva efetivada nesta expedição.
         </p>
       </div>
 

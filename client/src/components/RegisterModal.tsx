@@ -21,6 +21,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
+import { PLATFORM_FEE_PERCENT } from "@shared/const";
 import { useLocation } from "wouter";
 import { Loader2, User, Shield, CheckCircle, ArrowLeft, ArrowRight, Eye, EyeOff, Wallet } from "lucide-react";
 
@@ -847,7 +848,7 @@ export default function RegisterModal({ open, onOpenChange, onSwitchToLogin }: R
 
       <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg mb-4">
         <p className="text-sm text-amber-800">
-          <strong>Taxa da plataforma:</strong> Ao criar expedições, uma taxa de <strong>4%</strong> será aplicada sobre o valor de cada reserva efetivada. Esta taxa cobre os custos de processamento de pagamento, suporte ao cliente e manutenção da plataforma.
+          <strong>Taxa da plataforma:</strong> Ao criar expedições, uma taxa de <strong>{PLATFORM_FEE_PERCENT}%</strong> será aplicada sobre o valor de cada reserva efetivada. Esta taxa cobre os custos de processamento de pagamento, suporte ao cliente e manutenção da plataforma.
         </p>
       </div>
 
